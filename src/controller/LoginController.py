@@ -5,7 +5,6 @@ from PyQt6.QtGui import QPixmap
 from src.gui.login import Ui_MainWindow
 from src.services.impl.LoginServiceImpl import LoginServiceImpl
 from src.controller.MainWindowController import MainWindowController
-from src.controller.ForgotpasswordController import ForgotpasswordController
 
 logger = logging.getLogger(__name__)
 
@@ -60,6 +59,7 @@ class LoginController(QMainWindow, Ui_MainWindow):
             QMessageBox.critical(self, "Lỗi hệ thống", f"Đã xảy ra lỗi hệ thống: {str(e)}")
 
     def handle_forgotpassword(self):
+        from src.controller.ForgotpasswordController import ForgotpasswordController
         self.main_window = ForgotpasswordController()
         self.main_window.show()
         self.close()

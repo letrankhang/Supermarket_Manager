@@ -142,6 +142,16 @@ class Database:
                         conn.commit()
                     print("[Database] 'image' column added successfully.")
 
+            # Automatically add missing 'email' column to 'users' table if needed
+            if 'users' in inspector.get_table_names():
+                columns = [col['name'] for col in inspector.get_columns('users')]
+                if 'email' not in columns:
+                    print("[Database] Adding missing 'email' column to 'users' table...")
+                    with cls._engine.connect() as conn:
+                        conn.execute(text("ALTER TABLE users ADD email VARCHAR(100) NULL"))
+                        conn.commit()
+                    print("[Database] 'email' column added successfully.")
+
             # --- Database Auto-Seeding ---
             with cls.get_session_ctx() as session:
                 # 1. Seed Roles
@@ -169,11 +179,15 @@ class Database:
                             password_hash="admin",
                             full_name="Administrator",
                             role_id=admin_role.role_id,
+                            email="admin@supermarket.com",
                             is_active=True
                         )
                         session.add(new_admin)
-                        print("[Database Seed] Default Admin user created successfully (username: 'admin', password: 'admin').")
+                        print("[Database Seed] Default Admin user created successfully (username: 'admin', password: 'admin', email: 'admin@supermarket.com').")
                     else:
+                        if not admin_user.email:
+                            admin_user.email = "admin@supermarket.com"
+                            print("[Database Seed] Assigned default email 'admin@supermarket.com' to existing admin user.")
                         # Di trú mật khẩu cũ từ dạng hash sang dạng text thường
                         import hashlib
                         old_hash = hashlib.sha256("admin".encode('utf-8')).hexdigest()
