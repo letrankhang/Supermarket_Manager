@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1653</width>
-    <height>983</height>
+    <width>1255</width>
+    <height>681</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -320,7 +320,7 @@
             <property name="styleSheet">
              <string notr="true">QLabel {
     border-radius: 20px; /* Bắt buộc phải bằng đúng 1/2 kích thước Width/Height bạn vừa set ở Lỗi 1 */
-    border-image: url(&quot;D:/Python/Supermarket_Manager/assets/images/avata.jpg&quot;) 0 0 0 0 stretch stretch;
+    border-image: url(:/images/avata.jpg) 0 0 0 0 stretch stretch;
     background-color: transparent;
 }</string>
             </property>
@@ -351,13 +351,15 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1653</width>
+     <width>1255</width>
      <height>25</height>
     </rect>
    </property>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
  </widget>
- <resources/>
+ <resources>
+  <include location="app_resources.qrc"/>
+ </resources>
  <connections/>
 </ui>

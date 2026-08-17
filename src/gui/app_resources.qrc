@@ -1,0 +1,6 @@
+<RCC>
+  <qresource prefix="/images">
+    <file>avata.jpg</file>
+    <file>logo.png</file>
+  </qresource>
+</RCC>
