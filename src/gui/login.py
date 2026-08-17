@@ -1,4 +1,4 @@
-# Form implementation generated from reading ui file 'D:\Python\Supermarket_Manager\src\gui\login.ui'
+# Form implementation generated from reading ui file 'src\gui\login.ui'
 #
 # Created by: PyQt6 UI code generator 6.11.0
 #
@@ -44,7 +44,7 @@ class Ui_MainWindow(object):
         self.label_4.setStyleSheet("background-color: transparent;\n"
 "border: none;")
         self.label_4.setText("")
-        self.label_4.setPixmap(QtGui.QPixmap("D:\\Python\\Supermarket_Manager\\src\\gui\\../../assets/images/logo.png"))
+        self.label_4.setPixmap(QtGui.QPixmap("src\\gui\\../../assets/images/logo.png"))
         self.label_4.setScaledContents(True)
         self.label_4.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
         self.label_4.setObjectName("label_4")

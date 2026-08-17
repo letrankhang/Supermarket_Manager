@@ -1,4 +1,4 @@
-# Form implementation generated from reading ui file 'D:\Python\Supermarket_Manager\src\gui\MainWindow.ui'
+# Form implementation generated from reading ui file 'src\gui\MainWindow.ui'
 #
 # Created by: PyQt6 UI code generator 6.11.0
 #
@@ -12,7 +12,7 @@ from PyQt6 import QtCore, QtGui, QtWidgets
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
-        MainWindow.resize(1653, 983)
+        MainWindow.resize(1255, 681)
         self.centralwidget = QtWidgets.QWidget(parent=MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.horizontalLayout = QtWidgets.QHBoxLayout(self.centralwidget)
@@ -63,7 +63,7 @@ class Ui_MainWindow(object):
         self.label = QtWidgets.QLabel(parent=self.frame)
         self.label.setMaximumSize(QtCore.QSize(70, 50))
         self.label.setText("")
-        self.label.setPixmap(QtGui.QPixmap("D:\\Python\\Supermarket_Manager\\src\\gui\\../../assets/images/logo.png"))
+        self.label.setPixmap(QtGui.QPixmap("src\\gui\\../../assets/images/logo.png"))
         self.label.setScaledContents(True)
         self.label.setObjectName("label")
         self.horizontalLayout_5.addWidget(self.label)
@@ -166,7 +166,7 @@ class Ui_MainWindow(object):
         self.lblAvatar.setMaximumSize(QtCore.QSize(40, 40))
         self.lblAvatar.setStyleSheet("QLabel {\n"
 "    border-radius: 20px; /* Bắt buộc phải bằng đúng 1/2 kích thước Width/Height bạn vừa set ở Lỗi 1 */\n"
-"    border-image: url(\"D:/Python/Supermarket_Manager/assets/images/avata.jpg\") 0 0 0 0 stretch stretch;\n"
+"    border-image: url(:/images/avata.jpg) 0 0 0 0 stretch stretch;\n"
 "    background-color: transparent;\n"
 "}")
         self.lblAvatar.setText("")
@@ -181,7 +181,7 @@ class Ui_MainWindow(object):
         self.horizontalLayout.addWidget(self.widget)
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(parent=MainWindow)
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 1653, 25))
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 1255, 25))
         self.menubar.setObjectName("menubar")
         MainWindow.setMenuBar(self.menubar)
         self.statusbar = QtWidgets.QStatusBar(parent=MainWindow)

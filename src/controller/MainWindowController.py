@@ -1,7 +1,9 @@
 # File: D:\Python\Supermarket_Manager\src\controller\MainWindowController.py
 
 import logging
+import os
 from PyQt6.QtWidgets import QMainWindow, QStackedWidget, QVBoxLayout, QMessageBox
+from PyQt6.QtGui import QPixmap
 from PyQt6.QtCore import QTimer, QDateTime
 from src.gui.MainWindow import Ui_MainWindow
 from src.utils.Sesion import Session
@@ -16,12 +18,39 @@ class MainWindowController(QMainWindow, Ui_MainWindow):
     def __init__(self) -> None:
         super().__init__()
         self.setupUi(self)
+        self._fix_logo()
         self._setup_ui()
         self._setup_event()
         self._load_user_data()
         self._block_admin_features_for_cashier()
         # Default to showing the dashboard tab
         self._show_dashboard()
+
+    def _fix_logo(self) -> None:
+        current_dir = os.path.dirname(os.path.abspath(__file__))
+        
+        # Sửa đường dẫn ảnh logo
+        logo_path = os.path.abspath(os.path.join(current_dir, "..", "..", "assets", "images", "logo.png"))
+        if os.path.exists(logo_path):
+            self.label.setPixmap(QPixmap(logo_path))
+        else:
+            logger.error("Logo not found at path: %s", logo_path)
+
+        # Sửa đường dẫn ảnh đại diện (avatar)
+        avatar_path = os.path.abspath(os.path.join(current_dir, "..", "..", "assets", "images", "avata.jpg"))
+        if os.path.exists(avatar_path):
+            avatar_path_url = avatar_path.replace("\\", "/")
+            self.lblAvatar.setStyleSheet(f"""
+                QLabel {{
+                    border-radius: 20px;
+                    border-image: url({avatar_path_url}) 0 0 0 0 stretch stretch;
+                    background-color: transparent;
+                }}
+            """)
+        else:
+            logger.error("Avatar not found at path: %s", avatar_path)
+
+
 
     def _setup_ui(self) -> None:
         """

@@ -141,8 +141,47 @@ class Database:
                         conn.execute(text("ALTER TABLE products ADD image VARCHAR(500) NULL"))
                         conn.commit()
                     print("[Database] 'image' column added successfully.")
+
+            # --- Database Auto-Seeding ---
+            with cls.get_session_ctx() as session:
+                # 1. Seed Roles
+                default_roles = ["Admin", "Manager", "Cashier"]
+                existing_roles = {r.role_name: r for r in session.query(Role).all()}
+                
+                db_roles = {}
+                for role_name in default_roles:
+                    if role_name not in existing_roles:
+                        new_role = Role(role_name=role_name)
+                        session.add(new_role)
+                        session.flush()  # to obtain auto-incremented role_id
+                        db_roles[role_name] = new_role
+                        print(f"[Database Seed] Role '{role_name}' created successfully.")
+                    else:
+                        db_roles[role_name] = existing_roles[role_name]
+
+                # 2. Seed Default Admin User
+                admin_role = db_roles.get("Admin")
+                if admin_role:
+                    admin_user = session.query(User).filter_by(username="admin").first()
+                    if not admin_user:
+                        new_admin = User(
+                            username="admin",
+                            password_hash="admin",
+                            full_name="Administrator",
+                            role_id=admin_role.role_id,
+                            is_active=True
+                        )
+                        session.add(new_admin)
+                        print("[Database Seed] Default Admin user created successfully (username: 'admin', password: 'admin').")
+                    else:
+                        # Di trú mật khẩu cũ từ dạng hash sang dạng text thường
+                        import hashlib
+                        old_hash = hashlib.sha256("admin".encode('utf-8')).hexdigest()
+                        if admin_user.password_hash == old_hash:
+                            admin_user.password_hash = "admin"
+                            print("[Database Seed] Updated existing admin user's password from hash to plain text.")
         except Exception as e:
-            print(f"[Database Error] Failed to generate database tables: {e}")
+            print(f"[Database Error] Failed to generate database tables or seed data: {e}")
             raise e
 
     @classmethod

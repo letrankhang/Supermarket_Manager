@@ -18,9 +18,6 @@ logger = logging.getLogger(__name__)
 
 
 class DashboardWorker(QThread):
-    """
-    Worker thread to fetch dashboard statistics in the background (SOLID + Rule 9).
-    """
     data_fetched = pyqtSignal(DashboardDTO)
     error_occurred = pyqtSignal(str)
 
