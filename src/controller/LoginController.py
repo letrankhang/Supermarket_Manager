@@ -5,6 +5,7 @@ from PyQt6.QtGui import QPixmap
 from src.gui.login import Ui_MainWindow
 from src.services.impl.LoginServiceImpl import LoginServiceImpl
 from src.controller.MainWindowController import MainWindowController
+from src.controller.ForgotpasswordController import ForgotpasswordController
 
 logger = logging.getLogger(__name__)
 
@@ -29,6 +30,7 @@ class LoginController(QMainWindow, Ui_MainWindow):
     def _setup_events(self):
         # Kết nối sự kiện nút đăng nhập
         self.pushButton_login.clicked.connect(self.handle_login)
+        self.pushButton_forgotpassword.clicked.connect(self.handle_forgotpassword)
         # Cho phép nhấn Enter ở username/password để đăng nhập
         self.lineEdit_username.returnPressed.connect(self.handle_login)
         self.lineEdit_passwprd.returnPressed.connect(self.handle_login)
@@ -56,3 +58,8 @@ class LoginController(QMainWindow, Ui_MainWindow):
         except Exception as e:
             logger.error("Lỗi đăng nhập trong controller: %s", e)
             QMessageBox.critical(self, "Lỗi hệ thống", f"Đã xảy ra lỗi hệ thống: {str(e)}")
+
+    def handle_forgotpassword(self):
+        self.main_window = ForgotpasswordController()
+        self.main_window.show()
+        self.close()
