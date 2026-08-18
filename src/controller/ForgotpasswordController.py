@@ -2,6 +2,7 @@ import logging
 from PyQt6.QtWidgets import QMainWindow, QMessageBox, QLineEdit
 from src.gui.forgotpassword import Ui_MainWindow
 from src.services.impl.ForgotpasswordServiceImpl import ForgotpasswordServiceImpl
+from src.controller.Verification_codeController import VerificationCodeController
 
 logger = logging.getLogger(__name__)
 
@@ -38,6 +39,9 @@ class ForgotpasswordController(QMainWindow, Ui_MainWindow):
                     "Thành công",
                     f"Mã xác thực đặt lại mật khẩu đã được gửi đến email: {email}"
                 )
+                self.main_window = VerificationCodeController(email)
+                self.main_window.show()
+                self.close()
             else:
                 QMessageBox.critical(
                     self,

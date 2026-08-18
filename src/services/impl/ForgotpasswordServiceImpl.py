@@ -33,6 +33,10 @@ class ForgotpasswordServiceImpl(ForgotpasswordService):
                 code = f"{random.randint(100000, 999999)}"
                 logger.info("Đã phát sinh mã xác thực: %s cho email: %s", code, email)
                 
+                # Lưu mã xác thực tạm thời vào bộ nhớ
+                from src.services.impl.Verification_codeServiceImpl import VerificationCodeServiceImpl
+                VerificationCodeServiceImpl.store_code(email, code)
+                
                 # Gửi email chứa mã xác thực
                 email_sent = EmailHelper.send_verification_code(email, code)
                 if not email_sent:
