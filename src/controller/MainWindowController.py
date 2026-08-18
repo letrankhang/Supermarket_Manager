@@ -77,6 +77,7 @@ class MainWindowController(QMainWindow, Ui_MainWindow):
         self.dashboard_controller = DashboardController(self)
         self.stacked_widget.addWidget(self.dashboard_controller)
 
+
     def _update_datetime(self) -> None:
         """
         Cập nhật ngày giờ hiện tại lên giao diện.
@@ -90,29 +91,19 @@ class MainWindowController(QMainWindow, Ui_MainWindow):
         """
         # Kết nối sự kiện click của nút Dashboard
         self.btn_dashboard.clicked.connect(self._show_dashboard)
-
-
-        # Kết nối các nút bấm khác đến thông báo phát triển tính năng
-        other_buttons = [
-            (self.btn_products, "Sản phẩm"),
-            (self.btn_suppliers, "Nhà cung cấp"),
-            (self.btn_importing, "Nhập hàng"),
-            (self.btn_customers, "Khách hàng"),
-            (self.btn_pos, "Bán hàng (POS)"),
-            (self.btn_analytics, "Báo cáo thống kê"),
-            (self.btn_settings, "Cài đặt hệ thống"),
-            (self.btn_help, "Trung tâm trợ giúp"),
-        ]
-        for btn, name in other_buttons:
-            # Sử dụng default parameter in lambda to capture value properly
-            btn.clicked.connect(lambda checked=False, n=name: self._show_feature_placeholder(n))
+        self.btn_logout.clicked.connect(self._show_logout)
 
     def _show_dashboard(self) -> None:
-        """
-        Hiển thị tab Dashboard và tải dữ liệu mới.
-        """
         self.stacked_widget.setCurrentWidget(self.dashboard_controller)
         self.dashboard_controller.load_data()
+
+    def _show_logout(self) -> None:
+        logger.info("Đang đăng xuất khỏi tài khoản %s", Session.get_username())
+        Session.clear_session()
+        from src.controller.LoginController import LoginController
+        self.showlogin = LoginController()
+        self.showlogin.show()
+        self.close()
 
     def _show_feature_placeholder(self, feature_name: str) -> None:
         """
@@ -148,7 +139,6 @@ class MainWindowController(QMainWindow, Ui_MainWindow):
         # Fallback về username nếu không có fullname
         if not fullname:
             fullname = Session.get_username() or "Người dùng"
-
         self.lblGreeting.setText(f"Xin chào, {fullname}!")
 
     def _block_admin_features_for_cashier(self) -> None:
