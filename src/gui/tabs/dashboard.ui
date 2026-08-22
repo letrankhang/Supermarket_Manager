@@ -20,17 +20,28 @@
    QSS đặt ở widget gốc sẽ lan xuống mọi widget con, kể cả
    widget được tạo lúc chạy (bảng, huy hiệu icon, nhãn ô thao tác). */
 
-/* Nút &quot;Tải lại dữ liệu&quot; trên thanh tiêu đề */
+/* Nút &quot;Tải lại dữ liệu&quot; trên thanh tiêu đề.
+   Dùng chung bảng màu với nút chính của tab POS (#btnCheckout, #btnCardAdd)
+   để hai tab nhìn đồng bộ. */
 QPushButton#pushButton {
-	background-color: #3b82f6;
-	color: white;
+	background-color: #1d4ed8;
+	color: #ffffff;
 	border: none;
-	border-radius: 5px;
-	padding: 6px 12px;
+	border-radius: 8px;
+	padding: 0px 14px;
+	font-size: 13px;
 	font-weight: bold;
 }
 QPushButton#pushButton:hover {
-	background-color: #2563eb;
+	background-color: #1e3a8a;
+}
+QPushButton#pushButton:pressed {
+	background-color: #1e40af;
+}
+/* Trạng thái &quot;Đang tải...&quot; khi controller tạm khoá nút */
+QPushButton#pushButton:disabled {
+	background-color: #cbd5e1;
+	color: #f8fafc;
 }
 
 /* Tiêu đề khối &quot;Giao dịch gần đây&quot; */
@@ -261,6 +272,21 @@ QLabel[trangThai=&quot;anToan&quot;]  { color: #10b981; }</string>
          </item>
          <item>
           <widget class="QPushButton" name="pushButton">
+           <property name="minimumSize">
+            <size>
+             <width>140</width>
+             <height>40</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>140</width>
+             <height>40</height>
+            </size>
+           </property>
+           <property name="cursor">
+            <cursorShape>PointingHandCursor</cursorShape>
+           </property>
            <property name="text">
             <string>Tải lại dữ liệu</string>
            </property>

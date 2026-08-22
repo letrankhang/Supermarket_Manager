@@ -19,17 +19,28 @@ class Ui_Form(object):
 "   QSS đặt ở widget gốc sẽ lan xuống mọi widget con, kể cả\n"
 "   widget được tạo lúc chạy (bảng, huy hiệu icon, nhãn ô thao tác). */\n"
 "\n"
-"/* Nút \"Tải lại dữ liệu\" trên thanh tiêu đề */\n"
+"/* Nút \"Tải lại dữ liệu\" trên thanh tiêu đề.\n"
+"   Dùng chung bảng màu với nút chính của tab POS (#btnCheckout, #btnCardAdd)\n"
+"   để hai tab nhìn đồng bộ. */\n"
 "QPushButton#pushButton {\n"
-"    background-color: #3b82f6;\n"
-"    color: white;\n"
+"    background-color: #1d4ed8;\n"
+"    color: #ffffff;\n"
 "    border: none;\n"
-"    border-radius: 5px;\n"
-"    padding: 6px 12px;\n"
+"    border-radius: 8px;\n"
+"    padding: 0px 14px;\n"
+"    font-size: 13px;\n"
 "    font-weight: bold;\n"
 "}\n"
 "QPushButton#pushButton:hover {\n"
-"    background-color: #2563eb;\n"
+"    background-color: #1e3a8a;\n"
+"}\n"
+"QPushButton#pushButton:pressed {\n"
+"    background-color: #1e40af;\n"
+"}\n"
+"/* Trạng thái \"Đang tải...\" khi controller tạm khoá nút */\n"
+"QPushButton#pushButton:disabled {\n"
+"    background-color: #cbd5e1;\n"
+"    color: #f8fafc;\n"
 "}\n"
 "\n"
 "/* Tiêu đề khối \"Giao dịch gần đây\" */\n"
@@ -153,6 +164,9 @@ class Ui_Form(object):
         spacerItem = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Minimum)
         self.horizontalLayout_2.addItem(spacerItem)
         self.pushButton = QtWidgets.QPushButton(parent=self.frame)
+        self.pushButton.setMinimumSize(QtCore.QSize(140, 40))
+        self.pushButton.setMaximumSize(QtCore.QSize(140, 40))
+        self.pushButton.setCursor(QtGui.QCursor(QtCore.Qt.CursorShape.PointingHandCursor))
         self.pushButton.setObjectName("pushButton")
         self.horizontalLayout_2.addWidget(self.pushButton)
         self.verticalLayout.addWidget(self.frame)

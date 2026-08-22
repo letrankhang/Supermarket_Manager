@@ -81,23 +81,10 @@ class LoginController(QMainWindow, Ui_MainWindow):
     # ------------------------------------------------------------------
     def _setup_events(self) -> None:
         self.pushButton_login.clicked.connect(self.handle_login)
-<<<<<<< Updated upstream
-        self.pushButton_forgotpassword.clicked.connect(self.handle_forgotpassword)
+        self.pushButton_forgotpassword.clicked.connect(self.handle_forgot_password)
         # Cho phép nhấn Enter ở username/password để đăng nhập
-=======
->>>>>>> Stashed changes
         self.lineEdit_username.returnPressed.connect(self.handle_login)
         self.lineEdit_passwprd.returnPressed.connect(self.handle_login)
-        self.pushButton_forgotpassword.clicked.connect(self.handle_forgot_password)
-
-    def handle_forgot_password(self) -> None:
-        """Mở màn hình nhập email để nhận mã xác thực đặt lại mật khẩu."""
-        # Nhập vòng ở đây để tránh hai controller import lẫn nhau lúc nạp module
-        from src.controller.ForgotPasswordController import ForgotPasswordController
-
-        self.forgot_window = ForgotPasswordController()
-        self.forgot_window.show()
-        self.close()
 
     def handle_login(self) -> None:
         username: str = self.lineEdit_username.text().strip()
@@ -138,12 +125,12 @@ class LoginController(QMainWindow, Ui_MainWindow):
         except Exception as e:
             logger.error("Lỗi đăng nhập trong controller: %s", e)
             QMessageBox.critical(self, "Lỗi hệ thống", f"Đã xảy ra lỗi hệ thống: {str(e)}")
-<<<<<<< Updated upstream
 
-    def handle_forgotpassword(self):
-        from src.controller.ForgotpasswordController import ForgotpasswordController
-        self.main_window = ForgotpasswordController()
-        self.main_window.show()
+    def handle_forgot_password(self) -> None:
+        """Mở màn hình nhập email để nhận mã xác thực đặt lại mật khẩu."""
+        # Nhập vòng ở đây để tránh hai controller import lẫn nhau lúc nạp module
+        from src.controller.ForgotPasswordController import ForgotPasswordController
+
+        self.forgot_window = ForgotPasswordController()
+        self.forgot_window.show()
         self.close()
-=======
->>>>>>> Stashed changes

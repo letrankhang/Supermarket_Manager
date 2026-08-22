@@ -183,25 +183,15 @@ class Database:
                             is_active=True
                         )
                         session.add(new_admin)
-<<<<<<< Updated upstream
-                        print("[Database Seed] Default Admin user created successfully (username: 'admin', password: 'admin', email: 'admin@supermarket.com').")
+                        print("[Database Seed] Default Admin user created successfully (username: 'admin', password: 'Admin@123', email: 'admin@supermarket.com').")
                     else:
                         if not admin_user.email:
                             admin_user.email = "admin@supermarket.com"
                             print("[Database Seed] Assigned default email 'admin@supermarket.com' to existing admin user.")
-                        # Di trú mật khẩu cũ từ dạng hash sang dạng text thường
-                        import hashlib
-                        old_hash = hashlib.sha256("admin".encode('utf-8')).hexdigest()
-                        if admin_user.password_hash == old_hash:
-                            admin_user.password_hash = "admin"
-                            print("[Database Seed] Updated existing admin user's password from hash to plain text.")
-=======
-                        print("[Database Seed] Default Admin user created successfully (username: 'admin', password: 'Admin@123').")
-                    else:
+                        # Di trú mật khẩu cũ (SHA-256 / văn bản thuần) sang bcrypt
                         if not verify_password("Admin@123", admin_user.password_hash):
                             admin_user.password_hash = hash_password("Admin@123")
                             print("[Database Seed] Reset existing admin user's password to default hashed password.")
->>>>>>> Stashed changes
         except Exception as e:
             print(f"[Database Error] Failed to generate database tables or seed data: {e}")
             raise e

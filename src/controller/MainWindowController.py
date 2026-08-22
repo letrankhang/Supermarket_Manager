@@ -36,7 +36,7 @@ class MainWindowController(QMainWindow, Ui_MainWindow):
         current_dir = os.path.dirname(os.path.abspath(__file__))
         
         # Sửa đường dẫn ảnh logo
-        logo_path = os.path.abspath(os.path.join(current_dir, "..", "..", "assets", "images", "logo2.png"))
+        logo_path = os.path.abspath(os.path.join(current_dir, "..", "..", "assets", "images", "logo_sidebar2.png"))
         if os.path.exists(logo_path):
             self.label_4.setPixmap(QPixmap(logo_path))
         else:
@@ -81,8 +81,6 @@ class MainWindowController(QMainWindow, Ui_MainWindow):
         self.dashboard_controller = DashboardController(self)
         self.stacked_widget.addWidget(self.dashboard_controller)
 
-<<<<<<< Updated upstream
-=======
         # Khởi tạo POSController (màn hình bán hàng) và thêm vào stacked widget
         self.pos_controller = POSController(self)
         self.stacked_widget.addWidget(self.pos_controller)
@@ -251,7 +249,6 @@ class MainWindowController(QMainWindow, Ui_MainWindow):
         """
         button.setChecked(True)
         self.active_nav_button = button
->>>>>>> Stashed changes
 
     def _update_datetime(self) -> None:
         """
@@ -266,9 +263,7 @@ class MainWindowController(QMainWindow, Ui_MainWindow):
         """
         # Kết nối sự kiện click của nút Dashboard
         self.btn_dashboard.clicked.connect(self._show_dashboard)
-<<<<<<< Updated upstream
         self.btn_logout.clicked.connect(self._show_logout)
-=======
 
         # Kết nối sự kiện click của nút Bán hàng (POS)
         self.btn_pos.clicked.connect(self._show_pos)
@@ -285,7 +280,6 @@ class MainWindowController(QMainWindow, Ui_MainWindow):
         ]
         for btn, name in other_buttons:
             btn.clicked.connect(lambda checked=False, n=name: self._show_feature_placeholder(n))
->>>>>>> Stashed changes
 
         # Các ô "Thao tác nhanh" trên Dashboard điều hướng như nút menu tương ứng
         self.dashboard_controller.quick_action_requested.connect(self._on_quick_action)
@@ -309,18 +303,6 @@ class MainWindowController(QMainWindow, Ui_MainWindow):
         self._show_feature_placeholder(feature_names.get(action_key, action_key))
 
     def _show_dashboard(self) -> None:
-<<<<<<< Updated upstream
-        self.stacked_widget.setCurrentWidget(self.dashboard_controller)
-        self.dashboard_controller.load_data()
-
-    def _show_logout(self) -> None:
-        logger.info("Đang đăng xuất khỏi tài khoản %s", Session.get_username())
-        Session.clear_session()
-        from src.controller.LoginController import LoginController
-        self.showlogin = LoginController()
-        self.showlogin.show()
-        self.close()
-=======
         """
         Hiển thị tab Dashboard và tải dữ liệu mới.
         """
@@ -335,7 +317,14 @@ class MainWindowController(QMainWindow, Ui_MainWindow):
         self._set_active_nav_button(self.btn_pos)
         self.stacked_widget.setCurrentWidget(self.pos_controller)
         self.pos_controller.load_data()
->>>>>>> Stashed changes
+
+    def _show_logout(self) -> None:
+        logger.info("Đang đăng xuất khỏi tài khoản %s", Session.get_username())
+        Session.clear_session()
+        from src.controller.LoginController import LoginController
+        self.showlogin = LoginController()
+        self.showlogin.show()
+        self.close()
 
     def _show_feature_placeholder(self, feature_name: str) -> None:
         """

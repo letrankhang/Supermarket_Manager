@@ -22,6 +22,8 @@ logger = logging.getLogger(__name__)
 # Icon sizes for the stat cards and the quick action tiles
 CARD_ICON_SIZE = QtCore.QSize(16, 16)
 QUICK_ACTION_ICON_SIZE = QtCore.QSize(24, 24)
+# Icon của nút "Tải lại dữ liệu" trên thanh tiêu đề
+REFRESH_ICON_SIZE = QtCore.QSize(14, 14)
 
 # Huy hiệu icon trên 4 thẻ thống kê: ô vuông bo góc, icon nằm chính giữa.
 # Màu nền và bo góc của huy hiệu nằm trong QSS của dashboard.ui.
@@ -378,9 +380,25 @@ class DashboardController(QWidget, Ui_Form):
         """
         Connects interactive events (signals/slots).
         """
-        # Kiểu nút lấy từ QSS #pushButton trong dashboard.ui
-        self.pushButton.setText("Tải lại dữ liệu")
+        self._setup_refresh_button()
         self.pushButton.clicked.connect(self.load_data)
+
+    def _setup_refresh_button(self) -> None:
+        """
+        Puts a Font Awesome icon in front of the refresh button label.
+
+        Same reason as the stat cards: a qtawesome icon renders the same on
+        every machine, unlike an emoji or a unicode arrow.
+        Màu nền, bo góc và kích thước nút nằm trong QSS #pushButton của dashboard.ui.
+        """
+        try:
+            icon = qta.icon("fa5s.sync-alt", color="#ffffff", color_disabled="#f8fafc")
+        except Exception as e:
+            logger.error("Could not load dashboard refresh icon: %s", e)
+            return
+
+        self.pushButton.setIcon(icon)
+        self.pushButton.setIconSize(REFRESH_ICON_SIZE)
 
     def load_data(self) -> None:
         """
