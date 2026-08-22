@@ -1,13 +1,7 @@
-"""src/utils/PasswordHasher.py
+"""Băm và đối chiếu mật khẩu người dùng.
 
-Tiện ích băm và đối chiếu mật khẩu người dùng.
-
-Toàn bộ nghiệp vụ liên quan tới mật khẩu tập trung tại đây (SRP), tầng service chỉ
-gọi `verify_password` / `hash_password` mà không cần biết thuật toán bên dưới.
-
-Chuẩn hiện tại là bcrypt. Hai định dạng cũ (SHA-256 và văn bản thuần) vẫn được
-chấp nhận khi đối chiếu để các tài khoản tạo từ trước không bị khóa ngoài, nhưng
-mọi mật khẩu mới đều được băm bằng bcrypt.
+Chuẩn hiện tại là bcrypt. Hash SHA-256 và văn bản thuần cũ vẫn đối chiếu được để
+tài khoản tạo từ trước không bị khóa ngoài, nhưng mật khẩu mới luôn băm bcrypt.
 """
 
 import hashlib
@@ -23,7 +17,7 @@ logger = logging.getLogger(__name__)
 # Tiền tố nhận diện chuỗi bcrypt theo từng phiên bản thuật toán
 TIEN_TO_BCRYPT: Final[tuple[str, ...]] = ("$2a$", "$2b$", "$2x$", "$2y$")
 SO_VONG_BCRYPT: Final[int] = 12          # Chi phí băm, càng cao càng chậm và càng an toàn
-DO_DAI_SHA256: Final[int] = 64           # Độ dài chuỗi hex của SHA-256
+DO_DAI_SHA256: Final[int] = 64
 GIOI_HAN_BYTE_BCRYPT: Final[int] = 72    # bcrypt chỉ xử lý tối đa 72 byte đầu tiên
 
 
@@ -41,11 +35,7 @@ def _la_hash_sha256(chuoi_luu_tru: str) -> bool:
 
 
 def hash_password(mat_khau: str) -> str:
-    """Băm mật khẩu dạng văn bản thuần thành chuỗi bcrypt để lưu vào cơ sở dữ liệu.
-
-    Raises:
-        ValueError: Khi mật khẩu vượt quá giới hạn 72 byte của bcrypt.
-    """
+    """Băm mật khẩu thành chuỗi bcrypt để lưu vào cơ sở dữ liệu."""
     mat_khau_bytes: bytes = mat_khau.encode("utf-8")
     if len(mat_khau_bytes) > GIOI_HAN_BYTE_BCRYPT:
         raise ValueError(f"Mật khẩu không được dài quá {GIOI_HAN_BYTE_BCRYPT} byte.")
@@ -55,15 +45,7 @@ def hash_password(mat_khau: str) -> str:
 
 
 def verify_password(mat_khau: str, chuoi_luu_tru: str) -> bool:
-    """Đối chiếu mật khẩu người dùng nhập với giá trị đang lưu trong cơ sở dữ liệu.
-
-    Args:
-        mat_khau: Mật khẩu dạng văn bản thuần do người dùng nhập.
-        chuoi_luu_tru: Giá trị cột `users.password_hash`.
-
-    Returns:
-        True nếu mật khẩu khớp, ngược lại False.
-    """
+    """Đối chiếu mật khẩu người dùng nhập với giá trị đang lưu trong cơ sở dữ liệu."""
     if not mat_khau or not chuoi_luu_tru:
         return False
 

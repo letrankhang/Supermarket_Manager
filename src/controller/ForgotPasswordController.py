@@ -1,4 +1,3 @@
-import logging
 from typing import Optional
 
 from PyQt6.QtWidgets import QMainWindow, QMessageBox
@@ -7,14 +6,10 @@ from src.controller.PasswordResetWorker import SendCodeWorker
 from src.gui.forgot_password_ui import Ui_MainWindow
 from src.utils.FormIcon import hien_thi_logo, them_icon_trai
 
-logger = logging.getLogger(__name__)
-
 # Luôn hiện cùng một câu dù email có tồn tại hay không, để không lộ tài khoản nào đã đăng ký
 THONG_BAO_DA_GUI = (
-    "Nếu email này có trong hệ thống, mã xác thực đã được gửi tới hộp thư của bạn.\n"
-    "Vui lòng kiểm tra cả mục Spam."
+    "Nếu email này có trong hệ thống, mã xác thực đã được gửi tới hộp thư của bạn. Vui lòng kiểm tra cả mục Spam."
 )
-
 
 class ForgotPasswordController(QMainWindow, Ui_MainWindow):
     """Bước 1: nhập email để nhận mã xác thực."""
@@ -34,7 +29,6 @@ class ForgotPasswordController(QMainWindow, Ui_MainWindow):
     def _setup_events(self) -> None:
         self.pushButton_accept.clicked.connect(self.handle_send_code)
         self.lineEdit_email.returnPressed.connect(self.handle_send_code)
-        self.pushButton_2.clicked.connect(self.handle_back_to_login)
 
     def handle_send_code(self) -> None:
         email = self.lineEdit_email.text().strip()
@@ -70,10 +64,3 @@ class ForgotPasswordController(QMainWindow, Ui_MainWindow):
     def _reset_button(self) -> None:
         self.pushButton_accept.setEnabled(True)
         self.pushButton_accept.setText("Gửi mã xác thực")
-
-    def handle_back_to_login(self) -> None:
-        from src.controller.LoginController import LoginController
-
-        self.login_window = LoginController()
-        self.login_window.show()
-        self.close()

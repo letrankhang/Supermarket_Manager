@@ -5,17 +5,12 @@ from config.database import Database
 from src.controller.LoginController import LoginController
 from src.utils.Theme import apply_light_theme
 
-# Configure logging
 logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(name)s: %(message)s")
 logger = logging.getLogger(__name__)
 
-# Configure stdout to use UTF-8 to prevent encoding errors on Windows terminals
-if sys.stdout.encoding != 'utf-8':
-    try:
-        sys.stdout.reconfigure(encoding='utf-8')
-    except AttributeError:
-        import sys, codecs
-        sys.stdout = codecs.getwriter("utf-8")(sys.stdout.detach())
+# Console Windows mặc định cp1252, không in nổi tiếng Việt trong log
+if sys.stdout.encoding and sys.stdout.encoding.lower() != "utf-8":
+    sys.stdout.reconfigure(encoding="utf-8")
 
 def main():
     logger.info("--- Khởi tạo Cơ sở dữ liệu ---")

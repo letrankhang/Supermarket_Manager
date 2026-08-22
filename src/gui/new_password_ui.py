@@ -22,8 +22,8 @@ class Ui_MainWindow(object):
         self.gridLayout = QtWidgets.QGridLayout(self.centralwidget)
         self.gridLayout.setObjectName("gridLayout")
         self.newpass_card = QtWidgets.QFrame(parent=self.centralwidget)
-        self.newpass_card.setMinimumSize(QtCore.QSize(420, 480))
-        self.newpass_card.setMaximumSize(QtCore.QSize(420, 480))
+        self.newpass_card.setMinimumSize(QtCore.QSize(420, 483))
+        self.newpass_card.setMaximumSize(QtCore.QSize(420, 483))
         self.newpass_card.setStyleSheet("/* ===== Toàn bộ màu sắc của màn hình này nằm ở đây =====\n"
 "   Sửa trực tiếp trong Qt Designer: chọn khung newpass_card rồi mở styleSheet.\n"
 "   Bảng màu lấy đúng theo form Đăng nhập (login.ui). */\n"
@@ -189,11 +189,28 @@ class Ui_MainWindow(object):
         self.pushButton_accept.setMaximumSize(QtCore.QSize(16777215, 61))
         self.pushButton_accept.setCursor(QtGui.QCursor(QtCore.Qt.CursorShape.PointingHandCursor))
         self.pushButton_accept.setObjectName("pushButton_accept")
-        self.pushButton_2 = QtWidgets.QPushButton(parent=self.newpass_card)
-        self.pushButton_2.setGeometry(QtCore.QRect(240, 420, 51, 61))
-        self.pushButton_2.setMinimumSize(QtCore.QSize(0, 24))
-        self.pushButton_2.setCursor(QtGui.QCursor(QtCore.Qt.CursorShape.PointingHandCursor))
-        self.pushButton_2.setObjectName("pushButton_2")
+        self.btnBackToLogin = QtWidgets.QPushButton(parent=self.newpass_card)
+        self.btnBackToLogin.setGeometry(QtCore.QRect(240, 420, 51, 61))
+        self.btnBackToLogin.setMinimumSize(QtCore.QSize(0, 24))
+        self.btnBackToLogin.setCursor(QtGui.QCursor(QtCore.Qt.CursorShape.PointingHandCursor))
+        self.btnBackToLogin.setStyleSheet("QPushButton#btnBackToLogin {\n"
+"    background-color: transparent;\n"
+"    color: #002b9a;\n"
+"    border: none;\n"
+"    font-size: 13px;\n"
+"    font-weight: 700;\n"
+"    padding: 0px;\n"
+"}\n"
+"\n"
+"QPushButton#btnBackToLogin:hover {\n"
+"    color: #1d4ed8;\n"
+"    text-decoration: underline;\n"
+"}\n"
+"\n"
+"QPushButton#btnBackToLogin:pressed {\n"
+"    color: #1e40af;\n"
+"}")
+        self.btnBackToLogin.setObjectName("btnBackToLogin")
         self.label = QtWidgets.QLabel(parent=self.newpass_card)
         self.label.setGeometry(QtCore.QRect(130, 420, 121, 61))
         font = QtGui.QFont()
@@ -217,5 +234,5 @@ class Ui_MainWindow(object):
         self.lblField2.setText(_translate("MainWindow", "Nhập lại mật khẩu mới:"))
         self.lineEdit_againpassword.setPlaceholderText(_translate("MainWindow", "••••••••"))
         self.pushButton_accept.setText(_translate("MainWindow", "Xác nhận"))
-        self.pushButton_2.setText(_translate("MainWindow", "tại đây"))
+        self.btnBackToLogin.setText(_translate("MainWindow", "tại đây"))
         self.label.setText(_translate("MainWindow", "Quay lại đăng nhập"))

@@ -36,7 +36,14 @@ class NewPasswordController(QMainWindow, Ui_MainWindow):
     def _setup_events(self) -> None:
         self.pushButton_accept.clicked.connect(self.handle_newpassword)
         self.lineEdit_againpassword.returnPressed.connect(self.handle_newpassword)
-        self.pushButton_2.clicked.connect(self.handle_back_to_login)
+        self.btnBackToLogin.clicked.connect(self._go_to_login)
+
+    def _go_to_login(self) -> None:
+        from src.controller.LoginController import LoginController
+
+        self.login_window = LoginController()
+        self.login_window.show()
+        self.close()
 
     def handle_newpassword(self) -> None:
         # Không cắt khoảng trắng: dấu cách đầu/cuối cũng là một phần của mật khẩu
@@ -63,11 +70,8 @@ class NewPasswordController(QMainWindow, Ui_MainWindow):
             return
 
         QMessageBox.information(self, "Thành công", "Đổi mật khẩu mới thành công!")
-        self.handle_back_to_login()
-
-    def handle_back_to_login(self) -> None:
         from src.controller.LoginController import LoginController
-
+        
         self.login_window = LoginController()
         self.login_window.show()
         self.close()

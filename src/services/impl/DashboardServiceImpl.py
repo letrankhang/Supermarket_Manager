@@ -1,4 +1,3 @@
-
 import logging
 import calendar
 from datetime import datetime, time, timedelta
@@ -19,58 +18,51 @@ class DashboardServiceImpl(DashboardService):
         try:
             now = datetime.now()
             
-            # Define date boundaries for today
             today_start = datetime.combine(now.date(), time.min)
             today_end = datetime.combine(now.date(), time.max)
             
-            # Define date boundaries for yesterday
             yesterday_start = today_start - timedelta(days=1)
             yesterday_end = today_end - timedelta(days=1)
 
             with Database.get_session_ctx() as session:
-                # Instantiate DashboardRepository within the session context
                 repo = DashboardRepositoryImpl(session)
 
-                # 1. Today's and Yesterday's Revenue
+                # 1. Doanh thu hôm nay và hôm qua
                 today_revenue = repo.get_revenue_by_range(today_start, today_end)
                 yesterday_revenue = repo.get_revenue_by_range(yesterday_start, yesterday_end)
 
-                # Compute revenue growth rate
                 if yesterday_revenue == 0.0:
                     revenue_growth_rate = 100.0 if today_revenue > 0.0 else 0.0
                 else:
                     revenue_growth_rate = round(((today_revenue - yesterday_revenue) / yesterday_revenue) * 100.0, 2)
 
-                # 2. Today's and Yesterday's Invoice Count
+                # 2. Số hóa đơn hôm nay và hôm qua
                 today_invoice_count = repo.get_invoice_count_by_range(today_start, today_end)
                 yesterday_invoice_count = repo.get_invoice_count_by_range(yesterday_start, yesterday_end)
 
-                # Compute invoice growth rate
                 if yesterday_invoice_count == 0:
                     invoice_growth_rate = 100.0 if today_invoice_count > 0 else 0.0
                 else:
                     invoice_growth_rate = round(((today_invoice_count - yesterday_invoice_count) / yesterday_invoice_count) * 100.0, 2)
 
-                # 3. Low Stock warning
+                # 3. Số sản phẩm sắp hết hàng
                 low_stock_count = repo.get_low_stock_count(low_stock_threshold)
 
-                # 4. New Customers Today and Yesterday
+                # 4. Khách hàng mới hôm nay và hôm qua
                 new_customer_count = repo.get_customer_count_by_range(today_start, today_end)
                 yesterday_customer_count = repo.get_customer_count_by_range(yesterday_start, yesterday_end)
 
-                # Compute customer growth rate
                 if yesterday_customer_count == 0:
                     customer_growth_rate = 100.0 if new_customer_count > 0 else 0.0
                 else:
                     customer_growth_rate = round(((new_customer_count - yesterday_customer_count) / yesterday_customer_count) * 100.0, 2)
 
-                # 5. Weekly Revenue Split for the Current Month
+                # 5. Doanh thu chia theo 4 tuần của tháng hiện tại
                 weekly_revenue: List[float] = []
                 year = now.year
                 month = now.month
                 _, last_day = calendar.monthrange(year, month)
 
-                # Define weekly date boundaries
                 weeks_boundaries = [
                     (datetime(year, month, 1, 0, 0, 0), datetime(year, month, 7, 23, 59, 59)),
                     (datetime(year, month, 8, 0, 0, 0), datetime(year, month, 14, 23, 59, 59)),
@@ -82,10 +74,10 @@ class DashboardServiceImpl(DashboardService):
                     w_revenue = repo.get_revenue_by_range(w_start, w_end)
                     weekly_revenue.append(w_revenue)
 
-                # 6. Recent Transactions (top 5 invoices order by date desc)
+                # 6. Năm hóa đơn gần nhất
                 recent_invoices = repo.get_recent_invoices(5)
 
-                # Map entities to DashboardDTO using the converter inside the session scope
+                # Ánh xạ ngay trong phạm vi session: ra ngoài entity mất kết nối, không lazy-load được
                 dashboard_dto = DashboardConverter.to_dashboard_dto(
                     today_revenue=today_revenue,
                     revenue_growth_rate=revenue_growth_rate,
@@ -103,7 +95,7 @@ class DashboardServiceImpl(DashboardService):
 
         except Exception as e:
             logger.error("Lỗi khi lấy dữ liệu tổng hợp Dashboard: %s", e)
-            # Safe default DTO representation in case of database exception
+            # DTO rỗng để Dashboard vẫn vẽ được khi truy vấn hỏng
             return DashboardDTO(
                 today_revenue=0.0,
                 revenue_growth_rate=0.0,

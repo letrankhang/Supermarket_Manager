@@ -23,19 +23,16 @@ from src.utils.PasswordHasher import hash_password
 
 logger = logging.getLogger(__name__)
 
-# Mã xác thực gồm 6 chữ số, đúng như nội dung email gửi cho người dùng
 SO_CHU_SO_MA = 6
-HAN_MA = timedelta(minutes=5)          # Phải khớp câu "có hiệu lực trong vòng 5 phút" trong email
+HAN_MA = timedelta(minutes=5)           # Truyền xuống EmailHelper để câu chữ trong thư khớp hạn thật
 HAN_VE_DAT_LAI = timedelta(minutes=10)  # Thời gian còn lại để đổi mật khẩu sau khi xác thực xong
 SO_LAN_NHAP_SAI_TOI_DA = 5
 CHO_GIUA_HAI_LAN_GUI = timedelta(seconds=60)
 
-# Yêu cầu tối thiểu của mật khẩu mới
 DO_DAI_MAT_KHAU_TOI_THIEU = 8
 GIOI_HAN_BYTE_BCRYPT = 72  # bcrypt chỉ xử lý 72 byte đầu, dài hơn sẽ bị cắt âm thầm
 
 MAU_EMAIL = re.compile(r"^[^@\s]+@[^@\s]+\.[A-Za-z]{2,}$")
-
 
 @dataclass
 class _PhienDatLai:
@@ -50,32 +47,6 @@ class _PhienDatLai:
         return datetime.now() < self.het_han
 
 
-def _tao_noi_dung_email(code: str) -> str:
-    """Dựng email thông báo mã xác thực. Nội dung là nghiệp vụ nên đặt ở tầng service."""
-    return f"""
-    <html>
-    <body style="font-family: Arial, sans-serif; line-height: 1.6; color: #333333; margin: 0; padding: 0;">
-        <div style="max-width: 600px; margin: 20px auto; padding: 20px; border: 1px solid #dddddd; border-radius: 8px; background-color: #ffffff;">
-            <div style="text-align: center; border-bottom: 2px solid #1abc9c; padding-bottom: 10px; margin-bottom: 20px;">
-                <h2 style="color: #2c3e50; margin: 0; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">HỆ THỐNG QUẢN LÝ SIÊU THỊ</h2>
-            </div>
-            <p style="font-size: 16px;">Xin chào,</p>
-            <p style="font-size: 16px;">Chúng tôi nhận được yêu cầu đặt lại mật khẩu cho tài khoản của bạn. Vui lòng sử dụng mã xác thực gồm 6 chữ số dưới đây để tiếp tục:</p>
-            <div style="text-align: center; margin: 30px 0;">
-                <span style="font-size: 32px; font-weight: bold; letter-spacing: 6px; color: #ffffff; background-color: #1abc9c; padding: 12px 25px; border-radius: 6px; display: inline-block; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
-                    {code}
-                </span>
-            </div>
-            <p style="font-size: 14px; color: #e74c3c; font-weight: bold;">Mã xác thực này có hiệu lực trong vòng 5 phút và chỉ sử dụng được một lần. Vui lòng không chia sẻ mã này cho bất kỳ ai.</p>
-            <p style="font-size: 14px;">Nếu bạn không gửi yêu cầu này, vui lòng bỏ qua email này hoặc liên hệ với quản trị viên để đảm bảo an toàn tài khoản.</p>
-            <hr style="border: 0; border-top: 1px solid #eeeeee; margin: 25px 0;">
-            <p style="font-size: 12px; color: #7f8c8d; text-align: center; margin: 0;">Đây là email tự động từ Hệ thống Quản lý Siêu thị. Vui lòng không trả lời email này.</p>
-        </div>
-    </body>
-    </html>
-    """
-
-
 class PasswordResetServiceImpl(PasswordResetService):
     # Kho tạm dùng chung cho mọi màn hình, nằm ở mức class nên các controller thấy cùng dữ liệu
     _phien: Dict[str, _PhienDatLai] = {}
@@ -83,9 +54,6 @@ class PasswordResetServiceImpl(PasswordResetService):
     # để hành vi chờ giữa 2 lần gửi không tiết lộ email nào có trong hệ thống
     _lan_gui_cuoi: Dict[str, datetime] = {}
 
-    # ------------------------------------------------------------------
-    # Bước 1: gửi mã xác thực
-    # ------------------------------------------------------------------
     def send_code(self, email: str) -> None:
         email = self._chuan_hoa_email(email)
         self._don_phien_het_han()
@@ -112,8 +80,8 @@ class PasswordResetServiceImpl(PasswordResetService):
         code = f"{secrets.randbelow(10 ** SO_CHU_SO_MA):0{SO_CHU_SO_MA}d}"
 
         # Gửi trước, gửi được rồi mới lưu, tránh để lại mã sống khi email hỏng
-        if not EmailHelper.send(email, f"Mã xác thực đặt lại mật khẩu của bạn: {code}",
-                                _tao_noi_dung_email(code)):
+        so_phut = int(HAN_MA.total_seconds() // 60)
+        if not EmailHelper.send_verification_code(email, code, so_phut):
             raise EmailSendError(
                 "Không gửi được email chứa mã xác thực. "
                 "Vui lòng kiểm tra kết nối mạng hoặc liên hệ quản trị viên."
@@ -123,9 +91,6 @@ class PasswordResetServiceImpl(PasswordResetService):
         self._phien[email] = _PhienDatLai(ma=code, het_han=datetime.now() + HAN_MA)
         logger.info("Đã gửi mã xác thực đặt lại mật khẩu tới %s", email)
 
-    # ------------------------------------------------------------------
-    # Bước 2: đối chiếu mã xác thực
-    # ------------------------------------------------------------------
     def verify_code(self, email: str, code: str) -> str:
         email = self._chuan_hoa_email(email)
         self._don_phien_het_han()
@@ -155,9 +120,6 @@ class PasswordResetServiceImpl(PasswordResetService):
         logger.info("Xác thực mã đặt lại mật khẩu thành công cho %s", email)
         return phien.ve_dat_lai
 
-    # ------------------------------------------------------------------
-    # Bước 3: đổi mật khẩu
-    # ------------------------------------------------------------------
     def reset_password(self, email: str, reset_token: str, new_password: str) -> None:
         email = self._chuan_hoa_email(email)
         self._don_phien_het_han()
@@ -184,9 +146,6 @@ class PasswordResetServiceImpl(PasswordResetService):
         del self._phien[email]
         logger.info("Đặt lại mật khẩu thành công cho %s", email)
 
-    # ------------------------------------------------------------------
-    # Hàm dùng chung
-    # ------------------------------------------------------------------
     @staticmethod
     def _chuan_hoa_email(email: str) -> str:
         """Chuẩn hóa một lần tại đây để lúc gửi và lúc xác thực luôn tra cùng một khóa."""

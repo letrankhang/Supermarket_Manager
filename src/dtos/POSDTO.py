@@ -3,12 +3,10 @@ from datetime import datetime
 from decimal import Decimal
 from typing import List, Optional
 
-
 @dataclass
 class CategoryDTO:
     category_id: Optional[int]
     category_name: str
-
 
 @dataclass
 class ProductDTO:
@@ -25,7 +23,6 @@ class ProductDTO:
     def is_out_of_stock(self) -> bool:
         return self.current_stock <= 0
 
-
 @dataclass
 class CartItemDTO:
     product_id: int
@@ -39,7 +36,6 @@ class CartItemDTO:
     def line_total(self) -> Decimal:
         return self.unit_price * self.quantity
 
-
 @dataclass
 class CartSummaryDTO:
     item_count: int
@@ -50,7 +46,6 @@ class CartSummaryDTO:
     tax_amount: Decimal
     grand_total: Decimal
 
-
 @dataclass
 class CartDTO:
     items: List[CartItemDTO] = field(default_factory=list)
@@ -60,13 +55,11 @@ class CartDTO:
     def is_empty(self) -> bool:
         return not self.items
 
-
 @dataclass
 class CheckoutRequestDTO:
     user_id: int
     payment_method_label: str
     customer_id: Optional[int] = None
-
 
 @dataclass
 class CheckoutResultDTO:

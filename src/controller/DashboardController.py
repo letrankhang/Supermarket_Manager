@@ -1,5 +1,3 @@
-# File: D:\Python\Supermarket_Manager\src\controller\DashboardController.py
-
 import logging
 import math
 from datetime import datetime
@@ -19,16 +17,13 @@ from src.services.impl.DashboardServiceImpl import DashboardServiceImpl
 
 logger = logging.getLogger(__name__)
 
-# Icon sizes for the stat cards and the quick action tiles
 CARD_ICON_SIZE = QtCore.QSize(16, 16)
 QUICK_ACTION_ICON_SIZE = QtCore.QSize(24, 24)
-# Icon của nút "Tải lại dữ liệu" trên thanh tiêu đề
 REFRESH_ICON_SIZE = QtCore.QSize(14, 14)
 
 # Huy hiệu icon trên 4 thẻ thống kê: ô vuông bo góc, icon nằm chính giữa.
 # Màu nền và bo góc của huy hiệu nằm trong QSS của dashboard.ui.
 ICON_BADGE_SIZE = QtCore.QSize(32, 32)
-# Khoảng cách giữa huy hiệu và chữ tiêu đề
 ICON_BADGE_TEXT_GAP = 10
 
 # Chiều cao dải tiêu đề của 2 khối hàng dưới (biểu đồ / giao dịch gần đây).
@@ -56,17 +51,14 @@ class DashboardWorker(QThread):
 
 
 class DashboardChartWidget(QWidget):
-    """
-    Custom lightweight widget to draw weekly revenue bar charts using QPainter.
-    Zero-dependencies alternative to matplotlib/QtCharts.
-    """
+    """Vẽ biểu đồ cột doanh thu theo tuần bằng QPainter, không cần matplotlib hay QtCharts."""
     def __init__(self, parent: Optional[QWidget] = None) -> None:
         super().__init__(parent)
         self.weekly_revenue: List[float] = [0.0, 0.0, 0.0, 0.0]
 
     def set_data(self, weekly_revenue: List[float]) -> None:
         self.weekly_revenue = weekly_revenue
-        self.update()  # Request repaint
+        self.update()
 
     def paintEvent(self, event: QtGui.QPaintEvent) -> None:
         painter = QPainter(self)
@@ -83,28 +75,26 @@ class DashboardChartWidget(QWidget):
         plot_height = height - padding_top - padding_bottom
         plot_width = width - padding_left - padding_right
 
-        # Fallback if dimensions are too small
         if plot_height <= 0 or plot_width <= 0:
             return
 
         max_val = max(self.weekly_revenue) if self.weekly_revenue else 0.0
         if max_val <= 0.0:
-            max_val = 1000000.0  # Default scale helper
+            max_val = 1000000.0  # Chưa có doanh thu vẫn phải có thang đo, tránh chia cho 0
 
-        # Calculate a clean scale maximum
+        # Làm tròn trần lên số đẹp để vạch chia trục Y không lẻ
         magnitude = 10 ** math.floor(math.log10(max_val)) if max_val > 0 else 1
         if magnitude == 0:
             magnitude = 1
         max_scale = math.ceil(max_val / magnitude) * magnitude
 
-        # Draw gridlines and Y-axis labels
+        # Lưới ngang và nhãn trục Y
         painter.setPen(QPen(QColor("#e2e8f0"), 1))
         num_grid_lines = 4
         for i in range(num_grid_lines + 1):
             y = padding_top + plot_height - (i * plot_height / num_grid_lines)
             painter.drawLine(int(padding_left), int(y), int(width - padding_right), int(y))
             
-            # Y labels
             val = (i * max_scale / num_grid_lines)
             if val >= 1000000:
                 val_str = f"{val/1000000:,.1f}M"
@@ -122,7 +112,7 @@ class DashboardChartWidget(QWidget):
             )
             painter.setPen(QPen(QColor("#e2e8f0"), 1))
 
-        # Draw weekly columns
+        # Cột doanh thu từng tuần
         num_bars = len(self.weekly_revenue)
         if num_bars > 0:
             bar_gap = 40
@@ -138,17 +128,14 @@ class DashboardChartWidget(QWidget):
 
                 rect = QRectF(x, y, bar_width, bar_h)
                 gradient = QLinearGradient(rect.topLeft(), rect.bottomLeft())
-                gradient.setColorAt(0.0, QColor("#3b82f6"))  # Blue-500
-                gradient.setColorAt(1.0, QColor("#60a5fa"))  # Blue-400
+                gradient.setColorAt(0.0, QColor("#3b82f6"))
+                gradient.setColorAt(1.0, QColor("#60a5fa"))
 
-                # Draw bar fill
                 painter.fillRect(rect, gradient)
 
-                # Draw bar outline
                 painter.setPen(QPen(QColor("#2563eb"), 1))
                 painter.drawRect(rect)
 
-                # Draw value label on top
                 painter.setPen(QPen(QColor("#1e293b"), 1))
                 painter.setFont(QFont("Arial", 9, QFont.Weight.Bold))
                 val_text = f"{val/1000:,.0f}k" if val >= 1000 else f"{val:,.0f}"
@@ -158,7 +145,6 @@ class DashboardChartWidget(QWidget):
                     val_text
                 )
 
-                # Draw week name on bottom
                 painter.setFont(QFont("Arial", 9))
                 painter.drawText(
                     QRectF(x - 20, padding_top + plot_height + 8, bar_width + 40, 20),
@@ -168,12 +154,9 @@ class DashboardChartWidget(QWidget):
 
 
 class DashboardController(QWidget, Ui_Form):
-    """
-    Controller responsible for handling dashboard UI elements, background loading,
-    and rendering custom UI graphics (SOLID + Model-View separation).
-    """
+    """Điều khiển màn hình Dashboard: dựng giao diện, tải dữ liệu nền và vẽ đồ họa."""
 
-    # Emitted when a quick action tile is clicked, carries the action key
+    # Phát khi bấm một ô thao tác nhanh, kèm mã hành động
     quick_action_requested = pyqtSignal(str)
 
     def __init__(self, parent: Optional[QWidget] = None) -> None:
@@ -186,6 +169,9 @@ class DashboardController(QWidget, Ui_Form):
 
         self.quick_action_keys: dict = {}
 
+        # Chỉ bật khi người dùng tự bấm nút, để lần tải lúc chuyển tab không hiện hộp thoại
+        self._bao_khi_tai_xong = False
+
         self._setup_custom_ui()
         self._show_today()
         self._setup_card_icons()
@@ -193,10 +179,7 @@ class DashboardController(QWidget, Ui_Form):
         self._setup_connections()
 
     def _setup_custom_ui(self) -> None:
-        """
-        Initializes custom elements like the chart layout and transaction table layout.
-        """
-        # 1. Custom chart widget setup inside self.chart_container
+        """Dựng biểu đồ và bảng giao dịch gần đây vào các frame trống của dashboard.ui."""
         if not self.chart_container.layout():
             chart_layout = QVBoxLayout(self.chart_container)
             chart_layout.setContentsMargins(0, 0, 0, 0)
@@ -206,7 +189,6 @@ class DashboardController(QWidget, Ui_Form):
         self.chart_widget = DashboardChartWidget(self)
         chart_layout.addWidget(self.chart_widget)
 
-        # 2. Transaction table setup inside self.frame_table
         table_layout = QVBoxLayout(self.frame_table)
         table_layout.setContentsMargins(15, 15, 15, 15)
         table_layout.setSpacing(10)
@@ -221,35 +203,25 @@ class DashboardController(QWidget, Ui_Form):
         self.table_widget.setColumnCount(3)
         self.table_widget.setHorizontalHeaderLabels(["Mã hóa đơn", "Thời gian", "Tổng tiền"])
         
-        # --- CẤU HÌNH KHÔNG CHO CHỌN (READ-ONLY CLEAN) ---
+        # Bảng chỉ để xem: không sửa, không chọn, không nhận focus
         self.table_widget.verticalHeader().setVisible(False)
         self.table_widget.setEditTriggers(QAbstractItemView.EditTrigger.NoEditTriggers)
         
-        # Tắt hoàn toàn chế độ chọn
         self.table_widget.setSelectionMode(QAbstractItemView.SelectionMode.NoSelection)
         self.table_widget.setFocusPolicy(Qt.FocusPolicy.NoFocus)
 
-        # Căn chỉnh dãn cột và dòng
         self.table_widget.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeMode.Stretch)
         self.table_widget.verticalHeader().setSectionResizeMode(QHeaderView.ResizeMode.Stretch)
         
         table_layout.addWidget(self.table_widget)
 
     def _show_today(self) -> None:
-        """
-        Writes today's date into the header, replacing the placeholder from the
-        designer file so no stale date is ever shown while data is loading.
-        """
+        """Ghi ngày hôm nay lên tiêu đề, đè ngày mẫu trong file .ui để không hiện ngày cũ."""
         today = datetime.now()
         self.label_2.setText(f"Hôm nay, ngày {today.day} tháng {today.month} năm {today.year}")
 
     def _setup_card_icons(self) -> None:
-        """
-        Puts a Font Awesome icon in front of each stat card title.
-
-        The titles used to carry emoji characters, which render differently on
-        every machine. Using qtawesome keeps them consistent with the sidebar.
-        """
+        """Gắn icon Font Awesome trước tiêu đề của 4 thẻ thống kê."""
         # Mỗi thẻ: (tên icon Font Awesome, màu icon, objectName của huy hiệu).
         # Màu nền huy hiệu tra theo objectName trong QSS của dashboard.ui.
         icon_map = {
@@ -269,14 +241,7 @@ class DashboardController(QWidget, Ui_Form):
 
     def _put_icon_before_title(self, title_label: QLabel, pixmap: QPixmap,
                                badge_name: str) -> None:
-        """
-        Wraps a card title into a row that holds the icon badge and the text.
-
-        Args:
-            title_label (QLabel): The existing title label defined in dashboard.ui.
-            pixmap (QPixmap): Icon already rendered in the wanted color and size.
-            badge_name (str): objectName của huy hiệu, trỏ tới rule màu trong dashboard.ui.
-        """
+        """Bọc tiêu đề thẻ vào một hàng gồm huy hiệu icon và chữ."""
         card = title_label.parentWidget()
         card_layout = card.layout()
 
@@ -296,36 +261,20 @@ class DashboardController(QWidget, Ui_Form):
         card_layout.insertLayout(position, title_row)
 
     def _create_icon_badge(self, parent: QWidget, pixmap: QPixmap, badge_name: str) -> QLabel:
-        """
-        Builds the small rounded panel that sits behind a card icon.
-
-        Args:
-            parent (QWidget): The card frame that owns the badge.
-            pixmap (QPixmap): Icon drawn inside the badge.
-            badge_name (str): objectName để QSS trong dashboard.ui tô nền bo góc.
-
-        Returns:
-            QLabel: Fixed size label showing the icon centered on a rounded panel.
-        """
+        """Tạo ô nền bo góc nằm sau icon của thẻ thống kê."""
         badge = QLabel(parent)
         badge.setPixmap(pixmap)
 
         # Nền nhạt bo góc mềm lấy từ QSS trong dashboard.ui
         badge.setObjectName(badge_name)
 
-        # Kích thước cố định + căn giữa để icon luôn nằm chính giữa ô nền
         badge.setFixedSize(ICON_BADGE_SIZE)
         badge.setAlignment(Qt.AlignmentFlag.AlignCenter)
 
         return badge
 
     def _setup_quick_actions(self) -> None:
-        """
-        Fills the four empty quick action tiles with an icon and a caption.
-
-        Clicking a tile emits quick_action_requested so the main window can
-        decide where to navigate.
-        """
+        """Đổ icon và nhãn vào 4 ô thao tác nhanh; bấm vào ô sẽ phát quick_action_requested."""
         tiles = [
             (self.frame_7, "pos", "Bán hàng", "fa5s.shopping-cart"),
             (self.frame_11, "products", "Sản phẩm", "fa5s.box"),
@@ -340,14 +289,7 @@ class DashboardController(QWidget, Ui_Form):
             frame.installEventFilter(self)
 
     def _build_quick_action_tile(self, frame: QWidget, caption: str, icon_name: str) -> None:
-        """
-        Draws the content of one quick action tile.
-
-        Args:
-            frame (QWidget): The empty frame coming from dashboard.ui.
-            caption (str): Text shown under the icon.
-            icon_name (str): Font Awesome name passed to qtawesome.
-        """
+        """Vẽ nội dung cho một ô thao tác nhanh."""
         tile_layout = frame.layout() or QVBoxLayout(frame)
         tile_layout.setContentsMargins(8, 10, 8, 10)
         tile_layout.setSpacing(6)
@@ -368,29 +310,20 @@ class DashboardController(QWidget, Ui_Form):
         tile_layout.addWidget(caption_label)
 
     def eventFilter(self, source: QObject, event: QEvent) -> bool:
-        """
-        Turns a click on a quick action tile into the quick_action_requested signal.
-        """
+        """Biến cú click lên ô thao tác nhanh thành tín hiệu quick_action_requested."""
         if event.type() == QEvent.Type.MouseButtonRelease and source in self.quick_action_keys:
             self.quick_action_requested.emit(self.quick_action_keys[source])
 
         return super().eventFilter(source, event)
 
     def _setup_connections(self) -> None:
-        """
-        Connects interactive events (signals/slots).
-        """
+        """Nối các tín hiệu tương tác của màn hình."""
         self._setup_refresh_button()
-        self.pushButton.clicked.connect(self.load_data)
+        self.pushButton.clicked.connect(self._on_refresh_clicked)
 
     def _setup_refresh_button(self) -> None:
-        """
-        Puts a Font Awesome icon in front of the refresh button label.
-
-        Same reason as the stat cards: a qtawesome icon renders the same on
-        every machine, unlike an emoji or a unicode arrow.
-        Màu nền, bo góc và kích thước nút nằm trong QSS #pushButton của dashboard.ui.
-        """
+        """Gắn icon vòng xoay vào nút Tải lại dữ liệu."""
+        # Màu nền, bo góc và kích thước nút nằm trong QSS #pushButton của dashboard.ui
         try:
             icon = qta.icon("fa5s.sync-alt", color="#ffffff", color_disabled="#f8fafc")
         except Exception as e:
@@ -400,18 +333,22 @@ class DashboardController(QWidget, Ui_Form):
         self.pushButton.setIcon(icon)
         self.pushButton.setIconSize(REFRESH_ICON_SIZE)
 
+    def _on_refresh_clicked(self) -> None:
+        """Bấm nút Tải lại dữ liệu: bật cờ để báo kết quả khi tải xong."""
+        # MainWindowController cũng gọi load_data khi chuyển tab, cờ này phân biệt hai đường vào
+        self._bao_khi_tai_xong = True
+        self.load_data()
+
     def load_data(self) -> None:
-        """
-        Starts the background worker to retrieve dashboard data.
-        """
+        """Chạy luồng nền lấy dữ liệu dashboard."""
         if self.worker and self.worker.isRunning():
             logger.warning("Dashboard fetch already running, ignoring reload request.")
+            self._bao_khi_tai_xong = False
             return
 
         self.pushButton.setEnabled(False)
         self.pushButton.setText("Đang tải...")
 
-        # Setup worker thread
         self.worker = DashboardWorker(low_stock_threshold=10)
         self.worker.data_fetched.connect(self._on_data_fetched)
         self.worker.error_occurred.connect(self._on_error)
@@ -419,23 +356,21 @@ class DashboardController(QWidget, Ui_Form):
         self.worker.start()
 
     def _on_data_fetched(self, data: DashboardDTO) -> None:
-        """
-        Slot fired when dashboard data is retrieved successfully. Updates UI labels.
-        """
+        """Đổ dữ liệu lấy được lên các thẻ, biểu đồ và bảng giao dịch."""
         logger.info("Dashboard stats successfully received. Rendering UI elements...")
 
         self._show_today()
 
-        # 1. Today's Revenue
+        # 1. Doanh thu hôm nay
         revenue_str = f"{data.today_revenue:,.0f} đ"
         self.label_5.setText(revenue_str)
         self._format_growth_label(self.label_12, data.revenue_growth_rate)
 
-        # 2. Total Invoices
+        # 2. Số hóa đơn hôm nay
         self.label_14.setText(f"{data.today_invoice_count:,}")
         self._format_growth_label(self.label_7, data.invoice_growth_rate)
 
-        # 3. Low Stock warning
+        # 3. Cảnh báo sắp hết hàng
         self.label_9.setText(f"{data.low_stock_count}")
         if data.low_stock_count > 0:
             self.label_13.setText("Cần nhập hàng ngay!")
@@ -444,40 +379,44 @@ class DashboardController(QWidget, Ui_Form):
             self.label_13.setText("Kho hàng an toàn")
             self._apply_state(self.label_13, "anToan")
 
-        # 4. New Customers
+        # 4. Khách hàng mới
         self.label_11.setText(f"{data.new_customer_count}")
         self._format_growth_label(self.label_15, data.customer_growth_rate)
 
-        # 5. Populate Chart
+        # 5. Biểu đồ doanh thu theo tuần
         if self.chart_widget:
             self.chart_widget.set_data(data.weekly_revenue)
 
-        # 6. Populate Recent Transactions Table
+        # 6. Bảng giao dịch gần đây
         if self.table_widget:
             self.table_widget.setRowCount(0)
             for idx, tx in enumerate(data.recent_transactions):
                 self.table_widget.insertRow(idx)
                 
-                # Invoice Code item
                 code_item = QTableWidgetItem(tx.invoice_code)
                 code_item.setTextAlignment(Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignVCenter)
                 self.table_widget.setItem(idx, 0, code_item)
                 
-                # Format time item
                 time_item = QTableWidgetItem(tx.formatted_time)
                 time_item.setTextAlignment(Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignVCenter)
                 self.table_widget.setItem(idx, 1, time_item)
                 
-                # Final Total item
                 total_item = QTableWidgetItem(f"{tx.final_total:,.0f} đ")
                 total_item.setTextAlignment(Qt.AlignmentFlag.AlignRight | Qt.AlignmentFlag.AlignVCenter)
                 self.table_widget.setItem(idx, 2, total_item)
 
+        # Đặt cuối cùng: hộp thoại chặn luồng giao diện, hiện sớm thì người dùng
+        # bấm OK xong mới thấy số liệu mới nhảy vào
+        if self._bao_khi_tai_xong:
+            self._bao_khi_tai_xong = False
+            QtWidgets.QMessageBox.information(
+                self,
+                "Tải lại dữ liệu",
+                f"Đã cập nhật số liệu mới vào lúc {datetime.now():%H:%M:%S}.",
+            )
+
     def _format_growth_label(self, label: QLabel, rate: float) -> None:
-        """
-        Đặt ký hiệu tăng/giảm cho nhãn tỉ lệ.
-        Màu do QSS trong dashboard.ui quyết định theo thuộc tính trangThai.
-        """
+        """Đặt ký hiệu tăng/giảm cho nhãn tỉ lệ; màu do QSS đọc thuộc tính trangThai."""
         if rate > 0:
             label.setText(f"▲ +{rate:,.1f}%")
             self._apply_state(label, "tang")
@@ -490,19 +429,16 @@ class DashboardController(QWidget, Ui_Form):
 
     @staticmethod
     def _apply_state(label: QLabel, state: str) -> None:
-        """
-        Gán thuộc tính động trangThai rồi ép Qt vẽ lại nhãn theo QSS trong dashboard.ui.
-        Không unpolish/polish thì Qt giữ nguyên màu cũ khi trạng thái đổi.
-        """
+        """Gán thuộc tính trangThai rồi ép Qt vẽ lại nhãn theo QSS trong dashboard.ui."""
+        # Không unpolish/polish thì Qt giữ nguyên màu cũ khi trạng thái đổi
         label.setProperty("trangThai", state)
         label.style().unpolish(label)
         label.style().polish(label)
 
     def _on_error(self, error_message: str) -> None:
-        """
-        Slot fired when data loading fails. Logs error and shows feedback to the user.
-        """
+        """Báo lỗi cho người dùng khi tải dữ liệu thất bại."""
         logger.error("Failed to load dashboard data: %s", error_message)
+        self._bao_khi_tai_xong = False
         QtWidgets.QMessageBox.warning(
             self,
             "Lỗi",
@@ -510,8 +446,6 @@ class DashboardController(QWidget, Ui_Form):
         )
 
     def _on_worker_finished(self) -> None:
-        """
-        Enables the refresh button back when the thread completes.
-        """
+        """Bật lại nút Tải lại dữ liệu khi luồng nền kết thúc."""
         self.pushButton.setEnabled(True)
         self.pushButton.setText("Tải lại dữ liệu")
