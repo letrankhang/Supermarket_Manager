@@ -1,0 +1,276 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>DiscountDialog</class>
+ <widget class="QDialog" name="DiscountDialog">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>320</width>
+    <height>178</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Giảm giá hóa đơn</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">QDialog {
+    background-color: #ffffff;
+}
+
+QLabel#lblTitle {
+    color: #0f172a;
+    font-size: 15px;
+    font-weight: 600;
+    padding: 2px 0;
+}
+
+QDoubleSpinBox#spnDiscount {
+    background-color: #ffffff;
+    color: #0f172a;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    padding: 8px 12px;
+    font-size: 14px;
+    selection-background-color: #2563eb;
+    selection-color: #ffffff;
+}
+
+QDoubleSpinBox#spnDiscount:hover {
+    border: 1px solid #94a3b8;
+}
+
+QDoubleSpinBox#spnDiscount:focus {
+    border: 1px solid #2563eb;
+    background-color: #ffffff;
+}
+
+QDoubleSpinBox#spnDiscount::up-button {
+    subcontrol-origin: border;
+    subcontrol-position: top right;
+    width: 20px;
+    border: none;
+    border-top-right-radius: 7px;
+    background-color: transparent;
+}
+
+QDoubleSpinBox#spnDiscount::down-button {
+    subcontrol-origin: border;
+    subcontrol-position: bottom right;
+    width: 20px;
+    border: none;
+    border-bottom-right-radius: 7px;
+    background-color: transparent;
+}
+
+QDoubleSpinBox#spnDiscount::up-arrow {
+    width: 0;
+    height: 0;
+    border-left: 4px solid transparent;
+    border-right: 4px solid transparent;
+    border-bottom: 5px solid #64748b;
+}
+
+QDoubleSpinBox#spnDiscount::down-arrow {
+    width: 0;
+    height: 0;
+    border-left: 4px solid transparent;
+    border-right: 4px solid transparent;
+    border-top: 5px solid #64748b;
+}
+
+QDoubleSpinBox#spnDiscount::up-button:hover,
+QDoubleSpinBox#spnDiscount::down-button:hover {
+    background-color: #f1f5f9;
+}
+
+QPushButton#btnApply {
+    background-color: #2563eb;
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    padding: 8px 18px;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+QPushButton#btnApply:hover {
+    background-color: #1d4ed8;
+}
+
+QPushButton#btnApply:pressed {
+    background-color: #1e40af;
+}
+
+QPushButton#btnApply:disabled {
+    background-color: #cbd5e1;
+    color: #94a3b8;
+}
+
+QPushButton#btnCancel {
+    background-color: #f8fafc;
+    color: #475569;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    padding: 8px 18px;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+QPushButton#btnCancel:hover {
+    background-color: #f1f5f9;
+    border: 1px solid #94a3b8;
+    color: #334155;
+}
+
+QPushButton#btnCancel:pressed {
+    background-color: #e2e8f0;
+}
+
+QPushButton#btnCancel:disabled {
+    background-color: #f8fafc;
+    color: #94a3b8;
+    border: 1px solid #e2e8f0;
+}</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <property name="spacing">
+    <number>12</number>
+   </property>
+   <property name="leftMargin">
+    <number>20</number>
+   </property>
+   <property name="topMargin">
+    <number>20</number>
+   </property>
+   <property name="rightMargin">
+    <number>20</number>
+   </property>
+   <property name="bottomMargin">
+    <number>20</number>
+   </property>
+   <item>
+    <widget class="QLabel" name="lblTitle">
+     <property name="text">
+      <string>Nhập mức giảm giá (%):</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QDoubleSpinBox" name="spnDiscount">
+     <property name="styleSheet">
+      <string notr="true">QDoubleSpinBox {
+    border: 1px solid #cbd5e1;
+    border-radius: 6px;
+    padding: 6px 12px;
+    font-size: 14px;
+    color: #0f172a;
+    background-color: #ffffff;
+}
+
+QDoubleSpinBox:focus {
+    border: 1px solid #2563eb;
+}
+
+QDoubleSpinBox::up-button, 
+QDoubleSpinBox::down-button {
+    subcontrol-origin: border;
+    width: 22px;
+    background-color: #f1f5f9;
+    border-left: 1px solid #cbd5e1;
+}
+
+QDoubleSpinBox::up-button {
+    subcontrol-position: top right;
+    border-top-right-radius: 5px;
+}
+
+QDoubleSpinBox::up-arrow {
+    image: none;
+    width: 0;
+    height: 0;
+    border-left: 4px solid transparent;
+    border-right: 4px solid transparent;
+    border-bottom: 5px solid #475569; 
+}
+
+QDoubleSpinBox::down-button {
+    subcontrol-position: bottom right;
+    border-bottom-right-radius: 5px;
+    border-top: 1px solid #cbd5e1;
+}
+
+QDoubleSpinBox::down-arrow {
+    image: none;
+    width: 0;
+    height: 0;
+    border-left: 4px solid transparent;
+    border-right: 4px solid transparent;
+    border-top: 5px solid #475569; 
+}
+
+QDoubleSpinBox::up-button:hover, 
+QDoubleSpinBox::down-button:hover {
+    background-color: #e2e8f0;
+}</string>
+     </property>
+     <property name="decimals">
+      <number>1</number>
+     </property>
+     <property name="maximum">
+      <double>100.000000000000000</double>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <spacer name="verticalSpacer">
+     <property name="orientation">
+      <enum>Qt::Orientation::Vertical</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>20</width>
+       <height>10</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout">
+     <property name="spacing">
+      <number>10</number>
+     </property>
+     <item>
+      <spacer name="horizontalSpacer">
+       <property name="orientation">
+        <enum>Qt::Orientation::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <widget class="QPushButton" name="btnCancel">
+       <property name="text">
+        <string>Hủy</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="btnApply">
+       <property name="text">
+        <string>Áp dụng</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

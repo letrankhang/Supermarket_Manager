@@ -10,6 +10,8 @@ class User(Base):
     user_id = Column(Integer, primary_key=True, autoincrement=True)
     username = Column(String(50), nullable=False, unique=True)
     password_hash = Column(String(255), nullable=False)
+    # Email dùng cho luồng quên mật khẩu. Khớp cột sẵn có dưới DB: VARCHAR(100), cho phép NULL
+    email = Column(String(100))
     full_name = Column(String(100))
     role_id = Column(Integer, ForeignKey('roles.role_id'))
     email = Column(String(100), unique=True, nullable=True)

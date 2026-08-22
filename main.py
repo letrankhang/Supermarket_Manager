@@ -3,6 +3,7 @@ import logging
 from PyQt6.QtWidgets import QApplication
 from config.database import Database
 from src.controller.LoginController import LoginController
+from src.utils.Theme import apply_light_theme
 
 # Configure logging
 logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(name)s: %(message)s")
@@ -16,9 +17,8 @@ if sys.stdout.encoding != 'utf-8':
         import sys, codecs
         sys.stdout = codecs.getwriter("utf-8")(sys.stdout.detach())
 
-
 def main():
-    logger.info("=== Khởi tạo Cơ sở Dữ liệu Siêu thị ===")
+    logger.info("--- Khởi tạo Cơ sở dữ liệu ---")
     try:
         Database.initialize()
         logger.info("Khởi tạo cơ sở dữ liệu thành công.")
@@ -26,9 +26,11 @@ def main():
         logger.critical("Không thể kết nối hoặc khởi tạo cơ sở dữ liệu: %s", e)
         sys.exit(1)
 
-    # Khởi chạy giao diện PyQt6
     logger.info("Khởi động ứng dụng giao diện...")
     app = QApplication(sys.argv)
+
+    apply_light_theme(app)
+
     login_window = LoginController()
     login_window.show()
     sys.exit(app.exec())

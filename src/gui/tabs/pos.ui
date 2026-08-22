@@ -1,0 +1,1276 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Form</class>
+ <widget class="QWidget" name="Form">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1280</width>
+    <height>860</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">/* ===== General ===== */
+
+QWidget {
+    background-color: #ffffff;
+}
+
+QLabel {
+    background-color: transparent;
+    border: none;
+    color: #0f172a;
+}
+
+
+/* ===== Top bar ===== */
+
+#frame_topbar {
+    background-color: #ffffff;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+#lblScanCaption {
+    font-size: 15px;
+    font-weight: bold;
+}
+
+#lblCashierName {
+    color: #64748b;
+}
+
+
+/* ===== Search and filters ===== */
+
+#frame_filters {
+    background-color: #ffffff;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+QLineEdit {
+    background-color: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 4px 12px;
+    font-size: 13px;
+    color: #0f172a;
+}
+
+QLineEdit:focus {
+    border: 1px solid #1d4ed8;
+}
+
+
+/* ===== Category chips ===== */
+
+#CategoryChip {
+    background-color: #ffffff;
+    color: #64748b;
+    border: 1px solid #e2e8f0;
+    border-radius: 16px;
+    padding: 4px 16px;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+#CategoryChip:hover {
+    border: 1px solid #1d4ed8;
+    color: #1d4ed8;
+}
+
+#CategoryChip:checked {
+    background-color: #1e3a8a;
+    color: #ffffff;
+    border: 1px solid #1e3a8a;
+}
+
+
+/* ===== Small buttons ===== */
+
+#btnFilter,
+#btnAddCustomer {
+    background-color: #ffffff;
+    color: #64748b;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+#btnFilter:hover,
+#btnAddCustomer:hover {
+    background-color: #eff6ff;
+    color: #1d4ed8;
+    border: 1px solid #1d4ed8;
+}
+
+#btnClearCart {
+    background-color: #ffffff;
+    color: #dc2626;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+#btnClearCart:hover {
+    background-color: #fef2f2;
+    border: 1px solid #dc2626;
+}
+
+
+/* ===== Scroll areas ===== */
+
+QScrollArea {
+    background-color: transparent;
+    border: none;
+}
+
+
+/* ===== Vertical scrollbar ===== */
+
+QScrollBar:vertical {
+    background-color: #f8fafc;
+    width: 10px;
+    margin: 0px;
+    border: none;
+}
+
+QScrollBar::handle:vertical {
+    background-color: #cbd5e1;
+    min-height: 35px;
+    border-radius: 5px;
+}
+
+QScrollBar::handle:vertical:hover {
+    background-color: #94a3b8;
+}
+
+QScrollBar::handle:vertical:pressed {
+    background-color: #64748b;
+}
+
+QScrollBar::add-line:vertical,
+QScrollBar::sub-line:vertical {
+    height: 0px;
+    width: 0px;
+    background: transparent;
+    border: none;
+}
+
+QScrollBar::up-arrow:vertical,
+QScrollBar::down-arrow:vertical {
+    width: 0px;
+    height: 0px;
+    background: transparent;
+    border: none;
+}
+
+QScrollBar::add-page:vertical,
+QScrollBar::sub-page:vertical {
+    background: transparent;
+}
+
+
+/* ===== Horizontal scrollbar ===== */
+
+QScrollBar:horizontal {
+    background-color: #f8fafc;
+    height: 10px;
+    margin: 0px;
+    border: none;
+}
+
+QScrollBar::handle:horizontal {
+    background-color: #cbd5e1;
+    min-width: 35px;
+    border-radius: 5px;
+}
+
+QScrollBar::handle:horizontal:hover {
+    background-color: #94a3b8;
+}
+
+QScrollBar::handle:horizontal:pressed {
+    background-color: #64748b;
+}
+
+QScrollBar::add-line:horizontal,
+QScrollBar::sub-line:horizontal {
+    width: 0px;
+    height: 0px;
+    background: transparent;
+    border: none;
+}
+
+QScrollBar::left-arrow:horizontal,
+QScrollBar::right-arrow:horizontal {
+    width: 0px;
+    height: 0px;
+    background: transparent;
+    border: none;
+}
+
+QScrollBar::add-page:horizontal,
+QScrollBar::sub-page:horizontal {
+    background: transparent;
+}
+
+
+/* ===== Product card ===== */
+
+#ProductCard {
+    background-color: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+}
+
+#ProductCard:hover {
+    border: 1px solid #1d4ed8;
+}
+
+#lblCardThumbnail {
+    background-color: #fbfcfd;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    color: #64748b;
+}
+
+#lblCardName {
+    font-size: 13px;
+    font-weight: bold;
+}
+
+#lblCardBarcode {
+    color: #64748b;
+    font-size: 11px;
+}
+
+#lblCardPrice {
+    color: #1d4ed8;
+    font-size: 13px;
+    font-weight: bold;
+}
+
+#btnCardAdd {
+    background-color: #1d4ed8;
+    color: #ffffff;
+    border: none;
+    border-radius: 6px;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+#btnCardAdd:hover {
+    background-color: #1e3a8a;
+}
+
+
+/* ===== Shortcuts ===== */
+
+#frame_shortcuts {
+    background-color: #ffffff;
+    border-top: 1px solid #e2e8f0;
+}
+
+
+/* ===== Order panel ===== */
+
+#frame_order {
+    background-color: #ffffff;
+    border-left: 1px solid #e2e8f0;
+}
+
+#frame_order_header {
+    background-color: #ffffff;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+#lblCustomerBadge {
+    background-color: #eff6ff;
+    color: #1d4ed8;
+    border-radius: 12px;
+    padding: 4px 12px;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+#lblCartEmpty {
+    color: #64748b;
+}
+
+
+/* ===== Cart rows ===== */
+
+#CartRow {
+    background-color: #ffffff;
+    border: none;
+    border-bottom: 1px solid #f1f5f9;
+}
+
+#lblCartItemName,
+#lblCartItemTotal {
+    font-size: 13px;
+    font-weight: bold;
+}
+
+#lblCartItemUnitPrice {
+    color: #64748b;
+    font-size: 12px;
+}
+
+#lblCartItemQuantity {
+    font-size: 13px;
+}
+
+#btnCartMinus,
+#btnCartPlus {
+    background-color: #ffffff;
+    color: #0f172a;
+    border: 1px solid #e2e8f0;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+#btnCartMinus:hover,
+#btnCartPlus:hover {
+    background-color: #eff6ff;
+    border: 1px solid #1d4ed8;
+    color: #1d4ed8;
+}
+
+#btnCartRemove {
+    background-color: #ffffff;
+    color: #94a3b8;
+    border: 1px solid #e2e8f0;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: bold;
+}
+
+#btnCartRemove:hover {
+    background-color: #fef2f2;
+    border: 1px solid #dc2626;
+    color: #dc2626;
+}
+
+
+/* ===== Order summary ===== */
+
+#frame_summary {
+    background-color: #ffffff;
+    border-top: 1px solid #e2e8f0;
+}
+
+#lblSubTotalCaption,
+#lblTaxCaption {
+    color: #64748b;
+    font-size: 13px;
+}
+
+#lblSubTotal,
+#lblTax {
+    font-size: 13px;
+}
+
+#lblDiscount {
+    color: #dc2626;
+    font-size: 13px;
+}
+
+#btnEditDiscount {
+    background-color: transparent;
+    color: #64748b;
+    border: none;
+    text-align: left;
+    font-size: 13px;
+}
+
+#btnEditDiscount:hover {
+    color: #1d4ed8;
+    text-decoration: underline;
+}
+
+#line_summary {
+    color: #e2e8f0;
+    background-color: #e2e8f0;
+}
+
+#lblGrandTotal {
+    color: #1d4ed8;
+}
+
+
+/* ===== Payment methods ===== */
+
+#btnPayCash,
+#btnPayCard,
+#btnPayTransfer {
+    background-color: #ffffff;
+    color: #64748b;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+#btnPayCash:hover,
+#btnPayCard:hover,
+#btnPayTransfer:hover {
+    border: 1px solid #1d4ed8;
+    color: #1d4ed8;
+}
+
+#btnPayCash:checked,
+#btnPayCard:checked,
+#btnPayTransfer:checked {
+    background-color: #eff6ff;
+    border: 1px solid #1d4ed8;
+    color: #1d4ed8;
+}
+
+
+/* ===== Checkout ===== */
+
+#btnCheckout {
+    background-color: #1e3a8a;
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+#btnCheckout:hover {
+    background-color: #1d4ed8;
+}
+
+#btnCheckout:disabled {
+    background-color: #cbd5e1;
+    color: #f8fafc;
+}</string>
+  </property>
+  <layout class="QHBoxLayout" name="horizontalLayout">
+   <property name="spacing">
+    <number>0</number>
+   </property>
+   <property name="leftMargin">
+    <number>0</number>
+   </property>
+   <property name="topMargin">
+    <number>0</number>
+   </property>
+   <property name="rightMargin">
+    <number>0</number>
+   </property>
+   <property name="bottomMargin">
+    <number>0</number>
+   </property>
+   <item>
+    <widget class="QWidget" name="widget_catalog" native="true">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+       <horstretch>7</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout_catalog">
+      <property name="spacing">
+       <number>0</number>
+      </property>
+      <property name="leftMargin">
+       <number>0</number>
+      </property>
+      <property name="topMargin">
+       <number>0</number>
+      </property>
+      <property name="rightMargin">
+       <number>0</number>
+      </property>
+      <property name="bottomMargin">
+       <number>0</number>
+      </property>
+      <item>
+       <widget class="QFrame" name="frame_topbar">
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>64</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>16777215</width>
+          <height>64</height>
+         </size>
+        </property>
+        <property name="frameShape">
+         <enum>QFrame::Shape::NoFrame</enum>
+        </property>
+        <layout class="QHBoxLayout" name="horizontalLayout_topbar">
+         <property name="leftMargin">
+          <number>20</number>
+         </property>
+         <property name="rightMargin">
+          <number>20</number>
+         </property>
+         <item>
+          <widget class="QLabel" name="lblScanCaption">
+           <property name="text">
+            <string>Bán hàng</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <spacer name="horizontalSpacer_topbar">
+           <property name="orientation">
+            <enum>Qt::Orientation::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item>
+          <widget class="QLabel" name="lblCashierName">
+           <property name="text">
+            <string>Thu ngân: ---</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </item>
+      <item>
+       <widget class="QFrame" name="frame_filters">
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>120</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>16777215</width>
+          <height>120</height>
+         </size>
+        </property>
+        <property name="frameShape">
+         <enum>QFrame::Shape::NoFrame</enum>
+        </property>
+        <layout class="QVBoxLayout" name="verticalLayout_filters">
+         <property name="leftMargin">
+          <number>20</number>
+         </property>
+         <property name="topMargin">
+          <number>14</number>
+         </property>
+         <property name="rightMargin">
+          <number>20</number>
+         </property>
+         <item>
+          <widget class="QFrame" name="frame_search_row">
+           <property name="frameShape">
+            <enum>QFrame::Shape::NoFrame</enum>
+           </property>
+           <layout class="QHBoxLayout" name="horizontalLayout_search_row">
+            <property name="leftMargin">
+             <number>0</number>
+            </property>
+            <property name="topMargin">
+             <number>0</number>
+            </property>
+            <property name="rightMargin">
+             <number>0</number>
+            </property>
+            <property name="bottomMargin">
+             <number>0</number>
+            </property>
+            <item>
+             <widget class="QLineEdit" name="txtSearch">
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>40</height>
+               </size>
+              </property>
+              <property name="placeholderText">
+               <string>Tìm sản phẩm theo tên hoặc mã vạch...</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="btnFilter">
+              <property name="minimumSize">
+               <size>
+                <width>46</width>
+                <height>40</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>46</width>
+                <height>40</height>
+               </size>
+              </property>
+              <property name="cursor">
+               <cursorShape>PointingHandCursor</cursorShape>
+              </property>
+              <property name="text">
+               <string>Lọc</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </widget>
+         </item>
+         <item>
+          <widget class="QFrame" name="frame_categories">
+           <property name="frameShape">
+            <enum>QFrame::Shape::NoFrame</enum>
+           </property>
+           <layout class="QHBoxLayout" name="horizontalLayout_categories">
+            <property name="spacing">
+             <number>8</number>
+            </property>
+            <property name="leftMargin">
+             <number>0</number>
+            </property>
+            <property name="topMargin">
+             <number>0</number>
+            </property>
+            <property name="rightMargin">
+             <number>0</number>
+            </property>
+            <property name="bottomMargin">
+             <number>0</number>
+            </property>
+            <item>
+             <spacer name="horizontalSpacer_categories">
+              <property name="orientation">
+               <enum>Qt::Orientation::Horizontal</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>40</width>
+                <height>20</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+           </layout>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </item>
+      <item>
+       <widget class="QScrollArea" name="scrollProducts">
+        <property name="frameShape">
+         <enum>QFrame::Shape::NoFrame</enum>
+        </property>
+        <property name="widgetResizable">
+         <bool>true</bool>
+        </property>
+        <widget class="QWidget" name="widget_products">
+         <property name="geometry">
+          <rect>
+           <x>0</x>
+           <y>0</y>
+           <width>860</width>
+           <height>630</height>
+          </rect>
+         </property>
+         <layout class="QGridLayout" name="gridLayout_products">
+          <property name="leftMargin">
+           <number>20</number>
+          </property>
+          <property name="topMargin">
+           <number>10</number>
+          </property>
+          <property name="rightMargin">
+           <number>20</number>
+          </property>
+          <property name="bottomMargin">
+           <number>20</number>
+          </property>
+          <property name="spacing">
+           <number>14</number>
+          </property>
+         </layout>
+        </widget>
+       </widget>
+      </item>
+      <item>
+       <widget class="QFrame" name="frame_shortcuts">
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>46</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>16777215</width>
+          <height>46</height>
+         </size>
+        </property>
+        <property name="frameShape">
+         <enum>QFrame::Shape::NoFrame</enum>
+        </property>
+        <layout class="QHBoxLayout" name="horizontalLayout_shortcuts">
+         <property name="spacing">
+          <number>18</number>
+         </property>
+         <property name="leftMargin">
+          <number>20</number>
+         </property>
+         <property name="topMargin">
+          <number>0</number>
+         </property>
+         <property name="rightMargin">
+          <number>20</number>
+         </property>
+         <property name="bottomMargin">
+          <number>0</number>
+         </property>
+         <item>
+          <widget class="QLabel" name="lblHintHelp">
+           <property name="text">
+            <string>&lt;span style=&quot;background-color:#fbfcfd; border:1px solid #e2e8f0; padding:2px 6px; font-weight:bold; color:#0f172a;&quot;&gt;F1&lt;/span&gt;&amp;nbsp;&lt;span style=&quot;color:#64748b;&quot;&gt;Trợ giúp&lt;/span&gt;</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="lblHintDiscount">
+           <property name="text">
+            <string>&lt;span style=&quot;background-color:#fbfcfd; border:1px solid #e2e8f0; padding:2px 6px; font-weight:bold; color:#0f172a;&quot;&gt;F3&lt;/span&gt;&amp;nbsp;&lt;span style=&quot;color:#64748b;&quot;&gt;Giảm giá&lt;/span&gt;</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="lblHintQuantity">
+           <property name="text">
+            <string>&lt;span style=&quot;background-color:#fbfcfd; border:1px solid #e2e8f0; padding:2px 6px; font-weight:bold; color:#0f172a;&quot;&gt;F4&lt;/span&gt;&amp;nbsp;&lt;span style=&quot;color:#64748b;&quot;&gt;Số lượng&lt;/span&gt;</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="lblHintPay">
+           <property name="text">
+            <string>&lt;span style=&quot;background-color:#fbfcfd; border:1px solid #e2e8f0; padding:2px 6px; font-weight:bold; color:#0f172a;&quot;&gt;F9&lt;/span&gt;&amp;nbsp;&lt;span style=&quot;color:#64748b;&quot;&gt;Thanh toán&lt;/span&gt;</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <spacer name="horizontalSpacer_shortcuts">
+           <property name="orientation">
+            <enum>Qt::Orientation::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+        </layout>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QFrame" name="frame_order">
+     <property name="minimumSize">
+      <size>
+       <width>420</width>
+       <height>0</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>460</width>
+       <height>16777215</height>
+      </size>
+     </property>
+     <property name="frameShape">
+      <enum>QFrame::Shape::NoFrame</enum>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout_order">
+      <property name="spacing">
+       <number>0</number>
+      </property>
+      <property name="leftMargin">
+       <number>0</number>
+      </property>
+      <property name="topMargin">
+       <number>0</number>
+      </property>
+      <property name="rightMargin">
+       <number>0</number>
+      </property>
+      <property name="bottomMargin">
+       <number>0</number>
+      </property>
+      <item>
+       <widget class="QFrame" name="frame_order_header">
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>110</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>16777215</width>
+          <height>110</height>
+         </size>
+        </property>
+        <property name="frameShape">
+         <enum>QFrame::Shape::NoFrame</enum>
+        </property>
+        <layout class="QGridLayout" name="gridLayout_order_header">
+         <property name="leftMargin">
+          <number>20</number>
+         </property>
+         <property name="topMargin">
+          <number>18</number>
+         </property>
+         <property name="rightMargin">
+          <number>20</number>
+         </property>
+         <item row="0" column="0">
+          <widget class="QLabel" name="lblOrderCode">
+           <property name="font">
+            <font>
+             <pointsize>15</pointsize>
+             <bold>true</bold>
+            </font>
+           </property>
+           <property name="text">
+            <string>Đơn hàng mới</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="1">
+          <widget class="QPushButton" name="btnAddCustomer">
+           <property name="minimumSize">
+            <size>
+             <width>99</width>
+             <height>36</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>40</width>
+             <height>36</height>
+            </size>
+           </property>
+           <property name="cursor">
+            <cursorShape>PointingHandCursor</cursorShape>
+           </property>
+           <property name="toolTip">
+            <string>Gắn khách hàng vào hóa đơn</string>
+           </property>
+           <property name="styleSheet">
+            <string notr="true"/>
+           </property>
+           <property name="text">
+            <string>+ Khách hàng</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="2">
+          <widget class="QPushButton" name="btnClearCart">
+           <property name="minimumSize">
+            <size>
+             <width>40</width>
+             <height>36</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>40</width>
+             <height>36</height>
+            </size>
+           </property>
+           <property name="cursor">
+            <cursorShape>PointingHandCursor</cursorShape>
+           </property>
+           <property name="toolTip">
+            <string>Xóa toàn bộ giỏ hàng</string>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="0" colspan="3">
+          <widget class="QLabel" name="lblCustomerBadge">
+           <property name="minimumSize">
+            <size>
+             <width>0</width>
+             <height>28</height>
+            </size>
+           </property>
+           <property name="text">
+            <string>Khách hàng lẻ (Mặc định)</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </item>
+      <item>
+       <widget class="QScrollArea" name="scrollCart">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+          <horstretch>0</horstretch>
+          <verstretch>1</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="frameShape">
+         <enum>QFrame::Shape::NoFrame</enum>
+        </property>
+        <property name="widgetResizable">
+         <bool>true</bool>
+        </property>
+        <widget class="QWidget" name="widget_cart">
+         <property name="geometry">
+          <rect>
+           <x>0</x>
+           <y>0</y>
+           <width>420</width>
+           <height>427</height>
+          </rect>
+         </property>
+         <layout class="QVBoxLayout" name="verticalLayout_cart">
+          <property name="spacing">
+           <number>0</number>
+          </property>
+          <property name="leftMargin">
+           <number>0</number>
+          </property>
+          <property name="topMargin">
+           <number>0</number>
+          </property>
+          <property name="rightMargin">
+           <number>0</number>
+          </property>
+          <property name="bottomMargin">
+           <number>0</number>
+          </property>
+          <item>
+           <widget class="QLabel" name="lblCartEmpty">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>120</height>
+             </size>
+            </property>
+            <property name="font">
+             <font>
+              <pointsize>10</pointsize>
+             </font>
+            </property>
+            <property name="text">
+             <string>Giỏ hàng đang trống</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignmentFlag::AlignCenter</set>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </widget>
+      </item>
+      <item>
+       <widget class="QFrame" name="frame_summary">
+        <property name="frameShape">
+         <enum>QFrame::Shape::NoFrame</enum>
+        </property>
+        <layout class="QGridLayout" name="gridLayout_summary">
+         <property name="leftMargin">
+          <number>20</number>
+         </property>
+         <property name="topMargin">
+          <number>16</number>
+         </property>
+         <property name="rightMargin">
+          <number>20</number>
+         </property>
+         <property name="bottomMargin">
+          <number>16</number>
+         </property>
+         <item row="0" column="0">
+          <widget class="QLabel" name="lblSubTotalCaption">
+           <property name="text">
+            <string>Tạm tính (0 sản phẩm)</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="1">
+          <widget class="QLabel" name="lblSubTotal">
+           <property name="text">
+            <string>0 đ</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="0">
+          <widget class="QPushButton" name="btnEditDiscount">
+           <property name="minimumSize">
+            <size>
+             <width>0</width>
+             <height>26</height>
+            </size>
+           </property>
+           <property name="toolTip">
+            <string>Nhập mức giá cho hóa đơn</string>
+           </property>
+           <property name="text">
+            <string>Giảm giá</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="1">
+          <widget class="QLabel" name="lblDiscount">
+           <property name="text">
+            <string>0 đ</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="0">
+          <widget class="QLabel" name="lblTaxCaption">
+           <property name="text">
+            <string>Thuế VAT</string>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="1">
+          <widget class="QLabel" name="lblTax">
+           <property name="text">
+            <string>0 đ</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
+           </property>
+          </widget>
+         </item>
+         <item row="3" column="0" colspan="2">
+          <widget class="QFrame" name="line_summary">
+           <property name="minimumSize">
+            <size>
+             <width>0</width>
+             <height>1</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>16777215</width>
+             <height>1</height>
+            </size>
+           </property>
+           <property name="frameShape">
+            <enum>QFrame::Shape::HLine</enum>
+           </property>
+           <property name="frameShadow">
+            <enum>QFrame::Shadow::Plain</enum>
+           </property>
+          </widget>
+         </item>
+         <item row="4" column="0">
+          <widget class="QLabel" name="lblGrandTotalCaption">
+           <property name="font">
+            <font>
+             <pointsize>12</pointsize>
+             <bold>true</bold>
+            </font>
+           </property>
+           <property name="text">
+            <string>Tổng thanh toán</string>
+           </property>
+          </widget>
+         </item>
+         <item row="4" column="1">
+          <widget class="QLabel" name="lblGrandTotal">
+           <property name="font">
+            <font>
+             <pointsize>20</pointsize>
+             <bold>true</bold>
+            </font>
+           </property>
+           <property name="text">
+            <string>0 đ</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
+           </property>
+          </widget>
+         </item>
+         <item row="5" column="0" colspan="2">
+          <widget class="QFrame" name="frame_payment_methods">
+           <property name="minimumSize">
+            <size>
+             <width>0</width>
+             <height>66</height>
+            </size>
+           </property>
+           <property name="frameShape">
+            <enum>QFrame::Shape::NoFrame</enum>
+           </property>
+           <layout class="QHBoxLayout" name="horizontalLayout_payment_methods">
+            <property name="spacing">
+             <number>10</number>
+            </property>
+            <property name="leftMargin">
+             <number>0</number>
+            </property>
+            <property name="topMargin">
+             <number>6</number>
+            </property>
+            <property name="rightMargin">
+             <number>0</number>
+            </property>
+            <property name="bottomMargin">
+             <number>0</number>
+            </property>
+            <item>
+             <widget class="QPushButton" name="btnPayCash">
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>58</height>
+               </size>
+              </property>
+              <property name="cursor">
+               <cursorShape>PointingHandCursor</cursorShape>
+              </property>
+              <property name="text">
+               <string>Tiền mặt</string>
+              </property>
+              <property name="checkable">
+               <bool>true</bool>
+              </property>
+              <property name="checked">
+               <bool>true</bool>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="btnPayCard">
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>58</height>
+               </size>
+              </property>
+              <property name="cursor">
+               <cursorShape>PointingHandCursor</cursorShape>
+              </property>
+              <property name="text">
+               <string>Thẻ</string>
+              </property>
+              <property name="checkable">
+               <bool>true</bool>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="btnPayTransfer">
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>58</height>
+               </size>
+              </property>
+              <property name="cursor">
+               <cursorShape>PointingHandCursor</cursorShape>
+              </property>
+              <property name="text">
+               <string>Chuyển khoản</string>
+              </property>
+              <property name="checkable">
+               <bool>true</bool>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </item>
+      <item>
+       <widget class="QFrame" name="frame_checkout">
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>86</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>16777215</width>
+          <height>86</height>
+         </size>
+        </property>
+        <property name="frameShape">
+         <enum>QFrame::Shape::NoFrame</enum>
+        </property>
+        <layout class="QVBoxLayout" name="verticalLayout_checkout">
+         <property name="leftMargin">
+          <number>20</number>
+         </property>
+         <property name="topMargin">
+          <number>14</number>
+         </property>
+         <property name="rightMargin">
+          <number>20</number>
+         </property>
+         <property name="bottomMargin">
+          <number>18</number>
+         </property>
+         <item>
+          <widget class="QPushButton" name="btnCheckout">
+           <property name="minimumSize">
+            <size>
+             <width>0</width>
+             <height>54</height>
+            </size>
+           </property>
+           <property name="cursor">
+            <cursorShape>PointingHandCursor</cursorShape>
+           </property>
+           <property name="text">
+            <string>Hoàn tất đơn hàng</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

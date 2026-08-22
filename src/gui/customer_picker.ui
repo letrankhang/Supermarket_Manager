@@ -1,0 +1,276 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Dialog</class>
+ <widget class="QDialog" name="Dialog">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>520</width>
+    <height>460</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Chọn khách hàng</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">/* ===== Toàn bộ màu sắc của dialog này nằm ở đây =====
+   Sửa trực tiếp trong Qt Designer: chọn Dialog rồi mở styleSheet.
+   Bảng màu lấy đúng theo màn hình POS (pos.ui). */
+
+QDialog {
+	background-color: #f8fafc;
+}
+
+QLabel#lblTitle {
+	font-size: 15px;
+	font-weight: bold;
+	color: #0f172a;
+}
+
+QLineEdit#txtSearchCustomer {
+	background-color: #ffffff;
+	border: 1px solid #cbd5e1;
+	border-radius: 6px;
+	padding: 8px 10px;
+	font-size: 13px;
+	color: #0f172a;
+}
+QLineEdit#txtSearchCustomer:focus {
+	border: 1px solid #3b82f6;
+}
+
+QTableWidget#tblCustomers {
+	background-color: #ffffff;
+	border: 1px solid #e2e8f0;
+	border-radius: 6px;
+	gridline-color: #f1f5f9;
+	color: #0f172a;
+}
+QTableWidget#tblCustomers::item {
+	padding: 6px;
+}
+QTableWidget#tblCustomers::item:selected {
+	background-color: #dbeafe;
+	color: #0f172a;
+}
+QTableWidget#tblCustomers QHeaderView::section {
+	background-color: #f1f5f9;
+	padding: 8px;
+	font-weight: bold;
+	border: none;
+	color: #475569;
+}
+
+QLabel#lblStatus {
+	font-size: 12px;
+	color: #64748b;
+}
+
+QPushButton {
+	border-radius: 6px;
+	padding: 8px 16px;
+	font-size: 13px;
+	font-weight: bold;
+}
+
+QPushButton#btnSelect {
+	background-color: #2563eb;
+	color: #ffffff;
+	border: none;
+}
+QPushButton#btnSelect:hover {
+	background-color: #1d4ed8;
+}
+QPushButton#btnSelect:disabled {
+	background-color: #cbd5e1;
+	color: #f8fafc;
+}
+
+QPushButton#btnClearCustomer {
+	background-color: #ffffff;
+	color: #b45309;
+	border: 1px solid #fcd34d;
+}
+QPushButton#btnClearCustomer:hover {
+	background-color: #fef3c7;
+}
+
+QPushButton#btnCancel {
+	background-color: #ffffff;
+	color: #475569;
+	border: 1px solid #cbd5e1;
+}
+QPushButton#btnCancel:hover {
+	background-color: #e2e8f0;
+}</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <property name="spacing">
+    <number>12</number>
+   </property>
+   <property name="leftMargin">
+    <number>18</number>
+   </property>
+   <property name="topMargin">
+    <number>18</number>
+   </property>
+   <property name="rightMargin">
+    <number>18</number>
+   </property>
+   <property name="bottomMargin">
+    <number>18</number>
+   </property>
+   <item>
+    <widget class="QLabel" name="lblTitle">
+     <property name="text">
+      <string>Chọn khách hàng cho hóa đơn</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QLineEdit" name="txtSearchCustomer">
+     <property name="minimumSize">
+      <size>
+       <width>0</width>
+       <height>38</height>
+      </size>
+     </property>
+     <property name="placeholderText">
+      <string>Tìm theo tên hoặc số điện thoại...</string>
+     </property>
+     <property name="clearButtonEnabled">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QTableWidget" name="tblCustomers">
+     <property name="styleSheet">
+      <string notr="true">QTableWidget::item {
+    padding: 8px 12px;
+    border-bottom: 1px solid #f1f5f9;
+    color: #1e293b;
+    outline: none; 
+}
+
+QTableWidget::item:hover {
+    background-color: #f8fafc;
+    color: #0f172a;
+}
+
+QTableWidget::item:selected {
+    background-color: #eff6ff;
+    color: #1d4ed8;         
+    font-weight: 600;
+}</string>
+     </property>
+     <property name="alternatingRowColors">
+      <bool>false</bool>
+     </property>
+     <property name="showGrid">
+      <bool>false</bool>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QLabel" name="lblStatus">
+     <property name="text">
+      <string/>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout_buttons">
+     <property name="spacing">
+      <number>10</number>
+     </property>
+     <item>
+      <widget class="QPushButton" name="btnClearCustomer">
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>38</height>
+        </size>
+       </property>
+       <property name="toolTip">
+        <string>Gỡ khách khỏi hóa đơn, quay lại Khách lẻ</string>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">QPushButton {
+    background-color: #f1f5f9;
+    color: #475569;
+    border: 1px solid #cbd5e1;
+    border-radius: 6px;
+    padding: 6px 12px;
+    font-weight: 500;
+}
+
+QPushButton:hover {
+    background-color: #e2e8f0;
+    color: #1e293b;
+    border-color: #94a3b8;
+}
+
+QPushButton:pressed {
+    background-color: #cbd5e1;
+    color: #0f172a;
+}
+
+QPushButton:disabled {
+    background-color: #f8fafc;
+    color: #cbd5e1;
+    border-color: #e2e8f0;
+}</string>
+       </property>
+       <property name="text">
+        <string>Bỏ chọn (Khách lẻ)</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <spacer name="horizontalSpacer_buttons">
+       <property name="orientation">
+        <enum>Qt::Orientation::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <widget class="QPushButton" name="btnCancel">
+       <property name="minimumSize">
+        <size>
+         <width>90</width>
+         <height>38</height>
+        </size>
+       </property>
+       <property name="text">
+        <string>Hủy</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="btnSelect">
+       <property name="minimumSize">
+        <size>
+         <width>110</width>
+         <height>38</height>
+        </size>
+       </property>
+       <property name="text">
+        <string>Chọn khách</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

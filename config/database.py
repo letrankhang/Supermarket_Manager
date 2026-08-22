@@ -83,7 +83,7 @@ class Database:
             # 2. Build SQLAlchemy connection string
             # Format: mysql+mysqlconnector://user:password@host:port/database
             connection_url = f"mysql+mysqlconnector://{db_user}:{db_password}@{db_host}:{db_port}/{db_name}"
-            
+
             # 3. Create the Engine
             cls._engine = create_engine(
                 connection_url,
@@ -125,7 +125,6 @@ class Database:
             ImportOrder, ImportDetail, CustomerTier, Customer, SalesInvoice, SalesDetail
         )
 
-
         try:
             Base.metadata.create_all(cls._engine)
             print("[Database] Code-First tables generated/verified successfully.")
@@ -157,7 +156,7 @@ class Database:
                 # 1. Seed Roles
                 default_roles = ["Admin", "Manager", "Cashier"]
                 existing_roles = {r.role_name: r for r in session.query(Role).all()}
-                
+
                 db_roles = {}
                 for role_name in default_roles:
                     if role_name not in existing_roles:
@@ -172,17 +171,19 @@ class Database:
                 # 2. Seed Default Admin User
                 admin_role = db_roles.get("Admin")
                 if admin_role:
+                    from src.utils.PasswordHasher import hash_password, verify_password
                     admin_user = session.query(User).filter_by(username="admin").first()
                     if not admin_user:
                         new_admin = User(
                             username="admin",
-                            password_hash="admin",
+                            password_hash=hash_password("Admin@123"),
                             full_name="Administrator",
                             role_id=admin_role.role_id,
                             email="admin@supermarket.com",
                             is_active=True
                         )
                         session.add(new_admin)
+<<<<<<< Updated upstream
                         print("[Database Seed] Default Admin user created successfully (username: 'admin', password: 'admin', email: 'admin@supermarket.com').")
                     else:
                         if not admin_user.email:
@@ -194,6 +195,13 @@ class Database:
                         if admin_user.password_hash == old_hash:
                             admin_user.password_hash = "admin"
                             print("[Database Seed] Updated existing admin user's password from hash to plain text.")
+=======
+                        print("[Database Seed] Default Admin user created successfully (username: 'admin', password: 'Admin@123').")
+                    else:
+                        if not verify_password("Admin@123", admin_user.password_hash):
+                            admin_user.password_hash = hash_password("Admin@123")
+                            print("[Database Seed] Reset existing admin user's password to default hashed password.")
+>>>>>>> Stashed changes
         except Exception as e:
             print(f"[Database Error] Failed to generate database tables or seed data: {e}")
             raise e
@@ -211,14 +219,14 @@ class Database:
         """
         Context manager that yields a SQLAlchemy Session.
         Handles commits, rollbacks, and connection clean up automatically.
-        
+
         Usage:
             with Database.get_session_ctx() as session:
                 products = session.query(Product).all()
         """
         if cls._sessionmaker is None:
             cls.initialize()
-            
+
         session = cls._sessionmaker()
         try:
             yield session
