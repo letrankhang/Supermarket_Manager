@@ -3,11 +3,10 @@ from typing import Optional
 
 from PyQt6.QtCore import QSettings
 from PyQt6.QtWidgets import QMainWindow, QMessageBox
-
+from src.controller.ForgotPasswordController import ForgotPasswordController
 from src.entities.user import User
 from src.gui.login_ui import Ui_MainWindow
 from src.services.impl.LoginServiceImpl import LoginServiceImpl
-from src.controller.MainWindowController import MainWindowController
 from src.utils.FormIcon import hien_thi_logo, them_icon_trai, them_nut_an_hien
 
 logger = logging.getLogger(__name__)
@@ -116,6 +115,7 @@ class LoginController(QMainWindow, Ui_MainWindow):
                     f"Vai trò: {role_display}"
                 )
 
+                from src.controller.MainWindowController import MainWindowController
                 self.main_window = MainWindowController()
                 self.main_window.show()
                 self.close()
@@ -128,9 +128,6 @@ class LoginController(QMainWindow, Ui_MainWindow):
 
     def handle_forgot_password(self) -> None:
         """Mở màn hình nhập email để nhận mã xác thực đặt lại mật khẩu."""
-        # Nhập vòng ở đây để tránh hai controller import lẫn nhau lúc nạp module
-        from src.controller.ForgotPasswordController import ForgotPasswordController
-
         self.forgot_window = ForgotPasswordController()
         self.forgot_window.show()
         self.close()

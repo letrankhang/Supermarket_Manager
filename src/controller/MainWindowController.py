@@ -254,6 +254,10 @@ class MainWindowController(QMainWindow, Ui_MainWindow):
     def _show_logout(self) -> None:
         logger.info("Đang đăng xuất khỏi tài khoản %s", Session.get_username())
         Session.clear_session()
+        from src.controller.LoginController import LoginController
+        self.logout = LoginController()
+        self.logout.show()
+        self.close()
 
     def _show_feature_placeholder(self, feature_name: str) -> None:
         """Báo tính năng đang phát triển và trả nút sáng về đúng tab đang mở."""
