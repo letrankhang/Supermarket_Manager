@@ -6,8 +6,6 @@ venv/
 .vscode/
 .idea/
 tempCodeRunnerFile.py
-.env
-.env/
+.gitignore
 
 # File môi trường: dùng .env.example làm mẫu
-!.env.example
