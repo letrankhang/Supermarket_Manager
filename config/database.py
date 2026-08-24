@@ -169,7 +169,7 @@ class Database:
                         if not admin_user.email:
                             admin_user.email = "admin@supermarket.com"
                             print("[Database Seed] Assigned default email 'admin@supermarket.com' to existing admin user.")
-                        # Di trú mật khẩu cũ (SHA-256 / văn bản thuần) sang bcrypt
+                        from src.utils.PasswordHasher import is_bcrypt_hash
                         if not verify_password("Admin@123", admin_user.password_hash):
                             admin_user.password_hash = hash_password("Admin@123")
                             print("[Database Seed] Reset existing admin user's password to default hashed password.")

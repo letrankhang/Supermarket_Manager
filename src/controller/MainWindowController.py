@@ -14,6 +14,9 @@ from config.database import Database
 from src.entities.user import User
 from src.controller.DashboardController import DashboardController
 from src.controller.POSController import POSController
+# --- BỔ SUNG: Import Controller của màn hình Quản lý nhân sự ---
+from src.controller.PersonnelController import PersonnelController
+from src.controller.SupplierController import SupplierController
 
 logger = logging.getLogger(__name__)
 
@@ -31,7 +34,7 @@ class MainWindowController(QMainWindow, Ui_MainWindow):
 
     def _fix_logo(self) -> None:
         current_dir = os.path.dirname(os.path.abspath(__file__))
-        
+
         logo_path = os.path.abspath(os.path.join(current_dir, "..", "..", "assets", "images", "logo_sidebar2.png"))
         if os.path.exists(logo_path):
             self.label_4.setPixmap(QPixmap(logo_path))
@@ -74,7 +77,16 @@ class MainWindowController(QMainWindow, Ui_MainWindow):
         self.pos_controller = POSController(self)
         self.stacked_widget.addWidget(self.pos_controller)
 
+        #  Nhân sự
+        self.personnel_controller = PersonnelController()
+        self.stacked_widget.addWidget(self.personnel_controller.get_view())
+
+        # nhà cung cấp
+        self.supplier_controller = SupplierController()
+        self.stacked_widget.addWidget(self.supplier_controller.get_view())
+
         self._setup_navigation()
+
 
     def _setup_navigation(self) -> None:
         """Gom nút menu thành nhóm loại trừ lẫn nhau để mục đang mở luôn sáng."""
@@ -109,34 +121,23 @@ class MainWindowController(QMainWindow, Ui_MainWindow):
 
     def _setup_sidebar_icons(self) -> None:
         """Gán icon qtawesome cho toàn bộ nút menu sidebar, đổi màu theo trạng thái."""
-        # qtawesome cố định màu icon ngay lúc tạo pixmap, nên QSS :hover/:checked KHÔNG
-        # đổi được màu icon - phải dựng sẵn 2 phiên bản QIcon rồi đổi qua lại bằng code.
-        # KHÔNG dùng tham số color_active của qtawesome: nó ánh xạ vào QIcon.Mode.Active,
-        # trạng thái Qt chỉ dùng khi nút giữ focus bàn phím chứ không phải khi rê chuột.
         icon_map = {
             self.btn_dashboard: "fa5s.th-large",
-            self.btn_products:  "fa5s.box",
+            self.btn_products: "fa5s.box",
             self.btn_suppliers: "fa5s.truck",
             self.btn_importing: "fa5s.download",
             self.btn_customers: "fa5s.users",
-            self.btn_pos:       "fa5s.shopping-cart",
+            self.btn_pos: "fa5s.shopping-cart",
             self.btn_analytics: "fa5s.chart-bar",
-            self.btn_settings:  "fa5s.cog",
-            self.btn_help:      "fa5s.question-circle",
-            self.btn_logout:    "fa5s.sign-out-alt",
+            self.btn_settings: "fa5s.cog",
+            self.btn_help: "fa5s.question-circle",
+            self.btn_logout: "fa5s.sign-out-alt",
         }
 
         icon_size = QSize(20, 20)
-
-        # Hai màu icon phải khớp với "color" của #sidebar_frame QPushButton
-        # trong QSS (đặt ở MainWindow.ui) tại trạng thái tương ứng. Nếu đổi màu
-        # chữ trong QSS thì nhớ đổi cả 2 hằng dưới đây.
         color_normal = "#cbd5e1"
         color_active = "#ffffff"
 
-        # Cache sẵn icon cho từng nút. Bắt buộc phải cache vì qta.icon() render
-        # lại font mỗi lần gọi - nếu gọi trong handler hover thì rê chuột nhanh
-        # qua sidebar sẽ bị giật.
         self._nav_icon_normal = {}
         self._nav_icon_active = {}
 
@@ -145,36 +146,22 @@ class MainWindowController(QMainWindow, Ui_MainWindow):
                 self._nav_icon_normal[button] = qta.icon(icon_name, color=color_normal)
                 self._nav_icon_active[button] = qta.icon(icon_name, color=color_active)
             except Exception as e:
-                # Thiếu icon không được phép làm sập giao diện, chỉ ghi log cảnh báo
                 logger.error("Không tải được icon '%s' cho nút menu: %s", icon_name, e)
                 continue
 
             button.setIconSize(icon_size)
 
-            # Thêm khoảng đệm giữa icon và chữ. Qt không có thuộc tính QSS nào
-            # chỉnh riêng khoảng cách icon - chữ của QPushButton (padding đẩy cả
-            # cụm), nên chèn 2 dấu cách vào đầu text. Có kiểm tra startswith để
-            # gọi lại hàm này cũng không bị cộng dồn khoảng trắng.
             if not button.text().startswith("  "):
                 button.setText("  " + button.text())
 
-            # Nguồn tín hiệu 1: chuột vào / rời khỏi nút -> bắt qua eventFilter()
             button.installEventFilter(self)
-
-            # Nguồn tín hiệu 2: nút được chọn / bỏ chọn. Connect cho cả 10 nút mà
-            # không cần kiểm tra isCheckable(): nút không checkable thì đơn giản
-            # là không bao giờ phát tín hiệu này.
             button.toggled.connect(
                 lambda checked, b=button: self._update_nav_icon(b, hovered=False)
             )
-
             self._update_nav_icon(button, hovered=False)
 
     def _update_nav_icon(self, button: QPushButton, hovered: bool) -> None:
         """Chọn phiên bản icon (xám / trắng) đúng trạng thái hiện tại của nút."""
-        # Sáng trắng khi hover HOẶC đang checked: vế "hoặc" giữ icon trắng cho nút đang mở
-        # sau khi chuột rời đi, lúc đó hovered=False nhưng isChecked() vẫn là True.
-        # Nút có thể chưa dựng được icon (lỗi ở _setup_sidebar_icons)
         if button not in self._nav_icon_normal:
             return
 
@@ -189,10 +176,7 @@ class MainWindowController(QMainWindow, Ui_MainWindow):
             if event.type() == QEvent.Type.Enter:
                 self._update_nav_icon(obj, hovered=True)
             elif event.type() == QEvent.Type.Leave:
-                # Truyền hovered=False tường minh thay vì đọc obj.underMouse(),
-                # vì tại thời điểm xử lý Leave thì underMouse() vẫn còn True.
                 self._update_nav_icon(obj, hovered=False)
-
         return super().eventFilter(obj, event)
 
     def _set_active_nav_button(self, button: QPushButton) -> None:
@@ -209,16 +193,19 @@ class MainWindowController(QMainWindow, Ui_MainWindow):
         """Đăng ký sự kiện cho các nút bấm trên giao diện."""
         self.btn_dashboard.clicked.connect(self._show_dashboard)
         self.btn_logout.clicked.connect(self._show_logout)
-
         self.btn_pos.clicked.connect(self._show_pos)
+
+        # --- BỔ SUNG: Gắn sự kiện click cho nút Cài đặt hệ thống ---
+        self.btn_settings.clicked.connect(self._show_settings)
+        self.btn_suppliers.clicked.connect(self._show_suppliers)
 
         other_buttons = [
             (self.btn_products, "Sản phẩm"),
-            (self.btn_suppliers, "Nhà cung cấp"),
+            # ĐÃ XÓA btn_suppliers Ở ĐÂY ĐỂ TRÁNH BỊ HIỆN THÔNG BÁO LỖI
             (self.btn_importing, "Nhập hàng"),
             (self.btn_customers, "Khách hàng"),
             (self.btn_analytics, "Báo cáo thống kê"),
-            (self.btn_settings, "Cài đặt hệ thống"),
+            # Đã gỡ btn_settings ra khỏi danh sách thông báo "chưa phát triển"
             (self.btn_help, "Trung tâm trợ giúp"),
         ]
         for btn, name in other_buttons:
@@ -250,6 +237,16 @@ class MainWindowController(QMainWindow, Ui_MainWindow):
         self._set_active_nav_button(self.btn_pos)
         self.stacked_widget.setCurrentWidget(self.pos_controller)
         self.pos_controller.load_data()
+
+    # --- BỔ SUNG: Hàm chuyển sang màn hình Cài đặt hệ thống (Nhân sự) ---
+    def _show_settings(self) -> None:
+        """Hiển thị màn hình Quản lý Nhân sự (System Settings)."""
+        self._set_active_nav_button(self.btn_settings)
+        self.stacked_widget.setCurrentWidget(self.personnel_controller.get_view())
+
+    def _show_suppliers(self) -> None:
+        self._set_active_nav_button(self.btn_suppliers)
+        self.stacked_widget.setCurrentWidget(self.supplier_controller.get_view())
 
     def _show_logout(self) -> None:
         logger.info("Đang đăng xuất khỏi tài khoản %s", Session.get_username())
