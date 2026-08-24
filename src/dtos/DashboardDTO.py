@@ -15,6 +15,7 @@ class RecentTransactionDTO:
     invoice_date: datetime
     formatted_time: str     # E.g. "10:45 AM", "Hôm qua", "16/08/2026"
     final_total: float
+    payment_method: str     # Nhãn tiếng Việt: "Tiền mặt" / "Chuyển khoản" / "Thẻ" 
 
 
 @dataclass

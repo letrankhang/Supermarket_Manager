@@ -1,12 +1,14 @@
 import logging
 from decimal import Decimal, InvalidOperation
-from typing import Callable, List, Optional
+from typing import Callable, List, Optional, Tuple
 
-from PyQt6.QtCore import QEvent, QObject, QSize, Qt, QTimer, pyqtSignal
-from PyQt6.QtGui import QKeySequence, QPixmap, QResizeEvent, QShortcut
-from PyQt6.QtWidgets import (
+from PySide6.QtCore import QEvent, QObject, QSize, Qt, QTimer, Signal
+from PySide6.QtCore import QUrl
+from PySide6.QtGui import (QDesktopServices, QKeySequence, QPixmap,
+                           QResizeEvent, QShortcut)
+from PySide6.QtWidgets import (
     QButtonGroup, QFrame, QHBoxLayout, QInputDialog, QLabel, QLayout,
-    QMessageBox, QPushButton, QSizePolicy, QVBoxLayout, QWidget
+    QFileDialog, QMessageBox, QPushButton, QSizePolicy, QVBoxLayout, QWidget
 )
 
 import qtawesome as qta
@@ -32,8 +34,11 @@ PAYMENT_ICON_COLOR = "#64748b"
 PAYMENT_ICON_COLOR_ACTIVE = "#1d4ed8"
 PAYMENT_ICON_TEXT_GAP = 1
 
+# Nhãn nút thanh toán tiền mặt. Phải khớp với PAYMENT_METHOD_MAP trong POSConverter.
+CASH_PAYMENT_LABEL = "Tiền mặt"
+
 class ProductCard(QFrame):
-    add_requested = pyqtSignal(int)
+    add_requested = Signal(int)
 
     def __init__(self, product: ProductDTO, parent: Optional[QWidget] = None) -> None:
         super().__init__(parent)
@@ -105,8 +110,8 @@ class ProductCard(QFrame):
         return footer
 
 class CartRow(QFrame):
-    quantity_change_requested = pyqtSignal(int, int)
-    remove_requested = pyqtSignal(int)
+    quantity_change_requested = Signal(int, int)
+    remove_requested = Signal(int)
 
     def __init__(self, item: CartItemDTO, parent: Optional[QWidget] = None) -> None:
         super().__init__(parent)
@@ -470,7 +475,7 @@ class POSController(QWidget, Ui_Form):
         """
         from src.controller.CustomerPickerController import CustomerPickerController
 
-        dialog = CustomerPickerController(self)
+        dialog = CustomerPickerController(self, selected_customer=self.selected_customer)
 
         # exec() trả về 0 khi bấm Hủy hoặc đóng cửa sổ, khi đó giữ nguyên khách cũ
         if not dialog.exec():
@@ -522,21 +527,24 @@ class POSController(QWidget, Ui_Form):
             return
 
         total_amount = self.pos_service.get_cart().summary.grand_total
-        formatted_price = format_currency(total_amount)
+        payment_label = self._get_selected_payment_label()
 
-        confirm = QMessageBox.question(
-            self,
-            "Xác nhận thanh toán",
-            f"Xác nhận thanh toán đơn hàng với tổng tiền: {formatted_price}?",
-            QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No,
-            QMessageBox.StandardButton.Yes)
-
-        if confirm != QMessageBox.StandardButton.Yes:
-            return
+        # Tiền mặt thì mở hộp thoại nhập tiền để tính tiền thối,
+        # các phương thức còn lại giữ nguyên hộp xác nhận cũ.
+        if payment_label == CASH_PAYMENT_LABEL:
+            cash_result = self._ask_cash_payment(total_amount)
+            if cash_result is None:
+                return
+            cash_received, change_amount = cash_result
+        else:
+            if not self._confirm_payment(total_amount):
+                return
+            cash_received = None
+            change_amount = None
 
         request = CheckoutRequestDTO(
             user_id=Session.get_user_id(),
-            payment_method_label=self._get_selected_payment_label(),
+            payment_method_label=payment_label,
             customer_id=(self.selected_customer.customer_id
                          if self.selected_customer else None)
         )
@@ -547,19 +555,103 @@ class POSController(QWidget, Ui_Form):
             logger.warning("POS: thanh toán không thành công: %s", e)
             self._show_error(str(e))
             return
-        confirm = QMessageBox.question(
-                    self,
-                    "Xác nhận thanh toán",
-                    f"Xác nhận thanh toán đơn hàng với tổng tiền: {formatted_price}?",
-                    QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No,
-                    QMessageBox.StandardButton.Yes
-                )
 
-        if confirm != QMessageBox.StandardButton.Yes:
-            return
         QMessageBox.information(self, "Thanh toán thành công", result.message)
+
+        # Hỏi xuất hóa đơn PDF. Người dùng từ chối hay hủy thì đơn vẫn đã thanh toán.
+        self._offer_invoice_pdf(result, cash_received, change_amount)
+
         self._reload_products()
         self.reset_order()
+
+    def _confirm_payment(self, total_amount: Decimal) -> bool:
+        formatted_price = format_currency(total_amount)
+
+        confirm = QMessageBox.question(
+            self,
+            "Xác nhận thanh toán",
+            f"Xác nhận thanh toán đơn hàng với tổng tiền: {formatted_price}?",
+            QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No,
+            QMessageBox.StandardButton.Yes)
+
+        return confirm == QMessageBox.StandardButton.Yes
+
+    def _ask_cash_payment(self, total_amount: Decimal) -> Optional[Tuple[Decimal, Decimal]]:
+        """Mở hộp thoại nhập tiền mặt.
+
+        Trả về (tiền khách đưa, tiền thối) nếu người dùng xác nhận,
+        trả về None nếu người dùng hủy để dừng luồng thanh toán.
+        Nhập vòng ở đây để tránh hai controller import lẫn nhau lúc nạp module.
+        """
+        from src.controller.CashPaymentDialogController import CashPaymentDialogController
+
+        dialog = CashPaymentDialogController(self, total_amount)
+        if not dialog.exec():
+            return None
+
+        return dialog.get_cash_received(), dialog.get_change_amount()
+
+    def _offer_invoice_pdf(self, result, cash_received: Optional[Decimal],
+                           change_amount: Optional[Decimal]) -> None:
+        """Hỏi và xuất hóa đơn vừa thanh toán ra file PDF."""
+        if result.invoice_id is None:
+            return
+
+        answer = QMessageBox.question(
+            self,
+            "Xuất hóa đơn",
+            "Bạn có muốn xuất hóa đơn này ra file PDF không?",
+            QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No,
+            QMessageBox.StandardButton.Yes)
+
+        if answer != QMessageBox.StandardButton.Yes:
+            return
+
+        invoice = self.pos_service.get_invoice_detail(result.invoice_id)
+        if invoice is None:
+            self._show_error("Không lấy được dữ liệu hóa đơn để in.")
+            return
+
+        from src.utils.InvoicePrinter import (
+            InvoicePrintError, build_default_file_name, export_invoice_pdf
+        )
+
+        file_path, _ = QFileDialog.getSaveFileName(
+            self,
+            "Lưu hóa đơn PDF",
+            build_default_file_name(invoice),
+            "File PDF (*.pdf)")
+
+        # Hủy hộp thoại lưu file thì thôi, đơn hàng vẫn đã thanh toán xong.
+        if not file_path:
+            return
+
+        try:
+            export_invoice_pdf(invoice, file_path, cash_received, change_amount)
+        except InvoicePrintError as e:
+            logger.warning("POS: không xuất được hóa đơn PDF: %s", e)
+            self._show_error(str(e))
+            return
+        except Exception as e:
+            logger.exception("POS: lỗi ngoài dự kiến khi xuất hóa đơn PDF: %s", e)
+            self._show_error("Đã xảy ra lỗi khi xuất hóa đơn PDF.")
+            return
+
+        self._ask_open_invoice_file(file_path)
+
+    def _ask_open_invoice_file(self, file_path: str) -> None:
+        answer = QMessageBox.question(
+            self,
+            "Đã lưu hóa đơn",
+            "Đã lưu hóa đơn tại:\n" + file_path
+            + "\n\nBạn có muốn mở file ngay không?",
+            QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No,
+            QMessageBox.StandardButton.Yes)
+
+        if answer != QMessageBox.StandardButton.Yes:
+            return
+
+        QDesktopServices.openUrl(QUrl.fromLocalFile(file_path))
 
     def _get_selected_payment_label(self) -> str:
         selected_button = self.payment_group.checkedButton()

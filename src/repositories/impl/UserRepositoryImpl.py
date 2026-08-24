@@ -5,7 +5,6 @@ from sqlalchemy.orm import Session
 from src.entities.user import User
 from src.repositories.UserRepository import UserRepository
 
-
 class UserRepositoryImpl(UserRepository):
     def __init__(self, session: Session) -> None:
         self.session = session
@@ -17,7 +16,6 @@ class UserRepositoryImpl(UserRepository):
         return self.session.query(User).filter(User.email == email).first()
 
     def update_password_hash(self, user_id: int, password_hash: str) -> bool:
-        """Ghi chuỗi hash mới vào DB. Việc băm do tầng service lo, repository chỉ ghi."""
         user = self.session.query(User).filter(User.user_id == user_id).first()
         if not user:
             return False

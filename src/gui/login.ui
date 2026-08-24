@@ -190,9 +190,9 @@ QCheckBox::indicator:checked {
       <widget class="QLabel" name="label">
        <property name="geometry">
         <rect>
-         <x>80</x>
+         <x>10</x>
          <y>130</y>
-         <width>253</width>
+         <width>401</width>
          <height>21</height>
         </rect>
        </property>
@@ -200,7 +200,7 @@ QCheckBox::indicator:checked {
         <string notr="true">color: #6b7280; font-size: 13px;</string>
        </property>
        <property name="text">
-        <string>Vui lòng nhập thông tin để truy cập quản trị</string>
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Vui lòng nhập thông tin để truy cập hệ thống&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
        </property>
        <property name="alignment">
         <set>Qt::AlignmentFlag::AlignCenter</set>

@@ -1,11 +1,3 @@
-"""src/repositories/impl/CustomerRepositoryImpl.py
-
-Truy vấn bảng customers bằng SQLAlchemy.
-
-Cách lọc từ khóa làm giống hệt POSRepositoryImpl._apply_keyword_filter để
-hai màn hình cư xử như nhau.
-"""
-
 import logging
 from typing import List, Optional
 
@@ -17,13 +9,11 @@ from src.repositories.CustomerRepository import CustomerRepository
 
 logger = logging.getLogger(__name__)
 
-
 class CustomerRepositoryImpl(CustomerRepository):
     def __init__(self, session: Session) -> None:
         self.session = session
 
-    def find_customers(self, keyword: Optional[str] = None,
-                       limit: Optional[int] = None) -> List[Customer]:
+    def find_customers(self, keyword: Optional[str] = None, limit: Optional[int] = None) -> List[Customer]:
         try:
             query = self.session.query(Customer)
             query = self._apply_keyword_filter(query, keyword)
@@ -38,7 +28,6 @@ class CustomerRepositoryImpl(CustomerRepository):
             raise e
 
     def _apply_keyword_filter(self, query: Query, keyword: Optional[str]) -> Query:
-        """Lọc theo tên HOẶC số điện thoại. Từ khóa rỗng thì bỏ qua bộ lọc."""
         cleaned_keyword = (keyword or "").strip()
         if not cleaned_keyword:
             return query

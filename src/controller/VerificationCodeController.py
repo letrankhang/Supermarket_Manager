@@ -1,15 +1,15 @@
 import logging
 from typing import Optional
 
-from PyQt6.QtCore import QTimer
-from PyQt6.QtWidgets import QMainWindow, QMessageBox
+from PySide6.QtCore import QTimer
+from PySide6.QtWidgets import QMainWindow, QMessageBox
 
 from src.controller.PasswordResetWorker import THONG_BAO_LOI_CHUNG, SendCodeWorker
 from src.gui.verification_code_ui import Ui_MainWindow
 from src.services.PasswordResetService import PasswordResetError
 from src.services.impl.PasswordResetServiceImpl import (CHO_GIUA_HAI_LAN_GUI,
                                                         PasswordResetServiceImpl)
-from src.utils.FormIcon import hien_thi_logo, them_icon_trai
+from src.utils.FormIcon import show_logo, add_left_icon
 
 logger = logging.getLogger(__name__)
 
@@ -37,13 +37,21 @@ class VerificationCodeController(QMainWindow, Ui_MainWindow):
 
     def _setup_ui(self) -> None:
         """Gắn logo và icon. Màu sắc nằm trong verification_code.ui."""
-        hien_thi_logo(self.lblLogo)
-        them_icon_trai(self.lineEdit_code, "otp.png")
+        show_logo(self.lblLogo)
+        add_left_icon(self.lineEdit_code, "otp.png")
 
     def _setup_events(self) -> None:
         self.pushButton_accept.clicked.connect(self.handle_verification_code)
         self.lineEdit_code.returnPressed.connect(self.handle_verification_code)
         self.pushButton_resend.clicked.connect(self.handle_resend)
+        self.lblBackLogin.clicked.connect(self._go_back_to_login)
+
+    def _go_back_to_login(self) -> None:
+        from src.controller.LoginController import LoginController
+
+        self.login_window = LoginController()
+        self.login_window.show()
+        self.close()
 
     def handle_verification_code(self) -> None:
         code = self.lineEdit_code.text().strip()

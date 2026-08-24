@@ -7,7 +7,7 @@ from config.settings import POSSettings
 from src.converter.POSConverter import POSConverter
 from src.dtos.POSDTO import (
     CartDTO, CartItemDTO, CartSummaryDTO, CategoryDTO,
-    CheckoutRequestDTO, CheckoutResultDTO, ProductDTO
+    CheckoutRequestDTO, CheckoutResultDTO, InvoiceDetailDTO, ProductDTO
 )
 from src.entities.sales_invoice import SalesInvoice
 from src.repositories.impl.POSRepositoryImpl import POSRepositoryImpl
@@ -17,9 +17,10 @@ from src.services.POSService import (
 
 logger = logging.getLogger(__name__)
 
-
 VND_ROUNDING_UNIT = Decimal("1")
 
+WALK_IN_CUSTOMER_LABEL = "Khách lẻ"
+UNKNOWN_CASHIER_LABEL = "Không rõ"
 
 class POSServiceImpl(POSService):
     def __init__(self) -> None:
@@ -277,3 +278,44 @@ class POSServiceImpl(POSService):
 
     def _round_money(self, amount: Decimal) -> Decimal:
         return amount.quantize(VND_ROUNDING_UNIT, rounding=ROUND_HALF_UP)
+
+    def get_invoice_detail(self, invoice_id: int) -> Optional[InvoiceDetailDTO]:
+        """Gom dữ liệu một hóa đơn đã lưu để phục vụ việc in ra PDF."""
+        try:
+            with Database.get_session_ctx() as session:
+                repository = POSRepositoryImpl(session)
+
+                invoice = repository.find_invoice_by_id(invoice_id)
+                if invoice is None:
+                    logger.warning("Không tìm thấy hóa đơn %s để in.", invoice_id)
+                    return None
+
+                rows = repository.find_invoice_lines(invoice_id)
+                lines = [
+                    POSConverter.to_invoice_line_dto(detail, product)
+                    for detail, product in rows
+                ]
+
+                customer_name = repository.find_customer_name(invoice.customer_id)
+                cashier_name = repository.find_user_name(invoice.user_id)
+
+                payment_value = invoice.payment_method or ""
+
+                return InvoiceDetailDTO(
+                    invoice_id=invoice.invoice_id,
+                    invoice_code=POSConverter.to_invoice_code(invoice.invoice_id),
+                    invoice_date=invoice.invoice_date,
+                    cashier_name=(cashier_name or UNKNOWN_CASHIER_LABEL),
+                    customer_name=(customer_name or WALK_IN_CUSTOMER_LABEL),
+                    payment_method=payment_value,
+                    payment_method_label=POSConverter.to_payment_method_label(payment_value),
+                    sub_total=POSConverter.to_decimal(invoice.sub_total),
+                    discount_amount=POSConverter.to_decimal(invoice.discount_amount),
+                    tax_amount=POSConverter.to_decimal(invoice.tax_amount),
+                    final_total=POSConverter.to_decimal(invoice.final_total),
+                    points_used=int(invoice.points_used or 0),
+                    lines=lines
+                )
+        except Exception as e:
+            logger.error("Không lấy được chi tiết hóa đơn %s: %s", invoice_id, e)
+            return None

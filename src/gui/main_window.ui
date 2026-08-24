@@ -19,16 +19,16 @@
      <number>5</number>
     </property>
     <property name="leftMargin">
-     <number>5</number>
+     <number>0</number>
     </property>
     <property name="topMargin">
-     <number>5</number>
+     <number>2</number>
     </property>
     <property name="rightMargin">
-     <number>5</number>
+     <number>2</number>
     </property>
     <property name="bottomMargin">
-     <number>5</number>
+     <number>0</number>
     </property>
     <item>
      <widget class="QFrame" name="sidebar_frame">
@@ -412,17 +412,20 @@
     <item>
      <widget class="QWidget" name="widget" native="true">
       <layout class="QVBoxLayout" name="verticalLayout_4">
+       <property name="spacing">
+        <number>2</number>
+       </property>
        <property name="leftMargin">
-        <number>7</number>
+        <number>2</number>
        </property>
        <property name="topMargin">
-        <number>7</number>
+        <number>2</number>
        </property>
        <property name="rightMargin">
-        <number>7</number>
+        <number>2</number>
        </property>
        <property name="bottomMargin">
-        <number>7</number>
+        <number>2</number>
        </property>
        <item>
         <widget class="QWidget" name="widget_2" native="true">
@@ -478,18 +481,47 @@
            </spacer>
           </item>
           <item>
-           <widget class="QLabel" name="lblGreeting">
-            <property name="styleSheet">
-             <string notr="true">#lblGreeting {
-    color: #0f172a;
+           <layout class="QHBoxLayout" name="greetingLayout">
+            <property name="spacing">
+             <number>5</number>
+            </property>
+            <item>
+             <widget class="QLabel" name="lblGreeting">
+              <property name="styleSheet">
+               <string notr="true">/* Loi dan chao: mau xam nhat, chu thuong de nhuong su chu y cho ten */
+#lblGreeting {
+    color: #64748b;
     font-size: 13px;
-    font-weight: 600;
+    font-weight: 500;
 }</string>
-            </property>
-            <property name="text">
-             <string>Xin chào !...</string>
-            </property>
-           </widget>
+              </property>
+              <property name="text">
+               <string>Xin chào,</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="lblUserName">
+              <property name="styleSheet">
+               <string notr="true">/* Ten nguoi dung: in dam va to mau xanh thuong hieu cho noi bat */
+#lblUserName {
+    color: #1d4ed8;
+    font-size: 13px;
+    font-weight: bold;
+}</string>
+              </property>
+              <property name="text">
+               <string>Người dùng</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignVCenter</set>
+              </property>
+             </widget>
+            </item>
+           </layout>
           </item>
           <item>
            <widget class="QLabel" name="lblAvatar">

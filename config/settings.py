@@ -4,11 +4,9 @@ from decimal import Decimal, InvalidOperation
 
 from dotenv import load_dotenv
 
-
 load_dotenv()
 
 logger = logging.getLogger(__name__)
-
 
 def _get_decimal(env_key: str, default: str) -> Decimal:
     raw_value = os.getenv(env_key, default)
@@ -21,7 +19,6 @@ def _get_decimal(env_key: str, default: str) -> Decimal:
         )
         return Decimal(default)
 
-
 def _get_int(env_key: str, default: str) -> int:
     raw_value = os.getenv(env_key, default)
     try:
@@ -32,7 +29,6 @@ def _get_int(env_key: str, default: str) -> int:
             env_key, raw_value, default
         )
         return int(default)
-
 
 class POSSettings:
     VAT_RATE: Decimal = _get_decimal("VAT_RATE", "0.08")

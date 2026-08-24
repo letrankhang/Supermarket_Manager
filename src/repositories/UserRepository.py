@@ -5,8 +5,6 @@ from src.entities.user import User
 
 
 class UserRepository(ABC):
-    """Truy vấn bảng `users`. Một repository cho một bảng, dùng chung cho mọi nghiệp vụ."""
-
     @abstractmethod
     def find_by_username(self, username: str) -> Optional[User]:
         pass

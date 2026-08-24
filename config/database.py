@@ -112,9 +112,10 @@ class Database:
             Base.metadata.create_all(cls._engine)
             print("[Database] Code-First tables generated/verified successfully.")
 
-            # create_all không sửa bảng đã tồn tại, nên tự thêm cột 'image' cho DB cũ
+            # Migration nhẹ: Tự thêm các cột mới nếu bảng cũ chưa có
             from sqlalchemy import inspect, text
             inspector = inspect(cls._engine)
+            
             if 'products' in inspector.get_table_names():
                 columns = [col['name'] for col in inspector.get_columns('products')]
                 if 'image' not in columns:
@@ -124,7 +125,6 @@ class Database:
                         conn.commit()
                     print("[Database] 'image' column added successfully.")
 
-            # Tương tự cho cột 'email' của bảng users
             if 'users' in inspector.get_table_names():
                 columns = [col['name'] for col in inspector.get_columns('users')]
                 if 'email' not in columns:
@@ -134,7 +134,7 @@ class Database:
                         conn.commit()
                     print("[Database] 'email' column added successfully.")
 
-            # Nạp sẵn 3 vai trò và tài khoản admin mặc định cho lần chạy đầu
+            # Seed data: Khởi tạo Role và tài khoản Admin mặc định
             with cls.get_session_ctx() as session:
                 default_roles = ["Admin", "Manager", "Cashier"]
                 existing_roles = {r.role_name: r for r in session.query(Role).all()}
@@ -144,7 +144,7 @@ class Database:
                     if role_name not in existing_roles:
                         new_role = Role(role_name=role_name)
                         session.add(new_role)
-                        session.flush()  # lấy role_id tự tăng
+                        session.flush()
                         db_roles[role_name] = new_role
                         print(f"[Database Seed] Role '{role_name}' created successfully.")
                     else:
@@ -152,9 +152,11 @@ class Database:
 
                 admin_role = db_roles.get("Admin")
                 if admin_role:
-                    from src.utils.PasswordHasher import hash_password, verify_password
+                    from src.utils.PasswordHasher import hash_password
                     admin_user = session.query(User).filter_by(username="admin").first()
+                    
                     if not admin_user:
+                        # Tạo mới tài khoản admin mặc định nếu lần đầu khởi chạy
                         new_admin = User(
                             username="admin",
                             password_hash=hash_password("Admin@123"),
@@ -164,15 +166,16 @@ class Database:
                             is_active=True
                         )
                         session.add(new_admin)
-                        print("[Database Seed] Default Admin user created successfully (username: 'admin', password: 'Admin@123', email: 'admin@supermarket.com').")
+                        print("[Database Seed] Default Admin user created successfully (username: 'admin', password: 'Admin@123').")
                     else:
+                        # Cập nhật thông tin bổ sung an toàn, KHÔNG reset/đè mật khẩu cũ của user
                         if not admin_user.email:
                             admin_user.email = "admin@supermarket.com"
-                            print("[Database Seed] Assigned default email 'admin@supermarket.com' to existing admin user.")
-                        # Di trú mật khẩu cũ (SHA-256 / văn bản thuần) sang bcrypt
-                        if not verify_password("Admin@123", admin_user.password_hash):
-                            admin_user.password_hash = hash_password("Admin@123")
-                            print("[Database Seed] Reset existing admin user's password to default hashed password.")
+                            print("[Database Seed] Assigned default email to existing admin user.")
+                        if not admin_user.is_active:
+                            admin_user.is_active = True
+                            print("[Database Seed] Ensured existing admin user is active.")
+
         except Exception as e:
             print(f"[Database Error] Failed to generate database tables or seed data: {e}")
             raise e

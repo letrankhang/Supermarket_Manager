@@ -5,8 +5,13 @@ from datetime import datetime, time, timedelta
 from typing import List
 from src.entities.sales_invoice import SalesInvoice
 from src.dtos.DashboardDTO import RecentTransactionDTO, DashboardDTO
+from src.converter.POSConverter import PAYMENT_METHOD_MAP
 
 logger = logging.getLogger(__name__)
+
+# Đảo ngược bảng của POS để dùng chung một bộ nhãn: "Cash" -> "Tiền mặt", ...
+# Lấy từ POSConverter thay vì gõ lại, để đổi nhãn ở POS thì Dashboard đổi theo.
+NHAN_THANH_TOAN = {ma: nhan for nhan, ma in PAYMENT_METHOD_MAP.items()}
 
 
 class DashboardConverter:
@@ -65,13 +70,16 @@ class DashboardConverter:
         invoice_code = f"#INV-{invoice_id:03d}"
         formatted_time = cls.format_invoice_time(invoice.invoice_date)
         final_total = float(invoice.final_total) if invoice.final_total is not None else 0.0
+        # Hóa đơn cũ có thể để trống payment_method, mặc định coi như tiền mặt
+        payment_method = NHAN_THANH_TOAN.get(invoice.payment_method, "Tiền mặt")
 
         return RecentTransactionDTO(
             invoice_id=invoice_id,
             invoice_code=invoice_code,
             invoice_date=invoice.invoice_date,
             formatted_time=formatted_time,
-            final_total=final_total
+            final_total=final_total,
+            payment_method=payment_method
         )
 
     @classmethod

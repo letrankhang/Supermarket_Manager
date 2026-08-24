@@ -1,12 +1,3 @@
-"""src/services/impl/CustomerServiceImpl.py
-
-Nghiệp vụ tìm kiếm khách hàng cho màn hình POS.
-
-Việc đổi Entity sang DTO phải làm NGAY TRONG session. Ra khỏi khối
-`with` là session đã đóng, đọc thuộc tính của entity sẽ ném
-DetachedInstanceError.
-"""
-
 import logging
 from typing import List, Optional
 
@@ -18,9 +9,7 @@ from src.services.CustomerService import CustomerService
 
 logger = logging.getLogger(__name__)
 
-# Giới hạn số khách nạp mỗi lần để dialog không đơ khi bảng lớn
 GIOI_HAN_KET_QUA = 50
-
 
 class CustomerServiceImpl(CustomerService):
 
@@ -36,7 +25,6 @@ class CustomerServiceImpl(CustomerService):
         return danh_sach
 
     def _to_dto(self, customer: Customer) -> CustomerDTO:
-        """Đổi entity Customer thành CustomerDTO, chỉ giữ 3 trường cần dùng."""
         return CustomerDTO(
             customer_id=customer.customer_id,
             full_name=customer.full_name or "",

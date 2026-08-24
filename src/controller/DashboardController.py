@@ -3,11 +3,12 @@ import math
 from datetime import datetime
 from typing import List, Optional
 
-from PyQt6 import QtCore, QtGui, QtWidgets
-from PyQt6.QtWidgets import (QWidget, QVBoxLayout, QHBoxLayout, QLabel, QTableWidget,
-                             QTableWidgetItem, QHeaderView, QAbstractItemView)
-from PyQt6.QtCore import QEvent, QObject, QThread, pyqtSignal, Qt, QRectF
-from PyQt6.QtGui import QPainter, QColor, QFont, QPen, QLinearGradient, QPixmap
+from PySide6 import QtCore, QtGui, QtWidgets
+from PySide6.QtWidgets import (QWidget, QVBoxLayout, QHBoxLayout, QLabel, QTableWidget,
+                             QTableWidgetItem, QHeaderView, QAbstractItemView,
+                             QAbstractScrollArea)
+from PySide6.QtCore import QEvent, QObject, QThread, Signal, Qt, QRectF
+from PySide6.QtGui import QPainter, QColor, QFont, QPen, QLinearGradient, QPixmap
 
 import qtawesome as qta
 
@@ -30,10 +31,21 @@ ICON_BADGE_TEXT_GAP = 10
 # Phải khớp với minimumSize/maximumSize của frame_18 trong dashboard.ui.
 TITLE_BAR_HEIGHT = 32
 
+# Độ rộng cố định của 2 cột trong bảng giao dịch gần đây.
+# Tổng bề ngang bảng là cố định (bằng khổ card), nên cột "Thời gian" giãn
+# lấy phần dư: 2 số này càng lớn thì cột thời gian càng hẹp lại.
+DO_RONG_COT_MA_HOA_DON = 107
+DO_RONG_COT_TONG_TIEN = 96
+
+# Chiều cao cố định của mỗi dòng trong bảng giao dịch gần đây.
+# Phải đặt cứng thay vì cho dòng giãn đầy bảng, nếu không dữ liệu nhiều
+# sẽ bị bóp dẹp lại thay vì tràn ra thành thanh cuộn.
+CHIEU_CAO_DONG_GIAO_DICH = 42
+
 
 class DashboardWorker(QThread):
-    data_fetched = pyqtSignal(DashboardDTO)
-    error_occurred = pyqtSignal(str)
+    data_fetched = Signal(DashboardDTO)
+    error_occurred = Signal(str)
 
     def __init__(self, low_stock_threshold: int = 10, parent: Optional[QtCore.QObject] = None) -> None:
         super().__init__(parent)
@@ -47,6 +59,26 @@ class DashboardWorker(QThread):
             self.data_fetched.emit(data)
         except Exception as e:
             logger.exception("Error occurred in DashboardWorker thread: %s", e)
+            self.error_occurred.emit(str(e))
+
+
+class WeeklyRevenueWorker(QThread):
+    """Lấy doanh thu 4 tuần của một tháng ở luồng nền, tránh treo giao diện."""
+    revenue_fetched = Signal(list)
+    error_occurred = Signal(str)
+
+    def __init__(self, year: int, month: int, parent: Optional[QtCore.QObject] = None) -> None:
+        super().__init__(parent)
+        self.year = year
+        self.month = month
+        self._service = DashboardServiceImpl()
+
+    def run(self) -> None:
+        try:
+            revenue = self._service.get_weekly_revenue(self.year, self.month)
+            self.revenue_fetched.emit(revenue)
+        except Exception as e:
+            logger.exception("Lỗi khi lấy doanh thu tuần ở luồng nền: %s", e)
             self.error_occurred.emit(str(e))
 
 
@@ -157,13 +189,15 @@ class DashboardController(QWidget, Ui_Form):
     """Điều khiển màn hình Dashboard: dựng giao diện, tải dữ liệu nền và vẽ đồ họa."""
 
     # Phát khi bấm một ô thao tác nhanh, kèm mã hành động
-    quick_action_requested = pyqtSignal(str)
+    quick_action_requested = Signal(str)
 
     def __init__(self, parent: Optional[QWidget] = None) -> None:
         super().__init__(parent)
         self.setupUi(self)
         
         self.chart_widget: Optional[DashboardChartWidget] = None
+        self._revenue_worker: Optional[WeeklyRevenueWorker] = None
+        self._thang_dang_chon: int = datetime.now().month
         self.table_widget: Optional[QTableWidget] = None
         self.worker: Optional[DashboardWorker] = None
 
@@ -173,7 +207,6 @@ class DashboardController(QWidget, Ui_Form):
         self._bao_khi_tai_xong = False
 
         self._setup_custom_ui()
-        self._show_today()
         self._setup_card_icons()
         self._setup_quick_actions()
         self._setup_connections()
@@ -200,8 +233,8 @@ class DashboardController(QWidget, Ui_Form):
 
         self.table_widget = QTableWidget(self)
         self.table_widget.setObjectName("tblRecentTransactions")
-        self.table_widget.setColumnCount(3)
-        self.table_widget.setHorizontalHeaderLabels(["Mã hóa đơn", "Thời gian", "Tổng tiền"])
+        self.table_widget.setColumnCount(4)
+        self.table_widget.setHorizontalHeaderLabels(["Mã hóa đơn", "Thời gian", "Thanh toán", "Tổng tiền"])
         
         # Bảng chỉ để xem: không sửa, không chọn, không nhận focus
         self.table_widget.verticalHeader().setVisible(False)
@@ -210,15 +243,30 @@ class DashboardController(QWidget, Ui_Form):
         self.table_widget.setSelectionMode(QAbstractItemView.SelectionMode.NoSelection)
         self.table_widget.setFocusPolicy(Qt.FocusPolicy.NoFocus)
 
-        self.table_widget.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeMode.Stretch)
-        self.table_widget.verticalHeader().setSectionResizeMode(QHeaderView.ResizeMode.Stretch)
-        
-        table_layout.addWidget(self.table_widget)
+        # Chia độ rộng cột: 3 cột co vừa nội dung, riêng cột "Thời gian" giãn lấy
+        # phần dư của bảng. Không cho cột "Thanh toán" giãn vì nó chỉ cần đủ chỗ
+        # cho chữ dài nhất là "Chuyển khoản", giãn thêm thì trông thừa thãi.
+        header = self.table_widget.horizontalHeader()
+        # "Mã hóa đơn" và "Tổng tiền" đặt cứng theo hằng số ở đầu file.
+        # "Thanh toán" co vừa nội dung (đủ chỗ cho chữ dài nhất "Chuyển khoản").
+        # "Thời gian" giãn để nuốt phần bề ngang còn lại của bảng.
+        header.setSectionResizeMode(0, QHeaderView.ResizeMode.Fixed)
+        self.table_widget.setColumnWidth(0, DO_RONG_COT_MA_HOA_DON)
+        header.setSectionResizeMode(1, QHeaderView.ResizeMode.Stretch)
+        header.setSectionResizeMode(2, QHeaderView.ResizeMode.ResizeToContents)
+        header.setSectionResizeMode(3, QHeaderView.ResizeMode.Fixed)
+        self.table_widget.setColumnWidth(3, DO_RONG_COT_TONG_TIEN)
 
-    def _show_today(self) -> None:
-        """Ghi ngày hôm nay lên tiêu đề, đè ngày mẫu trong file .ui để không hiện ngày cũ."""
-        today = datetime.now()
-        self.label_2.setText(f"Hôm nay, ngày {today.day} tháng {today.month} năm {today.year}")
+        # Dòng cao cố định để bảng tràn ra thành thanh cuộn dọc khi nhiều giao dịch.
+        # Kiểu dáng thanh cuộn nằm trong QSS QScrollBar của dashboard.ui, dùng chung với pos.ui.
+        self.table_widget.verticalHeader().setSectionResizeMode(QHeaderView.ResizeMode.Fixed)
+        self.table_widget.verticalHeader().setDefaultSectionSize(CHIEU_CAO_DONG_GIAO_DICH)
+        self.table_widget.setSizeAdjustPolicy(QAbstractScrollArea.SizeAdjustPolicy.AdjustIgnored)
+        self.table_widget.setVerticalScrollMode(QAbstractItemView.ScrollMode.ScrollPerPixel)
+        self.table_widget.setVerticalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAsNeeded)
+        self.table_widget.setHorizontalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
+
+        table_layout.addWidget(self.table_widget)
 
     def _setup_card_icons(self) -> None:
         """Gắn icon Font Awesome trước tiêu đề của 4 thẻ thống kê."""
@@ -292,7 +340,8 @@ class DashboardController(QWidget, Ui_Form):
         """Vẽ nội dung cho một ô thao tác nhanh."""
         tile_layout = frame.layout() or QVBoxLayout(frame)
         tile_layout.setContentsMargins(8, 10, 8, 10)
-        tile_layout.setSpacing(6)
+
+        tile_layout.setSpacing(5)
 
         icon_label = QLabel(frame)
         icon_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
@@ -306,8 +355,10 @@ class DashboardController(QWidget, Ui_Form):
         # Kiểu chữ lấy từ QSS #lblQuickActionCaption trong dashboard.ui
         caption_label.setObjectName("lblQuickActionCaption")
 
+        tile_layout.addStretch()
         tile_layout.addWidget(icon_label)
         tile_layout.addWidget(caption_label)
+        tile_layout.addStretch()
 
     def eventFilter(self, source: QObject, event: QEvent) -> bool:
         """Biến cú click lên ô thao tác nhanh thành tín hiệu quick_action_requested."""
@@ -320,6 +371,54 @@ class DashboardController(QWidget, Ui_Form):
         """Nối các tín hiệu tương tác của màn hình."""
         self._setup_refresh_button()
         self.pushButton.clicked.connect(self._on_refresh_clicked)
+        self._setup_month_selector()
+
+    def _setup_month_selector(self) -> None:
+        """Đưa ô chọn tháng về tháng hiện tại và nối sự kiện đổi tháng.
+
+        Trước đây ô này chỉ nằm trên giao diện chứ không nối gì, luôn hiện
+        "Tháng 1" trong khi biểu đồ vẽ theo tháng hiện tại.
+        """
+        thang_hien_tai = datetime.now().month
+
+        # Chặn tín hiệu lúc đặt giá trị đầu để không nạp dữ liệu thừa một lần
+        self.comboBox.blockSignals(True)
+        self.comboBox.setCurrentIndex(thang_hien_tai - 1)
+        self.comboBox.blockSignals(False)
+
+        self._thang_dang_chon = thang_hien_tai
+        self.comboBox.currentIndexChanged.connect(self._on_month_changed)
+
+    def _on_month_changed(self, index: int) -> None:
+        """Đổi tháng thì vẽ lại biểu đồ doanh thu theo tháng đó."""
+        thang = index + 1
+        if thang < 1 or thang > 12:
+            return
+
+        self._thang_dang_chon = thang
+        self._load_weekly_revenue(datetime.now().year, thang)
+
+    def _load_weekly_revenue(self, year: int, month: int) -> None:
+        """Chạy luồng nền lấy doanh thu 4 tuần của tháng được chọn."""
+        if self._revenue_worker is not None and self._revenue_worker.isRunning():
+            return
+
+        self.comboBox.setEnabled(False)
+
+        self._revenue_worker = WeeklyRevenueWorker(year, month, self)
+        self._revenue_worker.revenue_fetched.connect(self._on_weekly_revenue_fetched)
+        self._revenue_worker.error_occurred.connect(self._on_weekly_revenue_error)
+        self._revenue_worker.finished.connect(lambda: self.comboBox.setEnabled(True))
+        self._revenue_worker.start()
+
+    def _on_weekly_revenue_fetched(self, weekly_revenue: list) -> None:
+        if self.chart_widget:
+            self.chart_widget.set_data(weekly_revenue)
+
+    def _on_weekly_revenue_error(self, message: str) -> None:
+        logger.error("Không tải được doanh thu theo tháng: %s", message)
+        if self.chart_widget:
+            self.chart_widget.set_data([0.0, 0.0, 0.0, 0.0])
 
     def _setup_refresh_button(self) -> None:
         """Gắn icon vòng xoay vào nút Tải lại dữ liệu."""
@@ -359,7 +458,6 @@ class DashboardController(QWidget, Ui_Form):
         """Đổ dữ liệu lấy được lên các thẻ, biểu đồ và bảng giao dịch."""
         logger.info("Dashboard stats successfully received. Rendering UI elements...")
 
-        self._show_today()
 
         # 1. Doanh thu hôm nay
         revenue_str = f"{data.today_revenue:,.0f} đ"
@@ -384,8 +482,13 @@ class DashboardController(QWidget, Ui_Form):
         self._format_growth_label(self.label_15, data.customer_growth_rate)
 
         # 5. Biểu đồ doanh thu theo tuần
-        if self.chart_widget:
-            self.chart_widget.set_data(data.weekly_revenue)
+        # DashboardDTO luôn trả doanh thu của tháng hiện tại. Nếu người dùng
+        # đang xem tháng khác thì giữ nguyên lựa chọn đó, nạp lại đúng tháng ấy.
+        if self._thang_dang_chon == datetime.now().month:
+            if self.chart_widget:
+                self.chart_widget.set_data(data.weekly_revenue)
+        else:
+            self._load_weekly_revenue(datetime.now().year, self._thang_dang_chon)
 
         # 6. Bảng giao dịch gần đây
         if self.table_widget:
@@ -393,17 +496,23 @@ class DashboardController(QWidget, Ui_Form):
             for idx, tx in enumerate(data.recent_transactions):
                 self.table_widget.insertRow(idx)
                 
+                # Mã hóa đơn căn giữa cho thẳng hàng với tiêu đề cột phía trên
                 code_item = QTableWidgetItem(tx.invoice_code)
-                code_item.setTextAlignment(Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignVCenter)
+                code_item.setTextAlignment(Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignVCenter)
                 self.table_widget.setItem(idx, 0, code_item)
                 
                 time_item = QTableWidgetItem(tx.formatted_time)
                 time_item.setTextAlignment(Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignVCenter)
                 self.table_widget.setItem(idx, 1, time_item)
                 
+                # Hình thức thanh toán: căn giữa như cột thời gian
+                payment_item = QTableWidgetItem(tx.payment_method)
+                payment_item.setTextAlignment(Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignVCenter)
+                self.table_widget.setItem(idx, 2, payment_item)
+
                 total_item = QTableWidgetItem(f"{tx.final_total:,.0f} đ")
                 total_item.setTextAlignment(Qt.AlignmentFlag.AlignRight | Qt.AlignmentFlag.AlignVCenter)
-                self.table_widget.setItem(idx, 2, total_item)
+                self.table_widget.setItem(idx, 3, total_item)
 
         # Đặt cuối cùng: hộp thoại chặn luồng giao diện, hiện sớm thì người dùng
         # bấm OK xong mới thấy số liệu mới nhảy vào
