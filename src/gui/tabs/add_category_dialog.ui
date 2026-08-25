@@ -1,0 +1,315 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>CategoryManagerDialog</class>
+ <widget class="QDialog" name="CategoryManagerDialog">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>560</width>
+    <height>620</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Quản Lý Danh Mục</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">QDialog { background-color: #ffffff; }</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout_root">
+   <property name="spacing">
+    <number>0</number>
+   </property>
+   <property name="leftMargin">
+    <number>0</number>
+   </property>
+   <property name="topMargin">
+    <number>0</number>
+   </property>
+   <property name="rightMargin">
+    <number>0</number>
+   </property>
+   <property name="bottomMargin">
+    <number>0</number>
+   </property>
+   <item>
+    <widget class="QWidget" name="widgetBody" native="true">
+     <layout class="QVBoxLayout" name="verticalLayout_body">
+      <property name="spacing">
+       <number>14</number>
+      </property>
+      <property name="leftMargin">
+       <number>24</number>
+      </property>
+      <property name="topMargin">
+       <number>18</number>
+      </property>
+      <property name="rightMargin">
+       <number>24</number>
+      </property>
+      <property name="bottomMargin">
+       <number>20</number>
+      </property>
+      <item>
+       <widget class="QLabel" name="lblHeaderTitle">
+        <property name="font">
+         <font>
+          <pointsize>14</pointsize>
+          <weight>75</weight>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">color: #1e3a5f;</string>
+        </property>
+        <property name="text">
+         <string>QUẢN LÝ DANH MỤC SẢN PHẨM</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QTableWidget" name="tblCategories">
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>200</height>
+         </size>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">QTableWidget { border: 1px solid #e2e8f0; border-radius: 6px; gridline-color: #f1f5f9; }
+QHeaderView::section { background-color: #f8fafc; color: #64748b; font-weight: bold; border: none; padding: 6px; }</string>
+        </property>
+        <property name="editTriggers">
+         <set>QAbstractItemView::NoEditTriggers</set>
+        </property>
+        <property name="alternatingRowColors">
+         <bool>true</bool>
+        </property>
+        <property name="selectionBehavior">
+         <enum>QAbstractItemView::SelectRows</enum>
+        </property>
+        <column>
+         <property name="text">
+          <string>Tên danh mục</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string>Mô tả</string>
+         </property>
+        </column>
+       </widget>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_rowActions">
+        <item>
+         <spacer name="horizontalSpacer_rowActions">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>0</width>
+            <height>0</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item>
+         <widget class="QPushButton" name="btnEditCategory">
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
+          <property name="cursor">
+           <cursorShape>PointingHandCursor</cursorShape>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">QPushButton { background-color: #e2e8f0; color: #334155; border-radius: 6px; padding: 6px 14px; font-weight: bold; }
+QPushButton:hover { background-color: #cbd5e1; }
+QPushButton:disabled { color: #94a3b8; }</string>
+          </property>
+          <property name="text">
+           <string>✎  Sửa</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="btnDeleteCategory">
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
+          <property name="cursor">
+           <cursorShape>PointingHandCursor</cursorShape>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">QPushButton { background-color: #fee2e2; color: #b91c1c; border-radius: 6px; padding: 6px 14px; font-weight: bold; }
+QPushButton:hover { background-color: #fecaca; }
+QPushButton:disabled { color: #94a3b8; background-color: #e2e8f0; }</string>
+          </property>
+          <property name="text">
+           <string>🗑  Xóa</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <widget class="Line" name="lineSeparator">
+        <property name="frameShape">
+         <enum>QFrame::HLine</enum>
+        </property>
+        <property name="frameShadow">
+         <enum>QFrame::Sunken</enum>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="lblFormTitle">
+        <property name="font">
+         <font>
+          <pointsize>10</pointsize>
+          <weight>75</weight>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">color: #1e293b;</string>
+        </property>
+        <property name="text">
+         <string>Thêm danh mục mới</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <layout class="QFormLayout" name="formLayout">
+        <property name="verticalSpacing">
+         <number>10</number>
+        </property>
+        <item row="0" column="0">
+         <widget class="QLabel" name="lblCategoryName">
+          <property name="font">
+           <font>
+            <pointsize>10</pointsize>
+           </font>
+          </property>
+          <property name="text">
+           <string>Tên danh mục:</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="1">
+         <widget class="QLineEdit" name="txtCategoryName">
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>32</height>
+           </size>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">QLineEdit { border: 1px solid #cbd5e1; border-radius: 6px; padding: 4px 8px; }
+QLineEdit:focus { border: 1px solid #1d4ed8; }</string>
+          </property>
+          <property name="placeholderText">
+           <string>Ví dụ: Đồ uống, Bánh kẹo...</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="0">
+         <widget class="QLabel" name="lblDescription">
+          <property name="font">
+           <font>
+            <pointsize>10</pointsize>
+           </font>
+          </property>
+          <property name="text">
+           <string>Mô tả danh mục:</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="1">
+         <widget class="QTextEdit" name="txtDescription">
+          <property name="maximumSize">
+           <size>
+            <width>16777215</width>
+            <height>90</height>
+           </size>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">QTextEdit { border: 1px solid #cbd5e1; border-radius: 6px; padding: 4px 8px; }
+QTextEdit:focus { border: 1px solid #1d4ed8; }</string>
+          </property>
+          <property name="placeholderText">
+           <string>Nhập mô tả danh mục...</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_bottom">
+        <item>
+         <spacer name="horizontalSpacer_bottom">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>0</width>
+            <height>0</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item>
+         <widget class="QPushButton" name="btnCancel">
+          <property name="minimumSize">
+           <size>
+            <width>90</width>
+            <height>36</height>
+           </size>
+          </property>
+          <property name="cursor">
+           <cursorShape>PointingHandCursor</cursorShape>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">QPushButton { background-color: #e2e8f0; color: #334155; border-radius: 6px; font-weight: bold; }
+QPushButton:hover { background-color: #cbd5e1; }</string>
+          </property>
+          <property name="text">
+           <string>HỦY</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="btnSave">
+          <property name="minimumSize">
+           <size>
+            <width>150</width>
+            <height>36</height>
+           </size>
+          </property>
+          <property name="cursor">
+           <cursorShape>PointingHandCursor</cursorShape>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">QPushButton { background-color: #1e3a8a; color: white; border-radius: 6px; font-weight: bold; }
+QPushButton:hover { background-color: #1e40af; }</string>
+          </property>
+          <property name="text">
+           <string>LƯU DANH MỤC</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+     </layout>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

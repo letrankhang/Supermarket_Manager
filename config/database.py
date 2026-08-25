@@ -14,6 +14,7 @@ class Database:
     @classmethod
     def _create_mysql_database_if_not_exists(cls, host, port, user, password, db_name):
         import mysql.connector
+        #import mysql.connector
         try:
             connection = mysql.connector.connect(
                 host=host,

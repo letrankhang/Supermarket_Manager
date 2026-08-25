@@ -19,6 +19,8 @@ from src.controller.POSController import POSController
 from src.controller.PersonnelController import PersonnelController
 from src.controller.SupplierController import SupplierController
 from src.controller.HelpCenterController import HelpCenterController
+from src.controller.Productcontroller import ProductController
+from src.controller.Importcontroller import ImportController
 
 logger = logging.getLogger(__name__)
 
@@ -87,6 +89,13 @@ class MainWindowController(QMainWindow, Ui_MainWindow):
         self.help_center_controller = HelpCenterController()
         self.stacked_widget.addWidget(self.help_center_controller)
 
+        # quản lý sp
+        self.product_controller = ProductController(self)
+        self.stacked_widget.addWidget(self.product_controller)
+
+        # nhâp sp
+        self.import_controller = ImportController(self)
+        self.stacked_widget.addWidget(self.import_controller)
 
         self._setup_navigation()
 
@@ -192,13 +201,13 @@ class MainWindowController(QMainWindow, Ui_MainWindow):
         self.btn_help.clicked.connect(self._show_help_center)
         self.btn_pos.clicked.connect(self._show_pos)
 
+        self.btn_products.clicked.connect(self._show_products)
+        self.btn_importing.clicked.connect(self._show_importing)
         # --- BỔ SUNG: Gắn sự kiện click cho nút Cài đặt hệ thống ---
         self.btn_settings.clicked.connect(self._show_settings)
         self.btn_suppliers.clicked.connect(self._show_suppliers)
 
         unimplemented_buttons = [
-            self.btn_products,
-            self.btn_importing,
             self.btn_customers,
             self.btn_analytics,
         ]
@@ -261,6 +270,18 @@ class MainWindowController(QMainWindow, Ui_MainWindow):
         self.logout.show()
         self.close()
 
+    def _show_products(self) -> None:
+        """Hiển thị màn hình Quản lý Sản phẩm và nạp dữ liệu."""
+        self._set_active_nav_button(self.btn_products)
+        self.stacked_widget.setCurrentWidget(self.product_controller)
+        self.product_controller.load_data()
+
+    def _show_importing(self) -> None:
+        """Hiển thị màn hình Nhập hàng và nạp danh sách phiếu nhập."""
+        self._set_active_nav_button(self.btn_importing)
+        self.stacked_widget.setCurrentWidget(self.import_controller)
+        self.import_controller.load_data()
+        
     def _load_user_data(self) -> None:
         if not Session.is_active():
             self.lblUserName.setText("Khách")
