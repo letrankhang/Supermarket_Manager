@@ -2,7 +2,7 @@ import logging
 from decimal import Decimal
 from typing import Dict, List, Optional
 
-from src.dtos.POSDTO import CartItemDTO, CategoryDTO, ProductDTO
+from src.dtos.POSDTO import CartItemDTO, CategoryDTO, InvoiceLineDTO, ProductDTO
 from src.entities.category import Category
 from src.entities.product import Product
 from src.entities.sales_detail import SalesDetail
@@ -17,6 +17,18 @@ PAYMENT_METHOD_MAP: Dict[str, str] = {
 }
 
 DEFAULT_PAYMENT_METHOD: str = "Cash"
+
+# Map ngược từ giá trị lưu trong DB về nhãn tiếng Việt hiển thị trên hóa đơn.
+# Phải khớp với PAYMENT_METHOD_MAP ở trên: app đang quy ước
+# "Thẻ" -> E-Wallet và "Chuyển khoản" -> Banking.
+PAYMENT_METHOD_LABEL_MAP: Dict[str, str] = {
+    "Cash": "Tiền mặt",
+    "Banking": "Chuyển khoản",
+    "E-Wallet": "Thẻ",
+}
+
+CASH_PAYMENT_VALUE: str = "Cash"
+CASH_PAYMENT_LABEL: str = "Tiền mặt"
 
 class POSConverter:
     @staticmethod
@@ -96,3 +108,27 @@ class POSConverter:
     @staticmethod
     def to_invoice_code(invoice_id: int) -> str:
         return f"#INV-{invoice_id:03d}"
+
+    @staticmethod
+    def to_payment_method_label(payment_method_value: str) -> str:
+        cleaned = (payment_method_value or "").strip()
+        label = PAYMENT_METHOD_LABEL_MAP.get(cleaned)
+        if label is None:
+            logger.warning(
+                "Không nhận ra phương thức thanh toán '%s' khi in hóa đơn.",
+                payment_method_value
+            )
+            if cleaned:
+                return cleaned
+            return CASH_PAYMENT_LABEL
+        return label
+
+    @staticmethod
+    def to_invoice_line_dto(detail: SalesDetail, product: Product) -> InvoiceLineDTO:
+        return InvoiceLineDTO(
+            product_id=detail.product_id,
+            product_name=product.product_name or "",
+            unit=product.unit or "",
+            quantity=int(detail.quantity or 0),
+            unit_price=POSConverter.to_decimal(detail.unit_price)
+        )

@@ -1,0 +1,441 @@
+<?xml version="1.0" ?>
+<ui version="4.0">
+ <class>CashPaymentDialog</class>
+ <widget class="QDialog" name="CashPaymentDialog">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>420</width>
+    <height>360</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Thanh toán tiền mặt</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">QDialog {
+    background-color: #ffffff;
+}
+QLabel#lblTitle {
+    color: #0f172a;
+    font-size: 16px;
+    font-weight: 700;
+}
+QLabel#lblSubTitle {
+    color: #64748b;
+    font-size: 12px;
+}
+QFrame#frameTotal {
+    background-color: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+}
+QLabel#lblTotalCaption {
+    color: #64748b;
+    font-size: 12px;
+}
+QLabel#lblTotalValue {
+    color: #0f172a;
+    font-size: 20px;
+    font-weight: 700;
+}
+QLabel#lblCashCaption {
+    color: #334155;
+    font-size: 13px;
+    font-weight: 600;
+}
+QLineEdit#txtCashReceived {
+    background-color: #ffffff;
+    color: #0f172a;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    padding: 10px 12px;
+    font-size: 18px;
+    font-weight: 700;
+    selection-background-color: #2563eb;
+    selection-color: #ffffff;
+}
+QLineEdit#txtCashReceived:hover {
+    border: 1px solid #94a3b8;
+}
+QLineEdit#txtCashReceived:focus {
+    border: 1px solid #2563eb;
+}
+QPushButton[class=&quot;quickAmount&quot;] {
+    background-color: #f8fafc;
+    color: #334155;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    padding: 6px 4px;
+    font-size: 12px;
+    font-weight: 600;
+}
+QPushButton[class=&quot;quickAmount&quot;]:hover {
+    background-color: #eff6ff;
+    border: 1px solid #93c5fd;
+    color: #1d4ed8;
+}
+QPushButton[class=&quot;quickAmount&quot;]:pressed {
+    background-color: #dbeafe;
+}
+QFrame#frameChange {
+    background-color: #f0fdf4;
+    border: 1px solid #bbf7d0;
+    border-radius: 10px;
+}
+QLabel#lblChangeCaption {
+    color: #15803d;
+    font-size: 12px;
+}
+QLabel#lblChangeValue {
+    color: #15803d;
+    font-size: 20px;
+    font-weight: 700;
+}
+QLabel#lblError {
+    color: #dc2626;
+    font-size: 12px;
+    font-weight: 600;
+}
+QPushButton#btnConfirm {
+    background-color: #2563eb;
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    padding: 9px 18px;
+    font-size: 14px;
+    font-weight: 600;
+}
+QPushButton#btnConfirm:hover {
+    background-color: #1d4ed8;
+}
+QPushButton#btnConfirm:pressed {
+    background-color: #1e40af;
+}
+QPushButton#btnConfirm:disabled {
+    background-color: #cbd5e1;
+    color: #94a3b8;
+}
+QPushButton#btnCancel {
+    background-color: #f8fafc;
+    color: #475569;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    padding: 9px 18px;
+    font-size: 14px;
+    font-weight: 500;
+}
+QPushButton#btnCancel:hover {
+    background-color: #f1f5f9;
+    border: 1px solid #94a3b8;
+    color: #334155;
+}
+QPushButton#btnCancel:pressed {
+    background-color: #e2e8f0;
+}</string>
+  </property>
+  <layout class="QVBoxLayout" name="mainLayout">
+   <property name="sizeConstraint">
+    <enum>QLayout::SizeConstraint::SetMinimumSize</enum>
+   </property>
+   <property name="spacing">
+    <number>12</number>
+   </property>
+   <property name="leftMargin">
+    <number>20</number>
+   </property>
+   <property name="topMargin">
+    <number>16</number>
+   </property>
+   <property name="rightMargin">
+    <number>20</number>
+   </property>
+   <property name="bottomMargin">
+    <number>16</number>
+   </property>
+   <item>
+    <layout class="QVBoxLayout" name="headerLayout">
+     <property name="spacing">
+      <number>2</number>
+     </property>
+     <property name="leftMargin">
+      <number>0</number>
+     </property>
+     <property name="topMargin">
+      <number>0</number>
+     </property>
+     <property name="rightMargin">
+      <number>0</number>
+     </property>
+     <property name="bottomMargin">
+      <number>0</number>
+     </property>
+     <item>
+      <widget class="QLabel" name="lblTitle">
+       <property name="text">
+        <string>Thanh toán tiền mặt</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLabel" name="lblSubTitle">
+       <property name="text">
+        <string>Nhập số tiền khách đưa để tính tiền thối lại</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <widget class="QFrame" name="frameTotal">
+     <property name="frameShape">
+      <enum>QFrame::Shape::NoFrame</enum>
+     </property>
+     <layout class="QHBoxLayout" name="totalLayout">
+      <property name="spacing">
+       <number>10</number>
+      </property>
+      <property name="leftMargin">
+       <number>14</number>
+      </property>
+      <property name="topMargin">
+       <number>10</number>
+      </property>
+      <property name="rightMargin">
+       <number>14</number>
+      </property>
+      <property name="bottomMargin">
+       <number>10</number>
+      </property>
+      <item>
+       <widget class="QLabel" name="lblTotalCaption">
+        <property name="text">
+         <string>Tổng thanh toán</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <spacer name="totalSpacer">
+        <property name="orientation">
+         <enum>Qt::Orientation::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>40</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item>
+       <widget class="QLabel" name="lblTotalValue">
+        <property name="text">
+         <string>0 đ</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QLabel" name="lblCashCaption">
+     <property name="text">
+      <string>Tiền khách đưa:</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QLineEdit" name="txtCashReceived">
+     <property name="alignment">
+      <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
+     </property>
+     <property name="placeholderText">
+      <string>0</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="quickAmountLayout">
+     <property name="spacing">
+      <number>6</number>
+     </property>
+     <item>
+      <widget class="QPushButton" name="btnQuick50">
+       <property name="cursor">
+        <cursorShape>PointingHandCursor</cursorShape>
+       </property>
+       <property name="text">
+        <string>50.000</string>
+       </property>
+       <property name="class" stdset="0">
+        <string>quickAmount</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="btnQuick100">
+       <property name="cursor">
+        <cursorShape>PointingHandCursor</cursorShape>
+       </property>
+       <property name="text">
+        <string>100.000</string>
+       </property>
+       <property name="class" stdset="0">
+        <string>quickAmount</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="btnQuick200">
+       <property name="cursor">
+        <cursorShape>PointingHandCursor</cursorShape>
+       </property>
+       <property name="text">
+        <string>200.000</string>
+       </property>
+       <property name="class" stdset="0">
+        <string>quickAmount</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="btnQuick500">
+       <property name="cursor">
+        <cursorShape>PointingHandCursor</cursorShape>
+       </property>
+       <property name="text">
+        <string>500.000</string>
+       </property>
+       <property name="class" stdset="0">
+        <string>quickAmount</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="btnExactAmount">
+       <property name="cursor">
+        <cursorShape>PointingHandCursor</cursorShape>
+       </property>
+       <property name="text">
+        <string>Vừa đủ</string>
+       </property>
+       <property name="class" stdset="0">
+        <string>quickAmount</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <widget class="QFrame" name="frameChange">
+     <property name="frameShape">
+      <enum>QFrame::Shape::NoFrame</enum>
+     </property>
+     <layout class="QHBoxLayout" name="changeLayout">
+      <property name="spacing">
+       <number>10</number>
+      </property>
+      <property name="leftMargin">
+       <number>14</number>
+      </property>
+      <property name="topMargin">
+       <number>10</number>
+      </property>
+      <property name="rightMargin">
+       <number>14</number>
+      </property>
+      <property name="bottomMargin">
+       <number>10</number>
+      </property>
+      <item>
+       <widget class="QLabel" name="lblChangeCaption">
+        <property name="text">
+         <string>Tiền thối lại</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <spacer name="changeSpacer">
+        <property name="orientation">
+         <enum>Qt::Orientation::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>40</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item>
+       <widget class="QLabel" name="lblChangeValue">
+        <property name="text">
+         <string>0 đ</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QLabel" name="lblError">
+     <property name="text">
+      <string/>
+     </property>
+     <property name="wordWrap">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="actionLayout">
+     <property name="spacing">
+      <number>10</number>
+     </property>
+     <item>
+      <spacer name="actionSpacer">
+       <property name="orientation">
+        <enum>Qt::Orientation::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <widget class="QPushButton" name="btnCancel">
+       <property name="cursor">
+        <cursorShape>PointingHandCursor</cursorShape>
+       </property>
+       <property name="text">
+        <string>Hủy</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="btnConfirm">
+       <property name="cursor">
+        <cursorShape>PointingHandCursor</cursorShape>
+       </property>
+       <property name="text">
+        <string>Xác nhận thanh toán</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

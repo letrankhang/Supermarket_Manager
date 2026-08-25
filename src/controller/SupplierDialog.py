@@ -1,5 +1,5 @@
-from PyQt6 import QtWidgets
-from gui.supplier_dialog_ui import Ui_SupplierDialog
+from PySide6 import QtWidgets
+from src.gui.supplier_dialog_ui import Ui_SupplierDialog
 
 
 class SupplierDialog(QtWidgets.QDialog):

@@ -103,6 +103,102 @@ QPushButton#btnCancel {
 }
 QPushButton#btnCancel:hover {
 	background-color: #e2e8f0;
+}
+
+/* =========================================================
+   Thanh cuộn - giữ giống hệt pos.ui cho đồng bộ toàn app
+   Tay kéo bo tròn #cbd5e1, hover #94a3b8, rộng 10px, bỏ mũi tên.
+   Nếu đổi ở đây thì nhớ sửa cả pos.ui cho khớp.
+   ========================================================= */
+
+
+/* ===== Vertical scrollbar ===== */
+
+QScrollBar:vertical {
+    background-color: #f8fafc;
+    width: 10px;
+    margin: 0px;
+    border: none;
+}
+
+QScrollBar::handle:vertical {
+    background-color: #cbd5e1;
+    min-height: 35px;
+    border-radius: 5px;
+}
+
+QScrollBar::handle:vertical:hover {
+    background-color: #94a3b8;
+}
+
+QScrollBar::handle:vertical:pressed {
+    background-color: #64748b;
+}
+
+QScrollBar::add-line:vertical,
+QScrollBar::sub-line:vertical {
+    height: 0px;
+    width: 0px;
+    background: transparent;
+    border: none;
+}
+
+QScrollBar::up-arrow:vertical,
+QScrollBar::down-arrow:vertical {
+    width: 0px;
+    height: 0px;
+    background: transparent;
+    border: none;
+}
+
+QScrollBar::add-page:vertical,
+QScrollBar::sub-page:vertical {
+    background: transparent;
+}
+
+
+/* ===== Horizontal scrollbar ===== */
+
+QScrollBar:horizontal {
+    background-color: #f8fafc;
+    height: 10px;
+    margin: 0px;
+    border: none;
+}
+
+QScrollBar::handle:horizontal {
+    background-color: #cbd5e1;
+    min-width: 35px;
+    border-radius: 5px;
+}
+
+QScrollBar::handle:horizontal:hover {
+    background-color: #94a3b8;
+}
+
+QScrollBar::handle:horizontal:pressed {
+    background-color: #64748b;
+}
+
+QScrollBar::add-line:horizontal,
+QScrollBar::sub-line:horizontal {
+    width: 0px;
+    height: 0px;
+    background: transparent;
+    border: none;
+}
+
+QScrollBar::left-arrow:horizontal,
+QScrollBar::right-arrow:horizontal {
+    width: 0px;
+    height: 0px;
+    background: transparent;
+    border: none;
+}
+
+QScrollBar::add-page:horizontal,
+QScrollBar::sub-page:horizontal {
+    background: transparent;
 }</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">

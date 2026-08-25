@@ -1,19 +1,17 @@
 import logging
 
-from PyQt6.QtWidgets import QMainWindow, QMessageBox
+from PySide6.QtWidgets import QMainWindow, QMessageBox
 
 from src.controller.PasswordResetWorker import THONG_BAO_LOI_CHUNG
 from src.gui.new_password_ui import Ui_MainWindow
 from src.services.PasswordResetService import PasswordResetError
 from src.services.impl.PasswordResetServiceImpl import PasswordResetServiceImpl
-from src.utils.FormIcon import hien_thi_logo, them_icon_trai, them_nut_an_hien
+from src.utils.FormIcon import show_logo, add_left_icon, add_toggle_password_button
 
 logger = logging.getLogger(__name__)
 
 
 class NewPasswordController(QMainWindow, Ui_MainWindow):
-    """Bước 3: đặt mật khẩu mới. Bắt buộc kèm vé lấy được ở bước xác thực mã."""
-
     def __init__(self, email: str, reset_token: str) -> None:
         super().__init__()
         self._email = email
@@ -25,13 +23,12 @@ class NewPasswordController(QMainWindow, Ui_MainWindow):
         self._setup_events()
 
     def _setup_ui(self) -> None:
-        """Gắn logo, icon ổ khóa và nút con mắt. Màu sắc nằm trong new_password.ui."""
-        hien_thi_logo(self.lblLogo)
 
-        # Chế độ ẩn mật khẩu đã đặt sẵn trong new_password.ui
+        show_logo(self.lblLogo)
+
         for o_nhap in (self.lineEdit_newpassword, self.lineEdit_againpassword):
-            them_icon_trai(o_nhap, "lock.png")
-            them_nut_an_hien(o_nhap)
+            add_left_icon(o_nhap, "lock.png")
+            add_toggle_password_button(o_nhap)
 
     def _setup_events(self) -> None:
         self.pushButton_accept.clicked.connect(self.handle_newpassword)
@@ -46,7 +43,6 @@ class NewPasswordController(QMainWindow, Ui_MainWindow):
         self.close()
 
     def handle_newpassword(self) -> None:
-        # Không cắt khoảng trắng: dấu cách đầu/cuối cũng là một phần của mật khẩu
         new_password = self.lineEdit_newpassword.text()
         again_password = self.lineEdit_againpassword.text()
 
@@ -61,7 +57,6 @@ class NewPasswordController(QMainWindow, Ui_MainWindow):
         try:
             self._service.reset_password(self._email, self._reset_token, new_password)
         except PasswordResetError as e:
-            # Lỗi nghiệp vụ: mật khẩu quá yếu, vé hết hạn...
             QMessageBox.warning(self, "Không đổi được mật khẩu", str(e))
             return
         except Exception:

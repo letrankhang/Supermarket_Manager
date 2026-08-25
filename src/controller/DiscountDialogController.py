@@ -1,5 +1,5 @@
 from typing import Optional
-from PyQt6.QtWidgets import QDialog, QWidget
+from PySide6.QtWidgets import QDialog, QWidget
 
 from src.gui.discount_dialog_ui import Ui_DiscountDialog
 

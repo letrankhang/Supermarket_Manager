@@ -14,9 +14,7 @@
    <string>Form</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">/* ===== General ===== */
-
-QWidget {
+   <string notr="true">QWidget {
     background-color: #ffffff;
 }
 
@@ -26,25 +24,21 @@ QLabel {
     color: #0f172a;
 }
 
-
-/* ===== Top bar ===== */
-
 #frame_topbar {
     background-color: #ffffff;
     border-bottom: 1px solid #e2e8f0;
 }
 
-#lblScanCaption {
-    font-size: 15px;
-    font-weight: bold;
+#lblScanSubtitle {
+    color: #6b7280;
+    font-size: 12px;
+    font-weight: normal;
+    margin-top: 4px;
 }
 
 #lblCashierName {
     color: #64748b;
 }
-
-
-/* ===== Search and filters ===== */
 
 #frame_filters {
     background-color: #ffffff;
@@ -63,9 +57,6 @@ QLineEdit {
 QLineEdit:focus {
     border: 1px solid #1d4ed8;
 }
-
-
-/* ===== Category chips ===== */
 
 #CategoryChip {
     background-color: #ffffff;
@@ -87,9 +78,6 @@ QLineEdit:focus {
     color: #ffffff;
     border: 1px solid #1e3a8a;
 }
-
-
-/* ===== Small buttons ===== */
 
 #btnFilter,
 #btnAddCustomer {
@@ -122,16 +110,10 @@ QLineEdit:focus {
     border: 1px solid #dc2626;
 }
 
-
-/* ===== Scroll areas ===== */
-
 QScrollArea {
     background-color: transparent;
     border: none;
 }
-
-
-/* ===== Vertical scrollbar ===== */
 
 QScrollBar:vertical {
     background-color: #f8fafc;
@@ -175,9 +157,6 @@ QScrollBar::sub-page:vertical {
     background: transparent;
 }
 
-
-/* ===== Horizontal scrollbar ===== */
-
 QScrollBar:horizontal {
     background-color: #f8fafc;
     height: 10px;
@@ -219,9 +198,6 @@ QScrollBar::add-page:horizontal,
 QScrollBar::sub-page:horizontal {
     background: transparent;
 }
-
-
-/* ===== Product card ===== */
 
 #ProductCard {
     background-color: #ffffff;
@@ -269,16 +245,10 @@ QScrollBar::sub-page:horizontal {
     background-color: #1e3a8a;
 }
 
-
-/* ===== Shortcuts ===== */
-
 #frame_shortcuts {
     background-color: #ffffff;
     border-top: 1px solid #e2e8f0;
 }
-
-
-/* ===== Order panel ===== */
 
 #frame_order {
     background-color: #ffffff;
@@ -302,9 +272,6 @@ QScrollBar::sub-page:horizontal {
 #lblCartEmpty {
     color: #64748b;
 }
-
-
-/* ===== Cart rows ===== */
 
 #CartRow {
     background-color: #ffffff;
@@ -359,9 +326,6 @@ QScrollBar::sub-page:horizontal {
     color: #dc2626;
 }
 
-
-/* ===== Order summary ===== */
-
 #frame_summary {
     background-color: #ffffff;
     border-top: 1px solid #e2e8f0;
@@ -405,9 +369,6 @@ QScrollBar::sub-page:horizontal {
     color: #1d4ed8;
 }
 
-
-/* ===== Payment methods ===== */
-
 #btnPayCash,
 #btnPayCard,
 #btnPayTransfer {
@@ -433,9 +394,6 @@ QScrollBar::sub-page:horizontal {
     border: 1px solid #1d4ed8;
     color: #1d4ed8;
 }
-
-
-/* ===== Checkout ===== */
 
 #btnCheckout {
     background-color: #1e3a8a;
@@ -463,13 +421,13 @@ QScrollBar::sub-page:horizontal {
     <number>0</number>
    </property>
    <property name="topMargin">
-    <number>0</number>
+    <number>3</number>
    </property>
    <property name="rightMargin">
     <number>0</number>
    </property>
    <property name="bottomMargin">
-    <number>0</number>
+    <number>3</number>
    </property>
    <item>
     <widget class="QWidget" name="widget_catalog" native="true">
@@ -500,13 +458,13 @@ QScrollBar::sub-page:horizontal {
         <property name="minimumSize">
          <size>
           <width>0</width>
-          <height>64</height>
+          <height>76</height>
          </size>
         </property>
         <property name="maximumSize">
          <size>
           <width>16777215</width>
-          <height>64</height>
+          <height>76</height>
          </size>
         </property>
         <property name="frameShape">
@@ -520,11 +478,43 @@ QScrollBar::sub-page:horizontal {
           <number>20</number>
          </property>
          <item>
-          <widget class="QLabel" name="lblScanCaption">
-           <property name="text">
-            <string>Bán hàng</string>
+          <layout class="QGridLayout" name="gridLayout">
+           <property name="leftMargin">
+            <number>0</number>
            </property>
-          </widget>
+           <property name="topMargin">
+            <number>2</number>
+           </property>
+           <property name="rightMargin">
+            <number>0</number>
+           </property>
+           <property name="bottomMargin">
+            <number>6</number>
+           </property>
+           <property name="spacing">
+            <number>0</number>
+           </property>
+           <item row="4" column="0">
+            <widget class="QLabel" name="lblScanSubtitle">
+             <property name="text">
+              <string>Tạo đơn hàng mới và thanh toán nhanh</string>
+             </property>
+            </widget>
+           </item>
+           <item row="3" column="0">
+            <widget class="QLabel" name="lblScanCaption">
+             <property name="font">
+              <font>
+               <pointsize>18</pointsize>
+               <bold>true</bold>
+              </font>
+             </property>
+             <property name="text">
+              <string>Bán hàng</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
          </item>
          <item>
           <spacer name="horizontalSpacer_topbar">
@@ -603,7 +593,7 @@ QScrollBar::sub-page:horizontal {
                </size>
               </property>
               <property name="placeholderText">
-               <string>Tìm sản phẩm theo tên hoặc mã vạch...</string>
+               <string>Tìm kiếm sản phẩm</string>
               </property>
              </widget>
             </item>
@@ -686,7 +676,7 @@ QScrollBar::sub-page:horizontal {
            <x>0</x>
            <y>0</y>
            <width>860</width>
-           <height>630</height>
+           <height>612</height>
           </rect>
          </property>
          <layout class="QGridLayout" name="gridLayout_products">
@@ -951,7 +941,7 @@ QScrollBar::sub-page:horizontal {
            <x>0</x>
            <y>0</y>
            <width>420</width>
-           <height>427</height>
+           <height>421</height>
           </rect>
          </property>
          <layout class="QVBoxLayout" name="verticalLayout_cart">

@@ -1,4 +1,4 @@
-from PyQt6 import QtWidgets, QtCore
+from PySide6 import QtWidgets, QtCore
 import qtawesome as qta
 from src.gui.tabs.personnel_management_ui import Ui_PersonnelManagement
 from src.services.impl.UserServiceImpl import UserServiceImpl
@@ -26,21 +26,31 @@ class PersonnelController:
         return self.view
 
     def load_data(self):
-        keyword = self.ui.txtSearch.text()
+        # --- SỬA 1: Chuẩn bị keyword để tự lọc bằng Python ---
+        keyword = self.ui.txtSearch.text().strip().lower()
         role_filter = self.ui.cboRole.currentText()
         status_filter = self.ui.cboStatus.currentText()
 
-        # Lấy dữ liệu từ database
-        users, total, active, roles = self.service.get_personnel_dashboard(keyword)
+        # --- SỬA 2: Truyền "" để bắt Database trả về TOÀN BỘ nhân sự (không lọc) ---
+        users, total, active, roles = self.service.get_personnel_dashboard("")
 
-        # =========================================================
         # 1. ÉP KIỂU SỐ VÀ SẮP XẾP ID TĂNG DẦN (1, 2, 3...)
-        # =========================================================
         users.sort(key=lambda x: int(x.user_id))
 
-        # Xử lý Lọc (Filter) bằng code Python
+        # --- SỬA 3: Dời phần cập nhật số liệu lên đây, ĐẾM TRÊN DANH SÁCH GỐC (users) ---
+        self.ui.lblTotal.setText(str(len(users)))
+        self.ui.lblActive.setText(str(sum(1 for u in users if u.status == "Active")))
+        self.ui.lblAdminCount.setText(str(roles.get("Admin", 0)))
+        self.ui.lblManagerCount.setText(str(roles.get("Cashier", 0)))
+        self.ui.lblCashierCount.setText(str(roles.get("Warehouse", 0)))
+
+        # Xử lý Lọc (Filter) bằng code Python ĐỂ HIỂN THỊ LÊN BẢNG
         filtered_users = []
         for u in users:
+            # --- SỬA 4: Thêm logic tự lọc theo ô tìm kiếm ---
+            if keyword and keyword not in u.username.lower() and keyword not in u.full_name.lower():
+                continue
+
             if role_filter != "Tất cả chức vụ" and u.role_name != role_filter:
                 continue
 
@@ -53,16 +63,7 @@ class PersonnelController:
             self.ui.tblEmployees.verticalHeader().setDefaultSectionSize(40)  # Chiều cao dòng
             self.ui.tblEmployees.verticalHeader().setMinimumWidth(40)  # Chiều rộng cột
 
-        # Cập nhật số liệu hiển thị
-        self.ui.lblTotal.setText(str(len(filtered_users)))
-        self.ui.lblActive.setText(str(sum(1 for u in filtered_users if u.status == "Active")))
-
-        # Lấy số lượng từng chức vụ (nếu không có thì mặc định là 0)
-        self.ui.lblAdminCount.setText(str(roles.get("Admin", 0)))
-        self.ui.lblManagerCount.setText(str(roles.get("Manager", 0)))
-        self.ui.lblCashierCount.setText(str(roles.get("Cashier", 0)))
-
-        # Đổ dữ liệu vào bảng
+        # Đổ dữ liệu vào bảng (CHỈ ĐỔ DANH SÁCH ĐÃ LỌC: filtered_users)
         self.ui.tblEmployees.setRowCount(len(filtered_users))
         for row_idx, dto in enumerate(filtered_users):
             id_item = QtWidgets.QTableWidgetItem(str(dto.user_id))
@@ -120,14 +121,12 @@ class PersonnelController:
             btn_edit.clicked.connect(lambda checked=False, user_dto=dto: self._on_edit_user(user_dto))
             btn_delete.clicked.connect(lambda checked=False, uid=dto.user_id: self._on_delete_user(uid))
 
-    # ================= CÁC HÀM XỬ LÝ SỰ KIỆN CHUẨN =================
-
     def _on_add_new_user(self):
         dialog = UserDialog(mode="add", parent=self.view)
         if dialog.exec():
             new_data = dialog.get_data()
 
-            # --- BẮT LỖI KHÔNG ĐƯỢC BỎ TRỐNG ---
+            # BẮT LỖI KHÔNG ĐƯỢC BỎ TRỐNG
             username = new_data.get("username", "").strip()
             full_name = new_data.get("full_name", "").strip()
             email = new_data.get("email", "").strip()
@@ -137,10 +136,7 @@ class PersonnelController:
                 QtWidgets.QMessageBox.warning(self.view, "Cảnh báo",
                                               "Vui lòng nhập đầy đủ thông tin, không được để trống ô nào!")
                 return
-
-            # =========================================================
             # 2. KIỂM TRA TRÙNG TÊN ĐĂNG NHẬP
-            # =========================================================
             existing_users, _, _, _ = self.service.get_personnel_dashboard("")
             for u in existing_users:
                 if u.username.lower() == username.lower():
@@ -150,7 +146,6 @@ class PersonnelController:
                         f"Tên đăng nhập '{username}' đã có người sử dụng!\nVui lòng chọn tên đăng nhập khác."
                     )
                     return  # Dừng lại ngay, không cho lưu xuống CSDL
-            # =========================================================
 
             # GỌI SERVICE ĐỂ LƯU THẬT VÀO SQL SERVER
             success = self.service.add_user(new_data)
@@ -163,19 +158,31 @@ class PersonnelController:
                 QtWidgets.QMessageBox.critical(self.view, "Lỗi", "Lưu thất bại! Vui lòng thử lại sau.")
 
     def _on_edit_user(self, user_dto):
+        user_email = getattr(user_dto, 'email', '')
+        if not user_email:
+            try:
+                from config.database import Database
+                from src.entities.user import User
+                with Database.get_session_ctx() as session:
+                    db_user = session.query(User).filter_by(username=user_dto.username).first()
+                    if db_user and db_user.email:
+                        user_email = db_user.email
+            except Exception as e:
+                print(f"Bỏ qua lỗi truy vấn phụ, dùng email rỗng: {e}")
+
         user_data = {
             "username": user_dto.username,
             "full_name": user_dto.full_name,
             "role_name": user_dto.role_name,
             "status": user_dto.status,
-            "email": getattr(user_dto, 'email', '')
+            "email": user_email
         }
 
         dialog = UserDialog(mode="edit", user_data=user_data, parent=self.view)
         if dialog.exec():
             updated_data = dialog.get_data()
 
-            # --- BẮT LỖI KHÔNG ĐƯỢC BỎ TRỐNG KHI SỬA ---
+            # BẮT LỖI KHÔNG ĐƯỢC BỎ TRỐNG KHI SỬA
             full_name = updated_data.get("full_name", "").strip()
             email = updated_data.get("email", "").strip()
 
@@ -183,7 +190,6 @@ class PersonnelController:
                 QtWidgets.QMessageBox.warning(self.view, "Cảnh báo",
                                               "Vui lòng không để trống thông tin Họ tên và Email!")
                 return
-            # ---------------------------------------------
 
             # GỌI SERVICE ĐỂ CẬP NHẬT XUỐNG SQL SERVER
             success = self.service.update_user(user_dto.username, updated_data)

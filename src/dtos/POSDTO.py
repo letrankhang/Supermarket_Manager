@@ -69,3 +69,37 @@ class CheckoutResultDTO:
     invoice_code: Optional[str] = None
     final_total: Decimal = Decimal("0")
     invoice_date: Optional[datetime] = None
+
+@dataclass
+class InvoiceLineDTO:
+    """Một dòng sản phẩm trên hóa đơn đã lưu."""
+    product_id: int
+    product_name: str
+    unit: str
+    quantity: int
+    unit_price: Decimal
+
+    @property
+    def line_total(self) -> Decimal:
+        return self.unit_price * self.quantity
+
+@dataclass
+class InvoiceDetailDTO:
+    """Toàn bộ dữ liệu một hóa đơn, dùng để in ra PDF."""
+    invoice_id: int
+    invoice_code: str
+    invoice_date: Optional[datetime]
+    cashier_name: str
+    customer_name: str
+    payment_method: str
+    payment_method_label: str
+    sub_total: Decimal
+    discount_amount: Decimal
+    tax_amount: Decimal
+    final_total: Decimal
+    points_used: int = 0
+    lines: List[InvoiceLineDTO] = field(default_factory=list)
+
+    @property
+    def item_count(self) -> int:
+        return sum(line.quantity for line in self.lines)

@@ -29,13 +29,14 @@ class UserRepositoryImpl(UserRepository):
                 user.password_hash = password_hash
                 self.session.commit()
                 return True
-            return False
+
+            if not user:
+                return False
         except Exception as e:
             self.session.rollback()
             logger.error("Lỗi khi cập nhật mật khẩu (user_id=%d): %s", user_id, e)
             raise e
 
-    # (Có thể Khang còn viết thêm hàm find_by_email, nếu có bạn cứ giữ lại nhé)
     def find_by_email(self, email: str) -> Optional[User]:
         try:
             return self.session.query(User).filter(User.email == email).first()

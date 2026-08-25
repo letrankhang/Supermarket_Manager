@@ -290,12 +290,12 @@ QComboBox QAbstractItemView {
        </item>
        <item>
         <property name="text">
-         <string>Manager</string>
+         <string>Cashier</string>
         </property>
        </item>
        <item>
         <property name="text">
-         <string>Cashier</string>
+         <string>Warehouse</string>
         </property>
        </item>
       </widget>

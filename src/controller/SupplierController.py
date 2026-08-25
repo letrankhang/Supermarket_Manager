@@ -1,4 +1,4 @@
-from PyQt6 import QtWidgets, QtCore
+from PySide6 import QtWidgets, QtCore
 import qtawesome as qta
 from src.gui.tabs.supplier_management_ui import Ui_SupplierManagement
 from src.services.impl.SupplierServiceImpl import SupplierServiceImpl

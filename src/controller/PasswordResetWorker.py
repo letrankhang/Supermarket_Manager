@@ -9,7 +9,7 @@ nên tách ra QThread giống cách DashboardController đang làm.
 import logging
 from typing import Optional
 
-from PyQt6.QtCore import QObject, QThread, pyqtSignal
+from PySide6.QtCore import QObject, QThread, Signal
 
 from src.services.PasswordResetService import PasswordResetError
 from src.services.impl.PasswordResetServiceImpl import PasswordResetServiceImpl
@@ -23,8 +23,8 @@ THONG_BAO_LOI_CHUNG = "Đã xảy ra lỗi hệ thống. Vui lòng thử lại s
 class SendCodeWorker(QThread):
     """Gọi PasswordResetService.send_code ở luồng nền."""
 
-    thanh_cong = pyqtSignal()
-    that_bai = pyqtSignal(str)  # Thông điệp tiếng Việt, hiển thị thẳng cho người dùng
+    thanh_cong = Signal()
+    that_bai = Signal(str)  # Thông điệp tiếng Việt, hiển thị thẳng cho người dùng
 
     def __init__(self, email: str, parent: Optional[QObject] = None) -> None:
         super().__init__(parent)

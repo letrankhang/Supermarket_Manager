@@ -2,9 +2,8 @@ from abc import ABC, abstractmethod
 from decimal import Decimal
 from typing import List, Optional
 
-from src.dtos.POSDTO import (
-    CartDTO, CategoryDTO, CheckoutRequestDTO, CheckoutResultDTO, ProductDTO
-)
+from src.dtos.POSDTO import (CartDTO, CategoryDTO, CheckoutRequestDTO, CheckoutResultDTO,
+                             InvoiceDetailDTO, ProductDTO)
 
 class POSError(Exception):
     pass
@@ -57,4 +56,8 @@ class POSService(ABC):
 
     @abstractmethod
     def checkout(self, request: CheckoutRequestDTO) -> CheckoutResultDTO:
+        pass
+
+    @abstractmethod
+    def get_invoice_detail(self, invoice_id: int) -> Optional[InvoiceDetailDTO]:
         pass

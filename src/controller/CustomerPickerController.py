@@ -1,9 +1,8 @@
 import logging
 from typing import List, Optional
 
-from PyQt6.QtCore import Qt
-from PyQt6.QtWidgets import (QAbstractItemView, QDialog, QHeaderView,
-                             QTableWidgetItem, QWidget)
+from PySide6.QtCore import Qt
+from PySide6.QtWidgets import (QAbstractItemView, QDialog, QHeaderView, QTableWidgetItem, QWidget)
 
 from src.dtos.CustomerDTO import CustomerDTO
 from src.gui.customer_picker_ui import Ui_Dialog
@@ -11,11 +10,11 @@ from src.services.impl.CustomerServiceImpl import CustomerServiceImpl
 
 logger = logging.getLogger(__name__)
 
-COT_TEN = 0
-COT_SDT = 1
+COL_NAME = 0
+COL_PHONE = 1
 
 class CustomerPickerController(QDialog, Ui_Dialog):
-    def __init__(self, parent: Optional[QWidget] = None) -> None:
+    def __init__(self, parent: Optional[QWidget] = None, selected_customer: Optional[CustomerDTO] = None) -> None:
         super().__init__(parent)
         self.setupUi(self)
 
@@ -37,8 +36,8 @@ class CustomerPickerController(QDialog, Ui_Dialog):
         self.tblCustomers.setHorizontalHeaderLabels(["Tên khách hàng", "Số điện thoại"])
 
         header = self.tblCustomers.horizontalHeader()
-        header.setSectionResizeMode(COT_TEN, QHeaderView.ResizeMode.Stretch)
-        header.setSectionResizeMode(COT_SDT, QHeaderView.ResizeMode.ResizeToContents)
+        header.setSectionResizeMode(COL_NAME, QHeaderView.ResizeMode.Stretch)
+        header.setSectionResizeMode(COL_PHONE, QHeaderView.ResizeMode.ResizeToContents)
 
         self.tblCustomers.verticalHeader().setVisible(False)
         self.tblCustomers.setEditTriggers(QAbstractItemView.EditTrigger.NoEditTriggers)
@@ -79,11 +78,11 @@ class CustomerPickerController(QDialog, Ui_Dialog):
 
             o_ten = QTableWidgetItem(khach.ten_hien_thi)
             o_ten.setTextAlignment(Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignVCenter)
-            self.tblCustomers.setItem(dong, COT_TEN, o_ten)
+            self.tblCustomers.setItem(dong, COL_NAME, o_ten)
 
             o_sdt = QTableWidgetItem(khach.phone)
             o_sdt.setTextAlignment(Qt.AlignmentFlag.AlignCenter)
-            self.tblCustomers.setItem(dong, COT_SDT, o_sdt)
+            self.tblCustomers.setItem(dong, COL_PHONE, o_sdt)
 
     def _cap_nhat_dong_trang_thai(self, keyword: str) -> None:
         so_luong = len(self._danh_sach)

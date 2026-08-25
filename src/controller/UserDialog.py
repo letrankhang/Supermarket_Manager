@@ -1,4 +1,4 @@
-from PyQt6 import QtWidgets, QtCore
+from PySide6 import QtWidgets, QtCore
 
 
 class UserDialog(QtWidgets.QDialog):
@@ -54,7 +54,7 @@ class UserDialog(QtWidgets.QDialog):
                 "background-color: #f1f5f9; border: 1px solid #cbd5e1; border-radius: 6px; padding: 8px;")
 
         self.cboRole = QtWidgets.QComboBox()
-        self.cboRole.addItems(["Admin", "Manager", "Cashier"])
+        self.cboRole.addItems(["Admin", "Cashier", "Warehouse"])
         self.cboRole.setStyleSheet(input_style)
 
         form_layout.addRow(self._create_label("Tên đăng nhập:"), self.txtUsername)
@@ -97,10 +97,17 @@ class UserDialog(QtWidgets.QDialog):
         return lbl
 
     def load_data_to_form(self):
-        # Đổ dữ liệu cũ vào form khi sửa
+        """Đổ dữ liệu cũ vào form khi sửa"""
         self.txtUsername.setText(self.user_data.get('username', ''))
         self.txtFullName.setText(self.user_data.get('full_name', ''))
+
+        email_text = self.user_data.get('email')
+        if email_text is None:
+            email_text = ""
+        self.txtEmail.setText(email_text)
+
         self.cboRole.setCurrentText(self.user_data.get('role_name', ''))
+
         if self.mode == "edit":
             is_active = self.user_data.get('status') == 'Active'
             self.chkStatus.setChecked(is_active)
@@ -109,12 +116,12 @@ class UserDialog(QtWidgets.QDialog):
                 f"QCheckBox {{ color: {'#10b981' if is_active else '#ef4444'}; font-weight: bold; }}")
 
     def get_data(self):
-        # Trả về dữ liệu để Controller lưu vào Database
+        """Trả về dữ liệu để Controller lưu vào Database"""
         data = {
-            "username": self.txtUsername.text(),
-            "full_name": self.txtFullName.text(),
-            "email": self.txtEmail.text(),
-            "password": self.txtPassword.text(),
+            "username": self.txtUsername.text().strip(),
+            "full_name": self.txtFullName.text().strip(),
+            "email": self.txtEmail.text().strip(),
+            "password": self.txtPassword.text().strip(),
             "role_name": self.cboRole.currentText()
         }
         if self.mode == "edit":

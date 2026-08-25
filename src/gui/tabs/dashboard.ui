@@ -44,6 +44,14 @@ QPushButton#pushButton:disabled {
 	color: #f8fafc;
 }
 
+/* Dong mo ta phu ngay duoi tieu de &quot;Tong quan he thong&quot; */
+QLabel#lblDashboardSubtitle {
+	color: #6b7280;
+	font-size: 12px;
+	font-weight: normal;
+	margin-top: 4px;
+}
+
 /* Tiêu đề khối &quot;Giao dịch gần đây&quot; */
 QLabel#lblTableTitle {
 	font-weight: bold;
@@ -88,7 +96,103 @@ QLabel[trangThai=&quot;tang&quot;]    { color: #10b981; font-weight: bold; }
 QLabel[trangThai=&quot;giam&quot;]    { color: #ef4444; font-weight: bold; }
 QLabel[trangThai=&quot;giu&quot;]     { color: #64748b; font-weight: bold; }
 QLabel[trangThai=&quot;canhBao&quot;] { color: #eab308; font-weight: bold; }
-QLabel[trangThai=&quot;anToan&quot;]  { color: #10b981; }</string>
+QLabel[trangThai=&quot;anToan&quot;]  { color: #10b981; }
+
+/* =========================================================
+   Thanh cuộn - giữ giống hệt pos.ui cho đồng bộ toàn app
+   Tay kéo bo tròn #cbd5e1, hover #94a3b8, rộng 10px, bỏ mũi tên.
+   Nếu đổi ở đây thì nhớ sửa cả pos.ui cho khớp.
+   ========================================================= */
+
+
+/* ===== Vertical scrollbar ===== */
+
+QScrollBar:vertical {
+    background-color: #f8fafc;
+    width: 10px;
+    margin: 0px;
+    border: none;
+}
+
+QScrollBar::handle:vertical {
+    background-color: #cbd5e1;
+    min-height: 35px;
+    border-radius: 5px;
+}
+
+QScrollBar::handle:vertical:hover {
+    background-color: #94a3b8;
+}
+
+QScrollBar::handle:vertical:pressed {
+    background-color: #64748b;
+}
+
+QScrollBar::add-line:vertical,
+QScrollBar::sub-line:vertical {
+    height: 0px;
+    width: 0px;
+    background: transparent;
+    border: none;
+}
+
+QScrollBar::up-arrow:vertical,
+QScrollBar::down-arrow:vertical {
+    width: 0px;
+    height: 0px;
+    background: transparent;
+    border: none;
+}
+
+QScrollBar::add-page:vertical,
+QScrollBar::sub-page:vertical {
+    background: transparent;
+}
+
+
+/* ===== Horizontal scrollbar ===== */
+
+QScrollBar:horizontal {
+    background-color: #f8fafc;
+    height: 10px;
+    margin: 0px;
+    border: none;
+}
+
+QScrollBar::handle:horizontal {
+    background-color: #cbd5e1;
+    min-width: 35px;
+    border-radius: 5px;
+}
+
+QScrollBar::handle:horizontal:hover {
+    background-color: #94a3b8;
+}
+
+QScrollBar::handle:horizontal:pressed {
+    background-color: #64748b;
+}
+
+QScrollBar::add-line:horizontal,
+QScrollBar::sub-line:horizontal {
+    width: 0px;
+    height: 0px;
+    background: transparent;
+    border: none;
+}
+
+QScrollBar::left-arrow:horizontal,
+QScrollBar::right-arrow:horizontal {
+    width: 0px;
+    height: 0px;
+    background: transparent;
+    border: none;
+}
+
+QScrollBar::add-page:horizontal,
+QScrollBar::sub-page:horizontal {
+    background: transparent;
+}</string>
   </property>
   <layout class="QHBoxLayout" name="horizontalLayout">
    <property name="leftMargin">
@@ -191,13 +295,13 @@ QLabel[trangThai=&quot;anToan&quot;]  { color: #10b981; }</string>
              <number>0</number>
             </property>
             <property name="topMargin">
-             <number>0</number>
+             <number>2</number>
             </property>
             <property name="rightMargin">
              <number>0</number>
             </property>
             <property name="bottomMargin">
-             <number>10</number>
+             <number>12</number>
             </property>
             <item row="0" column="0">
              <widget class="QLabel" name="label">
@@ -225,35 +329,14 @@ QLabel[trangThai=&quot;anToan&quot;]  { color: #10b981; }</string>
              </widget>
             </item>
             <item row="1" column="0">
-             <widget class="QLabel" name="label_2">
-              <property name="minimumSize">
-               <size>
-                <width>11</width>
-                <height>0</height>
-               </size>
-              </property>
-              <property name="font">
-               <font>
-                <pointsize>9</pointsize>
-                <italic>false</italic>
-                <bold>false</bold>
-                <underline>false</underline>
-                <kerning>true</kerning>
-               </font>
-              </property>
-              <property name="styleSheet">
-               <string notr="true">QLabel {
-	padding: 0px;
-	margin: 0px;
-}</string>
-              </property>
+             <widget class="QLabel" name="lblDashboardSubtitle">
               <property name="text">
-               <string>Hôm nay, 24, tháng 10, năm 2023</string>
+               <string>Theo dõi doanh thu, hóa đơn và hoạt động kinh doanh trong ngày</string>
               </property>
              </widget>
             </item>
            </layout>
-           <zorder>label_2</zorder>
+           <zorder>lblDashboardSubtitle</zorder>
            <zorder>label</zorder>
           </widget>
          </item>
@@ -367,6 +450,7 @@ QLabel[trangThai=&quot;anToan&quot;]  { color: #10b981; }</string>
                <string notr="true">#frame_6 {
 	background-color: white;
 	border-radius: 10px;
+	border: 1px solid #e2e8f0;
 }</string>
               </property>
               <property name="frameShape">
@@ -391,6 +475,40 @@ QLabel[trangThai=&quot;anToan&quot;]  { color: #10b981; }</string>
                <property name="spacing">
                 <number>10</number>
                </property>
+               <item row="2" column="1">
+                <widget class="QFrame" name="frame_8">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="minimumSize">
+                  <size>
+                   <width>150</width>
+                   <height>0</height>
+                  </size>
+                 </property>
+                 <property name="styleSheet">
+                  <string notr="true">QFrame#frame_8 {
+	background-color: #f1f5f9;
+	border-radius: 10px;
+	border: 1px solid #e2e8f0;
+}
+
+QFrame#frame_8:hover {
+	background-color: #e2e8f0;
+	border: 1px solid #cbd5e1;
+}</string>
+                 </property>
+                 <property name="frameShape">
+                  <enum>QFrame::Shape::StyledPanel</enum>
+                 </property>
+                 <property name="frameShadow">
+                  <enum>QFrame::Shadow::Raised</enum>
+                 </property>
+                </widget>
+               </item>
                <item row="2" column="0">
                 <widget class="QFrame" name="frame_9">
                  <property name="sizePolicy">
@@ -423,6 +541,32 @@ QFrame#frame_9:hover {
                  <property name="frameShadow">
                   <enum>QFrame::Shadow::Raised</enum>
                  </property>
+                </widget>
+               </item>
+               <item row="0" column="0">
+                <widget class="QFrame" name="frame_12">
+                 <property name="frameShape">
+                  <enum>QFrame::Shape::NoFrame</enum>
+                 </property>
+                 <property name="frameShadow">
+                  <enum>QFrame::Shadow::Raised</enum>
+                 </property>
+                 <layout class="QHBoxLayout" name="horizontalLayout_4">
+                  <item>
+                   <widget class="QLabel" name="label_3">
+                    <property name="font">
+                     <font>
+                      <family>MS Shell Dlg 2</family>
+                      <pointsize>10</pointsize>
+                      <bold>true</bold>
+                     </font>
+                    </property>
+                    <property name="text">
+                     <string>Thao tác nhanh</string>
+                    </property>
+                   </widget>
+                  </item>
+                 </layout>
                 </widget>
                </item>
                <item row="1" column="1">
@@ -481,66 +625,6 @@ QFrame#frame_11:hover {
 }
 
 QFrame#frame_7:hover {
-	background-color: #e2e8f0;
-	border: 1px solid #cbd5e1;
-}</string>
-                 </property>
-                 <property name="frameShape">
-                  <enum>QFrame::Shape::StyledPanel</enum>
-                 </property>
-                 <property name="frameShadow">
-                  <enum>QFrame::Shadow::Raised</enum>
-                 </property>
-                </widget>
-               </item>
-               <item row="0" column="0">
-                <widget class="QFrame" name="frame_12">
-                 <property name="frameShape">
-                  <enum>QFrame::Shape::NoFrame</enum>
-                 </property>
-                 <property name="frameShadow">
-                  <enum>QFrame::Shadow::Raised</enum>
-                 </property>
-                 <layout class="QHBoxLayout" name="horizontalLayout_4">
-                  <item>
-                   <widget class="QLabel" name="label_3">
-                    <property name="font">
-                     <font>
-                      <family>MS Shell Dlg 2</family>
-                      <pointsize>10</pointsize>
-                      <bold>true</bold>
-                     </font>
-                    </property>
-                    <property name="text">
-                     <string>Thao tác nhanh</string>
-                    </property>
-                   </widget>
-                  </item>
-                 </layout>
-                </widget>
-               </item>
-               <item row="2" column="1">
-                <widget class="QFrame" name="frame_8">
-                 <property name="sizePolicy">
-                  <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-                   <horstretch>0</horstretch>
-                   <verstretch>0</verstretch>
-                  </sizepolicy>
-                 </property>
-                 <property name="minimumSize">
-                  <size>
-                   <width>150</width>
-                   <height>0</height>
-                  </size>
-                 </property>
-                 <property name="styleSheet">
-                  <string notr="true">QFrame#frame_8 {
-	background-color: #f1f5f9;
-	border-radius: 10px;
-	border: 1px solid #e2e8f0;
-}
-
-QFrame#frame_8:hover {
 	background-color: #e2e8f0;
 	border: 1px solid #cbd5e1;
 }</string>
@@ -626,6 +710,7 @@ QFrame#frame_8:hover {
 		background-color: white;
 		border-radius: 10px;
 		padding: 3px 8px;
+		border: 1px solid #e2e8f0; 
 }</string>
                     </property>
                     <property name="frameShape">
@@ -683,6 +768,7 @@ QFrame#frame_8:hover {
 		background-color:  white;
 		border-radius: 10px;
 		padding: 3px 8px;
+		border: 1px solid #e2e8f0; 
 }</string>
                     </property>
                     <property name="frameShape">
@@ -740,6 +826,7 @@ QFrame#frame_8:hover {
 		background-color: white;
 		border-radius: 10px;
 		padding: 3px 8px;
+		border: 1px solid #e2e8f0; 
 }</string>
                     </property>
                     <property name="frameShape">
@@ -798,6 +885,7 @@ QFrame#frame_8:hover {
 		background-color: white;
 		border-radius: 10px;
 		padding: 3px 8px;
+		border: 1px solid #e2e8f0; 
 }</string>
                     </property>
                     <property name="frameShape">
@@ -897,7 +985,11 @@ QFrame#frame_8:hover {
             </sizepolicy>
            </property>
            <property name="styleSheet">
-            <string notr="true">QFrame#frame_chart { background-color: white; border-radius: 10px; border: 1px solid #dcdcdc; }</string>
+            <string notr="true">QFrame#frame_chart { 
+	background-color: white; 
+	border-radius: 10px; 
+	border: 1px solid #e2e8f0; 
+}</string>
            </property>
            <property name="frameShape">
             <enum>QFrame::Shape::StyledPanel</enum>
@@ -1077,7 +1169,11 @@ QFrame#frame_8:hover {
             </sizepolicy>
            </property>
            <property name="styleSheet">
-            <string notr="true">QFrame#frame_table { background-color: white; border-radius: 10px; border: 1px solid #dcdcdc; }</string>
+            <string notr="true">QFrame#frame_table { 
+	background-color: white; 
+	border-radius: 10px; 
+	border: 1px solid #e2e8f0; 
+}</string>
            </property>
            <property name="frameShape">
             <enum>QFrame::Shape::StyledPanel</enum>

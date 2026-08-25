@@ -6,281 +6,453 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>953</width>
-    <height>674</height>
+    <width>1024</width>
+    <height>680</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>MainWindow</string>
+   <string>RetailPro ERP / Xác thực mã</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">#centralwidget {
+    background-color: #f3f4f6;
+    font-family: &quot;Segoe UI&quot;, Arial, sans-serif;
+}</string>
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QGridLayout" name="gridLayout">
-    <item row="0" column="0">
-     <widget class="QWidget" name="widget" native="true">
-      <property name="styleSheet">
-       <string notr="true">QWidget {
-    background-color: #f0f4f8; /* Màu nền tổng thể */
-    font-family: &quot;Segoe UI&quot;, Arial, sans-serif;
-}</string>
+    <item row="1" column="0">
+     <widget class="QFrame" name="code_card">
+      <property name="minimumSize">
+       <size>
+        <width>420</width>
+        <height>445</height>
+       </size>
       </property>
-      <layout class="QHBoxLayout" name="horizontalLayout">
-       <item>
-        <widget class="QFrame" name="frame">
-         <property name="maximumSize">
-          <size>
-           <width>400</width>
-           <height>500</height>
-          </size>
-         </property>
-         <property name="styleSheet">
-          <string notr="true">#frame {
-    background-color: white;
-    border-radius: 8px;
-    border: 1px solid #e2e8f0;
-}</string>
-         </property>
-         <property name="frameShape">
-          <enum>QFrame::StyledPanel</enum>
-         </property>
-         <property name="frameShadow">
-          <enum>QFrame::Raised</enum>
-         </property>
-         <layout class="QVBoxLayout" name="verticalLayout">
-          <property name="spacing">
-           <number>10</number>
-          </property>
-          <property name="leftMargin">
-           <number>30</number>
-          </property>
-          <property name="topMargin">
-           <number>30</number>
-          </property>
-          <property name="rightMargin">
-           <number>30</number>
-          </property>
-          <property name="bottomMargin">
-           <number>30</number>
-          </property>
-          <item>
-           <widget class="QFrame" name="frame_2">
-            <property name="styleSheet">
-             <string notr="true">#frame_2{
-		 background-color: white;
-}</string>
-            </property>
-            <property name="frameShape">
-             <enum>QFrame::NoFrame</enum>
-            </property>
-            <property name="frameShadow">
-             <enum>QFrame::Raised</enum>
-            </property>
-            <layout class="QVBoxLayout" name="verticalLayout_2">
-             <property name="bottomMargin">
-              <number>20</number>
-             </property>
-             <item alignment="Qt::AlignHCenter">
-              <widget class="QLabel" name="label">
-               <property name="maximumSize">
-                <size>
-                 <width>60</width>
-                 <height>60</height>
-                </size>
-               </property>
-               <property name="layoutDirection">
-                <enum>Qt::LeftToRight</enum>
-               </property>
-               <property name="styleSheet">
-                <string notr="true">background-color: transparent;
-border: none;</string>
-               </property>
-               <property name="text">
-                <string/>
-               </property>
-               <property name="pixmap">
-                <pixmap>../../assets/images/logo.png</pixmap>
-               </property>
-               <property name="scaledContents">
-                <bool>true</bool>
-               </property>
-               <property name="alignment">
-                <set>Qt::AlignCenter</set>
-               </property>
-               <property name="wordWrap">
-                <bool>false</bool>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QLabel" name="label_2">
-               <property name="styleSheet">
-                <string notr="true">background-color: transparent;
-border: none;
-color: #0c2b82;      /* Màu chữ xanh đậm */
-font-size: 24px;     /* Kích thước chữ to */
-font-weight: bold;</string>
-               </property>
-               <property name="text">
-                <string>RetailPro ERP</string>
-               </property>
-               <property name="alignment">
-                <set>Qt::AlignCenter</set>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QLabel" name="label_3">
-               <property name="styleSheet">
-                <string notr="true">background-color: transparent;
-border: none;
-color: #000000;
-font-size: 15px;
-font-weight: bold;</string>
-               </property>
-               <property name="text">
-                <string>QUÊN MẬT KHẨU</string>
-               </property>
-               <property name="alignment">
-                <set>Qt::AlignCenter</set>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QLabel" name="label_4">
-               <property name="styleSheet">
-                <string notr="true">#label_4{
-	 background-color: white;
-}</string>
-               </property>
-               <property name="text">
-                <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;Vui lòng nhập mã xác thực!&lt;/p&gt;&lt;p align=&quot;center&quot;&gt;đã được gửi qua email người dùng&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <spacer name="verticalSpacer_2">
-               <property name="orientation">
-                <enum>Qt::Vertical</enum>
-               </property>
-               <property name="sizeHint" stdset="0">
-                <size>
-                 <width>20</width>
-                 <height>40</height>
-                </size>
-               </property>
-              </spacer>
-             </item>
-             <item>
-              <widget class="QLabel" name="label_5">
-               <property name="font">
-                <font>
-                 <family>Segoe UI,Arial,sans-serif</family>
-                </font>
-               </property>
-               <property name="styleSheet">
-                <string notr="true">#label_5{
-		 background-color: white;
-}</string>
-               </property>
-               <property name="text">
-                <string>Mã xác thực</string>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QLineEdit" name="lineEdit_code">
-               <property name="styleSheet">
-                <string notr="true">QLineEdit {
-    border: 1px solid #cbd5e1;
-    border-radius: 7px;
-    padding: 8px;
-    background-color: #ffffff; /* Đổi nền xám thành trắng */
-}</string>
-               </property>
-               <property name="placeholderText">
-                <string>******</string>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QPushButton" name="pushButton_accept">
-               <property name="styleSheet">
-                <string notr="true">QPushButton {
-    background-color: #0c2b82; /* Màu xanh đậm */
-    color: white;              /* Chữ màu trắng */
-    font-weight: bold;
-    font-size: 14px;
-    border-radius: 4px;
-    padding: 10px;
+      <property name="maximumSize">
+       <size>
+        <width>420</width>
+        <height>445</height>
+       </size>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">#code_card {
+    background-color: #ffffff;
+    border-radius: 12px;
+    border: 1px solid #e5e7eb;
 }
-QPushButton:hover {
-    background-color: #081d59; /* Đậm hơn chút khi di chuột vào */
-}</string>
-               </property>
-               <property name="text">
-                <string>Xác nhận</string>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <spacer name="verticalSpacer">
-               <property name="orientation">
-                <enum>Qt::Vertical</enum>
-               </property>
-               <property name="sizeHint" stdset="0">
-                <size>
-                 <width>20</width>
-                 <height>40</height>
-                </size>
-               </property>
-              </spacer>
-             </item>
-             <item>
-              <widget class="QPushButton" name="pushButton_2">
-               <property name="cursor">
-                <cursorShape>PointingHandCursor</cursorShape>
-               </property>
-               <property name="styleSheet">
-                <string notr="true">QPushButton {
-    background-color: transparent; /* Xóa nền */
-    border: none;                  /* Xóa viền */
-    color: #0c2b82;                /* Màu xanh đậm giống thiết kế */
-    font-weight: bold;             /* In đậm */
+
+QLabel {
+    background-color: transparent;
+    border: none;
+}
+
+#lblTitle {
+    color: #0c2b82;
+    font-size: 22px;
+    font-weight: bold;
+}
+
+#lblSubtitle {
+    color: #6b7280;
+    font-size: 13px;
+}
+
+#dividerLine {
+    background-color: #e5e7eb;
+    border: none;
+}
+
+#lblField {
+    color: #374151;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+#lblCopyright {
+    color: #9ca3af;
     font-size: 12px;
 }
 
-/* Hiệu ứng: Khi di chuột vào sẽ xuất hiện gạch chân để giống Link */
-QPushButton:hover {
-    text-decoration: underline; 
+QLineEdit {
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    padding: 0px 12px;
+    background-color: #ffffff;
+    color: #111827;
+    font-size: 13px;
+    selection-background-color: #0c2b82;
+    selection-color: #ffffff;
+}
+
+QLineEdit:focus {
+    border: 1px solid #0c2b82;
+}
+
+#pushButton_accept {
+    background-color: #002b9a;
+    color: #ffffff;
+    font-weight: bold;
+    font-size: 14px;
+    border: none;
+    border-radius: 6px;
+}
+
+#pushButton_accept:hover {
+    background-color: #00227b;
+}
+
+#pushButton_accept:pressed {
+    background-color: #001857;
+}
+
+#pushButton_accept:disabled {
+    background-color: #9ca3af;
+}
+
+#pushButton_resend, #pushButton_2 {
+    background-color: transparent;
+    border: none;
+    color: #0c2b82;
+    font-weight: bold;
+    font-size: 13px;
+}
+
+#pushButton_resend:hover, #pushButton_2:hover {
     color: #081d59;
+    text-decoration: underline;
+}
+
+#pushButton_resend:disabled {
+    color: #9ca3af;
+    text-decoration: none;
+}
+
+#lblBackLogin {
+    background-color: transparent;
+    border: none;
+    color: #0c2b82;
+    font-weight: bold;
+    font-size: 13px;
+}
+
+#lblBackLogin:hover {
+    color: #081d59;
+    text-decoration: underline;
 }</string>
-               </property>
-               <property name="text">
-                <string>⟵ Quay lại đăng nhập</string>
-               </property>
-              </widget>
-             </item>
-            </layout>
-           </widget>
-          </item>
-         </layout>
-        </widget>
-       </item>
-      </layout>
+      </property>
+      <property name="frameShape">
+       <enum>QFrame::Shape::StyledPanel</enum>
+      </property>
+      <property name="frameShadow">
+       <enum>QFrame::Shadow::Raised</enum>
+      </property>
+      <widget class="QLabel" name="lblLogo">
+       <property name="geometry">
+        <rect>
+         <x>140</x>
+         <y>20</y>
+         <width>140</width>
+         <height>100</height>
+        </rect>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>140</width>
+         <height>100</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>140</width>
+         <height>100</height>
+        </size>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="pixmap">
+        <pixmap>../../assets/images/logo.png</pixmap>
+       </property>
+       <property name="scaledContents">
+        <bool>true</bool>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignmentFlag::AlignCenter</set>
+       </property>
+      </widget>
+      <widget class="QLabel" name="lblTitle">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>121</y>
+         <width>401</width>
+         <height>30</height>
+        </rect>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>30</height>
+        </size>
+       </property>
+       <property name="text">
+        <string>RetailPro ERP</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignmentFlag::AlignCenter</set>
+       </property>
+      </widget>
+      <widget class="QLabel" name="lblSubtitle">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>151</y>
+         <width>401</width>
+         <height>21</height>
+        </rect>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>21</height>
+        </size>
+       </property>
+       <property name="text">
+        <string>Nhập mã xác thực đã gửi tới email của bạn</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignmentFlag::AlignCenter</set>
+       </property>
+      </widget>
+      <widget class="QFrame" name="dividerLine">
+       <property name="geometry">
+        <rect>
+         <x>40</x>
+         <y>195</y>
+         <width>341</width>
+         <height>1</height>
+        </rect>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>1</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>16777215</width>
+         <height>1</height>
+        </size>
+       </property>
+       <property name="frameShape">
+        <enum>QFrame::Shape::HLine</enum>
+       </property>
+       <property name="frameShadow">
+        <enum>QFrame::Shadow::Sunken</enum>
+       </property>
+      </widget>
+      <widget class="QLabel" name="lblField">
+       <property name="geometry">
+        <rect>
+         <x>40</x>
+         <y>208</y>
+         <width>75</width>
+         <height>31</height>
+        </rect>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>24</height>
+        </size>
+       </property>
+       <property name="text">
+        <string>Mã xác thực:</string>
+       </property>
+      </widget>
+      <widget class="QLineEdit" name="lineEdit_code">
+       <property name="geometry">
+        <rect>
+         <x>40</x>
+         <y>239</y>
+         <width>341</width>
+         <height>42</height>
+        </rect>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>42</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>16777215</width>
+         <height>42</height>
+        </size>
+       </property>
+       <property name="maxLength">
+        <number>6</number>
+       </property>
+       <property name="placeholderText">
+        <string>Nhập 6 chữ số</string>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="pushButton_accept">
+       <property name="geometry">
+        <rect>
+         <x>40</x>
+         <y>330</y>
+         <width>341</width>
+         <height>61</height>
+        </rect>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>61</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>16777215</width>
+         <height>61</height>
+        </size>
+       </property>
+       <property name="cursor">
+        <cursorShape>PointingHandCursor</cursorShape>
+       </property>
+       <property name="text">
+        <string>Xác nhận</string>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="lblBackLogin">
+       <property name="geometry">
+        <rect>
+         <x>230</x>
+         <y>390</y>
+         <width>61</width>
+         <height>51</height>
+        </rect>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>24</height>
+        </size>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>-1</pointsize>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="cursor">
+        <cursorShape>PointingHandCursor</cursorShape>
+       </property>
+       <property name="styleSheet">
+        <string notr="true"/>
+       </property>
+       <property name="text">
+        <string>tại đây</string>
+       </property>
+      </widget>
+      <widget class="QWidget" name="layoutWidget">
+       <property name="geometry">
+        <rect>
+         <x>40</x>
+         <y>281</y>
+         <width>341</width>
+         <height>41</height>
+        </rect>
+       </property>
+       <layout class="QHBoxLayout" name="horizontalLayout_resend">
+        <property name="spacing">
+         <number>0</number>
+        </property>
+        <item>
+         <spacer name="horizontalSpacer">
+          <property name="orientation">
+           <enum>Qt::Orientation::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item>
+         <widget class="QPushButton" name="pushButton_resend">
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>24</height>
+           </size>
+          </property>
+          <property name="cursor">
+           <cursorShape>PointingHandCursor</cursorShape>
+          </property>
+          <property name="text">
+           <string>Gửi lại mã</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QLabel" name="label">
+       <property name="geometry">
+        <rect>
+         <x>120</x>
+         <y>390</y>
+         <width>123</width>
+         <height>51</height>
+        </rect>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>123</width>
+         <height>0</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>123</width>
+         <height>16777215</height>
+        </size>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>10</pointsize>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">color: #6b7280;</string>
+       </property>
+       <property name="text">
+        <string>Quay lại đăng nhập</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignmentFlag::AlignCenter</set>
+       </property>
+      </widget>
+      <zorder>lblLogo</zorder>
+      <zorder>lblTitle</zorder>
+      <zorder>lblSubtitle</zorder>
+      <zorder>dividerLine</zorder>
+      <zorder>lblField</zorder>
+      <zorder>lineEdit_code</zorder>
+      <zorder>pushButton_accept</zorder>
+      <zorder>layoutWidget</zorder>
+      <zorder>label</zorder>
+      <zorder>lblBackLogin</zorder>
      </widget>
     </item>
    </layout>
   </widget>
-  <widget class="QMenuBar" name="menubar">
-   <property name="geometry">
-    <rect>
-     <x>0</x>
-     <y>0</y>
-     <width>953</width>
-     <height>25</height>
-    </rect>
-   </property>
-  </widget>
-  <widget class="QStatusBar" name="statusbar"/>
  </widget>
  <resources/>
  <connections/>
