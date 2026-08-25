@@ -290,14 +290,13 @@ class Ui_CategoryManagerDialog(object):
         self.verticalLayout_body = QVBoxLayout(self.widgetBody)
         self.verticalLayout_body.setSpacing(10)
         self.verticalLayout_body.setObjectName(u"verticalLayout_body")
-        self.verticalLayout_body.setContentsMargins(20, 16, 20, 16)
+        self.verticalLayout_body.setContentsMargins(12, 12, 12, 12)
         self.horizontalLayout_header = QHBoxLayout()
         self.horizontalLayout_header.setSpacing(10)
         self.horizontalLayout_header.setObjectName(u"horizontalLayout_header")
         self.verticalLayout_header = QVBoxLayout()
         self.verticalLayout_header.setSpacing(0)
         self.verticalLayout_header.setObjectName(u"verticalLayout_header")
-        self.verticalLayout_header.setContentsMargins(-1, -1, -1, 5)
         self.lblHeaderTitle = QLabel(self.widgetBody)
         self.lblHeaderTitle.setObjectName(u"lblHeaderTitle")
         font = QFont()
@@ -459,7 +458,7 @@ class Ui_CategoryManagerDialog(object):
     # setupUi
 
     def retranslateUi(self, CategoryManagerDialog):
-        CategoryManagerDialog.setWindowTitle(QCoreApplication.translate("CategoryManagerDialog", u"Qu\u1ea3n l\u00fd danh m\u1ee5c", None))
+        CategoryManagerDialog.setWindowTitle(QCoreApplication.translate("CategoryManagerDialog", u"Qu\u1ea3n L\u00fd Danh M\u1ee5c", None))
         self.lblHeaderTitle.setText(QCoreApplication.translate("CategoryManagerDialog", u"Qu\u1ea3n l\u00fd danh m\u1ee5c s\u1ea3n ph\u1ea9m", None))
         self.lblHeaderSubtitle.setText(QCoreApplication.translate("CategoryManagerDialog", u"Ch\u1ecdn m\u1ed9t d\u00f2ng \u0111\u1ec3 s\u1eeda ho\u1eb7c x\u00f3a, ho\u1eb7c th\u00eam danh m\u1ee5c m\u1edbi \u1edf b\u00ean d\u01b0\u1edbi.", None))
         ___qtablewidgetitem = self.tblCategories.horizontalHeaderItem(0)
@@ -468,7 +467,7 @@ class Ui_CategoryManagerDialog(object):
         ___qtablewidgetitem1.setText(QCoreApplication.translate("CategoryManagerDialog", u"M\u00d4 T\u1ea2", None))
         self.btnEditCategory.setText(QCoreApplication.translate("CategoryManagerDialog", u"S\u1eeda", None))
         self.btnDeleteCategory.setText(QCoreApplication.translate("CategoryManagerDialog", u"X\u00f3a", None))
-        self.lblFormTitle.setText(QCoreApplication.translate("CategoryManagerDialog", u"Th\u00eam danh m\u1ee5c m\u1edbi", None))
+        self.lblFormTitle.setText(QCoreApplication.translate("CategoryManagerDialog", u"Th\u00eam danh m\u1ee5c m\u1edbi:", None))
         self.lblCategoryName.setText(QCoreApplication.translate("CategoryManagerDialog", u"T\u00ean danh m\u1ee5c:", None))
         self.txtCategoryName.setPlaceholderText(QCoreApplication.translate("CategoryManagerDialog", u"V\u00ed d\u1ee5: \u0110\u1ed3 u\u1ed1ng, B\u00e1nh k\u1eb9o...", None))
         self.lblDescription.setText(QCoreApplication.translate("CategoryManagerDialog", u"M\u00f4 t\u1ea3 danh m\u1ee5c:", None))

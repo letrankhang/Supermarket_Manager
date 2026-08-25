@@ -456,7 +456,7 @@ class Ui_Form(object):
         self.gridLayout = QGridLayout()
         self.gridLayout.setSpacing(0)
         self.gridLayout.setObjectName(u"gridLayout")
-        self.gridLayout.setContentsMargins(0, 2, 0, 6)
+        self.gridLayout.setContentsMargins(0, 0, 0, 6)
         self.lblScanSubtitle = QLabel(self.frame_topbar)
         self.lblScanSubtitle.setObjectName(u"lblScanSubtitle")
 

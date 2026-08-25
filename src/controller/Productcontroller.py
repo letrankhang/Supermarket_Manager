@@ -9,7 +9,7 @@ from typing import List, Optional
 
 from PySide6.QtCore import QObject, Qt, QThread, Signal as pyqtSignal
 from PySide6.QtWidgets import (
-    QDialog, QHBoxLayout, QLabel, QMessageBox,
+    QDialog, QHBoxLayout, QHeaderView, QLabel, QMessageBox,
     QPushButton, QTableWidgetItem, QWidget,
 )
 
@@ -19,6 +19,7 @@ from src.dtos.ProductDTO import ProductDTO
 from src.gui.tabs.products import Ui_SanPhamTab
 from src.services.CategoryService import CategoryService
 from src.services.impl.ProductServiceImpl import ProductServiceImpl
+from src.utils.FormIcon import add_awesome_left_icon, apply_awesome_icons
 from src.utils.Session import Session
 
 logger = logging.getLogger(__name__)
@@ -30,12 +31,22 @@ _MAX_VISIBLE_PAGE_BUTTONS = 3  # so nut so trang hien thi truc tiep truoc dau ".
 _COL_BARCODE, _COL_NAME, _COL_CATEGORY, _COL_UNIT, \
     _COL_PRICE, _COL_STOCK, _COL_STATUS = range(7)
 
-# Style badge trang thai, khop mau voi ban mau
-_STATUS_STYLE = {
-    "Hết hàng": "background:#fee2e2; color:#dc2626;",
-    "Sắp hết": "background:#ffedd5; color:#ea580c;",
-    "Còn hàng": "background:#dbeafe; color:#1d4ed8;",
+# Ten lop QSS cho badge trang thai. Mau sac dinh nghia tap trung trong
+# products.ui (QLabel[class="badge*"]), o day chi gan thuoc tinh dong.
+_STATUS_CLASS = {
+    "Hết hàng": "badgeDanger",
+    "Sắp hết": "badgeWarning",
+    "Còn hàng": "badgeSuccess",
 }
+
+# Cac cot co du lieu ngan va gioi han (ma vach 13 so, don vi, gia, ton kho,
+# badge trang thai) de cho Qt tu do vua khit noi dung: cach nay tu thich nghi
+# voi font va DPI cua may nen chu tren header lan trong o deu khong bi cat.
+_AUTO_FIT_COLUMNS = (_COL_UNIT, _COL_PRICE, _COL_STOCK, _COL_STATUS)
+
+# Rieng DANH MUC phai chot cung: ten danh muc co the rat dai, de tu co gian thi
+# no chiem vai tram px va bop chet cot TEN SAN PHAM.
+_CATEGORY_COLUMN_WIDTH = 150
 
 
 class _AsyncWorker(QObject):
@@ -69,7 +80,35 @@ class ProductController(QWidget, Ui_SanPhamTab):
         self._categories_seeded = False
         self._page_number_buttons: List[QPushButton] = []
 
+        apply_awesome_icons(self)
+        add_awesome_left_icon(self.edtSearch, "fa5s.search")
+        self._setup_table_columns()
         self._setup_events()
+
+    # ---------------- Bang du lieu ----------------
+
+    def _setup_table_columns(self) -> None:
+        """Chia lai do rong cac cot: cac cot ngan co gian vua khit noi dung,
+        DANH MUC chot 150px, phan con trong con lai danh het cho TEN SAN PHAM
+        nen ten dai khong con bi cat ngay tu dau."""
+        header = self.tableSanPham.horizontalHeader()
+
+        # Tat stretch cot cuoi, neu khong cot TRANG THAI se nuot het cho trong
+        # va cot TEN SAN PHAM chi con dung do rong mac dinh 130px.
+        header.setStretchLastSection(False)
+
+        for col in _AUTO_FIT_COLUMNS:
+            header.setSectionResizeMode(col, QHeaderView.ResizeMode.ResizeToContents)
+
+        header.setSectionResizeMode(_COL_BARCODE, QHeaderView.ResizeMode.Interactive)
+        self.tableSanPham.setColumnWidth(_COL_BARCODE, 160)  
+        
+        header.setSectionResizeMode(_COL_CATEGORY, QHeaderView.ResizeMode.Interactive)
+        self.tableSanPham.setColumnWidth(_COL_CATEGORY, _CATEGORY_COLUMN_WIDTH)
+        header.setSectionResizeMode(_COL_NAME, QHeaderView.ResizeMode.Stretch)
+
+        self.tableSanPham.setWordWrap(False)
+        self.tableSanPham.setTextElideMode(Qt.TextElideMode.ElideRight)
 
     # ---------------- Su kien ----------------
 
@@ -166,8 +205,12 @@ class ProductController(QWidget, Ui_SanPhamTab):
             _COL_STOCK: str(p.current_stock),
         }
         for col, value in text_values.items():
-            item = QTableWidgetItem("" if value is None else str(value))
+            text = "" if value is None else str(value)
+            item = QTableWidgetItem(text)
             item.setTextAlignment(Qt.AlignmentFlag.AlignCenter)
+            # Ten san pham qua dai van co the bi cat khi cua so hep, giu lai
+            # ban day du o tooltip de nguoi dung ro chuot vao la doc duoc.
+            item.setToolTip(text)
             if col == _COL_BARCODE:
                 # Luu product_id o cot dau tien de lay lai khi Sua/Xoa dong dang chon
                 item.setData(Qt.ItemDataRole.UserRole, p.product_id)
@@ -177,8 +220,7 @@ class ProductController(QWidget, Ui_SanPhamTab):
         status_text = self._compute_status(p)
         lbl_status = QLabel(status_text, self.tableSanPham)
         lbl_status.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        style = _STATUS_STYLE.get(status_text, "")
-        lbl_status.setStyleSheet(f"{style} border-radius:10px; padding:3px 10px; font-weight:600;")
+        lbl_status.setProperty("class", _STATUS_CLASS.get(status_text, "badgeSuccess"))
         status_container = QWidget(self.tableSanPham)
         status_layout = QHBoxLayout(status_container)
         status_layout.setContentsMargins(4, 4, 4, 4)
@@ -209,18 +251,12 @@ class ProductController(QWidget, Ui_SanPhamTab):
                 btn.setEnabled(False)
             else:
                 btn = QPushButton(str(page), self)
+                btn.setCursor(Qt.CursorShape.PointingHandCursor)
                 btn.setCheckable(True)
+                # Trang dang xem lay giao dien tu QPushButton#PageNumberButton:checked
                 btn.setChecked(page == self._current_page)
-                if page == self._current_page:
-                    btn.setStyleSheet(
-                        "QPushButton { background:#1d4ed8; color:white; border-radius:4px; }"
-                    )
-                else:
-                    btn.setStyleSheet(
-                        "QPushButton { background:white; border:1px solid #cbd5e1; border-radius:4px; }"
-                    )
                 btn.clicked.connect(lambda _, target=page: self._go_to_page(target))
-            btn.setMaximumSize(32, 32)
+            btn.setObjectName("PageNumberButton")
             self.horizontalLayout_pageNumbers.addWidget(btn)
             self._page_number_buttons.append(btn)
 

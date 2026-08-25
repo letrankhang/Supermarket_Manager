@@ -18,6 +18,7 @@ from src.dtos.POSDTO import CartDTO, CartItemDTO, CategoryDTO, CheckoutRequestDT
 from src.gui.tabs.pos_ui import Ui_Form
 from src.services.POSService import POSError, ProductNotFoundError
 from src.services.impl.POSServiceImpl import POSServiceImpl
+from src.utils.FormIcon import add_awesome_left_icon
 from src.utils.Formatter import format_currency, format_discount, format_rate_as_percent
 from src.utils.Session import Session
 
@@ -210,6 +211,8 @@ class POSController(QWidget, Ui_Form):
         for button in (self.btnFilter, self.btnAddCustomer, self.btnClearCart,
                        self.btnEditDiscount, self.btnCheckout):
             button.setCursor(Qt.CursorShape.PointingHandCursor)
+
+        add_awesome_left_icon(self.txtSearch, "fa5s.search")
 
         self.lblCustomerBadge.setSizePolicy(QSizePolicy.Policy.Maximum, QSizePolicy.Policy.Fixed)
 

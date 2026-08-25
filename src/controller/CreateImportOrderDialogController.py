@@ -11,7 +11,7 @@ from PySide6.QtWidgets import (
 )
 
 from config.database import Database
-from src.gui.tabs.create_import_order_dialog_phieu_nhap import (
+from src.gui.tabs.create_import_order_dialog import (
     Ui_CreateImportOrderDialog,
 )
 from src.entities.product import Product

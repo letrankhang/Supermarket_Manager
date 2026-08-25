@@ -100,7 +100,7 @@ class AddCategoryDialogController(QDialog, Ui_CategoryManagerDialog):
         self.txtCategoryName.setText(category.category_name)
         self.txtDescription.setPlainText(category.description or "")
         self.lblFormTitle.setText("Sửa danh mục")
-        self.btnSave.setText("CẬP NHẬT DANH MỤC")
+        self.btnSave.setText("Cập nhật danh mục")
 
     def _on_delete_clicked(self) -> None:
         category = self._get_selected_category()
@@ -158,7 +158,7 @@ class AddCategoryDialogController(QDialog, Ui_CategoryManagerDialog):
         self.txtCategoryName.clear()
         self.txtDescription.clear()
         self.lblFormTitle.setText("Thêm danh mục mới")
-        self.btnSave.setText("LƯU DANH MỤC")
+        self.btnSave.setText("Lưu danh mục")
         self._set_loading(False)
         self.tblCategories.clearSelection()
 

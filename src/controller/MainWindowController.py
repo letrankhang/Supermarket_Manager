@@ -37,7 +37,7 @@ class MainWindowController(QMainWindow, Ui_MainWindow):
 
     def _fix_logo(self) -> None:
         current_dir = os.path.dirname(os.path.abspath(__file__))
-        logo_path = os.path.abspath(os.path.join(current_dir, "..", "..", "assets", "images", "logo_sidebar2.png"))
+        logo_path = os.path.abspath(os.path.join(current_dir, "..", "..", "assets", "images", "logo2.png"))
 
         if os.path.exists(logo_path):
             self.label_4.setPixmap(QPixmap(logo_path))

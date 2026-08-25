@@ -2,15 +2,71 @@ import logging
 import os
 from typing import Optional
 
+import qtawesome as qta
+
 from PySide6.QtCore import QSize, Qt
 from PySide6.QtGui import QIcon, QPixmap
-from PySide6.QtWidgets import QHBoxLayout, QLabel, QLineEdit, QToolButton
+from PySide6.QtWidgets import (
+    QAbstractButton, QHBoxLayout, QLabel, QLineEdit, QToolButton, QWidget,
+)
 
 logger = logging.getLogger(__name__)
 
-LEFT_ICON_SIZE = 30   
-EYE_ICON_SIZE = 24   
+LEFT_ICON_SIZE = 30
+EYE_ICON_SIZE = 24
 RIGHT_MARGIN = 10
+
+# Icon qtawesome khai bao san trong file .ui, giong cach help_center dang lam.
+AWESOME_SIZE = QSize(14, 14)
+AWESOME_COLOR = "#2563eb"
+SEARCH_ICON_COLOR = "#94a3b8"
+
+
+def apply_awesome_icons(root: QWidget, default_size: QSize = AWESOME_SIZE) -> None:
+    """Duyet cay widget cua 'root', gan icon qtawesome cho moi widget co khai bao
+    thuoc tinh dong 'iconName' trong file .ui. Mau lay tu 'iconColor', kich thuoc
+    rieng lay tu 'iconPx' (so nguyen, don vi px).
+
+    Dat ten la 'iconPx' chu khong phai 'iconSize' vi QAbstractButton da co san
+    thuoc tinh 'iconSize' cua Qt, dung trung ten se doc nham gia tri cua Qt."""
+    for widget in root.findChildren(QWidget):
+        icon_name = widget.property("iconName")
+        if not icon_name:
+            continue
+
+        color = widget.property("iconColor") or AWESOME_COLOR
+        raw_px = widget.property("iconPx")
+        size = QSize(int(raw_px), int(raw_px)) if raw_px else default_size
+
+        try:
+            icon = qta.icon(str(icon_name), color=str(color))
+        except Exception as error:
+            logger.error(
+                "Khong tai duoc icon '%s' cua widget '%s': %s",
+                icon_name, widget.objectName(), error,
+            )
+            continue
+
+        if isinstance(widget, QLabel):
+            widget.setPixmap(icon.pixmap(size))
+        elif isinstance(widget, QAbstractButton):
+            widget.setIcon(icon)
+            widget.setIconSize(size)
+
+
+def add_awesome_left_icon(
+    line_edit: QLineEdit,
+    icon_name: str,
+    color: str = SEARCH_ICON_COLOR,
+) -> None:
+    """Gan icon qtawesome vao dau o nhap (vi du icon kinh lup cho o tim kiem)."""
+    try:
+        line_edit.addAction(
+            qta.icon(icon_name, color=color),
+            QLineEdit.ActionPosition.LeadingPosition,
+        )
+    except Exception as error:
+        logger.error("Khong tai duoc icon '%s' cho o nhap: %s", icon_name, error)
 
 def get_image_path(file_name: str) -> str:
     current_dir = os.path.dirname(os.path.abspath(__file__))

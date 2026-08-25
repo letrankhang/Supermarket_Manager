@@ -53,7 +53,7 @@ class AddProductDialogController(QDialog, Ui_AddProductDialog):
         self._initial = initial
         self.result_product: Optional[ProductDTO] = None
 
-        self.setWindowTitle("Sửa sản phẩm" if initial else "Thêm Sản Phẩm Mới")
+        self._apply_mode_labels(is_edit=initial is not None)
         self.btnSave.clicked.connect(self._on_save_clicked)
         self.btnCancel.clicked.connect(self.reject)
 
@@ -63,6 +63,22 @@ class AddProductDialogController(QDialog, Ui_AddProductDialog):
         else:
             # Che do Them moi: tu sinh san ma vach 8 chu so cho nguoi dung
             self.txtBarcode.setText(_generate_barcode())
+
+    # ---------------- Nhan chu theo che do Them / Sua ----------------
+
+    def _apply_mode_labels(self, is_edit: bool) -> None:
+        """Dat tieu de cua so va phan header trong dialog theo che do dang mo.
+        Chi doi chu, khong dong den giao dien (dinh nghia trong add_product_dialog.ui)."""
+        if is_edit:
+            self.setWindowTitle("Sửa sản phẩm")
+            self.lblDialogTitle.setText("Sửa sản phẩm")
+            self.lblDialogSubtitle.setText("Cập nhật thông tin sản phẩm, mã vạch giữ nguyên.")
+            self.btnSave.setText("Cập nhật sản phẩm")
+        else:
+            self.setWindowTitle("Thêm sản phẩm mới")
+            self.lblDialogTitle.setText("Thêm sản phẩm mới")
+            self.lblDialogSubtitle.setText("Điền thông tin sản phẩm, mã vạch được sinh tự động.")
+            self.btnSave.setText("Lưu sản phẩm")
 
     # ---------------- Nap danh muc vao combobox ----------------
 
