@@ -361,4 +361,4 @@ class ProductController(QWidget, Ui_SanPhamTab):
 
     @staticmethod
     def _is_manager_or_admin() -> bool:
-        return Session.get_role_name() in ("Admin", "Manager")
+        return Session.get_role_name() in ("Admin", "Warehouse")

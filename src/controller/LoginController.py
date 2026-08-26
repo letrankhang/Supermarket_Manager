@@ -9,6 +9,7 @@ from src.entities.user import User
 from src.gui.login_ui import Ui_MainWindow
 from src.services.impl.LoginServiceImpl import LoginServiceImpl
 from src.utils.FormIcon import add_left_icon, add_toggle_password_button, show_logo
+from src.utils.Session import Session
 
 logger = logging.getLogger(__name__)
 
@@ -91,14 +92,14 @@ class LoginController(QMainWindow, Ui_MainWindow):
             if user:
                 self._save_remembered_credentials(username, password)
 
-                role = user.role_id
+                role_name: str = Session.get_role_name() or "Admin"
                 role_map = {
-                    "1": "Quản trị viên",
-                    "2": "Quản lý",
-                    "3": "Nhân viên",
+                    "admin": "Quản trị viên",
+                    "cashier": "Thu ngân",
+                    "warehouse": "Nhân viên kho",
                 }
 
-                role_display = role_map.get(str(role), f"Không xác định ({role})")
+                role_display = role_map.get(role_name.strip().lower(), role_name)
                 display_name = user.full_name or user.username
 
                 QMessageBox.information(

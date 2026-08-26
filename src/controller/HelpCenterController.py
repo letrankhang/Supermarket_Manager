@@ -29,8 +29,8 @@ MUTED_COLOR = "#94a3b8"
 
 ROLE_NAMES_VI = {
     "admin": "Quản trị viên",
-    "manager": "Quản lý",
     "cashier": "Thu ngân",
+    "warehouse": "Nhân viên kho",
 }
 
 ICON_SIZES = {

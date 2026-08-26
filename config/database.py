@@ -137,7 +137,7 @@ class Database:
 
             # Seed data: Khởi tạo Role và tài khoản Admin mặc định
             with cls.get_session_ctx() as session:
-                default_roles = ["Admin", "Manager", "Cashier"]
+                default_roles = ["Admin", "Cashier", "Warehouse"]
                 existing_roles = {r.role_name: r for r in session.query(Role).all()}
 
                 db_roles = {}

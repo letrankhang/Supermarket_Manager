@@ -34,8 +34,7 @@ class MainWindowController(QMainWindow, Ui_MainWindow):
         self._setup_ui()
         self._setup_event()
         self._load_user_data()
-        self._block_admin_features_for_cashier()
-        self._show_dashboard()
+        self._apply_role_permissions()
 
     def _fix_logo(self) -> None:
         current_dir = os.path.dirname(os.path.abspath(__file__))
@@ -156,14 +155,17 @@ class MainWindowController(QMainWindow, Ui_MainWindow):
         icon_size = QSize(20, 20)
         color_normal = "#cbd5e1"
         color_active = "#ffffff"
+        color_disabled = "#475569"
 
         self._nav_icon_normal = {}
         self._nav_icon_active = {}
+        self._nav_icon_disabled = {}
 
         for button, icon_name in icon_map.items():
             try:
                 self._nav_icon_normal[button] = qta.icon(icon_name, color=color_normal)
                 self._nav_icon_active[button] = qta.icon(icon_name, color=color_active)
+                self._nav_icon_disabled[button] = qta.icon(icon_name, color=color_disabled)
             except Exception as e:
                 logger.error("Không tải được icon '%s' cho nút menu: %s", icon_name, e)
                 continue
@@ -180,16 +182,18 @@ class MainWindowController(QMainWindow, Ui_MainWindow):
             self._update_nav_icon(button, hovered=False)
 
     def _update_nav_icon(self, button: QPushButton, hovered: bool) -> None:
-        """Chọn phiên bản icon (xám / trắng) đúng trạng thái hiện tại của nút."""
+        """Chọn phiên bản icon (xám / trắng / mờ disabled) đúng trạng thái hiện tại của nút."""
         if button not in self._nav_icon_normal:
             return
 
-        if hovered or button.isChecked():
+        if not button.isEnabled():
+            button.setIcon(self._nav_icon_disabled.get(button, self._nav_icon_normal[button]))
+        elif hovered or button.isChecked():
             button.setIcon(self._nav_icon_active[button])
         else:
             button.setIcon(self._nav_icon_normal[button])
 
-    def eventFilter(self, obj, event):
+    def eventFilter(self, obj: object, event: QEvent) -> bool:
         if obj in self._nav_icon_normal:
             if event.type() == QEvent.Type.Enter:
                 self._update_nav_icon(obj, hovered=True)
@@ -323,5 +327,71 @@ class MainWindowController(QMainWindow, Ui_MainWindow):
             fullname = Session.get_username() or "Người dùng"
         self.lblUserName.setText(fullname)
 
-    def _block_admin_features_for_cashier(self) -> None:
-        pass
+    def _apply_role_permissions(self) -> None:
+        """Phân quyền các nút trên Sidebar dựa theo Role trong Session."""
+        raw_role = Session.get_role_name() or "Admin"
+        role = raw_role.strip().lower()
+        logger.info("Áp dụng phân quyền giao diện cho vai trò: %s", raw_role)
+
+        all_nav_buttons: List[QPushButton] = [
+            self.btn_dashboard,
+            self.btn_products,
+            self.btn_suppliers,
+            self.btn_importing,
+            self.btn_customers,
+            self.btn_pos,
+            self.btn_analytics,
+            self.btn_settings,
+            self.btn_help,
+            self.btn_logout,
+        ]
+
+        if role == "admin":
+            allowed_buttons = set(all_nav_buttons)
+            default_show = self._show_dashboard
+        elif role in ("cashier", "thu ngân"):
+            allowed_buttons = {
+                self.btn_pos,
+                self.btn_products,
+                self.btn_customers,
+                self.btn_help,
+                self.btn_logout,
+            }
+            default_show = self._show_pos
+        elif role in ("warehouse", "nhân viên kho", "kho"):
+            allowed_buttons = {
+                self.btn_importing,
+                self.btn_products,
+                self.btn_suppliers,
+                self.btn_help,
+                self.btn_logout,
+            }
+            default_show = self._show_importing
+        else:
+            allowed_buttons = {self.btn_pos, self.btn_help, self.btn_logout}
+            default_show = self._show_pos
+
+        current_css = self.sidebar_frame.styleSheet() or ""
+        disabled_css = """
+#sidebar_frame QPushButton:disabled {
+    color: #475569;
+    background-color: transparent;
+    border-left: 4px solid transparent;
+}
+"""
+        if "#sidebar_frame QPushButton:disabled" not in current_css:
+            self.sidebar_frame.setStyleSheet(current_css + disabled_css)
+
+        for btn in all_nav_buttons:
+            if btn in allowed_buttons:
+                btn.setEnabled(True)
+                btn.setCursor(Qt.CursorShape.PointingHandCursor)
+                btn.setToolTip("")
+                self._update_nav_icon(btn, hovered=False)
+            else:
+                btn.setEnabled(False)
+                btn.setCursor(Qt.CursorShape.ForbiddenCursor)
+                btn.setToolTip("Bạn không có quyền truy cập chức năng này.")
+                self._update_nav_icon(btn, hovered=False)
+
+        default_show()

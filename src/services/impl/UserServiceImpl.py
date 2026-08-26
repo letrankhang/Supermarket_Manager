@@ -18,7 +18,7 @@ class UserServiceImpl(UserService):
 
             danh_sach = []
             active_count = 0
-            roles_count = {"Admin": 0, "Manager": 0, "Cashier": 0}
+            roles_count = {"Admin": 0, "Cashier": 0, "Warehouse": 0}
 
             for user, role in user_role_pairs:
                 # 1. Chuyển sang DTO
@@ -41,18 +41,27 @@ class UserServiceImpl(UserService):
         return danh_sach, total_count, active_count, roles_count
 
     def add_user(self, data: dict) -> bool:
-        """Thêm nhân viên mới vào SQL Server."""
+        """Thêm nhân viên mới vào cơ sở dữ liệu."""
         from src.entities.user import User
         from src.entities.role import Role
         import bcrypt
-        import logging
-        logger = logging.getLogger(__name__)
 
         try:
             with Database.get_session_ctx() as session:
-                # 1. Tìm Role ID từ tên chức vụ (Admin, Staff...)
-                role = session.query(Role).filter(Role.role_name == data.get('role_name')).first()
-                role_id = role.role_id if role else 1  # Mặc định là 1 nếu lỗi
+                # 1. Tìm Role ID từ tên chức vụ (Admin, Cashier, Warehouse...)
+                role_name = data.get('role_name')
+                role = session.query(Role).filter(Role.role_name == role_name).first()
+                if not role and role_name:
+                    # Nếu Role chưa có trong Database, tự động tạo mới
+                    role = Role(role_name=role_name)
+                    session.add(role)
+                    session.flush()
+
+                if not role:
+                    logger.error("Không tìm thấy hoặc không thể tạo vai trò: %s", role_name)
+                    return False
+
+                role_id = role.role_id
 
                 # 2. Mã hóa mật khẩu chuẩn bcrypt
                 raw_password = data.get('password', '123456').encode('utf-8')
@@ -73,16 +82,14 @@ class UserServiceImpl(UserService):
                 session.commit()
                 return True
         except Exception as e:
-            logger.error("Lỗi khi thêm nhân viên vào : %s", e)
+            logger.error("Lỗi khi thêm nhân viên: %s", e)
             return False
 
     def update_user(self, username: str, data: dict) -> bool:
-        """Cập nhật nhân viên dưới SQL Server."""
+        """Cập nhật nhân viên trong cơ sở dữ liệu."""
         from src.entities.user import User
         from src.entities.role import Role
         import bcrypt
-        import logging
-        logger = logging.getLogger(__name__)
 
         try:
             with Database.get_session_ctx() as session:
@@ -94,8 +101,13 @@ class UserServiceImpl(UserService):
                 user.email = data.get('email')
                 user.is_active = True if data.get('status') == 'Active' else False
 
-                role = session.query(Role).filter(Role.role_name == data.get('role_name')).first()
-                if role:
+                role_name = data.get('role_name')
+                if role_name:
+                    role = session.query(Role).filter(Role.role_name == role_name).first()
+                    if not role:
+                        role = Role(role_name=role_name)
+                        session.add(role)
+                        session.flush()
                     user.role_id = role.role_id
 
                 new_password = data.get('password')
