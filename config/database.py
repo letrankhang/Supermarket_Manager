@@ -182,8 +182,6 @@ class Database:
                     {"tier_name": "Vàng", "min_spent": 10000000.0, "discount_percent": 7},
                     {"tier_name": "Kim cương", "min_spent": 20000000.0, "discount_percent": 15},
                 ]
-                # Chi seed khi bang con rong. Truoc day seed theo ten tieng Anh nen moi lan
-                # khoi dong lai sinh them hang trung ben canh cac hang tieng Viet co san.
                 if session.query(CustomerTier).count() == 0:
                     for dt in default_tiers:
                         new_tier = CustomerTier(
