@@ -178,6 +178,24 @@ class Database:
                             admin_user.is_active = True
                             print("[Database Seed] Ensured existing admin user is active.")
 
+                # Seed data: Khởi tạo các hạng thành viên mặc định (CustomerTier)
+                default_tiers = [
+                    {"tier_name": "Bronze", "min_spent": 0.0, "discount_percent": 0},
+                    {"tier_name": "Silver", "min_spent": 1000000.0, "discount_percent": 5},
+                    {"tier_name": "Gold", "min_spent": 5000000.0, "discount_percent": 10},
+                    {"tier_name": "Diamond", "min_spent": 10000000.0, "discount_percent": 15},
+                ]
+                existing_tiers = {t.tier_name: t for t in session.query(CustomerTier).all()}
+                for dt in default_tiers:
+                    if dt["tier_name"] not in existing_tiers:
+                        new_tier = CustomerTier(
+                            tier_name=dt["tier_name"],
+                            min_spent=dt["min_spent"],
+                            discount_percent=dt["discount_percent"]
+                        )
+                        session.add(new_tier)
+                        print(f"[Database Seed] CustomerTier '{dt['tier_name']}' created successfully.")
+
         except Exception as e:
             print(f"[Database Error] Failed to generate database tables or seed data: {e}")
             raise e

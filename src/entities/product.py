@@ -1,4 +1,5 @@
 from sqlalchemy import Column, Integer, String, Numeric, DateTime, ForeignKey, func
+from sqlalchemy.orm import relationship
 from src.entities.base import Base
 
 class Product(Base):
@@ -18,6 +19,9 @@ class Product(Base):
     image = Column(String(500), nullable=True)
     created_at = Column(DateTime, server_default=func.now())
     updated_at = Column(DateTime, server_default=func.now(), onupdate=func.now())
+
+    # Relationships
+    category = relationship("Category", foreign_keys=[category_id])
 
     def __repr__(self):
         return f"<Product(product_id={self.product_id}, name='{self.product_name}', stock={self.current_stock}, image='{self.image}')>"

@@ -1,4 +1,5 @@
 from sqlalchemy import Column, Integer, String, Date, Numeric, DateTime, ForeignKey, func
+from sqlalchemy.orm import relationship
 from src.entities.base import Base
 
 class Customer(Base):
@@ -16,6 +17,9 @@ class Customer(Base):
     tier_id = Column(Integer, ForeignKey('customer_tiers.tier_id'))
     created_at = Column(DateTime, server_default=func.now())
     updated_at = Column(DateTime, server_default=func.now(), onupdate=func.now())
+
+    # Relationships
+    tier = relationship("CustomerTier", back_populates="customers")
 
     def __repr__(self):
         return f"<Customer(customer_id={self.customer_id}, phone='{self.phone}', name='{self.full_name}')>"

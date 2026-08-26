@@ -1,4 +1,5 @@
 from sqlalchemy import Column, Integer, Numeric, ForeignKey
+from sqlalchemy.orm import relationship
 from src.entities.base import Base
 
 class SalesDetail(Base):
@@ -12,6 +13,10 @@ class SalesDetail(Base):
     quantity = Column(Integer, nullable=False)
     unit_price = Column(Numeric(15, 2), nullable=False)
     cost_price = Column(Numeric(15, 2), nullable=False)
+
+    # Relationships
+    invoice = relationship("SalesInvoice", back_populates="details")
+    product = relationship("Product", foreign_keys=[product_id])
 
     def __repr__(self):
         return f"<SalesDetail(invoice_id={self.invoice_id}, product_id={self.product_id}, qty={self.quantity})>"

@@ -21,6 +21,8 @@ from src.controller.SupplierController import SupplierController
 from src.controller.HelpCenterController import HelpCenterController
 from src.controller.Productcontroller import ProductController
 from src.controller.Importcontroller import ImportController
+from src.controller.CustomerManagementController import CustomerManagementController
+from src.controller.AnalyticsController import AnalyticsController
 
 logger = logging.getLogger(__name__)
 
@@ -96,6 +98,14 @@ class MainWindowController(QMainWindow, Ui_MainWindow):
         # nhâp sp
         self.import_controller = ImportController(self)
         self.stacked_widget.addWidget(self.import_controller)
+
+        # Quản lý khách hàng
+        self.customer_controller = CustomerManagementController()
+        self.stacked_widget.addWidget(self.customer_controller)
+
+        # Phân tích bán hàng
+        self.analytics_controller = AnalyticsController()
+        self.stacked_widget.addWidget(self.analytics_controller)
 
         self._setup_navigation()
 
@@ -203,16 +213,10 @@ class MainWindowController(QMainWindow, Ui_MainWindow):
 
         self.btn_products.clicked.connect(self._show_products)
         self.btn_importing.clicked.connect(self._show_importing)
-        # --- BỔ SUNG: Gắn sự kiện click cho nút Cài đặt hệ thống ---
+        self.btn_customers.clicked.connect(self._show_customers)
+        self.btn_analytics.clicked.connect(self._show_analytics)
         self.btn_settings.clicked.connect(self._show_settings)
         self.btn_suppliers.clicked.connect(self._show_suppliers)
-
-        unimplemented_buttons = [
-            self.btn_customers,
-            self.btn_analytics,
-        ]
-        for btn in unimplemented_buttons:
-            btn.clicked.connect(self._revert_nav_button)
 
         self.dashboard_controller.quick_action_requested.connect(self._on_quick_action)
 
@@ -224,7 +228,12 @@ class MainWindowController(QMainWindow, Ui_MainWindow):
     def _on_quick_action(self, action_key: str) -> None:
         if action_key == "pos":
             self._show_pos()
-            return
+        elif action_key == "products":
+            self._show_products()
+        elif action_key == "importing":
+            self._show_importing()
+        elif action_key == "customers":
+            self._show_customers()
 
     def _show_dashboard(self) -> None:
         self._set_active_nav_button(self.btn_dashboard)
@@ -235,6 +244,18 @@ class MainWindowController(QMainWindow, Ui_MainWindow):
         self._set_active_nav_button(self.btn_pos)
         self.stacked_widget.setCurrentWidget(self.pos_controller)
         self.pos_controller.load_data()
+
+    def _show_customers(self) -> None:
+        """Hiển thị màn hình Quản lý Khách hàng và nạp dữ liệu."""
+        self._set_active_nav_button(self.btn_customers)
+        self.stacked_widget.setCurrentWidget(self.customer_controller)
+        self.customer_controller.load_data()
+
+    def _show_analytics(self) -> None:
+        """Hiển thị màn hình Phân tích Bán hàng và nạp dữ liệu."""
+        self._set_active_nav_button(self.btn_analytics)
+        self.stacked_widget.setCurrentWidget(self.analytics_controller)
+        self.analytics_controller.load_data()
 
     # --- BỔ SUNG: Hàm chuyển sang màn hình Cài đặt hệ thống (Nhân sự) ---
     def _show_settings(self) -> None:
@@ -303,4 +324,4 @@ class MainWindowController(QMainWindow, Ui_MainWindow):
         self.lblUserName.setText(fullname)
 
     def _block_admin_features_for_cashier(self) -> None:
-        pass
+        pass

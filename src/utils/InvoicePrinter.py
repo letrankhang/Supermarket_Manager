@@ -4,15 +4,26 @@ import os
 from decimal import Decimal
 from typing import List, Optional, Tuple
 
-from reportlab.lib import colors
-from reportlab.lib.pagesizes import A4
-from reportlab.lib.styles import ParagraphStyle
-from reportlab.lib.units import mm
-from reportlab.pdfbase import pdfmetrics
-from reportlab.pdfbase.ttfonts import TTFont
-from reportlab.platypus import (
-    Paragraph, SimpleDocTemplate, Spacer, Table, TableStyle
-)
+try:
+    from reportlab.lib import colors
+    from reportlab.lib.pagesizes import A4
+    from reportlab.lib.styles import ParagraphStyle
+    from reportlab.lib.units import mm
+    from reportlab.pdfbase import pdfmetrics
+    from reportlab.pdfbase.ttfonts import TTFont
+    from reportlab.platypus import (
+        Paragraph, SimpleDocTemplate, Spacer, Table, TableStyle
+    )
+    REPORTLAB_AVAILABLE = True
+except ImportError:
+    REPORTLAB_AVAILABLE = False
+    colors = None
+    A4 = (595.27, 841.89)
+    ParagraphStyle = None
+    mm = 2.834645669291339
+    pdfmetrics = None
+    TTFont = None
+    Paragraph = SimpleDocTemplate = Spacer = Table = TableStyle = None
 
 from src.dtos.POSDTO import InvoiceDetailDTO
 from src.utils.Formatter import format_currency
@@ -274,6 +285,9 @@ def export_invoice_pdf(invoice: InvoiceDetailDTO, file_path: str,
                        cash_received: Optional[Decimal] = None,
                        change_amount: Optional[Decimal] = None) -> str:
     """Ghi hóa đơn ra file PDF, trả về đường dẫn file đã ghi."""
+    if not REPORTLAB_AVAILABLE:
+        raise InvoicePrintError("Thư viện 'reportlab' chưa được cài đặt trong môi trường Python.")
+
     if invoice is None:
         raise InvoicePrintError("Không có dữ liệu hóa đơn để in.")
 
