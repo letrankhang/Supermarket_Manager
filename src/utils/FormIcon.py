@@ -156,7 +156,7 @@ def _install_hover_icon(button: QAbstractButton, normal: QIcon, hover: QIcon) ->
 
 
 def apply_icon(
-widget: QWidget,
+    widget: QWidget,
     name: str,
     tone: str = "default",
     size: QSize = BUTTON_ICON_SIZE,
@@ -165,6 +165,11 @@ widget: QWidget,
     color_disabled: Optional[str] = None,
     hover: Optional[str] = None,
 ) -> None:
+    hover_tone = HOVER_TONES.get(name) if hover is None else hover
+
+    if color_active is None and hover_tone == HOVER_OFF:
+        color_active = HOVER_OFF
+
     built = icon(name, tone, color, color_active, color_disabled)
     if built.isNull():
         return
@@ -174,7 +179,6 @@ widget: QWidget,
         widget.setIcon(built)
         widget.setIconSize(size)
 
-        hover_tone = HOVER_TONES.get(name) if hover is None else hover
         if hover_tone and hover_tone != HOVER_OFF:
             hovered = icon(name, tone, color=TONES.get(hover_tone, hover_tone))
             if not hovered.isNull():

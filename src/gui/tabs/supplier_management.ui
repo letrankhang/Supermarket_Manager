@@ -217,10 +217,13 @@ QPushButton#RowActionButton {
 }
 QPushButton#RowActionButton:hover {
     background-color: #f1f5f9;
+    border: none;
     color: #0f172a;
 }
 QPushButton#RowActionButton:pressed {
     background-color: #e2e8f0;
+    border: none;
+    color: #0f172a;
 }
 
 QPushButton#btnEditRow:hover {
