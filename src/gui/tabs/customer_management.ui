@@ -294,6 +294,14 @@ QLabel[badge=&quot;bronze&quot;] {
     font-size: 11px;
     font-weight: 700;
 }
+QLabel[badge=&quot;gold&quot;] {
+    background-color: #fef9c3;
+    color: #a16207;
+    border-radius: 6px;
+    padding: 3px 10px;
+    font-size: 11px;
+    font-weight: 700;
+}
 QLabel[trend=&quot;up&quot;] {
     background-color: #ecfdf5;
     color: #059669;

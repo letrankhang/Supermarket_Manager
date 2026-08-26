@@ -34,7 +34,7 @@ PAGE_SIZE = 10
 
 RANK_ALIASES = (
     (("DIAMOND", "KIM CƯƠNG"), "DIAMOND", "violet"),
-    (("GOLD", "VÀNG"), "GOLD", "warning"),
+    (("GOLD", "VÀNG"), "GOLD", "gold"),
     (("SILVER", "BẠC"), "SILVER", "neutral"),
 )
 RANK_FALLBACK = ("BRONZE", "bronze")
