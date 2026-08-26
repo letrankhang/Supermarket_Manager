@@ -16,7 +16,7 @@ from src.dtos.POSDTO import CartDTO, CartItemDTO, CategoryDTO, CheckoutRequestDT
 from src.gui.tabs.pos_ui import Ui_Form
 from src.services.POSService import POSError, ProductNotFoundError
 from src.services.impl.POSServiceImpl import POSServiceImpl
-from src.utils.FormIcon import add_awesome_left_icon, apply_icon, icon
+from src.utils.FormIcon import add_awesome_left_icon, apply_awesome_icons, apply_icon, icon
 from src.utils.Formatter import format_currency, format_discount, format_rate_as_percent
 from src.utils.Session import Session
 
@@ -238,6 +238,7 @@ class POSController(QWidget, Ui_Form):
             button.setCursor(Qt.CursorShape.PointingHandCursor)
 
         add_awesome_left_icon(self.txtSearch, "search")
+        apply_awesome_icons(self)
 
         self.lblCustomerBadge.setSizePolicy(QSizePolicy.Policy.Maximum, QSizePolicy.Policy.Fixed)
 
@@ -252,12 +253,26 @@ class POSController(QWidget, Ui_Form):
     def _setup_category_chips(self) -> None:
         self.category_group = QButtonGroup(self)
         self.category_group.setExclusive(True)
+        self._reload_category_chips()
 
-        categories: List[CategoryDTO] = self.pos_service.get_categories()
+
+    def _reload_category_chips(self) -> None:
         layout = self.horizontalLayout_categories
 
-        for index, category in enumerate(categories):
-            chip = self._create_category_chip(category, is_default=(index == 0))
+        for chip in self.category_group.buttons():
+            self.category_group.removeButton(chip)
+            layout.removeWidget(chip)
+            chip.deleteLater()
+
+        categories: List[CategoryDTO] = self.pos_service.get_categories()
+
+        if self.selected_category_id not in {c.category_id for c in categories}:
+            self.selected_category_id = None
+
+        for category in categories:
+            chip = self._create_category_chip(
+                category, is_default=(category.category_id == self.selected_category_id)
+            )
             self.category_group.addButton(chip)
 
             layout.insertWidget(layout.count() - 1, chip)
@@ -375,12 +390,13 @@ class POSController(QWidget, Ui_Form):
 
 
     def _show_cashier_name(self) -> None:
-        cashier = Session.get_username() if Session.is_active() else None
+        cashier = Session.get_full_name() if Session.is_active() else None
         self.lblCashierName.setText(f"Thu ngân: {cashier or '---'}")
 
 
     def load_data(self) -> None:
         self._show_cashier_name()
+        self._reload_category_chips()
         self._reload_products()
         self._render_cart(self.pos_service.get_cart())
 
@@ -531,6 +547,18 @@ class POSController(QWidget, Ui_Form):
 
         self.selected_customer = dialog.selected_customer
         self._update_customer_badge()
+        self._apply_tier_discount()
+
+
+    def _apply_tier_discount(self) -> None:
+        from src.services.impl.CustomerServiceImpl import CustomerServiceImpl
+
+        customer_id = self.selected_customer.customer_id if self.selected_customer else None
+        percent = CustomerServiceImpl().get_tier_discount_percent(customer_id)
+
+        discount_rate = Decimal(str(percent)) / Decimal("100")
+        logger.info("POS: ap muc giam %d%% theo hang thanh vien.", percent)
+        self._run_cart_action(lambda: self.pos_service.apply_discount_rate(discount_rate))
 
 
     def _update_customer_badge(self) -> None:
@@ -553,7 +581,8 @@ class POSController(QWidget, Ui_Form):
     def _on_edit_discount(self) -> None:
         from src.controller.DiscountDialogController import DiscountDialogController
 
-        dialog = DiscountDialogController(self)
+        current_rate = self.pos_service.get_cart().summary.discount_rate
+        dialog = DiscountDialogController(self, current_discount=float(current_rate * Decimal("100")))
         if not dialog.exec():
             return
 

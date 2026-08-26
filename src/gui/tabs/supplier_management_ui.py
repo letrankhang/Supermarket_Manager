@@ -659,15 +659,22 @@ class Ui_SupplierManagement(object):
 
         self.verticalLayout.addLayout(self.titleLayout)
 
+        self.frameTable = QFrame(SupplierManagement)
+        self.frameTable.setObjectName(u"frameTable")
+        self.frameTable.setFrameShape(QFrame.Shape.NoFrame)
+        self.tableFrameLayout = QVBoxLayout(self.frameTable)
+        self.tableFrameLayout.setSpacing(12)
+        self.tableFrameLayout.setObjectName(u"tableFrameLayout")
+        self.tableFrameLayout.setContentsMargins(12, 12, 12, 12)
         self.toolbarLayout = QHBoxLayout()
         self.toolbarLayout.setSpacing(8)
         self.toolbarLayout.setObjectName(u"toolbarLayout")
-        self.txtSearch = QLineEdit(SupplierManagement)
+        self.txtSearch = QLineEdit(self.frameTable)
         self.txtSearch.setObjectName(u"txtSearch")
 
         self.toolbarLayout.addWidget(self.txtSearch)
 
-        self.cboFilter = QComboBox(SupplierManagement)
+        self.cboFilter = QComboBox(self.frameTable)
         self.cboFilter.addItem("")
         self.cboFilter.addItem("")
         self.cboFilter.addItem("")
@@ -675,28 +682,22 @@ class Ui_SupplierManagement(object):
 
         self.toolbarLayout.addWidget(self.cboFilter)
 
-        self.btnExport = QPushButton(SupplierManagement)
+        self.btnExport = QPushButton(self.frameTable)
         self.btnExport.setObjectName(u"btnExport")
         self.btnExport.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
+        self.btnExport.setProperty(u"iconPx", 14)
 
         self.toolbarLayout.addWidget(self.btnExport)
 
-        self.btnAdd = QPushButton(SupplierManagement)
+        self.btnAdd = QPushButton(self.frameTable)
         self.btnAdd.setObjectName(u"btnAdd")
         self.btnAdd.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
 
         self.toolbarLayout.addWidget(self.btnAdd)
 
 
-        self.verticalLayout.addLayout(self.toolbarLayout)
+        self.tableFrameLayout.addLayout(self.toolbarLayout)
 
-        self.frameTable = QFrame(SupplierManagement)
-        self.frameTable.setObjectName(u"frameTable")
-        self.frameTable.setFrameShape(QFrame.Shape.NoFrame)
-        self.tableFrameLayout = QVBoxLayout(self.frameTable)
-        self.tableFrameLayout.setSpacing(0)
-        self.tableFrameLayout.setObjectName(u"tableFrameLayout")
-        self.tableFrameLayout.setContentsMargins(12, 12, 12, 12)
         self.tblSuppliers = QTableWidget(self.frameTable)
         if (self.tblSuppliers.columnCount() < 7):
             self.tblSuppliers.setColumnCount(7)
@@ -748,10 +749,15 @@ class Ui_SupplierManagement(object):
         self.cboFilter.setItemText(1, QCoreApplication.translate("SupplierManagement", u"T\u00ean c\u00f4ng ty", None))
         self.cboFilter.setItemText(2, QCoreApplication.translate("SupplierManagement", u"S\u1ed1 \u0111i\u1ec7n tho\u1ea1i", None))
 
+#if QT_CONFIG(tooltip)
+        self.btnExport.setToolTip(QCoreApplication.translate("SupplierManagement", u"\u0110ang ph\u00e1t tri\u1ec3n c\u00e1i n\u00e0y", None))
+#endif // QT_CONFIG(tooltip)
         self.btnExport.setText(QCoreApplication.translate("SupplierManagement", u"Xu\u1ea5t b\u00e1o c\u00e1o", None))
+        self.btnExport.setProperty(u"iconName", QCoreApplication.translate("SupplierManagement", u"export", None))
+        self.btnExport.setProperty(u"iconColor", QCoreApplication.translate("SupplierManagement", u"default", None))
         self.btnAdd.setText(QCoreApplication.translate("SupplierManagement", u"+ Th\u00eam \u0111\u1ed1i t\u00e1c", None))
         ___qtablewidgetitem = self.tblSuppliers.horizontalHeaderItem(0)
-        ___qtablewidgetitem.setText(QCoreApplication.translate("SupplierManagement", u"ID", None))
+        ___qtablewidgetitem.setText(QCoreApplication.translate("SupplierManagement", u"M\u00c3 NCC", None))
         ___qtablewidgetitem1 = self.tblSuppliers.horizontalHeaderItem(1)
         ___qtablewidgetitem1.setText(QCoreApplication.translate("SupplierManagement", u"T\u00caN C\u00d4NG TY", None))
         ___qtablewidgetitem2 = self.tblSuppliers.horizontalHeaderItem(2)

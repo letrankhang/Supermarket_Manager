@@ -652,9 +652,24 @@ class Ui_PersonnelManagement(object):
 "    font-weight: normal;\n"
 "}\n"
 "\n"
+"QLabel#lblTotalDesc,\n"
+"QLabel#lblActiveDesc {\n"
+"    color: #94a3b8;\n"
+"    font-size: 11px;\n"
+"    font-weight: normal;\n"
+"}\n"
+"\n"
+"QLabel#badgeTotal,\n"
+"QLabel#badgeActive,\n"
+"QLabel#badgeRoles {\n"
+"    background-color: #eff6ff;\n"
+"    border-radius: 9px;\n"
+"}\n"
+"\n"
 "QFrame#cardTotal,\n"
 "QFrame#cardActive,\n"
-"QFrame#cardRoles {\n"
+"QFrame#cardR"
+                        "oles {\n"
 "    background-color: #ffffff;\n"
 "    border: 1px solid #e2e8f0;\n"
 "    border-radius: 14px;\n"
@@ -666,8 +681,7 @@ class Ui_PersonnelManagement(object):
 "    max-width: 1px;\n"
 "}\n"
 "QLineEdit#txtSearch {\n"
-"    min-width: 260px"
-                        ";\n"
+"    min-width: 260px;\n"
 "}\n"
 "QComboBox#cboRole,\n"
 "QComboBox#cboStatus {\n"
@@ -703,21 +717,48 @@ class Ui_PersonnelManagement(object):
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.cardTotal.sizePolicy().hasHeightForWidth())
         self.cardTotal.setSizePolicy(sizePolicy)
-        self.cardTotal.setMinimumSize(QSize(0, 120))
+        self.cardTotal.setMinimumSize(QSize(0, 132))
         self.cardTotal.setFrameShape(QFrame.Shape.NoFrame)
         self.layoutTotal = QVBoxLayout(self.cardTotal)
         self.layoutTotal.setSpacing(6)
         self.layoutTotal.setObjectName(u"layoutTotal")
         self.layoutTotal.setContentsMargins(16, 14, 16, 14)
+        self.rowTotalTop = QHBoxLayout()
+        self.rowTotalTop.setSpacing(8)
+        self.rowTotalTop.setObjectName(u"rowTotalTop")
         self.lblTotalTitle = QLabel(self.cardTotal)
         self.lblTotalTitle.setObjectName(u"lblTotalTitle")
 
-        self.layoutTotal.addWidget(self.lblTotalTitle)
+        self.rowTotalTop.addWidget(self.lblTotalTitle)
+
+        self.spacerTotalTop = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
+
+        self.rowTotalTop.addItem(self.spacerTotalTop)
+
+        self.badgeTotal = QLabel(self.cardTotal)
+        self.badgeTotal.setObjectName(u"badgeTotal")
+        self.badgeTotal.setMinimumSize(QSize(34, 34))
+        self.badgeTotal.setMaximumSize(QSize(34, 34))
+        self.badgeTotal.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.badgeTotal.setProperty(u"iconPx", 17)
+
+        self.rowTotalTop.addWidget(self.badgeTotal)
+
+
+        self.layoutTotal.addLayout(self.rowTotalTop)
 
         self.lblTotal = QLabel(self.cardTotal)
         self.lblTotal.setObjectName(u"lblTotal")
+        self.lblTotal.setMinimumSize(QSize(0, 25))
+        self.lblTotal.setMaximumSize(QSize(16777215, 25))
 
         self.layoutTotal.addWidget(self.lblTotal)
+
+        self.lblTotalDesc = QLabel(self.cardTotal)
+        self.lblTotalDesc.setObjectName(u"lblTotalDesc")
+        self.lblTotalDesc.setMinimumSize(QSize(0, 25))
+
+        self.layoutTotal.addWidget(self.lblTotalDesc)
 
         self.spacerTotal = QSpacerItem(0, 0, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding)
 
@@ -730,21 +771,48 @@ class Ui_PersonnelManagement(object):
         self.cardActive.setObjectName(u"cardActive")
         sizePolicy.setHeightForWidth(self.cardActive.sizePolicy().hasHeightForWidth())
         self.cardActive.setSizePolicy(sizePolicy)
-        self.cardActive.setMinimumSize(QSize(0, 120))
+        self.cardActive.setMinimumSize(QSize(0, 132))
         self.cardActive.setFrameShape(QFrame.Shape.NoFrame)
         self.layoutActive = QVBoxLayout(self.cardActive)
         self.layoutActive.setSpacing(6)
         self.layoutActive.setObjectName(u"layoutActive")
         self.layoutActive.setContentsMargins(16, 14, 16, 14)
+        self.rowActiveTop = QHBoxLayout()
+        self.rowActiveTop.setSpacing(8)
+        self.rowActiveTop.setObjectName(u"rowActiveTop")
         self.lblActiveTitle = QLabel(self.cardActive)
         self.lblActiveTitle.setObjectName(u"lblActiveTitle")
 
-        self.layoutActive.addWidget(self.lblActiveTitle)
+        self.rowActiveTop.addWidget(self.lblActiveTitle)
+
+        self.spacerActiveTop = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
+
+        self.rowActiveTop.addItem(self.spacerActiveTop)
+
+        self.badgeActive = QLabel(self.cardActive)
+        self.badgeActive.setObjectName(u"badgeActive")
+        self.badgeActive.setMinimumSize(QSize(34, 34))
+        self.badgeActive.setMaximumSize(QSize(34, 34))
+        self.badgeActive.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.badgeActive.setProperty(u"iconPx", 17)
+
+        self.rowActiveTop.addWidget(self.badgeActive)
+
+
+        self.layoutActive.addLayout(self.rowActiveTop)
 
         self.lblActive = QLabel(self.cardActive)
         self.lblActive.setObjectName(u"lblActive")
+        self.lblActive.setMinimumSize(QSize(0, 25))
+        self.lblActive.setMaximumSize(QSize(16777215, 25))
 
         self.layoutActive.addWidget(self.lblActive)
+
+        self.lblActiveDesc = QLabel(self.cardActive)
+        self.lblActiveDesc.setObjectName(u"lblActiveDesc")
+        self.lblActiveDesc.setMinimumSize(QSize(0, 25))
+
+        self.layoutActive.addWidget(self.lblActiveDesc)
 
         self.spacerActive = QSpacerItem(0, 0, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding)
 
@@ -757,16 +825,36 @@ class Ui_PersonnelManagement(object):
         self.cardRoles.setObjectName(u"cardRoles")
         sizePolicy.setHeightForWidth(self.cardRoles.sizePolicy().hasHeightForWidth())
         self.cardRoles.setSizePolicy(sizePolicy)
-        self.cardRoles.setMinimumSize(QSize(0, 120))
+        self.cardRoles.setMinimumSize(QSize(0, 132))
         self.cardRoles.setFrameShape(QFrame.Shape.NoFrame)
         self.layoutRoles = QVBoxLayout(self.cardRoles)
-        self.layoutRoles.setSpacing(6)
+        self.layoutRoles.setSpacing(0)
         self.layoutRoles.setObjectName(u"layoutRoles")
         self.layoutRoles.setContentsMargins(16, 14, 16, 14)
+        self.rowRolesTop = QHBoxLayout()
+        self.rowRolesTop.setSpacing(8)
+        self.rowRolesTop.setObjectName(u"rowRolesTop")
         self.lblRolesTitle = QLabel(self.cardRoles)
         self.lblRolesTitle.setObjectName(u"lblRolesTitle")
+        self.lblRolesTitle.setMaximumSize(QSize(16777215, 25))
 
-        self.layoutRoles.addWidget(self.lblRolesTitle)
+        self.rowRolesTop.addWidget(self.lblRolesTitle)
+
+        self.spacerRolesTop = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
+
+        self.rowRolesTop.addItem(self.spacerRolesTop)
+
+        self.badgeRoles = QLabel(self.cardRoles)
+        self.badgeRoles.setObjectName(u"badgeRoles")
+        self.badgeRoles.setMinimumSize(QSize(34, 34))
+        self.badgeRoles.setMaximumSize(QSize(34, 34))
+        self.badgeRoles.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.badgeRoles.setProperty(u"iconPx", 17)
+
+        self.rowRolesTop.addWidget(self.badgeRoles)
+
+
+        self.layoutRoles.addLayout(self.rowRolesTop)
 
         self.layoutRolesData = QHBoxLayout()
         self.layoutRolesData.setSpacing(12)
@@ -776,11 +864,15 @@ class Ui_PersonnelManagement(object):
         self.layoutAdmin.setObjectName(u"layoutAdmin")
         self.lblAdminCount = QLabel(self.cardRoles)
         self.lblAdminCount.setObjectName(u"lblAdminCount")
+        self.lblAdminCount.setMinimumSize(QSize(0, 29))
+        self.lblAdminCount.setMaximumSize(QSize(16777215, 29))
 
         self.layoutAdmin.addWidget(self.lblAdminCount)
 
         self.lblAdminText = QLabel(self.cardRoles)
         self.lblAdminText.setObjectName(u"lblAdminText")
+        self.lblAdminText.setMinimumSize(QSize(0, 36))
+        self.lblAdminText.setMaximumSize(QSize(16777215, 36))
 
         self.layoutAdmin.addWidget(self.lblAdminText)
 
@@ -798,11 +890,15 @@ class Ui_PersonnelManagement(object):
         self.layoutManager.setObjectName(u"layoutManager")
         self.lblManagerCount = QLabel(self.cardRoles)
         self.lblManagerCount.setObjectName(u"lblManagerCount")
+        self.lblManagerCount.setMinimumSize(QSize(0, 29))
+        self.lblManagerCount.setMaximumSize(QSize(16777215, 29))
 
         self.layoutManager.addWidget(self.lblManagerCount)
 
         self.lblManagerText = QLabel(self.cardRoles)
         self.lblManagerText.setObjectName(u"lblManagerText")
+        self.lblManagerText.setMinimumSize(QSize(0, 36))
+        self.lblManagerText.setMaximumSize(QSize(16777215, 36))
 
         self.layoutManager.addWidget(self.lblManagerText)
 
@@ -820,11 +916,15 @@ class Ui_PersonnelManagement(object):
         self.layoutCashier.setObjectName(u"layoutCashier")
         self.lblCashierCount = QLabel(self.cardRoles)
         self.lblCashierCount.setObjectName(u"lblCashierCount")
+        self.lblCashierCount.setMinimumSize(QSize(0, 29))
+        self.lblCashierCount.setMaximumSize(QSize(16777215, 29))
 
         self.layoutCashier.addWidget(self.lblCashierCount)
 
         self.lblCashierText = QLabel(self.cardRoles)
         self.lblCashierText.setObjectName(u"lblCashierText")
+        self.lblCashierText.setMinimumSize(QSize(0, 36))
+        self.lblCashierText.setMaximumSize(QSize(16777215, 36))
 
         self.layoutCashier.addWidget(self.lblCashierText)
 
@@ -844,15 +944,22 @@ class Ui_PersonnelManagement(object):
 
         self.verticalLayout.addLayout(self.statsLayout)
 
+        self.frameTable = QFrame(PersonnelManagement)
+        self.frameTable.setObjectName(u"frameTable")
+        self.frameTable.setFrameShape(QFrame.Shape.NoFrame)
+        self.tableFrameLayout = QVBoxLayout(self.frameTable)
+        self.tableFrameLayout.setSpacing(12)
+        self.tableFrameLayout.setObjectName(u"tableFrameLayout")
+        self.tableFrameLayout.setContentsMargins(12, 12, 12, 12)
         self.toolbarLayout = QHBoxLayout()
         self.toolbarLayout.setSpacing(8)
         self.toolbarLayout.setObjectName(u"toolbarLayout")
-        self.txtSearch = QLineEdit(PersonnelManagement)
+        self.txtSearch = QLineEdit(self.frameTable)
         self.txtSearch.setObjectName(u"txtSearch")
 
         self.toolbarLayout.addWidget(self.txtSearch)
 
-        self.cboRole = QComboBox(PersonnelManagement)
+        self.cboRole = QComboBox(self.frameTable)
         self.cboRole.addItem("")
         self.cboRole.addItem("")
         self.cboRole.addItem("")
@@ -861,7 +968,7 @@ class Ui_PersonnelManagement(object):
 
         self.toolbarLayout.addWidget(self.cboRole)
 
-        self.cboStatus = QComboBox(PersonnelManagement)
+        self.cboStatus = QComboBox(self.frameTable)
         self.cboStatus.addItem("")
         self.cboStatus.addItem("")
         self.cboStatus.addItem("")
@@ -869,22 +976,15 @@ class Ui_PersonnelManagement(object):
 
         self.toolbarLayout.addWidget(self.cboStatus)
 
-        self.btnAdd = QPushButton(PersonnelManagement)
+        self.btnAdd = QPushButton(self.frameTable)
         self.btnAdd.setObjectName(u"btnAdd")
         self.btnAdd.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
 
         self.toolbarLayout.addWidget(self.btnAdd)
 
 
-        self.verticalLayout.addLayout(self.toolbarLayout)
+        self.tableFrameLayout.addLayout(self.toolbarLayout)
 
-        self.frameTable = QFrame(PersonnelManagement)
-        self.frameTable.setObjectName(u"frameTable")
-        self.frameTable.setFrameShape(QFrame.Shape.NoFrame)
-        self.tableFrameLayout = QVBoxLayout(self.frameTable)
-        self.tableFrameLayout.setSpacing(0)
-        self.tableFrameLayout.setObjectName(u"tableFrameLayout")
-        self.tableFrameLayout.setContentsMargins(12, 12, 12, 12)
         self.tblEmployees = QTableWidget(self.frameTable)
         if (self.tblEmployees.columnCount() < 6):
             self.tblEmployees.setColumnCount(6)
@@ -929,13 +1029,24 @@ class Ui_PersonnelManagement(object):
 
     def retranslateUi(self, PersonnelManagement):
         PersonnelManagement.setWindowTitle(QCoreApplication.translate("PersonnelManagement", u"Qu\u1ea3n l\u00fd Nh\u00e2n s\u1ef1", None))
-        self.lblTitle.setText(QCoreApplication.translate("PersonnelManagement", u"Qu\u1ea3n l\u00fd nh\u00e2n s\u1ef1", None))
+        self.lblTitle.setText(QCoreApplication.translate("PersonnelManagement", u"Qu\u1ea3n l\u00fd Nh\u00e2n s\u1ef1", None))
         self.lblSub.setText(QCoreApplication.translate("PersonnelManagement", u"Qu\u1ea3n l\u00fd th\u00f4ng tin nh\u00e2n vi\u00ean v\u00e0 ph\u00e2n quy\u1ec1n truy c\u1eadp h\u1ec7 th\u1ed1ng.", None))
         self.lblTotalTitle.setText(QCoreApplication.translate("PersonnelManagement", u"T\u1ed5ng s\u1ed1 nh\u00e2n vi\u00ean", None))
+        self.badgeTotal.setText("")
+        self.badgeTotal.setProperty(u"iconName", QCoreApplication.translate("PersonnelManagement", u"customers", None))
+        self.badgeTotal.setProperty(u"iconColor", QCoreApplication.translate("PersonnelManagement", u"#1d4ed8", None))
         self.lblTotal.setText(QCoreApplication.translate("PersonnelManagement", u"0", None))
+        self.lblTotalDesc.setText(QCoreApplication.translate("PersonnelManagement", u"T\u00e0i kho\u1ea3n nh\u00e2n s\u1ef1 trong h\u1ec7 th\u1ed1ng", None))
         self.lblActiveTitle.setText(QCoreApplication.translate("PersonnelManagement", u"\u0110ang ho\u1ea1t \u0111\u1ed9ng", None))
+        self.badgeActive.setText("")
+        self.badgeActive.setProperty(u"iconName", QCoreApplication.translate("PersonnelManagement", u"user-active", None))
+        self.badgeActive.setProperty(u"iconColor", QCoreApplication.translate("PersonnelManagement", u"#1d4ed8", None))
         self.lblActive.setText(QCoreApplication.translate("PersonnelManagement", u"0", None))
+        self.lblActiveDesc.setText(QCoreApplication.translate("PersonnelManagement", u"T\u00e0i kho\u1ea3n \u0111\u01b0\u1ee3c ph\u00e9p \u0111\u0103ng nh\u1eadp", None))
         self.lblRolesTitle.setText(QCoreApplication.translate("PersonnelManagement", u"Ph\u00e2n b\u1ed5 vai tr\u00f2", None))
+        self.badgeRoles.setText("")
+        self.badgeRoles.setProperty(u"iconName", QCoreApplication.translate("PersonnelManagement", u"role", None))
+        self.badgeRoles.setProperty(u"iconColor", QCoreApplication.translate("PersonnelManagement", u"#1d4ed8", None))
         self.lblAdminCount.setText(QCoreApplication.translate("PersonnelManagement", u"0", None))
         self.lblAdminText.setText(QCoreApplication.translate("PersonnelManagement", u"Qu\u1ea3n tr\u1ecb vi\u00ean", None))
         self.lblManagerCount.setText(QCoreApplication.translate("PersonnelManagement", u"0", None))
@@ -954,7 +1065,7 @@ class Ui_PersonnelManagement(object):
 
         self.btnAdd.setText(QCoreApplication.translate("PersonnelManagement", u"+ Th\u00eam nh\u00e2n s\u1ef1", None))
         ___qtablewidgetitem = self.tblEmployees.horizontalHeaderItem(0)
-        ___qtablewidgetitem.setText(QCoreApplication.translate("PersonnelManagement", u"USER ID", None))
+        ___qtablewidgetitem.setText(QCoreApplication.translate("PersonnelManagement", u"M\u00c3 T\u00c0I KHO\u1ea2N", None))
         ___qtablewidgetitem1 = self.tblEmployees.horizontalHeaderItem(1)
         ___qtablewidgetitem1.setText(QCoreApplication.translate("PersonnelManagement", u"H\u1ecc T\u00caN", None))
         ___qtablewidgetitem2 = self.tblEmployees.horizontalHeaderItem(2)

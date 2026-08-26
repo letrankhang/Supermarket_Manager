@@ -177,14 +177,15 @@ class Database:
                             print("[Database Seed] Ensured existing admin user is active.")
 
                 default_tiers = [
-                    {"tier_name": "Bronze", "min_spent": 0.0, "discount_percent": 0},
-                    {"tier_name": "Silver", "min_spent": 1000000.0, "discount_percent": 5},
-                    {"tier_name": "Gold", "min_spent": 5000000.0, "discount_percent": 10},
-                    {"tier_name": "Diamond", "min_spent": 10000000.0, "discount_percent": 15},
+                    {"tier_name": "Đồng", "min_spent": 0.0, "discount_percent": 0},
+                    {"tier_name": "Bạc", "min_spent": 5000000.0, "discount_percent": 3},
+                    {"tier_name": "Vàng", "min_spent": 10000000.0, "discount_percent": 7},
+                    {"tier_name": "Kim cương", "min_spent": 20000000.0, "discount_percent": 15},
                 ]
-                existing_tiers = {t.tier_name: t for t in session.query(CustomerTier).all()}
-                for dt in default_tiers:
-                    if dt["tier_name"] not in existing_tiers:
+                # Chi seed khi bang con rong. Truoc day seed theo ten tieng Anh nen moi lan
+                # khoi dong lai sinh them hang trung ben canh cac hang tieng Viet co san.
+                if session.query(CustomerTier).count() == 0:
+                    for dt in default_tiers:
                         new_tier = CustomerTier(
                             tier_name=dt["tier_name"],
                             min_spent=dt["min_spent"],

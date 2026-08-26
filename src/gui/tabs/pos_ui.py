@@ -822,9 +822,10 @@ class Ui_Form(object):
 
         self.btnFilter = QPushButton(self.frame_search_row)
         self.btnFilter.setObjectName(u"btnFilter")
-        self.btnFilter.setMinimumSize(QSize(52, 40))
+        self.btnFilter.setMinimumSize(QSize(46, 40))
         self.btnFilter.setMaximumSize(QSize(46, 40))
         self.btnFilter.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
+        self.btnFilter.setProperty(u"iconPx", 16)
 
         self.horizontalLayout_search_row.addWidget(self.btnFilter)
 
@@ -1129,7 +1130,12 @@ class Ui_Form(object):
         self.lblScanCaption.setText(QCoreApplication.translate("Form", u"B\u00e1n h\u00e0ng", None))
         self.lblCashierName.setText(QCoreApplication.translate("Form", u"Thu ng\u00e2n: ---", None))
         self.txtSearch.setPlaceholderText(QCoreApplication.translate("Form", u"T\u00ecm ki\u1ebfm s\u1ea3n ph\u1ea9m", None))
-        self.btnFilter.setText(QCoreApplication.translate("Form", u"L\u1ecdc", None))
+#if QT_CONFIG(tooltip)
+        self.btnFilter.setToolTip(QCoreApplication.translate("Form", u"L\u1ecdc s\u1ea3n ph\u1ea9m theo t\u1eeb kh\u00f3a \u0111ang nh\u1eadp", None))
+#endif // QT_CONFIG(tooltip)
+        self.btnFilter.setText("")
+        self.btnFilter.setProperty(u"iconName", QCoreApplication.translate("Form", u"filter", None))
+        self.btnFilter.setProperty(u"iconColor", QCoreApplication.translate("Form", u"default", None))
         self.lblHintHelp.setText(QCoreApplication.translate("Form", u"<span style=\"background-color:#fbfcfd; border:1px solid #e2e8f0; padding:2px 6px; font-weight:bold; color:#0f172a;\">F1</span>&nbsp;<span style=\"color:#64748b;\">Tr\u1ee3 gi\u00fap</span>", None))
         self.lblHintDiscount.setText(QCoreApplication.translate("Form", u"<span style=\"background-color:#fbfcfd; border:1px solid #e2e8f0; padding:2px 6px; font-weight:bold; color:#0f172a;\">F3</span>&nbsp;<span style=\"color:#64748b;\">Gi\u1ea3m gi\u00e1</span>", None))
         self.lblHintQuantity.setText(QCoreApplication.translate("Form", u"<span style=\"background-color:#fbfcfd; border:1px solid #e2e8f0; padding:2px 6px; font-weight:bold; color:#0f172a;\">F4</span>&nbsp;<span style=\"color:#64748b;\">S\u1ed1 l\u01b0\u1ee3ng</span>", None))

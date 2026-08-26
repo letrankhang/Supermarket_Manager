@@ -16,14 +16,14 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
 from PySide6.QtWidgets import (QApplication, QDialog, QDoubleSpinBox, QHBoxLayout,
-    QLabel, QPushButton, QSizePolicy, QSpacerItem,
-    QVBoxLayout, QWidget)
+    QLabel, QLayout, QPushButton, QSizePolicy,
+    QSpacerItem, QVBoxLayout, QWidget)
 
 class Ui_DiscountDialog(object):
     def setupUi(self, DiscountDialog):
         if not DiscountDialog.objectName():
             DiscountDialog.setObjectName(u"DiscountDialog")
-        DiscountDialog.resize(320, 178)
+        DiscountDialog.resize(300, 180)
         DiscountDialog.setStyleSheet(u"QDialog#DiscountDialog {\n"
 "    background-color: #ffffff;\n"
 "    color: #0f172a;\n"
@@ -459,8 +459,25 @@ class Ui_DiscountDialog(object):
 "\n"
 "QLabel#lblTitle {\n"
 "    color: #0f172a;\n"
-"    font-size: 14px;\n"
-"    font-weight: bold;\n"
+"    font-size: 15px;\n"
+"    font-weight: 700;\n"
+"}\n"
+"QLabel#lblHint {\n"
+"    color: #94a3b8;\n"
+"    font-size: 11px;\n"
+"    font-weight: normal;\n"
+"}\n"
+"QDoubleSpinBox#spnDiscount {\n"
+"    font-size: 15px;\n"
+"    font-weight: 700;\n"
+"    color: #1d4ed8;\n"
+"    min-height: 42px;\n"
+"}\n"
+"QPushButton#btnCancel {\n"
+"    min-height: 38px;\n"
+"    padding: 0px 18px;\n"
+"    font-size: 13px;\n"
+"    font-weight: 700;\n"
 "}\n"
 "\n"
 "QPushButton#btnApply {\n"
@@ -474,7 +491,8 @@ class Ui_DiscountDialog(object):
 "    font-weight: 700;\n"
 "}\n"
 "QPushButton#btnApply:hover {\n"
-"    background-color: #1e3a8a;\n"
+"    background-color:"
+                        " #1e3a8a;\n"
 "}\n"
 "QPushButton#btnApply:pressed {\n"
 "    background-color: #1e40af;\n"
@@ -485,39 +503,49 @@ class Ui_DiscountDialog(object):
 "}\n"
 "")
         self.verticalLayout = QVBoxLayout(DiscountDialog)
-        self.verticalLayout.setSpacing(12)
+        self.verticalLayout.setSpacing(8)
         self.verticalLayout.setObjectName(u"verticalLayout")
-        self.verticalLayout.setContentsMargins(20, 20, 20, 20)
+        self.verticalLayout.setSizeConstraint(QLayout.SizeConstraint.SetFixedSize)
+        self.verticalLayout.setContentsMargins(18, 16, 18, 16)
         self.lblTitle = QLabel(DiscountDialog)
         self.lblTitle.setObjectName(u"lblTitle")
 
         self.verticalLayout.addWidget(self.lblTitle)
 
+        self.lblHint = QLabel(DiscountDialog)
+        self.lblHint.setObjectName(u"lblHint")
+        self.lblHint.setMaximumSize(QSize(16777215, 25))
+        self.lblHint.setWordWrap(True)
+
+        self.verticalLayout.addWidget(self.lblHint)
+
         self.spnDiscount = QDoubleSpinBox(DiscountDialog)
         self.spnDiscount.setObjectName(u"spnDiscount")
+        self.spnDiscount.setMinimumSize(QSize(264, 44))
+        self.spnDiscount.setAlignment(Qt.AlignmentFlag.AlignLeading|Qt.AlignmentFlag.AlignLeft|Qt.AlignmentFlag.AlignVCenter)
         self.spnDiscount.setDecimals(1)
         self.spnDiscount.setMaximum(100.000000000000000)
+        self.spnDiscount.setSingleStep(1.000000000000000)
 
         self.verticalLayout.addWidget(self.spnDiscount)
 
-        self.verticalSpacer = QSpacerItem(20, 10, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding)
-
-        self.verticalLayout.addItem(self.verticalSpacer)
-
         self.horizontalLayout = QHBoxLayout()
-        self.horizontalLayout.setSpacing(10)
+        self.horizontalLayout.setSpacing(8)
         self.horizontalLayout.setObjectName(u"horizontalLayout")
-        self.horizontalSpacer = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
+        self.horizontalLayout.setContentsMargins(-1, 4, -1, -1)
+        self.horizontalSpacer = QSpacerItem(0, 0, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
 
         self.horizontalLayout.addItem(self.horizontalSpacer)
 
         self.btnCancel = QPushButton(DiscountDialog)
         self.btnCancel.setObjectName(u"btnCancel")
+        self.btnCancel.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
 
         self.horizontalLayout.addWidget(self.btnCancel)
 
         self.btnApply = QPushButton(DiscountDialog)
         self.btnApply.setObjectName(u"btnApply")
+        self.btnApply.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
 
         self.horizontalLayout.addWidget(self.btnApply)
 
@@ -532,7 +560,9 @@ class Ui_DiscountDialog(object):
 
     def retranslateUi(self, DiscountDialog):
         DiscountDialog.setWindowTitle(QCoreApplication.translate("DiscountDialog", u"Gi\u1ea3m gi\u00e1 h\u00f3a \u0111\u01a1n", None))
-        self.lblTitle.setText(QCoreApplication.translate("DiscountDialog", u"Nh\u1eadp m\u1ee9c gi\u1ea3m gi\u00e1 (%):", None))
+        self.lblTitle.setText(QCoreApplication.translate("DiscountDialog", u"Gi\u1ea3m gi\u00e1 h\u00f3a \u0111\u01a1n", None))
+        self.lblHint.setText(QCoreApplication.translate("DiscountDialog", u"\u01afu \u0111\u00e3i theo h\u1ea1ng \u0111\u00e3 \u00e1p s\u1eb5n, s\u1eeda n\u1ebfu c\u1ea7n.", None))
+        self.spnDiscount.setSuffix(QCoreApplication.translate("DiscountDialog", u" %", None))
         self.btnCancel.setText(QCoreApplication.translate("DiscountDialog", u"H\u1ee7y", None))
         self.btnApply.setText(QCoreApplication.translate("DiscountDialog", u"\u00c1p d\u1ee5ng", None))
     # retranslateUi

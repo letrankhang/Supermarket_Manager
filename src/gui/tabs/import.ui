@@ -628,20 +628,23 @@ QLabel#lblRecentSub {
     font-weight: normal;
 }
 
-QLabel#lblListTitle {
-    color: #0f172a;
-    font-size: 15px;
-    font-weight: 700;
-}
-
 QFrame#cardTotalSpend,
 QFrame#cardRecent {
     background-color: #ffffff;
     border: 1px solid #e2e8f0;
     border-radius: 14px;
 }
-QComboBox#cboStatus {
-    min-width: 190px;
+QLabel#badgeTotalSpend,
+QLabel#badgeRecent {
+    background-color: #eff6ff;
+    border-radius: 9px;
+}
+QLineEdit#txtSearch {
+    min-width: 280px;
+}
+QComboBox#cboDate {
+    min-width: 170px;
+    max-width: 170px;
 }
 QPushButton#btnCreateOrder {
     background-color: #1d4ed8;
@@ -739,7 +742,7 @@ QPushButton#btnCreateOrder:disabled {
        <property name="minimumSize">
         <size>
          <width>0</width>
-         <height>120</height>
+         <height>132</height>
         </size>
        </property>
        <property name="frameShape">
@@ -759,17 +762,80 @@ QPushButton#btnCreateOrder:disabled {
          <number>16</number>
         </property>
         <property name="bottomMargin">
-         <number>14</number>
+         <number>20</number>
         </property>
         <item>
-         <widget class="QLabel" name="lblTotalSpendTitle">
-          <property name="text">
-           <string>Tổng chi tháng này</string>
+         <layout class="QHBoxLayout" name="rowTotalSpendTop">
+          <property name="spacing">
+           <number>8</number>
           </property>
-         </widget>
+          <item>
+           <widget class="QLabel" name="lblTotalSpendTitle">
+            <property name="text">
+             <string>Tổng chi tháng này</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <spacer name="spacerTotalSpendTop">
+            <property name="orientation">
+             <enum>Qt::Orientation::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>40</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item>
+           <widget class="QLabel" name="badgeTotalSpend">
+            <property name="minimumSize">
+             <size>
+              <width>34</width>
+              <height>34</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>34</width>
+              <height>34</height>
+             </size>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignmentFlag::AlignCenter</set>
+            </property>
+            <property name="iconName" stdset="0">
+             <string>cash</string>
+            </property>
+            <property name="iconColor" stdset="0">
+             <string>#1d4ed8</string>
+            </property>
+            <property name="iconPx" stdset="0">
+             <number>17</number>
+            </property>
+           </widget>
+          </item>
+         </layout>
         </item>
         <item>
          <widget class="QLabel" name="lblTotalSpend">
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>25</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>16777215</width>
+            <height>25</height>
+           </size>
+          </property>
           <property name="text">
            <string>đ 0</string>
           </property>
@@ -778,7 +844,7 @@ QPushButton#btnCreateOrder:disabled {
         <item>
          <widget class="QLabel" name="lblTotalSpendSub">
           <property name="text">
-           <string>so với tháng trước</string>
+           <string>So với tháng trước</string>
           </property>
          </widget>
         </item>
@@ -790,7 +856,7 @@ QPushButton#btnCreateOrder:disabled {
        <property name="minimumSize">
         <size>
          <width>0</width>
-         <height>120</height>
+         <height>132</height>
         </size>
        </property>
        <property name="frameShape">
@@ -810,17 +876,80 @@ QPushButton#btnCreateOrder:disabled {
          <number>16</number>
         </property>
         <property name="bottomMargin">
-         <number>14</number>
+         <number>20</number>
         </property>
         <item>
-         <widget class="QLabel" name="lblRecentTitle">
-          <property name="text">
-           <string>Lượt nhập gần đây</string>
+         <layout class="QHBoxLayout" name="rowRecentTop">
+          <property name="spacing">
+           <number>8</number>
           </property>
-         </widget>
+          <item>
+           <widget class="QLabel" name="lblRecentTitle">
+            <property name="text">
+             <string>Lượt nhập gần đây</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <spacer name="spacerRecentTop">
+            <property name="orientation">
+             <enum>Qt::Orientation::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>40</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item>
+           <widget class="QLabel" name="badgeRecent">
+            <property name="minimumSize">
+             <size>
+              <width>34</width>
+              <height>34</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>34</width>
+              <height>34</height>
+             </size>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignmentFlag::AlignCenter</set>
+            </property>
+            <property name="iconName" stdset="0">
+             <string>import</string>
+            </property>
+            <property name="iconColor" stdset="0">
+             <string>#1d4ed8</string>
+            </property>
+            <property name="iconPx" stdset="0">
+             <number>17</number>
+            </property>
+           </widget>
+          </item>
+         </layout>
         </item>
         <item>
          <widget class="QLabel" name="lblRecent">
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>25</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>16777215</width>
+            <height>25</height>
+           </size>
+          </property>
           <property name="text">
            <string>0</string>
           </property>
@@ -845,7 +974,7 @@ QPushButton#btnCreateOrder:disabled {
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_table">
       <property name="spacing">
-       <number>12</number>
+       <number>2</number>
       </property>
       <property name="leftMargin">
        <number>12</number>
@@ -861,69 +990,48 @@ QPushButton#btnCreateOrder:disabled {
       </property>
       <item>
        <layout class="QHBoxLayout" name="horizontalLayout_tableHeader">
+        <property name="spacing">
+         <number>8</number>
+        </property>
         <property name="leftMargin">
-         <number>12</number>
+         <number>0</number>
         </property>
         <property name="topMargin">
          <number>0</number>
         </property>
         <property name="rightMargin">
-         <number>12</number>
+         <number>0</number>
         </property>
         <property name="bottomMargin">
          <number>10</number>
         </property>
         <item>
-         <widget class="QLabel" name="lblListTitle">
-          <property name="text">
-           <string>Danh sách phiếu nhập</string>
+         <widget class="QLineEdit" name="txtSearch">
+          <property name="placeholderText">
+           <string>Tìm theo mã phiếu hoặc nhà cung cấp</string>
           </property>
          </widget>
         </item>
         <item>
-         <spacer name="horizontalSpacer_tbl">
-          <property name="orientation">
-           <enum>Qt::Orientation::Horizontal</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>0</width>
-            <height>0</height>
-           </size>
-          </property>
-         </spacer>
-        </item>
-        <item>
-         <widget class="QComboBox" name="cboStatus">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="minimumSize">
-           <size>
-            <width>120</width>
-            <height>36</height>
-           </size>
-          </property>
-          <property name="maximumSize">
-           <size>
-            <width>120</width>
-            <height>36</height>
-           </size>
-          </property>
-          <property name="styleSheet">
-           <string notr="true"/>
-          </property>
+         <widget class="QComboBox" name="cboDate">
           <item>
            <property name="text">
-            <string>Hoàn thành</string>
+            <string>Tất cả thời gian</string>
            </property>
           </item>
           <item>
            <property name="text">
-            <string>Chờ xử lý</string>
+            <string>Hôm nay</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>7 ngày qua</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>30 ngày qua</string>
            </property>
           </item>
          </widget>
@@ -1011,6 +1119,9 @@ QPushButton#btnCreateOrder:disabled {
    </item>
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout_pagination">
+     <property name="spacing">
+      <number>5</number>
+     </property>
      <item>
       <widget class="QLabel" name="lblPage">
        <property name="text">
@@ -1033,27 +1144,39 @@ QPushButton#btnCreateOrder:disabled {
      </item>
      <item>
       <widget class="QPushButton" name="btnPrev">
-       <property name="maximumSize">
-        <size>
-         <width>36</width>
-         <height>34</height>
-        </size>
+       <property name="cursor">
+        <cursorShape>PointingHandCursor</cursorShape>
        </property>
        <property name="text">
-        <string>‹</string>
+        <string/>
+       </property>
+       <property name="iconName" stdset="0">
+        <string>previous</string>
+       </property>
+       <property name="iconColor" stdset="0">
+        <string>default</string>
+       </property>
+       <property name="iconPx" stdset="0">
+        <number>12</number>
        </property>
       </widget>
      </item>
      <item>
       <widget class="QPushButton" name="btnNext">
-       <property name="maximumSize">
-        <size>
-         <width>36</width>
-         <height>34</height>
-        </size>
+       <property name="cursor">
+        <cursorShape>PointingHandCursor</cursorShape>
        </property>
        <property name="text">
-        <string>›</string>
+        <string/>
+       </property>
+       <property name="iconName" stdset="0">
+        <string>next</string>
+       </property>
+       <property name="iconColor" stdset="0">
+        <string>default</string>
+       </property>
+       <property name="iconPx" stdset="0">
+        <number>12</number>
        </property>
       </widget>
      </item>

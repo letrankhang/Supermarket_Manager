@@ -732,7 +732,7 @@ QPushButton#btnSave:disabled {
          <cursorShape>PointingHandCursor</cursorShape>
         </property>
         <property name="text">
-         <string>Hủy bỏ</string>
+         <string>Hủy</string>
         </property>
        </widget>
       </item>

@@ -35,7 +35,7 @@ class LoginServiceImpl(LoginService):
                 role = db_session.query(Role).filter_by(role_id=user.role_id).first()
                 role_name = role.role_name if role else "User"
 
-                UserSession.start_session(user.user_id, user.username, role_name)
+                UserSession.start_session(user.user_id, user.username, role_name, user.full_name)
 
                 make_transient(user)
 

@@ -1,5 +1,5 @@
 from PySide6 import QtWidgets, QtCore
-from src.utils.FormIcon import add_awesome_left_icon, apply_icon
+from src.utils.FormIcon import add_awesome_left_icon, apply_awesome_icons, apply_icon
 from src.gui.tabs.supplier_management_ui import Ui_SupplierManagement
 from src.services.impl.SupplierServiceImpl import SupplierServiceImpl
 from src.controller.SupplierDialog import SupplierDialog
@@ -11,6 +11,7 @@ class SupplierController:
         self.ui = Ui_SupplierManagement()
         self.ui.setupUi(self.view)
         add_awesome_left_icon(self.ui.txtSearch, "search")
+        apply_awesome_icons(self.view)
 
         self.service = SupplierServiceImpl()
 
@@ -83,13 +84,13 @@ class SupplierController:
 
             btn_edit = QtWidgets.QPushButton()
             btn_edit.setObjectName("RowActionButton")
-            apply_icon(btn_edit, "edit", tone="muted")
+            apply_icon(btn_edit, "edit", tone="muted", hover="none")
             btn_edit.setCursor(QtCore.Qt.CursorShape.PointingHandCursor)
             btn_edit.setToolTip("Chỉnh sửa")
 
             btn_delete = QtWidgets.QPushButton()
             btn_delete.setObjectName("RowActionButton")
-            apply_icon(btn_delete, "delete", tone="muted")
+            apply_icon(btn_delete, "delete", tone="muted", hover="none")
             btn_delete.setCursor(QtCore.Qt.CursorShape.PointingHandCursor)
             btn_delete.setToolTip("Xóa nhà cung cấp")
 

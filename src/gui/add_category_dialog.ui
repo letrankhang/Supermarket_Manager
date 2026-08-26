@@ -850,7 +850,7 @@ QPushButton#btnDeleteCategory:disabled {
            <cursorShape>PointingHandCursor</cursorShape>
           </property>
           <property name="text">
-           <string>Hủy</string>
+           <string>Đóng</string>
           </property>
          </widget>
         </item>

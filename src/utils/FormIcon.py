@@ -4,7 +4,7 @@ from typing import Optional
 
 import qtawesome as qta
 
-from PySide6.QtCore import QSize, Qt
+from PySide6.QtCore import QEvent, QObject, QSize, Qt
 from PySide6.QtGui import QIcon, QPixmap
 from PySide6.QtWidgets import (
     QAbstractButton, QHBoxLayout, QLabel, QLineEdit, QToolButton, QWidget,
@@ -47,7 +47,7 @@ ICONS = {
     "email": "fa5s.envelope",
     "expand": "fa5s.chevron-right",
     "export": "fa5s.file-export",
-    "filter": "fa5s.sliders-h",
+    "filter": "fa5s.filter",
     "forward": "fa5s.chevron-right",
     "github": "fa5b.github",
     "guide": "fa5s.book-open",
@@ -101,6 +101,13 @@ TONES = {
 
 AWESOME_COLOR = TONES["primary"]
 
+HOVER_OFF = "none"
+
+HOVER_TONES = {
+    "edit": "primary",
+    "delete": "danger",
+}
+
 def resolve(name: str) -> str:
     return ICONS.get(name, name)
 
@@ -112,7 +119,9 @@ def icon(
     color_disabled: Optional[str] = None,
 ) -> QIcon:
     options = {"color": color or TONES.get(tone, tone)}
-    if color_active:
+    if color_active is None:
+        color_active = HOVER_TONES.get(name)
+    if color_active and color_active != HOVER_OFF:
         options["color_active"] = TONES.get(color_active, color_active)
     if color_disabled:
         options["color_disabled"] = TONES.get(color_disabled, color_disabled)
@@ -123,14 +132,38 @@ def icon(
         return QIcon()
 
 
+class _HoverIconFilter(QObject):
+    def __init__(self, button: QAbstractButton, normal: QIcon, hover: QIcon) -> None:
+        super().__init__(button)
+        self._button = button
+        self._normal = normal
+        self._hover = hover
+
+    def eventFilter(self, watched: QObject, event: QEvent) -> bool:
+        if watched is self._button:
+            if event.type() == QEvent.Type.Enter:
+                self._button.setIcon(self._hover)
+            elif event.type() == QEvent.Type.Leave:
+                self._button.setIcon(self._normal)
+        return False
+
+
+def _install_hover_icon(button: QAbstractButton, normal: QIcon, hover: QIcon) -> None:
+    for child in button.findChildren(_HoverIconFilter):
+        button.removeEventFilter(child)
+        child.setParent(None)
+    button.installEventFilter(_HoverIconFilter(button, normal, hover))
+
+
 def apply_icon(
-    widget: QWidget,
+widget: QWidget,
     name: str,
     tone: str = "default",
     size: QSize = BUTTON_ICON_SIZE,
     color: Optional[str] = None,
     color_active: Optional[str] = None,
     color_disabled: Optional[str] = None,
+    hover: Optional[str] = None,
 ) -> None:
     built = icon(name, tone, color, color_active, color_disabled)
     if built.isNull():
@@ -140,6 +173,12 @@ def apply_icon(
     elif isinstance(widget, QAbstractButton):
         widget.setIcon(built)
         widget.setIconSize(size)
+
+        hover_tone = HOVER_TONES.get(name) if hover is None else hover
+        if hover_tone and hover_tone != HOVER_OFF:
+            hovered = icon(name, tone, color=TONES.get(hover_tone, hover_tone))
+            if not hovered.isNull():
+                _install_hover_icon(widget, built, hovered)
 
 
 def apply_awesome_icons(root: QWidget, default_size: QSize = AWESOME_SIZE) -> None:
@@ -151,14 +190,17 @@ def apply_awesome_icons(root: QWidget, default_size: QSize = AWESOME_SIZE) -> No
         raw_px = widget.property("iconPx")
         size = QSize(int(raw_px), int(raw_px)) if raw_px else default_size
         tone = widget.property("iconColor") or "primary"
-        apply_icon(widget, str(icon_name), tone=str(tone), size=size)
+        hover = widget.property("iconHover")
+        apply_icon(
+            widget,
+            str(icon_name),
+            tone=str(tone),
+            size=size,
+            hover=str(hover) if hover else None,
+        )
 
 
-def add_awesome_left_icon(
-    line_edit: QLineEdit,
-    icon_name: str = "search",
-    color: str = SEARCH_ICON_COLOR,
-) -> None:
+def add_awesome_left_icon(line_edit: QLineEdit, icon_name: str = "search", color: str = SEARCH_ICON_COLOR) -> None:
     built = icon(icon_name, color=color)
     if not built.isNull():
         line_edit.addAction(built, QLineEdit.ActionPosition.LeadingPosition)

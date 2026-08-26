@@ -4,6 +4,7 @@ from typing import List, Optional, Tuple
 from config.database import Database
 from src.dtos.CustomerDTO import CustomerDTO
 from src.entities.customer import Customer
+from src.entities.customer_tier import CustomerTier
 from src.repositories.impl.CustomerRepositoryImpl import CustomerRepositoryImpl
 from src.services.CustomerService import CustomerService
 
@@ -32,6 +33,43 @@ class CustomerServiceImpl(CustomerService):
         )
 
 
+    @staticmethod
+    def _resolve_tier_id(session, total_spent) -> Optional[int]:
+        """Lay hang cao nhat ma khach da dat nguong min_spent trong bang customer_tier.
+
+        Truoc day tier_id bi hard-code 1..4 nen phu thuoc vao thu tu ban ghi trong DB;
+        chi can them/bot hang la gan sai hang.
+        """
+        tier = (
+            session.query(CustomerTier)
+            .filter(CustomerTier.min_spent <= total_spent)
+            .order_by(CustomerTier.min_spent.desc(), CustomerTier.tier_id.asc())
+            .first()
+        )
+        return tier.tier_id if tier else None
+
+
+    def get_tier_discount_percent(self, customer_id: Optional[int]) -> int:
+        """% giam gia uu dai theo hang thanh vien. Khach le / khong co hang thi 0%."""
+        if not customer_id:
+            return 0
+        try:
+            with Database.get_session_ctx() as session:
+                customer = (
+                    session.query(Customer)
+                    .filter(Customer.customer_id == customer_id)
+                    .first()
+                )
+                if not customer or not customer.tier_id:
+                    return 0
+
+                tier = session.query(CustomerTier).get(customer.tier_id)
+                return int(tier.discount_percent or 0) if tier else 0
+        except Exception as e:
+            logger.error("Khong lay duoc muc giam theo hang cua khach ID=%s: %s", customer_id, e)
+            return 0
+
+
     def add_purchase_points(self, customer_id: int, total_amount: float, point_rate: float = 10000.0) -> Tuple[int, int]:
         from decimal import Decimal
 
@@ -53,15 +91,9 @@ class CustomerServiceImpl(CustomerService):
             current_points = customer.total_points if customer.total_points is not None else 0
             customer.total_points = current_points + earned_points
 
-            spent = customer.total_spent
-            if spent >= Decimal("20000000"):
-                customer.tier_id = 4
-            elif spent >= Decimal("10000000"):
-                customer.tier_id = 3
-            elif spent >= Decimal("5000000"):
-                customer.tier_id = 2
-            else:
-                customer.tier_id = 1
+            resolved_tier_id = self._resolve_tier_id(session, customer.total_spent)
+            if resolved_tier_id is not None:
+                customer.tier_id = resolved_tier_id
 
             session.commit()
             new_total_points = customer.total_points

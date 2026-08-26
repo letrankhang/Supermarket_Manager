@@ -306,8 +306,17 @@ class Ui_CustomerManagement(object):
 "    font-size: 11px;\n"
 "    font-weight: 700;\n"
 "}\n"
+"QLabel[badge=\"bronze\"] {\n"
+"    background-color: #f6e5d5;\n"
+"    color: #a1622c;\n"
+"    border-radius: 6px;\n"
+"    padding: 3px 10px;\n"
+"    font-size: 11px;\n"
+"    font-weight: 700;\n"
+"}\n"
 "QLabel[trend=\"up\"] {\n"
-"    background-color: #ecfdf5;\n"
+"    background-color: #e"
+                        "cfdf5;\n"
 "    color: #059669;\n"
 "    border-radius: 4px;\n"
 "    padding: 2px 6px;\n"
@@ -315,8 +324,7 @@ class Ui_CustomerManagement(object):
 "    font-weight: 700;\n"
 "}\n"
 "QLabel[trend=\"down\"] {\n"
-"    background-color: #fef2"
-                        "f2;\n"
+"    background-color: #fef2f2;\n"
 "    color: #dc2626;\n"
 "    border-radius: 4px;\n"
 "    padding: 2px 6px;\n"
@@ -353,7 +361,8 @@ class Ui_CustomerManagement(object):
 "\n"
 "QScrollArea {\n"
 "    background-color: transparent;\n"
-"    border: none;\n"
+"    border: non"
+                        "e;\n"
 "}\n"
 "QScrollArea > QWidget > QWidget {\n"
 "    background-color: transparent;\n"
@@ -362,8 +371,7 @@ class Ui_CustomerManagement(object):
 "    background-color: transparent;\n"
 "}\n"
 "QScrollBar:vertical {\n"
-""
-                        "    background-color: transparent;\n"
+"    background-color: transparent;\n"
 "    width: 10px;\n"
 "    margin: 0px;\n"
 "    border: none;\n"
@@ -395,7 +403,8 @@ class Ui_CustomerManagement(object):
 "}\n"
 "QScrollBar::add-page:vertical,\n"
 "QScrollBar::sub-page:vertical {\n"
-"    background: transparent;\n"
+" "
+                        "   background: transparent;\n"
 "}\n"
 "QScrollBar:horizontal {\n"
 "    background-color: transparent;\n"
@@ -403,8 +412,7 @@ class Ui_CustomerManagement(object):
 "    margin: 0px;\n"
 "    border: none;\n"
 "}\n"
-"QScrollBar::handle:horizont"
-                        "al {\n"
+"QScrollBar::handle:horizontal {\n"
 "    background-color: #cbd5e1;\n"
 "    min-width: 35px;\n"
 "    border-radius: 5px;\n"
@@ -436,7 +444,8 @@ class Ui_CustomerManagement(object):
 "\n"
 "QMenu {\n"
 "    background-color: #ffffff;\n"
-"    border: 1px solid #e2e8f0;\n"
+"    border: 1px solid #e2e"
+                        "8f0;\n"
 "    border-radius: 8px;\n"
 "    padding: 6px;\n"
 "}\n"
@@ -445,8 +454,7 @@ class Ui_CustomerManagement(object):
 "    color: #334155;\n"
 "    border-radius: 6px;\n"
 "    padding: 7px 18px;\n"
-"  "
-                        "  font-size: 13px;\n"
+"    font-size: 13px;\n"
 "}\n"
 "QMenu::item:selected {\n"
 "    background-color: #eff6ff;\n"
@@ -486,7 +494,8 @@ class Ui_CustomerManagement(object):
 "\n"
 "QPushButton#btnAdd {\n"
 "    background-color: #1d4ed8;\n"
-"    color: #ffffff;\n"
+"   "
+                        " color: #ffffff;\n"
 "    border: none;\n"
 "    border-radius: 8px;\n"
 "    padding: 0px 20px;\n"
@@ -494,8 +503,7 @@ class Ui_CustomerManagement(object):
 "    font-size: 13px;\n"
 "    font-weight: 700;\n"
 "}\n"
-"QPushButton#btnAdd:hov"
-                        "er {\n"
+"QPushButton#btnAdd:hover {\n"
 "    background-color: #1e3a8a;\n"
 "}\n"
 "QPushButton#btnAdd:pressed {\n"
@@ -531,15 +539,15 @@ class Ui_CustomerManagement(object):
 "    font-size: 12px;\n"
 "}\n"
 "\n"
-"QPushButton#btnPrev,\n"
+""
+                        "QPushButton#btnPrev,\n"
 "QPushButton#btnNext {\n"
 "    background-color: #ffffff;\n"
 "    color: #334155;\n"
 "    border: 1px solid #e2e8f0;\n"
 "    border-radius: 8px;\n"
 "    min-width: 34px;\n"
-"    m"
-                        "ax-width: 34px;\n"
+"    max-width: 34px;\n"
 "    min-height: 32px;\n"
 "    max-height: 32px;\n"
 "    padding: 0px;\n"
@@ -571,15 +579,15 @@ class Ui_CustomerManagement(object):
 "    padding: 0px;\n"
 "    font-size: 12px;\n"
 "    font-weight: bold;\n"
-"}\n"
+""
+                        "}\n"
 "QPushButton#PageNumberButton:hover {\n"
 "    background-color: #eff6ff;\n"
 "    border: 1px solid #1d4ed8;\n"
 "    color: #1d4ed8;\n"
 "}\n"
 "QPushButton#PageNumberButton:checked {\n"
-"    backgroun"
-                        "d-color: #1d4ed8;\n"
+"    background-color: #1d4ed8;\n"
 "    border: 1px solid #1d4ed8;\n"
 "    color: #ffffff;\n"
 "}\n"
@@ -614,7 +622,8 @@ class Ui_CustomerManagement(object):
 "    border: 1px solid #e2e8f0;\n"
 "    border-radius: 8px;\n"
 "    min-width: 34px;\n"
-"    max-width: 34px;\n"
+"    "
+                        "max-width: 34px;\n"
 "    min-height: 32px;\n"
 "    max-height: 32px;\n"
 "    padding: 0px;\n"
@@ -622,8 +631,7 @@ class Ui_CustomerManagement(object):
 "    font-weight: bold;\n"
 "}\n"
 "QPushButton#btnPrevPage:hover,\n"
-"QPushButton#btn"
-                        "NextPage:hover {\n"
+"QPushButton#btnNextPage:hover {\n"
 "    background-color: #eff6ff;\n"
 "    border: 1px solid #1d4ed8;\n"
 "    color: #1d4ed8;\n"
@@ -659,7 +667,8 @@ class Ui_CustomerManagement(object):
 "}\n"
 "\n"
 "QLabel#lblTotalTrend,\n"
-"QLabel#lblActiveTrend,\n"
+"QLabel#lblAct"
+                        "iveTrend,\n"
 "QLabel#lblPointsTrend {\n"
 "    background-color: transparent;\n"
 "    color: #64748b;\n"
@@ -668,8 +677,7 @@ class Ui_CustomerManagement(object):
 "    padding: 2px 0px;\n"
 "}\n"
 "\n"
-"QLabel#lbl"
-                        "TotalTrend[trend=\"up\"],\n"
+"QLabel#lblTotalTrend[trend=\"up\"],\n"
 "QLabel#lblActiveTrend[trend=\"up\"],\n"
 "QLabel#lblPointsTrend[trend=\"up\"] {\n"
 "    background-color: #ecfdf5;\n"
@@ -699,7 +707,8 @@ class Ui_CustomerManagement(object):
 "QFrame#cardTotal,\n"
 "QFrame#cardActive,\n"
 "QFrame#cardPoints,\n"
-"QFrame#cardTableContainer {\n"
+"QFrame#card"
+                        "TableContainer {\n"
 "    background-color: #ffffff;\n"
 "    border: 1px solid #e2e8f0;\n"
 "    border-radius: 14px;\n"
@@ -707,8 +716,7 @@ class Ui_CustomerManagement(object):
 "QLabel#badgeActive {\n"
 "    background-color: #d1fae5;\n"
 "}\n"
-"QLabel#badg"
-                        "ePoints {\n"
+"QLabel#badgePoints {\n"
 "    background-color: #ffedd5;\n"
 "}\n"
 "QPushButton#btnAddCustomer {\n"
@@ -733,21 +741,27 @@ class Ui_CustomerManagement(object):
 "}\n"
 "QPushButton#btnDeleteCustomer {\n"
 "    background-color: #ffffff;\n"
-"    color: #dc2626;\n"
+"    color: #64748b;\n"
 "    border: 1px solid #e2e8f0;\n"
 "    border-radius: 8px;\n"
 "    padding: 0px 16px;\n"
 "    min-height: 38px;\n"
 "    font-size: 12px;\n"
-"    font-weight: bold;\n"
+"    font-w"
+                        "eight: bold;\n"
 "}\n"
 "QPushButton#btnDeleteCustomer:hover {\n"
 "    background-color: #fef2f2;\n"
 "    border: 1px solid #dc2626;\n"
+"    color: #dc2626;\n"
+"}\n"
+"QPushButton#btnDeleteCustomer:pressed {\n"
+"    background-color: #fee2e2;\n"
+"    border: 1px solid #dc2626;\n"
+"    color: #dc2626;\n"
 "}\n"
 "QPushButton#btnDeleteCustomer:disabled {\n"
-"    background-co"
-                        "lor: #f8fafc;\n"
+"    background-color: #f8fafc;\n"
 "    color: #cbd5e1;\n"
 "    border: 1px solid #e2e8f0;\n"
 "}\n"
@@ -757,13 +771,21 @@ class Ui_CustomerManagement(object):
 "    max-width: 38px;\n"
 "}\n"
 "QPushButton#btnLoadMore {\n"
-"    color: #1d4ed8;\n"
+"    background-color: #ffffff;\n"
+"    color: #64748b;\n"
+"    border: 1px solid #e2e8f0;\n"
 "    min-height: 32px;\n"
 "    max-height: 32px;\n"
 "}\n"
 "QPushButton#btnLoadMore:hover {\n"
 "    background-color: #eff6ff;\n"
 "    border: 1px solid #1d4ed8;\n"
+"    color: #1d4ed8;\n"
+"}\n"
+"QPushButton#btnLoadMore:pressed {\n"
+"    background-color: #dbeafe;\n"
+"    border: 1px solid #1d4ed8;\n"
+"    color: #1d4ed8;\n"
 "}\n"
 "")
         self.rootLayout = QVBoxLayout(CustomerManagement)
@@ -817,10 +839,11 @@ class Ui_CustomerManagement(object):
         self.cardTotal.setMinimumSize(QSize(0, 120))
         self.cardTotal.setFrameShape(QFrame.Shape.NoFrame)
         self.cardTotalLayout = QVBoxLayout(self.cardTotal)
-        self.cardTotalLayout.setSpacing(6)
+        self.cardTotalLayout.setSpacing(0)
         self.cardTotalLayout.setObjectName(u"cardTotalLayout")
         self.cardTotalLayout.setContentsMargins(16, 14, 16, 14)
         self.cardTotalTopRow = QHBoxLayout()
+        self.cardTotalTopRow.setSpacing(6)
         self.cardTotalTopRow.setObjectName(u"cardTotalTopRow")
         self.lblTotalCaption = QLabel(self.cardTotal)
         self.lblTotalCaption.setObjectName(u"lblTotalCaption")
@@ -849,6 +872,7 @@ class Ui_CustomerManagement(object):
 
         self.cardTotalTrendRow = QHBoxLayout()
         self.cardTotalTrendRow.setObjectName(u"cardTotalTrendRow")
+        self.cardTotalTrendRow.setContentsMargins(-1, 10, -1, -1)
         self.lblTotalTrend = QLabel(self.cardTotal)
         self.lblTotalTrend.setObjectName(u"lblTotalTrend")
 
@@ -869,7 +893,7 @@ class Ui_CustomerManagement(object):
         self.cardActive.setMinimumSize(QSize(0, 120))
         self.cardActive.setFrameShape(QFrame.Shape.NoFrame)
         self.cardActiveLayout = QVBoxLayout(self.cardActive)
-        self.cardActiveLayout.setSpacing(6)
+        self.cardActiveLayout.setSpacing(0)
         self.cardActiveLayout.setObjectName(u"cardActiveLayout")
         self.cardActiveLayout.setContentsMargins(16, 14, 16, 14)
         self.cardActiveTopRow = QHBoxLayout()
@@ -901,6 +925,7 @@ class Ui_CustomerManagement(object):
 
         self.cardActiveTrendRow = QHBoxLayout()
         self.cardActiveTrendRow.setObjectName(u"cardActiveTrendRow")
+        self.cardActiveTrendRow.setContentsMargins(-1, 10, -1, -1)
         self.lblActiveTrend = QLabel(self.cardActive)
         self.lblActiveTrend.setObjectName(u"lblActiveTrend")
 
@@ -921,7 +946,7 @@ class Ui_CustomerManagement(object):
         self.cardPoints.setMinimumSize(QSize(0, 120))
         self.cardPoints.setFrameShape(QFrame.Shape.NoFrame)
         self.cardPointsLayout = QVBoxLayout(self.cardPoints)
-        self.cardPointsLayout.setSpacing(6)
+        self.cardPointsLayout.setSpacing(0)
         self.cardPointsLayout.setObjectName(u"cardPointsLayout")
         self.cardPointsLayout.setContentsMargins(16, 14, 16, 14)
         self.cardPointsTopRow = QHBoxLayout()
@@ -953,6 +978,7 @@ class Ui_CustomerManagement(object):
 
         self.cardPointsTrendRow = QHBoxLayout()
         self.cardPointsTrendRow.setObjectName(u"cardPointsTrendRow")
+        self.cardPointsTrendRow.setContentsMargins(-1, 10, -1, -1)
         self.lblPointsTrend = QLabel(self.cardPoints)
         self.lblPointsTrend.setObjectName(u"lblPointsTrend")
 
@@ -977,7 +1003,7 @@ class Ui_CustomerManagement(object):
         self.tableContainerLayout = QVBoxLayout(self.cardTableContainer)
         self.tableContainerLayout.setSpacing(12)
         self.tableContainerLayout.setObjectName(u"tableContainerLayout")
-        self.tableContainerLayout.setContentsMargins(16, 16, 16, 14)
+        self.tableContainerLayout.setContentsMargins(12, 12, 12, 12)
         self.toolbarLayout = QHBoxLayout()
         self.toolbarLayout.setSpacing(8)
         self.toolbarLayout.setObjectName(u"toolbarLayout")
@@ -1070,12 +1096,14 @@ class Ui_CustomerManagement(object):
         self.btnPrevPage = QPushButton(self.framePagination)
         self.btnPrevPage.setObjectName(u"btnPrevPage")
         self.btnPrevPage.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
+        self.btnPrevPage.setProperty(u"iconPx", 12)
 
         self.paginationLayout.addWidget(self.btnPrevPage)
 
         self.btnNextPage = QPushButton(self.framePagination)
         self.btnNextPage.setObjectName(u"btnNextPage")
         self.btnNextPage.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
+        self.btnNextPage.setProperty(u"iconPx", 12)
 
         self.paginationLayout.addWidget(self.btnNextPage)
 
@@ -1126,8 +1154,12 @@ class Ui_CustomerManagement(object):
         ___qtablewidgetitem5.setText(QCoreApplication.translate("CustomerManagement", u"T\u1ed4NG CHI TI\u00caU", None))
         self.lblPaginationInfo.setText(QCoreApplication.translate("CustomerManagement", u"Hi\u1ec3n th\u1ecb 0 c\u1ee7a 0 kh\u00e1ch h\u00e0ng", None))
         self.btnLoadMore.setText(QCoreApplication.translate("CustomerManagement", u"T\u1ea3i th\u00eam d\u1eef li\u1ec7u", None))
-        self.btnPrevPage.setText(QCoreApplication.translate("CustomerManagement", u"\u2039", None))
-        self.btnNextPage.setText(QCoreApplication.translate("CustomerManagement", u"\u203a", None))
+        self.btnPrevPage.setText("")
+        self.btnPrevPage.setProperty(u"iconName", QCoreApplication.translate("CustomerManagement", u"previous", None))
+        self.btnPrevPage.setProperty(u"iconColor", QCoreApplication.translate("CustomerManagement", u"default", None))
+        self.btnNextPage.setText("")
+        self.btnNextPage.setProperty(u"iconName", QCoreApplication.translate("CustomerManagement", u"next", None))
+        self.btnNextPage.setProperty(u"iconColor", QCoreApplication.translate("CustomerManagement", u"default", None))
         pass
     # retranslateUi
 

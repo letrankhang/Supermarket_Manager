@@ -1,5 +1,5 @@
 from PySide6 import QtWidgets, QtCore
-from src.utils.FormIcon import add_awesome_left_icon, apply_icon
+from src.utils.FormIcon import add_awesome_left_icon, apply_awesome_icons, apply_icon
 from src.gui.tabs.personnel_management_ui import Ui_PersonnelManagement
 from src.services.impl.UserServiceImpl import UserServiceImpl
 from src.controller.UserDialog import UserDialog
@@ -12,6 +12,7 @@ class PersonnelController:
         self.ui = Ui_PersonnelManagement()
         self.ui.setupUi(self.view)
         add_awesome_left_icon(self.ui.txtSearch, "search")
+        apply_awesome_icons(self.view)
         self.service = UserServiceImpl()
 
         self.ui.txtSearch.textChanged.connect(self.load_data)
@@ -87,13 +88,13 @@ class PersonnelController:
 
             btn_edit = QtWidgets.QPushButton()
             btn_edit.setObjectName("RowActionButton")
-            apply_icon(btn_edit, "edit", tone="muted")
+            apply_icon(btn_edit, "edit", tone="muted", hover="none")
             btn_edit.setCursor(QtCore.Qt.CursorShape.PointingHandCursor)
             btn_edit.setToolTip("Chỉnh sửa")
 
             btn_delete = QtWidgets.QPushButton()
             btn_delete.setObjectName("RowActionButton")
-            apply_icon(btn_delete, "delete", tone="muted")
+            apply_icon(btn_delete, "delete", tone="muted", hover="none")
             btn_delete.setCursor(QtCore.Qt.CursorShape.PointingHandCursor)
             btn_delete.setToolTip("Xóa nhân viên")
 
@@ -106,8 +107,6 @@ class PersonnelController:
             header.setSectionResizeMode(1, QtWidgets.QHeaderView.ResizeMode.Stretch)
             header.setSectionResizeMode(2, QtWidgets.QHeaderView.ResizeMode.Stretch)
             header.setSectionResizeMode(3, QtWidgets.QHeaderView.ResizeMode.ResizeToContents)
-            # Cot trang thai chua badge pill rong co dinh; de ResizeToContents thi
-            # cot hep hon pill -> pill tran ra ngoai va lech tam.
             header.setSectionResizeMode(4, QtWidgets.QHeaderView.ResizeMode.Fixed)
             self.ui.tblEmployees.setColumnWidth(4, 130)
             header.setSectionResizeMode(5, QtWidgets.QHeaderView.ResizeMode.ResizeToContents)

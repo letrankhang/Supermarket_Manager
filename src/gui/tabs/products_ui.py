@@ -508,7 +508,7 @@ class Ui_ProductsTab(object):
 "\n"
 "QPushButton#btnDelete {\n"
 "    background-color: #ffffff;\n"
-"    color: #dc2626;\n"
+"    color: #64748b;\n"
 "    border: 1px solid #e2e8f0;\n"
 "    border-radius: 8px;\n"
 "    padding: 0px 16px;\n"
@@ -519,6 +519,12 @@ class Ui_ProductsTab(object):
 "QPushButton#btnDelete:hover {\n"
 "    background-color: #fef2f2;\n"
 "    border: 1px solid #dc2626;\n"
+"    color: #dc2626;\n"
+"}\n"
+"QPushButton#btnDelete:pressed {\n"
+"    background-color: #fee2e2;\n"
+"    border: 1px solid #dc2626;\n"
+"    color: #dc2626;\n"
 "}\n"
 "QPushButton#btnDelete:disabled {\n"
 "    background-color: #f8fafc;\n"
@@ -533,13 +539,13 @@ class Ui_ProductsTab(object):
 "\n"
 "QPushButton#btnPrev,\n"
 "QPushButton#btnNext {\n"
-"    background-color: #ffffff;\n"
+" "
+                        "   background-color: #ffffff;\n"
 "    color: #334155;\n"
 "    border: 1px solid #e2e8f0;\n"
 "    border-radius: 8px;\n"
 "    min-width: 34px;\n"
-"    max-width:"
-                        " 34px;\n"
+"    max-width: 34px;\n"
 "    min-height: 32px;\n"
 "    max-height: 32px;\n"
 "    padding: 0px;\n"
@@ -573,13 +579,13 @@ class Ui_ProductsTab(object):
 "    font-weight: bold;\n"
 "}\n"
 "QPushButton#PageNumberButton:hover {\n"
-"    background-color: #eff6ff;\n"
+"    b"
+                        "ackground-color: #eff6ff;\n"
 "    border: 1px solid #1d4ed8;\n"
 "    color: #1d4ed8;\n"
 "}\n"
 "QPushButton#PageNumberButton:checked {\n"
-"    background-color: "
-                        "#1d4ed8;\n"
+"    background-color: #1d4ed8;\n"
 "    border: 1px solid #1d4ed8;\n"
 "    color: #ffffff;\n"
 "}\n"
@@ -807,7 +813,7 @@ class Ui_ProductsTab(object):
         self.btnEdit.setProperty(u"iconColor", QCoreApplication.translate("ProductsTab", u"default", None))
         self.btnDelete.setText(QCoreApplication.translate("ProductsTab", u"X\u00f3a", None))
         self.btnDelete.setProperty(u"iconName", QCoreApplication.translate("ProductsTab", u"delete", None))
-        self.btnDelete.setProperty(u"iconColor", QCoreApplication.translate("ProductsTab", u"danger", None))
+        self.btnDelete.setProperty(u"iconColor", QCoreApplication.translate("ProductsTab", u"default", None))
         self.btnAddCategory.setText(QCoreApplication.translate("ProductsTab", u"Th\u00eam danh m\u1ee5c", None))
         self.btnAddCategory.setProperty(u"iconName", QCoreApplication.translate("ProductsTab", u"add-category", None))
         self.btnAddCategory.setProperty(u"iconColor", QCoreApplication.translate("ProductsTab", u"default", None))

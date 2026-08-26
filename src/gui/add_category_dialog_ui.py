@@ -739,7 +739,7 @@ class Ui_CategoryManagerDialog(object):
         self.txtCategoryName.setPlaceholderText(QCoreApplication.translate("CategoryManagerDialog", u"V\u00ed d\u1ee5: \u0110\u1ed3 u\u1ed1ng, B\u00e1nh k\u1eb9o...", None))
         self.lblDescription.setText(QCoreApplication.translate("CategoryManagerDialog", u"M\u00f4 t\u1ea3 danh m\u1ee5c:", None))
         self.txtDescription.setPlaceholderText(QCoreApplication.translate("CategoryManagerDialog", u"Nh\u1eadp m\u00f4 t\u1ea3 danh m\u1ee5c", None))
-        self.btnCancel.setText(QCoreApplication.translate("CategoryManagerDialog", u"H\u1ee7y", None))
+        self.btnCancel.setText(QCoreApplication.translate("CategoryManagerDialog", u"\u0110\u00f3ng", None))
         self.btnSave.setText(QCoreApplication.translate("CategoryManagerDialog", u"L\u01b0u danh m\u1ee5c", None))
     # retranslateUi
 

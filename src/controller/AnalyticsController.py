@@ -9,7 +9,7 @@ from PySide6.QtWidgets import (
     QPushButton,
 )
 from PySide6.QtCore import Qt, QSize, QThread, Signal, QRectF
-from PySide6.QtGui import QPainter, QColor, QFont, QPen, QBrush
+from PySide6.QtGui import QPainter, QColor, QFont, QPen, QBrush, QLinearGradient
 
 import qtawesome as qta
 
@@ -46,7 +46,46 @@ class AnalyticsWorker(QThread):
             self.error_occurred.emit(str(e))
 
 
+BAR_TOP = "#86d6b4"
+BAR_BOTTOM = "#c4ecdb"
+BAR_TOP_MAX = "#34b881"
+BAR_BOTTOM_MAX = "#86d6b4"
+AXIS_LINE = "#cbd5e1"
+GRID_LINE = "#eef2f7"
+AXIS_TEXT = "#64748b"
+AXIS_TITLE = "#94a3b8"
+REVENUE_TEXT = "#059669"
+
+
+def _vn_number(value: float, decimals: int = 0) -> str:
+    text = f"{value:,.{decimals}f}"
+    return text.replace(",", "_").replace(".", ",").replace("_", ".")
+
+
+def _format_money_tick(value: float) -> str:
+    for unit, suffix in ((1_000_000_000, " tỷ"), (1_000_000, " tr"), (1_000, " N")):
+        if value >= unit:
+            scaled = value / unit
+            decimals = 0 if abs(scaled - round(scaled)) < 0.05 else 1
+            return _vn_number(scaled, decimals) + suffix
+    return _vn_number(value)
+
+
+def _nice_ceiling(value: float, ticks: int = 4) -> float:
+    if value <= 0:
+        return 100.0
+    raw = value / ticks
+    magnitude = 10 ** math.floor(math.log10(raw))
+    for step in (1, 1.5, 2, 2.5, 3, 4, 5, 10):
+        if raw <= step * magnitude:
+            return step * magnitude * ticks
+    return 10 * magnitude * ticks
+
+
 class DotMatrixBarChart(QWidget):
+    Y_TICKS = 4
+
+
     def __init__(self, parent: Optional[QWidget] = None) -> None:
         super().__init__(parent)
         self._data: List[DailyRevenueDTO] = []
@@ -61,25 +100,6 @@ class DotMatrixBarChart(QWidget):
         painter = QPainter(self)
         painter.setRenderHint(QPainter.RenderHint.Antialiasing)
 
-        w, h = self.width(), self.height()
-        pl, pr, pt, pb = 20, 20, 20, 32
-        pw, ph = w - pl - pr, h - pt - pb
-        if pw <= 0 or ph <= 0:
-            return
-
-        painter.setPen(QPen(QColor("#e2e8f0"), 1, Qt.PenStyle.DashLine))
-        painter.drawRect(QRectF(pl, pt, pw, ph))
-
-        dot_rows = 6
-        dot_cols = 14
-        painter.setPen(Qt.PenStyle.NoPen)
-        painter.setBrush(QBrush(QColor("#cbd5e1")))
-        for r in range(1, dot_rows):
-            dot_y = pt + r * (ph / dot_rows)
-            for c in range(1, dot_cols):
-                dot_x = pl + c * (pw / dot_cols)
-                painter.drawEllipse(QtCore.QPointF(dot_x, dot_y), 1.2, 1.2)
-
         days = ["Thứ 2", "Thứ 3", "Thứ 4", "Thứ 5", "Thứ 6", "Thứ 7", "CN"]
         values = [25.0, 45.0, 32.0, 70.0, 52.0, 95.0, 60.0]
 
@@ -88,37 +108,93 @@ class DotMatrixBarChart(QWidget):
             if any(v > 0 for v in data_map.values()):
                 values = [data_map.get(day, 0.0) for day in days]
 
-        max_val = max(values) if values and max(values) > 0 else 100.0
-        max_idx = values.index(max(values)) if values else -1
+        axis_max = _nice_ceiling(max(values) if values else 0.0, self.Y_TICKS)
+
+        tick_font = QFont("Segoe UI", 8)
+        title_font = QFont("Segoe UI", 8, QFont.Weight.DemiBold)
+        metrics = QtGui.QFontMetrics(tick_font)
+        label_width = max(
+            metrics.horizontalAdvance(_format_money_tick(axis_max * i / self.Y_TICKS))
+            for i in range(self.Y_TICKS + 1)
+        )
+
+        pl = 22 + label_width + 10
+        pr, pt, pb = 18, 16, 46
+        pw, ph = self.width() - pl - pr, self.height() - pt - pb
+        if pw <= 0 or ph <= 0:
+            return
+
+        painter.setFont(tick_font)
+        for i in range(self.Y_TICKS + 1):
+            tick_value = axis_max * i / self.Y_TICKS
+            y = pt + ph - (ph * i / self.Y_TICKS)
+
+            if i > 0:
+                painter.setPen(QPen(QColor(GRID_LINE), 1))
+                painter.drawLine(QtCore.QPointF(pl, y), QtCore.QPointF(pl + pw, y))
+
+            painter.setPen(QPen(QColor(AXIS_TEXT), 1))
+            painter.drawText(
+                QRectF(pl - label_width - 10, y - 9, label_width, 18),
+                Qt.AlignmentFlag.AlignRight | Qt.AlignmentFlag.AlignVCenter,
+                _format_money_tick(tick_value),
+            )
+
+        painter.setPen(QPen(QColor(AXIS_LINE), 1))
+        painter.drawLine(QtCore.QPointF(pl, pt), QtCore.QPointF(pl, pt + ph))
+        painter.drawLine(QtCore.QPointF(pl, pt + ph), QtCore.QPointF(pl + pw, pt + ph))
 
         n = len(days)
-        bar_width = max(16.0, pw / (n * 2.8))
+        bar_width = max(16.0, min(34.0, pw / (n * 2.0)))
         step = pw / n
+        max_idx = values.index(max(values)) if values and max(values) > 0 else -1
 
         for i, (day, val) in enumerate(zip(days, values)):
             cx = pl + (i + 0.5) * step
             bx = cx - bar_width / 2
 
-            bar_ratio = (val / max_val) if max_val > 0 else 0.1
-            bar_height = max(8.0, bar_ratio * (ph - 15))
+            bar_ratio = (val / axis_max) if axis_max > 0 else 0.0
+            bar_height = max(3.0, bar_ratio * ph)
             by = pt + ph - bar_height
 
-            if i == max_idx and val > 0:
-                bar_color = QColor("#002d72")
+            gradient = QLinearGradient(bx, by, bx, pt + ph)
+            if i == max_idx:
+                gradient.setColorAt(0.0, QColor(BAR_TOP_MAX))
+                gradient.setColorAt(1.0, QColor(BAR_BOTTOM_MAX))
             else:
-                bar_color = QColor("#819dc7")
+                gradient.setColorAt(0.0, QColor(BAR_TOP))
+                gradient.setColorAt(1.0, QColor(BAR_BOTTOM))
 
-            painter.setBrush(QBrush(bar_color))
+            painter.setBrush(QBrush(gradient))
             painter.setPen(Qt.PenStyle.NoPen)
-            painter.drawRect(QRectF(bx, by, bar_width, bar_height))
+            radius = min(5.0, bar_width / 2, bar_height / 2)
+            painter.drawRoundedRect(QRectF(bx, by, bar_width, bar_height), radius, radius)
 
-            painter.setPen(QPen(QColor("#64748b"), 1))
-            painter.setFont(QFont("Segoe UI", 8))
+            painter.setPen(QPen(QColor(AXIS_TEXT), 1))
+            painter.setFont(tick_font)
             painter.drawText(
-                QRectF(cx - 25, pt + ph + 8, 50, 18),
+                QRectF(cx - step / 2, pt + ph + 6, step, 16),
                 Qt.AlignmentFlag.AlignCenter,
-                day
+                day,
             )
+
+        painter.setFont(title_font)
+        painter.setPen(QPen(QColor(AXIS_TITLE), 1))
+        painter.drawText(
+            QRectF(pl, pt + ph + 24, pw, 16),
+            Qt.AlignmentFlag.AlignCenter,
+            "Ngày trong tuần",
+        )
+
+        painter.save()
+        painter.translate(14, pt + ph / 2)
+        painter.rotate(-90)
+        painter.drawText(
+            QRectF(-ph / 2, -8, ph, 16),
+            Qt.AlignmentFlag.AlignCenter,
+            "Doanh thu (đ)",
+        )
+        painter.restore()
 
 
 class AnalyticsController(QWidget, Ui_Analytics):
@@ -181,9 +257,11 @@ class AnalyticsController(QWidget, Ui_Analytics):
 
     def _setup_table(self) -> None:
         header_view = self.tblTopProducts.horizontalHeader()
-        header_view.setSectionResizeMode(0, QHeaderView.ResizeMode.Stretch)
-        header_view.setSectionResizeMode(1, QHeaderView.ResizeMode.ResizeToContents)
+        header_view.setSectionResizeMode(0, QHeaderView.ResizeMode.Fixed)
+        self.tblTopProducts.setColumnWidth(0, 52)
+        header_view.setSectionResizeMode(1, QHeaderView.ResizeMode.Stretch)
         header_view.setSectionResizeMode(2, QHeaderView.ResizeMode.ResizeToContents)
+        header_view.setSectionResizeMode(3, QHeaderView.ResizeMode.ResizeToContents)
 
 
     def _setup_connections(self) -> None:
@@ -211,13 +289,7 @@ class AnalyticsController(QWidget, Ui_Analytics):
 
 
     def _format_currency_short(self, amount: float) -> str:
-        if amount >= 1_000_000_000:
-            return f"₫{amount / 1_000_000_000:,.2f}B"
-        elif amount >= 1_000_000:
-            return f"₫{amount / 1_000_000:,.0f}M"
-        elif amount >= 1_000:
-            return f"₫{amount / 1_000:,.0f}K"
-        return f"₫{amount:,.0f}"
+        return _format_money_tick(amount)
 
 
     def _apply_trend(self, label_attr: str, growth: float, suffix: str = "%") -> None:
@@ -276,31 +348,58 @@ class AnalyticsController(QWidget, Ui_Analytics):
             CategorySalesDTO(category_name="Sữa và chế phẩm", total_revenue=9000000.0, percentage=10.0),
         ]
 
-        for cat in display_cats[:4]:
+        ranked = sorted(display_cats, key=lambda c: c.total_revenue, reverse=True)
+        total_revenue = sum(c.total_revenue for c in ranked)
+
+        rows = [
+            (c.category_name, c.total_revenue, c.percentage, str(i))
+            for i, c in enumerate(ranked)
+        ]
+
+        if hasattr(self, "lblCategorySub"):
+            self.lblCategorySub.setText(
+                f"{len(ranked)} danh mục · tổng {_format_money_tick(total_revenue)}"
+            )
+
+        for name, revenue, percentage, series in rows:
             cat_widget = QWidget()
             cat_layout = QVBoxLayout(cat_widget)
             cat_layout.setContentsMargins(0, 2, 0, 4)
-            cat_layout.setSpacing(4)
+            cat_layout.setSpacing(5)
 
             lbl_row = QHBoxLayout()
-            lbl_name = QLabel(cat.category_name)
-            lbl_name.setFont(QFont("Segoe UI", 9))
+            lbl_row.setSpacing(8)
+
+            dot = QLabel()
+            dot.setObjectName("CategoryDot")
+            dot.setProperty("series", series)
+            lbl_row.addWidget(dot)
+
+            lbl_name = QLabel(name)
+            lbl_name.setObjectName("CategoryName")
             lbl_row.addWidget(lbl_name)
             lbl_row.addStretch()
 
-            lbl_pct = QLabel(f"{int(cat.percentage)}%")
-            lbl_pct.setFont(QFont("Segoe UI", 9, QFont.Weight.Bold))
+            lbl_amount = QLabel(_format_money_tick(revenue))
+            lbl_amount.setObjectName("CategoryAmount")
+            lbl_row.addWidget(lbl_amount)
+
+            lbl_pct = QLabel(f"{percentage:.1f}%".replace(".", ","))
+            lbl_pct.setObjectName("CategoryPercent")
             lbl_row.addWidget(lbl_pct)
             cat_layout.addLayout(lbl_row)
 
             pbar = QProgressBar()
-            pbar.setFixedHeight(7)
+            pbar.setObjectName("CategoryBar")
+            pbar.setProperty("series", series)
             pbar.setTextVisible(False)
             pbar.setRange(0, 100)
-            pbar.setValue(int(cat.percentage))
+            pbar.setValue(int(round(percentage)))
             cat_layout.addWidget(pbar)
 
             self.containerCategoryList.addWidget(cat_widget)
+
+        self.containerCategoryList.addStretch()
 
 
     def _render_top_products(self, products) -> None:
@@ -314,20 +413,24 @@ class AnalyticsController(QWidget, Ui_Analytics):
             self.tblTopProducts.insertRow(idx)
             self.tblTopProducts.setRowHeight(idx, 42)
 
+            stt_item = QTableWidgetItem(str(idx + 1))
+            stt_item.setTextAlignment(Qt.AlignmentFlag.AlignCenter)
+            self.tblTopProducts.setItem(idx, 0, stt_item)
+
             name_item = QTableWidgetItem(p.product_name)
-            name_item.setFont(QFont("Segoe UI", 9, QFont.Weight.Bold))
             name_item.setTextAlignment(Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignVCenter)
-            self.tblTopProducts.setItem(idx, 0, name_item)
+            self.tblTopProducts.setItem(idx, 1, name_item)
 
             qty_item = QTableWidgetItem(f"{p.total_quantity:,}")
             qty_item.setTextAlignment(Qt.AlignmentFlag.AlignRight | Qt.AlignmentFlag.AlignVCenter)
-            self.tblTopProducts.setItem(idx, 1, qty_item)
+            self.tblTopProducts.setItem(idx, 2, qty_item)
 
             rev_str = self._format_currency_short(p.total_revenue)
             rev_item = QTableWidgetItem(rev_str)
             rev_item.setFont(QFont("Segoe UI", 9, QFont.Weight.Bold))
+            rev_item.setForeground(QColor(REVENUE_TEXT))
             rev_item.setTextAlignment(Qt.AlignmentFlag.AlignRight | Qt.AlignmentFlag.AlignVCenter)
-            self.tblTopProducts.setItem(idx, 2, rev_item)
+            self.tblTopProducts.setItem(idx, 3, rev_item)
 
 
     def _on_error(self, msg: str) -> None:

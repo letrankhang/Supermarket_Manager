@@ -11,6 +11,7 @@ from PySide6.QtWidgets import (
 from src.dtos.ImportDTO import ImportOrderDTO
 from src.gui.tabs.import_ui import Ui_ImportTab
 from src.services.impl.ImportServiceImpl import ImportServiceImpl
+from src.utils.FormIcon import add_awesome_left_icon, apply_awesome_icons
 from src.utils.Theme import badge_cell
 
 
@@ -48,8 +49,12 @@ class ImportController(QWidget, Ui_ImportTab):
 
 
     def _setup_events(self) -> None:
+        add_awesome_left_icon(self.txtSearch, "search")
+        apply_awesome_icons(self)
+
         self.btnCreateOrder.clicked.connect(self._on_create_clicked)
-        self.cboStatus.currentIndexChanged.connect(self._on_filter_changed)
+        self.txtSearch.textChanged.connect(self._apply_filter)
+        self.cboDate.currentIndexChanged.connect(self._apply_filter)
         self.btnPrev.clicked.connect(self._on_prev_page)
         self.btnNext.clicked.connect(self._on_next_page)
 
@@ -57,9 +62,10 @@ class ImportController(QWidget, Ui_ImportTab):
         header.setSectionResizeMode(0, QHeaderView.ResizeMode.ResizeToContents)  
         header.setSectionResizeMode(1, QHeaderView.ResizeMode.Stretch)  
         header.setSectionResizeMode(2, QHeaderView.ResizeMode.ResizeToContents)  
-        header.setSectionResizeMode(3, QHeaderView.ResizeMode.ResizeToContents)
+        header.setSectionResizeMode(3, QHeaderView.ResizeMode.Fixed)
+        self.tblImportOrders.setColumnWidth(3, 165)
         header.setSectionResizeMode(4, QHeaderView.ResizeMode.Fixed)
-        self.tblImportOrders.setColumnWidth(4, 130)
+        self.tblImportOrders.setColumnWidth(4, 165)
         header.setSectionResizeMode(5, QHeaderView.ResizeMode.Stretch)
 
 
@@ -70,10 +76,6 @@ class ImportController(QWidget, Ui_ImportTab):
 
         if dialog.exec():
             self.load_data()
-
-
-    def _on_filter_changed(self) -> None:
-        self._apply_filter()
 
 
     def _on_prev_page(self) -> None:
@@ -119,11 +121,30 @@ class ImportController(QWidget, Ui_ImportTab):
 
 
     def _apply_filter(self) -> None:
-        filter_text = self.cboStatus.currentText()
-        if filter_text == "Chờ xử lý":
-            self._filtered_orders = []
+        keyword = self.txtSearch.text().strip().lower()
+        now = datetime.now()
+        date_index = self.cboDate.currentIndex()
+        if date_index == 1:
+            since = now.replace(hour=0, minute=0, second=0, microsecond=0)
+        elif date_index in (2, 3):
+            since = now - timedelta(days=7 if date_index == 2 else 30)
         else:
-            self._filtered_orders = self._all_orders
+            since = None
+
+        orders = self._all_orders
+        if since:
+            orders = [
+                order for order in orders
+                if order.import_date and order.import_date >= since
+            ]
+        if keyword:
+            orders = [
+                order for order in orders
+                if keyword in str(order.import_id).lower()
+                or keyword in (order.supplier_name or "").lower()
+            ]
+
+        self._filtered_orders = orders
 
         self._current_page = 1
         self._render_current_page()
@@ -160,6 +181,7 @@ class ImportController(QWidget, Ui_ImportTab):
             item_total.setTextAlignment(Qt.AlignmentFlag.AlignRight | Qt.AlignmentFlag.AlignVCenter)
 
             item_creator = QTableWidgetItem(creator)
+            item_creator.setTextAlignment(Qt.AlignmentFlag.AlignCenter)
 
             self.tblImportOrders.setItem(row, 0, item_id)
             self.tblImportOrders.setItem(row, 1, item_supplier)

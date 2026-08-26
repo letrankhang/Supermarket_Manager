@@ -442,6 +442,12 @@ QLabel#lblTitle {
     font-weight: bold;
 }
 
+QLabel#lblHint {
+    color: #94a3b8;
+    font-size: 11px;
+    font-weight: normal;
+}
+
 QLabel#lblStatus {
     color: #64748b;
     font-size: 12px;
@@ -497,7 +503,7 @@ QPushButton#btnClearCustomer:disabled {
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <property name="spacing">
-    <number>12</number>
+    <number>10</number>
    </property>
    <property name="leftMargin">
     <number>18</number>
@@ -512,18 +518,35 @@ QPushButton#btnClearCustomer:disabled {
     <number>16</number>
    </property>
    <item>
-    <widget class="QLabel" name="lblTitle">
-     <property name="font">
-      <font>
-       <family>Segoe UI</family>
-       <pointsize>15</pointsize>
-       <bold>true</bold>
-      </font>
+    <layout class="QVBoxLayout" name="titleLayout">
+     <property name="spacing">
+      <number>2</number>
      </property>
-     <property name="text">
-      <string>Chọn khách hàng cho hóa đơn</string>
-     </property>
-    </widget>
+     <item>
+      <widget class="QLabel" name="lblTitle">
+       <property name="font">
+        <font>
+         <family>Segoe UI</family>
+         <pointsize>15</pointsize>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="text">
+        <string>Chọn khách hàng cho hóa đơn</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLabel" name="lblHint">
+       <property name="text">
+        <string>Khách được chọn sẽ được tích điểm và hưởng ưu đãi theo hạng thành viên.</string>
+       </property>
+       <property name="wordWrap">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+    </layout>
    </item>
    <item>
     <widget class="QLineEdit" name="txtSearchCustomer">

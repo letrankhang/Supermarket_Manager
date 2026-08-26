@@ -16,9 +16,9 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
 from PySide6.QtWidgets import (QAbstractItemView, QApplication, QComboBox, QFrame,
-    QHBoxLayout, QHeaderView, QLabel, QPushButton,
-    QSizePolicy, QSpacerItem, QTableWidget, QTableWidgetItem,
-    QVBoxLayout, QWidget)
+    QHBoxLayout, QHeaderView, QLabel, QLineEdit,
+    QPushButton, QSizePolicy, QSpacerItem, QTableWidget,
+    QTableWidgetItem, QVBoxLayout, QWidget)
 
 class Ui_ImportTab(object):
     def setupUi(self, ImportTab):
@@ -656,21 +656,24 @@ class Ui_ImportTab(object):
 "    font-weight: normal;\n"
 "}\n"
 "\n"
-"QLabel#lblListTitle {\n"
-"    color: #0f172a;\n"
-"    font-size: 15px;\n"
-"    font-weight: 700;\n"
-"}\n"
-"\n"
 "QFrame#cardTotalSpend,\n"
 "QFrame#cardRecent {\n"
 "    background-color: #ffffff;\n"
 "    border: 1px solid #e2e8f0;\n"
 "    border-radius: 14px;\n"
 "}\n"
-"QComboBox#cboStatus {\n"
-"    min-width: "
-                        "190px;\n"
+"QLabel#badgeTotalSpend,\n"
+"QLabel#badgeRecent {\n"
+"    background-color: #eff6ff;\n"
+"    border-radius: 9px;\n"
+"}\n"
+"QLineEdit#txtSearch {\n"
+"    m"
+                        "in-width: 280px;\n"
+"}\n"
+"QComboBox#cboDate {\n"
+"    min-width: 170px;\n"
+"    max-width: 170px;\n"
 "}\n"
 "QPushButton#btnCreateOrder {\n"
 "    background-color: #1d4ed8;\n"
@@ -733,19 +736,40 @@ class Ui_ImportTab(object):
         self.horizontalLayout.setObjectName(u"horizontalLayout")
         self.cardTotalSpend = QFrame(ImportTab)
         self.cardTotalSpend.setObjectName(u"cardTotalSpend")
-        self.cardTotalSpend.setMinimumSize(QSize(0, 120))
+        self.cardTotalSpend.setMinimumSize(QSize(0, 132))
         self.cardTotalSpend.setFrameShape(QFrame.Shape.NoFrame)
         self.verticalLayout_card1 = QVBoxLayout(self.cardTotalSpend)
         self.verticalLayout_card1.setSpacing(6)
         self.verticalLayout_card1.setObjectName(u"verticalLayout_card1")
-        self.verticalLayout_card1.setContentsMargins(16, 14, 16, 14)
+        self.verticalLayout_card1.setContentsMargins(16, 14, 16, 20)
+        self.rowTotalSpendTop = QHBoxLayout()
+        self.rowTotalSpendTop.setSpacing(8)
+        self.rowTotalSpendTop.setObjectName(u"rowTotalSpendTop")
         self.lblTotalSpendTitle = QLabel(self.cardTotalSpend)
         self.lblTotalSpendTitle.setObjectName(u"lblTotalSpendTitle")
 
-        self.verticalLayout_card1.addWidget(self.lblTotalSpendTitle)
+        self.rowTotalSpendTop.addWidget(self.lblTotalSpendTitle)
+
+        self.spacerTotalSpendTop = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
+
+        self.rowTotalSpendTop.addItem(self.spacerTotalSpendTop)
+
+        self.badgeTotalSpend = QLabel(self.cardTotalSpend)
+        self.badgeTotalSpend.setObjectName(u"badgeTotalSpend")
+        self.badgeTotalSpend.setMinimumSize(QSize(34, 34))
+        self.badgeTotalSpend.setMaximumSize(QSize(34, 34))
+        self.badgeTotalSpend.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.badgeTotalSpend.setProperty(u"iconPx", 17)
+
+        self.rowTotalSpendTop.addWidget(self.badgeTotalSpend)
+
+
+        self.verticalLayout_card1.addLayout(self.rowTotalSpendTop)
 
         self.lblTotalSpend = QLabel(self.cardTotalSpend)
         self.lblTotalSpend.setObjectName(u"lblTotalSpend")
+        self.lblTotalSpend.setMinimumSize(QSize(0, 25))
+        self.lblTotalSpend.setMaximumSize(QSize(16777215, 25))
 
         self.verticalLayout_card1.addWidget(self.lblTotalSpend)
 
@@ -759,19 +783,40 @@ class Ui_ImportTab(object):
 
         self.cardRecent = QFrame(ImportTab)
         self.cardRecent.setObjectName(u"cardRecent")
-        self.cardRecent.setMinimumSize(QSize(0, 120))
+        self.cardRecent.setMinimumSize(QSize(0, 132))
         self.cardRecent.setFrameShape(QFrame.Shape.NoFrame)
         self.verticalLayout_card3 = QVBoxLayout(self.cardRecent)
         self.verticalLayout_card3.setSpacing(6)
         self.verticalLayout_card3.setObjectName(u"verticalLayout_card3")
-        self.verticalLayout_card3.setContentsMargins(16, 14, 16, 14)
+        self.verticalLayout_card3.setContentsMargins(16, 14, 16, 20)
+        self.rowRecentTop = QHBoxLayout()
+        self.rowRecentTop.setSpacing(8)
+        self.rowRecentTop.setObjectName(u"rowRecentTop")
         self.lblRecentTitle = QLabel(self.cardRecent)
         self.lblRecentTitle.setObjectName(u"lblRecentTitle")
 
-        self.verticalLayout_card3.addWidget(self.lblRecentTitle)
+        self.rowRecentTop.addWidget(self.lblRecentTitle)
+
+        self.spacerRecentTop = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
+
+        self.rowRecentTop.addItem(self.spacerRecentTop)
+
+        self.badgeRecent = QLabel(self.cardRecent)
+        self.badgeRecent.setObjectName(u"badgeRecent")
+        self.badgeRecent.setMinimumSize(QSize(34, 34))
+        self.badgeRecent.setMaximumSize(QSize(34, 34))
+        self.badgeRecent.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.badgeRecent.setProperty(u"iconPx", 17)
+
+        self.rowRecentTop.addWidget(self.badgeRecent)
+
+
+        self.verticalLayout_card3.addLayout(self.rowRecentTop)
 
         self.lblRecent = QLabel(self.cardRecent)
         self.lblRecent.setObjectName(u"lblRecent")
+        self.lblRecent.setMinimumSize(QSize(0, 25))
+        self.lblRecent.setMaximumSize(QSize(16777215, 25))
 
         self.verticalLayout_card3.addWidget(self.lblRecent)
 
@@ -790,35 +835,26 @@ class Ui_ImportTab(object):
         self.frameTable.setObjectName(u"frameTable")
         self.frameTable.setFrameShape(QFrame.Shape.NoFrame)
         self.verticalLayout_table = QVBoxLayout(self.frameTable)
-        self.verticalLayout_table.setSpacing(12)
+        self.verticalLayout_table.setSpacing(2)
         self.verticalLayout_table.setObjectName(u"verticalLayout_table")
         self.verticalLayout_table.setContentsMargins(12, 12, 12, 12)
         self.horizontalLayout_tableHeader = QHBoxLayout()
+        self.horizontalLayout_tableHeader.setSpacing(8)
         self.horizontalLayout_tableHeader.setObjectName(u"horizontalLayout_tableHeader")
-        self.horizontalLayout_tableHeader.setContentsMargins(12, 0, 12, 10)
-        self.lblListTitle = QLabel(self.frameTable)
-        self.lblListTitle.setObjectName(u"lblListTitle")
+        self.horizontalLayout_tableHeader.setContentsMargins(0, 0, 0, 10)
+        self.txtSearch = QLineEdit(self.frameTable)
+        self.txtSearch.setObjectName(u"txtSearch")
 
-        self.horizontalLayout_tableHeader.addWidget(self.lblListTitle)
+        self.horizontalLayout_tableHeader.addWidget(self.txtSearch)
 
-        self.horizontalSpacer_tbl = QSpacerItem(0, 0, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
+        self.cboDate = QComboBox(self.frameTable)
+        self.cboDate.addItem("")
+        self.cboDate.addItem("")
+        self.cboDate.addItem("")
+        self.cboDate.addItem("")
+        self.cboDate.setObjectName(u"cboDate")
 
-        self.horizontalLayout_tableHeader.addItem(self.horizontalSpacer_tbl)
-
-        self.cboStatus = QComboBox(self.frameTable)
-        self.cboStatus.addItem("")
-        self.cboStatus.addItem("")
-        self.cboStatus.setObjectName(u"cboStatus")
-        sizePolicy = QSizePolicy(QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Fixed)
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.cboStatus.sizePolicy().hasHeightForWidth())
-        self.cboStatus.setSizePolicy(sizePolicy)
-        self.cboStatus.setMinimumSize(QSize(120, 36))
-        self.cboStatus.setMaximumSize(QSize(120, 36))
-        self.cboStatus.setStyleSheet(u"")
-
-        self.horizontalLayout_tableHeader.addWidget(self.cboStatus)
+        self.horizontalLayout_tableHeader.addWidget(self.cboDate)
 
 
         self.verticalLayout_table.addLayout(self.horizontalLayout_tableHeader)
@@ -860,6 +896,7 @@ class Ui_ImportTab(object):
         self.verticalLayout.addWidget(self.frameTable)
 
         self.horizontalLayout_pagination = QHBoxLayout()
+        self.horizontalLayout_pagination.setSpacing(5)
         self.horizontalLayout_pagination.setObjectName(u"horizontalLayout_pagination")
         self.lblPage = QLabel(ImportTab)
         self.lblPage.setObjectName(u"lblPage")
@@ -872,13 +909,15 @@ class Ui_ImportTab(object):
 
         self.btnPrev = QPushButton(ImportTab)
         self.btnPrev.setObjectName(u"btnPrev")
-        self.btnPrev.setMaximumSize(QSize(36, 34))
+        self.btnPrev.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
+        self.btnPrev.setProperty(u"iconPx", 12)
 
         self.horizontalLayout_pagination.addWidget(self.btnPrev)
 
         self.btnNext = QPushButton(ImportTab)
         self.btnNext.setObjectName(u"btnNext")
-        self.btnNext.setMaximumSize(QSize(36, 34))
+        self.btnNext.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
+        self.btnNext.setProperty(u"iconPx", 12)
 
         self.horizontalLayout_pagination.addWidget(self.btnNext)
 
@@ -896,14 +935,22 @@ class Ui_ImportTab(object):
         self.lblSubtitle.setText(QCoreApplication.translate("ImportTab", u"Theo d\u00f5i v\u00e0 qu\u1ea3n l\u00fd c\u00e1c phi\u1ebfu nh\u1eadp kho t\u1eeb nh\u00e0 cung c\u1ea5p.", None))
         self.btnCreateOrder.setText(QCoreApplication.translate("ImportTab", u"+  T\u1ea1o Phi\u1ebfu Nh\u1eadp", None))
         self.lblTotalSpendTitle.setText(QCoreApplication.translate("ImportTab", u"T\u1ed5ng chi th\u00e1ng n\u00e0y", None))
+        self.badgeTotalSpend.setText("")
+        self.badgeTotalSpend.setProperty(u"iconName", QCoreApplication.translate("ImportTab", u"cash", None))
+        self.badgeTotalSpend.setProperty(u"iconColor", QCoreApplication.translate("ImportTab", u"#1d4ed8", None))
         self.lblTotalSpend.setText(QCoreApplication.translate("ImportTab", u"\u0111 0", None))
-        self.lblTotalSpendSub.setText(QCoreApplication.translate("ImportTab", u"so v\u1edbi th\u00e1ng tr\u01b0\u1edbc", None))
+        self.lblTotalSpendSub.setText(QCoreApplication.translate("ImportTab", u"So v\u1edbi th\u00e1ng tr\u01b0\u1edbc", None))
         self.lblRecentTitle.setText(QCoreApplication.translate("ImportTab", u"L\u01b0\u1ee3t nh\u1eadp g\u1ea7n \u0111\u00e2y", None))
+        self.badgeRecent.setText("")
+        self.badgeRecent.setProperty(u"iconName", QCoreApplication.translate("ImportTab", u"import", None))
+        self.badgeRecent.setProperty(u"iconColor", QCoreApplication.translate("ImportTab", u"#1d4ed8", None))
         self.lblRecent.setText(QCoreApplication.translate("ImportTab", u"0", None))
         self.lblRecentSub.setText(QCoreApplication.translate("ImportTab", u"Trong 7 ng\u00e0y qua", None))
-        self.lblListTitle.setText(QCoreApplication.translate("ImportTab", u"Danh s\u00e1ch phi\u1ebfu nh\u1eadp", None))
-        self.cboStatus.setItemText(0, QCoreApplication.translate("ImportTab", u"Ho\u00e0n th\u00e0nh", None))
-        self.cboStatus.setItemText(1, QCoreApplication.translate("ImportTab", u"Ch\u1edd x\u1eed l\u00fd", None))
+        self.txtSearch.setPlaceholderText(QCoreApplication.translate("ImportTab", u"T\u00ecm theo m\u00e3 phi\u1ebfu ho\u1eb7c nh\u00e0 cung c\u1ea5p", None))
+        self.cboDate.setItemText(0, QCoreApplication.translate("ImportTab", u"T\u1ea5t c\u1ea3 th\u1eddi gian", None))
+        self.cboDate.setItemText(1, QCoreApplication.translate("ImportTab", u"H\u00f4m nay", None))
+        self.cboDate.setItemText(2, QCoreApplication.translate("ImportTab", u"7 ng\u00e0y qua", None))
+        self.cboDate.setItemText(3, QCoreApplication.translate("ImportTab", u"30 ng\u00e0y qua", None))
 
         ___qtablewidgetitem = self.tblImportOrders.horizontalHeaderItem(0)
         ___qtablewidgetitem.setText(QCoreApplication.translate("ImportTab", u"M\u00c3 NH\u1eacP", None))
@@ -918,8 +965,12 @@ class Ui_ImportTab(object):
         ___qtablewidgetitem5 = self.tblImportOrders.horizontalHeaderItem(5)
         ___qtablewidgetitem5.setText(QCoreApplication.translate("ImportTab", u"NG\u01af\u1edcI T\u1ea0O", None))
         self.lblPage.setText(QCoreApplication.translate("ImportTab", u"Hi\u1ec3n th\u1ecb 1-10 c\u1ee7a 0 m\u1ee5c", None))
-        self.btnPrev.setText(QCoreApplication.translate("ImportTab", u"\u2039", None))
-        self.btnNext.setText(QCoreApplication.translate("ImportTab", u"\u203a", None))
+        self.btnPrev.setText("")
+        self.btnPrev.setProperty(u"iconName", QCoreApplication.translate("ImportTab", u"previous", None))
+        self.btnPrev.setProperty(u"iconColor", QCoreApplication.translate("ImportTab", u"default", None))
+        self.btnNext.setText("")
+        self.btnNext.setProperty(u"iconName", QCoreApplication.translate("ImportTab", u"next", None))
+        self.btnNext.setProperty(u"iconColor", QCoreApplication.translate("ImportTab", u"default", None))
         pass
     # retranslateUi
 

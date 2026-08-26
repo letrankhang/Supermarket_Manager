@@ -25,6 +25,10 @@ from src.utils.Theme import badge_cell, repolish, set_trend
 logger = logging.getLogger(__name__)
 
 ICON_SIZE = QSize(16, 16)
+PAGER_ICON_SIZE = QSize(12, 12)
+
+EMPTY_FIELD_TEXT = "Chưa cập nhật"
+EMPTY_FIELD_COLOR = "#94a3b8"
 SEARCH_DEBOUNCE_MS = 300
 PAGE_SIZE = 10
 
@@ -33,7 +37,8 @@ RANK_ALIASES = (
     (("GOLD", "VÀNG"), "GOLD", "warning"),
     (("SILVER", "BẠC"), "SILVER", "neutral"),
 )
-RANK_FALLBACK = ("BRONZE", "info")
+RANK_FALLBACK = ("BRONZE", "bronze")
+RANK_ORDER = ("BRONZE", "SILVER", "GOLD", "DIAMOND")
 
 def rank_display(tier_name: str) -> Tuple[str, str]:
     upper = (tier_name or "").upper()
@@ -87,7 +92,7 @@ class CustomerManagementController(QWidget, Ui_CustomerManagement):
         self._tiers: List[Tuple[int, str]] = []
         self._all_customers: List[CustomerDetailDTO] = []
         self._filtered_customers: List[CustomerDetailDTO] = []
-        self._selected_tier_id: Optional[int] = None
+        self._selected_rank: Optional[str] = None
 
         self._current_page = 1
         self._page_size = PAGE_SIZE
@@ -107,8 +112,8 @@ class CustomerManagementController(QWidget, Ui_CustomerManagement):
     def _setup_icons(self) -> None:
         for widget_name, name, tone in (
             ("btnPurchaseHistory", "history", "default"),
-            ("btnEditCustomer", "edit", "primary"),
-            ("btnDeleteCustomer", "delete", "danger"),
+            ("btnEditCustomer", "edit", "default"),
+            ("btnDeleteCustomer", "delete", "default"),
             ("btnFilter", "filter", "default"),
             ("badgeTotal", "user-group", "primary"),
             ("badgeActive", "user-active", "success"),
@@ -120,13 +125,9 @@ class CustomerManagementController(QWidget, Ui_CustomerManagement):
         if hasattr(self, "txtSearch"):
             add_awesome_left_icon(self.txtSearch, "search")
 
-        if hasattr(self, "btnPrevPage"):
-            self.btnPrevPage.setText("‹")
-            self.btnPrevPage.setFont(QFont("Segoe UI", 12, QFont.Weight.Bold))
-
-        if hasattr(self, "btnNextPage"):
-            self.btnNextPage.setText("›")
-            self.btnNextPage.setFont(QFont("Segoe UI", 12, QFont.Weight.Bold))
+        for widget_name, icon_name in (("btnPrevPage", "previous"), ("btnNextPage", "next")):
+            if hasattr(self, widget_name):
+                apply_icon(getattr(self, widget_name), icon_name, tone="default", size=PAGER_ICON_SIZE)
 
 
     def _setup_table(self) -> None:
@@ -156,26 +157,44 @@ class CustomerManagementController(QWidget, Ui_CustomerManagement):
             self.btnFilter.clicked.connect(self._show_filter_menu)
 
 
+    def _available_ranks(self) -> List[str]:
+        labels = {rank_display(tname)[0] for _, tname in self._tiers}
+        return sorted(
+            labels,
+            key=lambda label: RANK_ORDER.index(label) if label in RANK_ORDER else len(RANK_ORDER),
+        )
+
+
     def _show_filter_menu(self) -> None:
         self._filter_menu.clear()
         all_act = QAction("Tất cả hạng", self)
-        all_act.triggered.connect(lambda: self._set_tier_filter(None))
+        all_act.setCheckable(True)
+        all_act.setChecked(self._selected_rank is None)
+        all_act.triggered.connect(lambda checked=False: self._set_rank_filter(None))
         self._filter_menu.addAction(all_act)
         self._filter_menu.addSeparator()
 
-        for tid, tname in self._tiers:
-            act = QAction(rank_display(tname)[0], self)
-            act.triggered.connect(lambda checked=False, t_id=tid: self._set_tier_filter(t_id))
+        for label in self._available_ranks():
+            act = QAction(label, self)
+            act.setCheckable(True)
+            act.setChecked(self._selected_rank == label)
+            act.triggered.connect(lambda checked=False, rank=label: self._set_rank_filter(rank))
             self._filter_menu.addAction(act)
 
         if hasattr(self, "btnFilter"):
             self._filter_menu.exec(self.btnFilter.mapToGlobal(QPoint(0, self.btnFilter.height())))
 
 
-    def _set_tier_filter(self, tier_id: Optional[int]) -> None:
-        self._selected_tier_id = tier_id
+    def _set_rank_filter(self, rank: Optional[str]) -> None:
+        self._selected_rank = rank
         self._current_page = 1
         self.load_data()
+
+
+    def _apply_rank_filter(self, customers: List[CustomerDetailDTO]) -> List[CustomerDetailDTO]:
+        if not self._selected_rank:
+            return customers
+        return [c for c in customers if rank_display(c.tier_name)[0] == self._selected_rank]
 
 
     def _setup_connections(self) -> None:
@@ -215,9 +234,8 @@ class CustomerManagementController(QWidget, Ui_CustomerManagement):
             return
 
         keyword = self.txtSearch.text().strip() if hasattr(self, "txtSearch") and self.txtSearch.text() else None
-        tier_id = self._selected_tier_id
 
-        self._worker = CustomerManagementWorker(keyword, tier_id)
+        self._worker = CustomerManagementWorker(keyword, None)
         self._worker.data_fetched.connect(self._on_data_fetched)
         self._worker.error_occurred.connect(self._on_error)
         self._worker.finished.connect(self._on_worker_finished)
@@ -226,7 +244,7 @@ class CustomerManagementController(QWidget, Ui_CustomerManagement):
 
     def _on_data_fetched(self, data: CustomerManagementDTO) -> None:
         self._all_customers = data.customers
-        self._filtered_customers = data.customers
+        self._filtered_customers = self._apply_rank_filter(data.customers)
 
         total_pts = sum(c.total_points for c in data.customers)
         pts_formatted = f"{total_pts / 1_000_000:,.1f}M" if total_pts >= 1_000_000 else (
@@ -309,12 +327,14 @@ class CustomerManagementController(QWidget, Ui_CustomerManagement):
             self.tblCustomers.setItem(idx, 0, phone_item)
 
             name_item = QTableWidgetItem(c.full_name or "")
-            name_item.setFont(QFont("MS Shell Dlg 2", 9, QFont.Weight.Bold))
             name_item.setTextAlignment(Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignVCenter)
             self.tblCustomers.setItem(idx, 1, name_item)
 
-            dob_text = c.dob.strftime("%d/%m/%Y") if c.dob else "—"
-            dob_item = QTableWidgetItem(dob_text)
+            dob_item = QTableWidgetItem(
+                c.dob.strftime("%d/%m/%Y") if c.dob else EMPTY_FIELD_TEXT
+            )
+            if not c.dob:
+                dob_item.setForeground(QtGui.QColor(EMPTY_FIELD_COLOR))
             dob_item.setTextAlignment(Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignVCenter)
             self.tblCustomers.setItem(idx, 2, dob_item)
 

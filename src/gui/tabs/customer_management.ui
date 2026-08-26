@@ -286,6 +286,14 @@ QLabel[badge=&quot;violet&quot;] {
     font-size: 11px;
     font-weight: 700;
 }
+QLabel[badge=&quot;bronze&quot;] {
+    background-color: #f6e5d5;
+    color: #a1622c;
+    border-radius: 6px;
+    padding: 3px 10px;
+    font-size: 11px;
+    font-weight: 700;
+}
 QLabel[trend=&quot;up&quot;] {
     background-color: #ecfdf5;
     color: #059669;
@@ -703,7 +711,7 @@ QPushButton#btnAddCustomer:disabled {
 }
 QPushButton#btnDeleteCustomer {
     background-color: #ffffff;
-    color: #dc2626;
+    color: #64748b;
     border: 1px solid #e2e8f0;
     border-radius: 8px;
     padding: 0px 16px;
@@ -714,6 +722,12 @@ QPushButton#btnDeleteCustomer {
 QPushButton#btnDeleteCustomer:hover {
     background-color: #fef2f2;
     border: 1px solid #dc2626;
+    color: #dc2626;
+}
+QPushButton#btnDeleteCustomer:pressed {
+    background-color: #fee2e2;
+    border: 1px solid #dc2626;
+    color: #dc2626;
 }
 QPushButton#btnDeleteCustomer:disabled {
     background-color: #f8fafc;
@@ -726,13 +740,21 @@ QPushButton#btnFilter {
     max-width: 38px;
 }
 QPushButton#btnLoadMore {
-    color: #1d4ed8;
+    background-color: #ffffff;
+    color: #64748b;
+    border: 1px solid #e2e8f0;
     min-height: 32px;
     max-height: 32px;
 }
 QPushButton#btnLoadMore:hover {
     background-color: #eff6ff;
     border: 1px solid #1d4ed8;
+    color: #1d4ed8;
+}
+QPushButton#btnLoadMore:pressed {
+    background-color: #dbeafe;
+    border: 1px solid #1d4ed8;
+    color: #1d4ed8;
 }
 </string>
   </property>
@@ -840,7 +862,7 @@ QPushButton#btnLoadMore:hover {
        </property>
        <layout class="QVBoxLayout" name="cardTotalLayout">
         <property name="spacing">
-         <number>6</number>
+         <number>0</number>
         </property>
         <property name="leftMargin">
          <number>16</number>
@@ -856,6 +878,9 @@ QPushButton#btnLoadMore:hover {
         </property>
         <item>
          <layout class="QHBoxLayout" name="cardTotalTopRow">
+          <property name="spacing">
+           <number>6</number>
+          </property>
           <item>
            <widget class="QLabel" name="lblTotalCaption">
             <property name="text">
@@ -909,6 +934,9 @@ QPushButton#btnLoadMore:hover {
         </item>
         <item>
          <layout class="QHBoxLayout" name="cardTotalTrendRow">
+          <property name="topMargin">
+           <number>10</number>
+          </property>
           <item>
            <widget class="QLabel" name="lblTotalTrend">
             <property name="text">
@@ -947,7 +975,7 @@ QPushButton#btnLoadMore:hover {
        </property>
        <layout class="QVBoxLayout" name="cardActiveLayout">
         <property name="spacing">
-         <number>6</number>
+         <number>0</number>
         </property>
         <property name="leftMargin">
          <number>16</number>
@@ -1016,6 +1044,9 @@ QPushButton#btnLoadMore:hover {
         </item>
         <item>
          <layout class="QHBoxLayout" name="cardActiveTrendRow">
+          <property name="topMargin">
+           <number>10</number>
+          </property>
           <item>
            <widget class="QLabel" name="lblActiveTrend">
             <property name="text">
@@ -1054,7 +1085,7 @@ QPushButton#btnLoadMore:hover {
        </property>
        <layout class="QVBoxLayout" name="cardPointsLayout">
         <property name="spacing">
-         <number>6</number>
+         <number>0</number>
         </property>
         <property name="leftMargin">
          <number>16</number>
@@ -1123,6 +1154,9 @@ QPushButton#btnLoadMore:hover {
         </item>
         <item>
          <layout class="QHBoxLayout" name="cardPointsTrendRow">
+          <property name="topMargin">
+           <number>10</number>
+          </property>
           <item>
            <widget class="QLabel" name="lblPointsTrend">
             <property name="text">
@@ -1160,16 +1194,16 @@ QPushButton#btnLoadMore:hover {
        <number>12</number>
       </property>
       <property name="leftMargin">
-       <number>16</number>
+       <number>12</number>
       </property>
       <property name="topMargin">
-       <number>16</number>
+       <number>12</number>
       </property>
       <property name="rightMargin">
-       <number>16</number>
+       <number>12</number>
       </property>
       <property name="bottomMargin">
-       <number>14</number>
+       <number>12</number>
       </property>
       <item>
        <layout class="QHBoxLayout" name="toolbarLayout">
@@ -1375,7 +1409,16 @@ QPushButton#btnLoadMore:hover {
             <cursorShape>PointingHandCursor</cursorShape>
            </property>
            <property name="text">
-            <string>‹</string>
+            <string/>
+           </property>
+           <property name="iconName" stdset="0">
+            <string>previous</string>
+           </property>
+           <property name="iconColor" stdset="0">
+            <string>default</string>
+           </property>
+           <property name="iconPx" stdset="0">
+            <number>12</number>
            </property>
           </widget>
          </item>
@@ -1385,7 +1428,16 @@ QPushButton#btnLoadMore:hover {
             <cursorShape>PointingHandCursor</cursorShape>
            </property>
            <property name="text">
-            <string>›</string>
+            <string/>
+           </property>
+           <property name="iconName" stdset="0">
+            <string>next</string>
+           </property>
+           <property name="iconColor" stdset="0">
+            <string>default</string>
+           </property>
+           <property name="iconPx" stdset="0">
+            <number>12</number>
            </property>
           </widget>
          </item>

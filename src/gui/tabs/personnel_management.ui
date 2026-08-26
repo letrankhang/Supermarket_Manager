@@ -627,6 +627,20 @@ QLabel#lblCashierText {
     font-weight: normal;
 }
 
+QLabel#lblTotalDesc,
+QLabel#lblActiveDesc {
+    color: #94a3b8;
+    font-size: 11px;
+    font-weight: normal;
+}
+
+QLabel#badgeTotal,
+QLabel#badgeActive,
+QLabel#badgeRoles {
+    background-color: #eff6ff;
+    border-radius: 9px;
+}
+
 QFrame#cardTotal,
 QFrame#cardActive,
 QFrame#cardRoles {
@@ -672,7 +686,7 @@ QComboBox#cboStatus {
      <item>
       <widget class="QLabel" name="lblTitle">
        <property name="text">
-        <string>Quản lý nhân sự</string>
+        <string>Quản lý Nhân sự</string>
        </property>
       </widget>
      </item>
@@ -701,7 +715,7 @@ QComboBox#cboStatus {
        <property name="minimumSize">
         <size>
          <width>0</width>
-         <height>120</height>
+         <height>132</height>
         </size>
        </property>
        <property name="frameShape">
@@ -724,16 +738,92 @@ QComboBox#cboStatus {
          <number>14</number>
         </property>
         <item>
-         <widget class="QLabel" name="lblTotalTitle">
+         <layout class="QHBoxLayout" name="rowTotalTop">
+          <property name="spacing">
+           <number>8</number>
+          </property>
+          <item>
+           <widget class="QLabel" name="lblTotalTitle">
+            <property name="text">
+             <string>Tổng số nhân viên</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <spacer name="spacerTotalTop">
+            <property name="orientation">
+             <enum>Qt::Orientation::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>40</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item>
+           <widget class="QLabel" name="badgeTotal">
+            <property name="minimumSize">
+             <size>
+              <width>34</width>
+              <height>34</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>34</width>
+              <height>34</height>
+             </size>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignmentFlag::AlignCenter</set>
+            </property>
+            <property name="iconName" stdset="0">
+             <string>customers</string>
+            </property>
+            <property name="iconColor" stdset="0">
+             <string>#1d4ed8</string>
+            </property>
+            <property name="iconPx" stdset="0">
+             <number>17</number>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <widget class="QLabel" name="lblTotal">
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>25</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>16777215</width>
+            <height>25</height>
+           </size>
+          </property>
           <property name="text">
-           <string>Tổng số nhân viên</string>
+           <string>0</string>
           </property>
          </widget>
         </item>
         <item>
-         <widget class="QLabel" name="lblTotal">
+         <widget class="QLabel" name="lblTotalDesc">
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>25</height>
+           </size>
+          </property>
           <property name="text">
-           <string>0</string>
+           <string>Tài khoản nhân sự trong hệ thống</string>
           </property>
          </widget>
         </item>
@@ -767,7 +857,7 @@ QComboBox#cboStatus {
        <property name="minimumSize">
         <size>
          <width>0</width>
-         <height>120</height>
+         <height>132</height>
         </size>
        </property>
        <property name="frameShape">
@@ -790,16 +880,92 @@ QComboBox#cboStatus {
          <number>14</number>
         </property>
         <item>
-         <widget class="QLabel" name="lblActiveTitle">
+         <layout class="QHBoxLayout" name="rowActiveTop">
+          <property name="spacing">
+           <number>8</number>
+          </property>
+          <item>
+           <widget class="QLabel" name="lblActiveTitle">
+            <property name="text">
+             <string>Đang hoạt động</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <spacer name="spacerActiveTop">
+            <property name="orientation">
+             <enum>Qt::Orientation::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>40</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item>
+           <widget class="QLabel" name="badgeActive">
+            <property name="minimumSize">
+             <size>
+              <width>34</width>
+              <height>34</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>34</width>
+              <height>34</height>
+             </size>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignmentFlag::AlignCenter</set>
+            </property>
+            <property name="iconName" stdset="0">
+             <string>user-active</string>
+            </property>
+            <property name="iconColor" stdset="0">
+             <string>#1d4ed8</string>
+            </property>
+            <property name="iconPx" stdset="0">
+             <number>17</number>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <widget class="QLabel" name="lblActive">
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>25</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>16777215</width>
+            <height>25</height>
+           </size>
+          </property>
           <property name="text">
-           <string>Đang hoạt động</string>
+           <string>0</string>
           </property>
          </widget>
         </item>
         <item>
-         <widget class="QLabel" name="lblActive">
+         <widget class="QLabel" name="lblActiveDesc">
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>25</height>
+           </size>
+          </property>
           <property name="text">
-           <string>0</string>
+           <string>Tài khoản được phép đăng nhập</string>
           </property>
          </widget>
         </item>
@@ -833,7 +999,7 @@ QComboBox#cboStatus {
        <property name="minimumSize">
         <size>
          <width>0</width>
-         <height>120</height>
+         <height>132</height>
         </size>
        </property>
        <property name="frameShape">
@@ -841,7 +1007,7 @@ QComboBox#cboStatus {
        </property>
        <layout class="QVBoxLayout" name="layoutRoles">
         <property name="spacing">
-         <number>6</number>
+         <number>0</number>
         </property>
         <property name="leftMargin">
          <number>16</number>
@@ -856,11 +1022,68 @@ QComboBox#cboStatus {
          <number>14</number>
         </property>
         <item>
-         <widget class="QLabel" name="lblRolesTitle">
-          <property name="text">
-           <string>Phân bổ vai trò</string>
+         <layout class="QHBoxLayout" name="rowRolesTop">
+          <property name="spacing">
+           <number>8</number>
           </property>
-         </widget>
+          <item>
+           <widget class="QLabel" name="lblRolesTitle">
+            <property name="maximumSize">
+             <size>
+              <width>16777215</width>
+              <height>25</height>
+             </size>
+            </property>
+            <property name="text">
+             <string>Phân bổ vai trò</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <spacer name="spacerRolesTop">
+            <property name="orientation">
+             <enum>Qt::Orientation::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>40</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item>
+           <widget class="QLabel" name="badgeRoles">
+            <property name="minimumSize">
+             <size>
+              <width>34</width>
+              <height>34</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>34</width>
+              <height>34</height>
+             </size>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignmentFlag::AlignCenter</set>
+            </property>
+            <property name="iconName" stdset="0">
+             <string>role</string>
+            </property>
+            <property name="iconColor" stdset="0">
+             <string>#1d4ed8</string>
+            </property>
+            <property name="iconPx" stdset="0">
+             <number>17</number>
+            </property>
+           </widget>
+          </item>
+         </layout>
         </item>
         <item>
          <layout class="QHBoxLayout" name="layoutRolesData">
@@ -874,6 +1097,18 @@ QComboBox#cboStatus {
             </property>
             <item>
              <widget class="QLabel" name="lblAdminCount">
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>29</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>16777215</width>
+                <height>29</height>
+               </size>
+              </property>
               <property name="text">
                <string>0</string>
               </property>
@@ -881,6 +1116,18 @@ QComboBox#cboStatus {
             </item>
             <item>
              <widget class="QLabel" name="lblAdminText">
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>36</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>16777215</width>
+                <height>36</height>
+               </size>
+              </property>
               <property name="text">
                <string>Quản trị viên</string>
               </property>
@@ -902,6 +1149,18 @@ QComboBox#cboStatus {
             </property>
             <item>
              <widget class="QLabel" name="lblManagerCount">
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>29</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>16777215</width>
+                <height>29</height>
+               </size>
+              </property>
               <property name="text">
                <string>0</string>
               </property>
@@ -909,6 +1168,18 @@ QComboBox#cboStatus {
             </item>
             <item>
              <widget class="QLabel" name="lblManagerText">
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>36</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>16777215</width>
+                <height>36</height>
+               </size>
+              </property>
               <property name="text">
                <string>Bán hàng</string>
               </property>
@@ -930,6 +1201,18 @@ QComboBox#cboStatus {
             </property>
             <item>
              <widget class="QLabel" name="lblCashierCount">
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>29</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>16777215</width>
+                <height>29</height>
+               </size>
+              </property>
               <property name="text">
                <string>0</string>
               </property>
@@ -937,6 +1220,18 @@ QComboBox#cboStatus {
             </item>
             <item>
              <widget class="QLabel" name="lblCashierText">
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>36</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>16777215</width>
+                <height>36</height>
+               </size>
+              </property>
               <property name="text">
                <string>Kho</string>
               </property>
@@ -968,80 +1263,13 @@ QComboBox#cboStatus {
     </layout>
    </item>
    <item>
-    <layout class="QHBoxLayout" name="toolbarLayout">
-     <property name="spacing">
-      <number>8</number>
-     </property>
-     <item>
-      <widget class="QLineEdit" name="txtSearch">
-       <property name="placeholderText">
-        <string>Tìm kiếm theo họ tên hoặc tên đăng nhập</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QComboBox" name="cboRole">
-       <item>
-        <property name="text">
-         <string>Tất cả chức vụ</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>Admin</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>Cashier</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>Warehouse</string>
-        </property>
-       </item>
-      </widget>
-     </item>
-     <item>
-      <widget class="QComboBox" name="cboStatus">
-       <item>
-        <property name="text">
-         <string>Tất cả trạng thái</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>Hoạt động</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>Khóa</string>
-        </property>
-       </item>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="btnAdd">
-       <property name="cursor">
-        <cursorShape>PointingHandCursor</cursorShape>
-       </property>
-       <property name="text">
-        <string>+ Thêm nhân sự</string>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </item>
-   <item>
     <widget class="QFrame" name="frameTable">
      <property name="frameShape">
       <enum>QFrame::Shape::NoFrame</enum>
      </property>
      <layout class="QVBoxLayout" name="tableFrameLayout">
       <property name="spacing">
-       <number>0</number>
+       <number>12</number>
       </property>
       <property name="leftMargin">
        <number>12</number>
@@ -1055,6 +1283,73 @@ QComboBox#cboStatus {
       <property name="bottomMargin">
        <number>12</number>
       </property>
+     <item>
+      <layout class="QHBoxLayout" name="toolbarLayout">
+       <property name="spacing">
+        <number>8</number>
+       </property>
+       <item>
+        <widget class="QLineEdit" name="txtSearch">
+         <property name="placeholderText">
+          <string>Tìm kiếm theo họ tên hoặc tên đăng nhập</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QComboBox" name="cboRole">
+         <item>
+          <property name="text">
+           <string>Tất cả chức vụ</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Admin</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Cashier</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Warehouse</string>
+          </property>
+         </item>
+        </widget>
+       </item>
+       <item>
+        <widget class="QComboBox" name="cboStatus">
+         <item>
+          <property name="text">
+           <string>Tất cả trạng thái</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Hoạt động</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Khóa</string>
+          </property>
+         </item>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="btnAdd">
+         <property name="cursor">
+          <cursorShape>PointingHandCursor</cursorShape>
+         </property>
+         <property name="text">
+          <string>+ Thêm nhân sự</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
       <item>
        <widget class="QTableWidget" name="tblEmployees">
         <property name="focusPolicy">
@@ -1101,7 +1396,7 @@ QComboBox#cboStatus {
         </attribute>
         <column>
          <property name="text">
-          <string>USER ID</string>
+          <string>MÃ TÀI KHOẢN</string>
          </property>
         </column>
         <column>

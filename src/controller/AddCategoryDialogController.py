@@ -47,7 +47,7 @@ class AddCategoryDialogController(QDialog, Ui_CategoryManagerDialog):
 
 
     def _setup_events(self) -> None:
-        self.btnCancel.clicked.connect(self._reset_form)
+        self.btnCancel.clicked.connect(self._on_cancel_clicked)
         self.btnSave.clicked.connect(self._on_save_clicked)
         self.btnEditCategory.clicked.connect(self._on_edit_clicked)
         self.btnDeleteCategory.clicked.connect(self._on_delete_clicked)
@@ -106,6 +106,7 @@ class AddCategoryDialogController(QDialog, Ui_CategoryManagerDialog):
         self.txtDescription.setPlainText(category.description or "")
         self.lblFormTitle.setText("Sửa danh mục")
         self.btnSave.setText("Cập nhật danh mục")
+        self.btnCancel.setText("Hủy sửa")
 
 
     def _on_delete_clicked(self) -> None:
@@ -163,12 +164,20 @@ class AddCategoryDialogController(QDialog, Ui_CategoryManagerDialog):
         self._load_categories()
 
 
+    def _on_cancel_clicked(self) -> None:
+        if self._selected_category is not None:
+            self._reset_form()
+        else:
+            self.reject()
+
+
     def _reset_form(self) -> None:
         self._selected_category = None
         self.txtCategoryName.clear()
         self.txtDescription.clear()
         self.lblFormTitle.setText("Thêm danh mục mới")
         self.btnSave.setText("Lưu danh mục")
+        self.btnCancel.setText("Đóng")
         self._set_loading(False)
         self.tblCategories.clearSelection()
 

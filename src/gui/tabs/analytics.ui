@@ -724,8 +724,11 @@ QPushButton#btnPeriodMonth:checked {
     border: 1px solid #1d4ed8;
     color: #ffffff;
 }
-QWidget#containerTimeChart {
+QWidget#containerTimeChart,
+QScrollArea#scrollCategory,
+QWidget#scrollCategoryContent {
     background-color: transparent;
+    border: none;
 }
 QProgressBar {
     background-color: #e2e8f0;
@@ -738,6 +741,47 @@ QProgressBar::chunk {
     background-color: #1d4ed8;
     border-radius: 3px;
 }
+QLabel#lblCategorySub {
+    color: #94a3b8;
+    font-size: 11px;
+    font-weight: normal;
+}
+QLabel#CategoryName {
+    color: #334155;
+    font-size: 12px;
+    font-weight: 600;
+}
+QLabel#CategoryAmount {
+    color: #94a3b8;
+    font-size: 11px;
+    font-weight: normal;
+}
+QLabel#CategoryPercent {
+    color: #0f172a;
+    font-size: 12px;
+    font-weight: 700;
+}
+QLabel#CategoryDot {
+    background-color: #8fbdf7;
+    border-radius: 4px;
+    min-width: 8px;
+    max-width: 8px;
+    min-height: 8px;
+    max-height: 8px;
+}
+QProgressBar#CategoryBar {
+    background-color: #eef2f7;
+    border: none;
+    border-radius: 4px;
+    min-height: 8px;
+    max-height: 8px;
+    text-align: center;
+}
+QProgressBar#CategoryBar::chunk {
+    background-color: #8fbdf7;
+    border-radius: 4px;
+}
+
 QPushButton#btnDetailLink {
     background-color: transparent;
     color: #1d4ed8;
@@ -958,6 +1002,18 @@ QPushButton#btnDetailLink:pressed {
         </item>
         <item>
          <widget class="QLabel" name="lblRevenueVal">
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>25</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>16777215</width>
+            <height>25</height>
+           </size>
+          </property>
           <property name="text">
            <string>0</string>
           </property>
@@ -965,6 +1021,9 @@ QPushButton#btnDetailLink:pressed {
         </item>
         <item>
          <layout class="QHBoxLayout" name="cardRevenueTrendRow">
+          <property name="topMargin">
+           <number>10</number>
+          </property>
           <item>
            <widget class="QLabel" name="lblRevenueTrend">
             <property name="text">
@@ -1065,6 +1124,18 @@ QPushButton#btnDetailLink:pressed {
         </item>
         <item>
          <widget class="QLabel" name="lblOrdersVal">
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>25</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>16777215</width>
+            <height>25</height>
+           </size>
+          </property>
           <property name="text">
            <string>0</string>
           </property>
@@ -1072,6 +1143,9 @@ QPushButton#btnDetailLink:pressed {
         </item>
         <item>
          <layout class="QHBoxLayout" name="cardOrdersTrendRow">
+          <property name="topMargin">
+           <number>10</number>
+          </property>
           <item>
            <widget class="QLabel" name="lblOrdersTrend">
             <property name="text">
@@ -1172,6 +1246,18 @@ QPushButton#btnDetailLink:pressed {
         </item>
         <item>
          <widget class="QLabel" name="lblAovVal">
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>25</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>16777215</width>
+            <height>25</height>
+           </size>
+          </property>
           <property name="text">
            <string>0</string>
           </property>
@@ -1179,6 +1265,9 @@ QPushButton#btnDetailLink:pressed {
         </item>
         <item>
          <layout class="QHBoxLayout" name="cardAovTrendRow">
+          <property name="topMargin">
+           <number>10</number>
+          </property>
           <item>
            <widget class="QLabel" name="lblAovTrend">
             <property name="text">
@@ -1279,6 +1368,18 @@ QPushButton#btnDetailLink:pressed {
         </item>
         <item>
          <widget class="QLabel" name="lblReturnVal">
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>25</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>16777215</width>
+            <height>25</height>
+           </size>
+          </property>
           <property name="text">
            <string>0</string>
           </property>
@@ -1286,6 +1387,9 @@ QPushButton#btnDetailLink:pressed {
         </item>
         <item>
          <layout class="QHBoxLayout" name="cardReturnTrendRow">
+          <property name="topMargin">
+           <number>10</number>
+          </property>
           <item>
            <widget class="QLabel" name="lblReturnTrend">
             <property name="text">
@@ -1406,30 +1510,100 @@ QPushButton#btnDetailLink:pressed {
         </property>
         <item>
          <widget class="QLabel" name="lblCategoryTitle">
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>12</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>16777215</width>
+            <height>25</height>
+           </size>
+          </property>
           <property name="text">
            <string>Phân bổ theo danh mục</string>
           </property>
          </widget>
         </item>
         <item>
-         <layout class="QVBoxLayout" name="containerCategoryList">
-          <property name="spacing">
-           <number>10</number>
-          </property>
-         </layout>
-        </item>
-        <item>
-         <spacer name="categorySpacer">
-          <property name="orientation">
-           <enum>Qt::Orientation::Vertical</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
+         <widget class="QLabel" name="lblCategorySub">
+          <property name="minimumSize">
            <size>
             <width>0</width>
-            <height>0</height>
+            <height>5</height>
            </size>
           </property>
-         </spacer>
+          <property name="maximumSize">
+           <size>
+            <width>16777215</width>
+            <height>12</height>
+           </size>
+          </property>
+          <property name="text">
+           <string>Tỷ trọng doanh thu theo nhóm hàng</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QScrollArea" name="scrollCategory">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+            <horstretch>0</horstretch>
+            <verstretch>1</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="frameShape">
+           <enum>QFrame::Shape::NoFrame</enum>
+          </property>
+          <property name="horizontalScrollBarPolicy">
+           <enum>Qt::ScrollBarPolicy::ScrollBarAlwaysOff</enum>
+          </property>
+          <property name="widgetResizable">
+           <bool>true</bool>
+          </property>
+          <widget class="QWidget" name="scrollCategoryContent">
+           <property name="geometry">
+            <rect>
+             <x>0</x>
+             <y>0</y>
+             <width>280</width>
+             <height>200</height>
+            </rect>
+           </property>
+           <layout class="QVBoxLayout" name="containerCategoryList">
+            <property name="spacing">
+             <number>10</number>
+            </property>
+            <property name="leftMargin">
+             <number>0</number>
+            </property>
+            <property name="topMargin">
+             <number>0</number>
+            </property>
+            <property name="rightMargin">
+             <number>6</number>
+            </property>
+            <property name="bottomMargin">
+             <number>0</number>
+            </property>
+            <item>
+             <spacer name="categorySpacer">
+              <property name="orientation">
+               <enum>Qt::Orientation::Vertical</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>0</width>
+                <height>0</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+           </layout>
+          </widget>
+         </widget>
         </item>
        </layout>
       </widget>
@@ -1512,7 +1686,7 @@ QPushButton#btnDetailLink:pressed {
          <bool>false</bool>
         </property>
         <attribute name="horizontalHeaderMinimumSectionSize">
-         <number>90</number>
+         <number>52</number>
         </attribute>
         <attribute name="horizontalHeaderDefaultSectionSize">
          <number>130</number>
@@ -1532,6 +1706,11 @@ QPushButton#btnDetailLink:pressed {
         <attribute name="verticalHeaderDefaultSectionSize">
          <number>42</number>
         </attribute>
+        <column>
+         <property name="text">
+          <string>STT</string>
+         </property>
+        </column>
         <column>
          <property name="text">
           <string>SẢN PHẨM</string>

@@ -675,7 +675,7 @@ class Ui_AddProductDialog(object):
         self.lblRetailPrice.setText(QCoreApplication.translate("AddProductDialog", u"Gi\u00e1 b\u00e1n l\u1ebb (VN\u0110):", None))
         self.lblImage.setText(QCoreApplication.translate("AddProductDialog", u"\u0110\u01b0\u1eddng d\u1eabn h\u00ecnh \u1ea3nh:", None))
         self.txtImage.setPlaceholderText(QCoreApplication.translate("AddProductDialog", u"assets/ProductImages/ten-file.png", None))
-        self.btnCancel.setText(QCoreApplication.translate("AddProductDialog", u"H\u1ee7y b\u1ecf", None))
+        self.btnCancel.setText(QCoreApplication.translate("AddProductDialog", u"H\u1ee7y", None))
         self.btnSave.setText(QCoreApplication.translate("AddProductDialog", u"L\u01b0u s\u1ea3n ph\u1ea9m", None))
     # retranslateUi
 

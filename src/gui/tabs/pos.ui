@@ -907,7 +907,7 @@ QPushButton#btnCartRemove:hover {
              <widget class="QPushButton" name="btnFilter">
               <property name="minimumSize">
                <size>
-                <width>52</width>
+                <width>46</width>
                 <height>40</height>
                </size>
               </property>
@@ -920,8 +920,20 @@ QPushButton#btnCartRemove:hover {
               <property name="cursor">
                <cursorShape>PointingHandCursor</cursorShape>
               </property>
+              <property name="toolTip">
+               <string>Lọc sản phẩm theo từ khóa đang nhập</string>
+              </property>
               <property name="text">
-               <string>Lọc</string>
+               <string/>
+              </property>
+              <property name="iconName" stdset="0">
+               <string>filter</string>
+              </property>
+              <property name="iconColor" stdset="0">
+               <string>default</string>
+              </property>
+              <property name="iconPx" stdset="0">
+               <number>16</number>
               </property>
              </widget>
             </item>

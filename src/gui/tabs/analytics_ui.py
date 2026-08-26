@@ -16,9 +16,9 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
 from PySide6.QtWidgets import (QAbstractItemView, QApplication, QFrame, QHBoxLayout,
-    QHeaderView, QLabel, QPushButton, QSizePolicy,
-    QSpacerItem, QTableWidget, QTableWidgetItem, QVBoxLayout,
-    QWidget)
+    QHeaderView, QLabel, QPushButton, QScrollArea,
+    QSizePolicy, QSpacerItem, QTableWidget, QTableWidgetItem,
+    QVBoxLayout, QWidget)
 
 class Ui_Analytics(object):
     def setupUi(self, Analytics):
@@ -755,8 +755,11 @@ class Ui_Analytics(object):
 "    border: 1px solid #1d4ed8;\n"
 "    color: #ffffff;\n"
 "}\n"
-"QWidget#containerTimeChart {\n"
+"QWidget#containerTimeChart,\n"
+"QScrollArea#scrollCategory,\n"
+"QWidget#scrollCategoryContent {\n"
 "    background-color: transparent;\n"
+"    border: none;\n"
 "}\n"
 "QProgressBar {\n"
 "    background-color: #e2e8f0;\n"
@@ -769,6 +772,48 @@ class Ui_Analytics(object):
 "    background-color: #1d4ed8;\n"
 "    border-radius: 3px;\n"
 "}\n"
+"QLabel#lblCategorySub {\n"
+"    color: #94a3b8;\n"
+"    font-size: 11px;\n"
+"    font-weight: normal;\n"
+"}\n"
+"QLabel#CategoryName {\n"
+"    color: #334155;\n"
+"    font-size: 12px;\n"
+"    font-weight: 600;\n"
+"}\n"
+"QLabel#CategoryAmount {\n"
+"    color: #94a3b8;\n"
+"    font-size: 11px;\n"
+"    font-weight: normal;\n"
+"}\n"
+"QLabel#CategoryPercent {\n"
+""
+                        "    color: #0f172a;\n"
+"    font-size: 12px;\n"
+"    font-weight: 700;\n"
+"}\n"
+"QLabel#CategoryDot {\n"
+"    background-color: #8fbdf7;\n"
+"    border-radius: 4px;\n"
+"    min-width: 8px;\n"
+"    max-width: 8px;\n"
+"    min-height: 8px;\n"
+"    max-height: 8px;\n"
+"}\n"
+"QProgressBar#CategoryBar {\n"
+"    background-color: #eef2f7;\n"
+"    border: none;\n"
+"    border-radius: 4px;\n"
+"    min-height: 8px;\n"
+"    max-height: 8px;\n"
+"    text-align: center;\n"
+"}\n"
+"QProgressBar#CategoryBar::chunk {\n"
+"    background-color: #8fbdf7;\n"
+"    border-radius: 4px;\n"
+"}\n"
+"\n"
 "QPushButton#btnDetailLink {\n"
 "    background-color: transparent;\n"
 "    color: #1d4ed8;\n"
@@ -785,8 +830,8 @@ class Ui_Analytics(object):
 "    color: #1e3a8a;\n"
 "}\n"
 "QPushButton#btnDetailLink:pressed {\n"
-"    background-color: #db"
-                        "eafe;\n"
+"    background-co"
+                        "lor: #dbeafe;\n"
 "}\n"
 "")
         self.rootLayout = QVBoxLayout(Analytics)
@@ -885,11 +930,14 @@ class Ui_Analytics(object):
 
         self.lblRevenueVal = QLabel(self.cardRevenue)
         self.lblRevenueVal.setObjectName(u"lblRevenueVal")
+        self.lblRevenueVal.setMinimumSize(QSize(0, 25))
+        self.lblRevenueVal.setMaximumSize(QSize(16777215, 25))
 
         self.cardRevenueLayout.addWidget(self.lblRevenueVal)
 
         self.cardRevenueTrendRow = QHBoxLayout()
         self.cardRevenueTrendRow.setObjectName(u"cardRevenueTrendRow")
+        self.cardRevenueTrendRow.setContentsMargins(-1, 10, -1, -1)
         self.lblRevenueTrend = QLabel(self.cardRevenue)
         self.lblRevenueTrend.setObjectName(u"lblRevenueTrend")
 
@@ -937,11 +985,14 @@ class Ui_Analytics(object):
 
         self.lblOrdersVal = QLabel(self.cardOrders)
         self.lblOrdersVal.setObjectName(u"lblOrdersVal")
+        self.lblOrdersVal.setMinimumSize(QSize(0, 25))
+        self.lblOrdersVal.setMaximumSize(QSize(16777215, 25))
 
         self.cardOrdersLayout.addWidget(self.lblOrdersVal)
 
         self.cardOrdersTrendRow = QHBoxLayout()
         self.cardOrdersTrendRow.setObjectName(u"cardOrdersTrendRow")
+        self.cardOrdersTrendRow.setContentsMargins(-1, 10, -1, -1)
         self.lblOrdersTrend = QLabel(self.cardOrders)
         self.lblOrdersTrend.setObjectName(u"lblOrdersTrend")
 
@@ -989,11 +1040,14 @@ class Ui_Analytics(object):
 
         self.lblAovVal = QLabel(self.cardAov)
         self.lblAovVal.setObjectName(u"lblAovVal")
+        self.lblAovVal.setMinimumSize(QSize(0, 25))
+        self.lblAovVal.setMaximumSize(QSize(16777215, 25))
 
         self.cardAovLayout.addWidget(self.lblAovVal)
 
         self.cardAovTrendRow = QHBoxLayout()
         self.cardAovTrendRow.setObjectName(u"cardAovTrendRow")
+        self.cardAovTrendRow.setContentsMargins(-1, 10, -1, -1)
         self.lblAovTrend = QLabel(self.cardAov)
         self.lblAovTrend.setObjectName(u"lblAovTrend")
 
@@ -1041,11 +1095,14 @@ class Ui_Analytics(object):
 
         self.lblReturnVal = QLabel(self.cardReturn)
         self.lblReturnVal.setObjectName(u"lblReturnVal")
+        self.lblReturnVal.setMinimumSize(QSize(0, 25))
+        self.lblReturnVal.setMaximumSize(QSize(16777215, 25))
 
         self.cardReturnLayout.addWidget(self.lblReturnVal)
 
         self.cardReturnTrendRow = QHBoxLayout()
         self.cardReturnTrendRow.setObjectName(u"cardReturnTrendRow")
+        self.cardReturnTrendRow.setContentsMargins(-1, 10, -1, -1)
         self.lblReturnTrend = QLabel(self.cardReturn)
         self.lblReturnTrend.setObjectName(u"lblReturnTrend")
 
@@ -1113,18 +1170,39 @@ class Ui_Analytics(object):
         self.categoryCardLayout.setContentsMargins(18, 16, 18, 16)
         self.lblCategoryTitle = QLabel(self.cardCategory)
         self.lblCategoryTitle.setObjectName(u"lblCategoryTitle")
+        self.lblCategoryTitle.setMinimumSize(QSize(0, 12))
+        self.lblCategoryTitle.setMaximumSize(QSize(16777215, 25))
 
         self.categoryCardLayout.addWidget(self.lblCategoryTitle)
 
-        self.containerCategoryList = QVBoxLayout()
+        self.lblCategorySub = QLabel(self.cardCategory)
+        self.lblCategorySub.setObjectName(u"lblCategorySub")
+        self.lblCategorySub.setMinimumSize(QSize(0, 5))
+        self.lblCategorySub.setMaximumSize(QSize(16777215, 12))
+
+        self.categoryCardLayout.addWidget(self.lblCategorySub)
+
+        self.scrollCategory = QScrollArea(self.cardCategory)
+        self.scrollCategory.setObjectName(u"scrollCategory")
+        sizePolicy1.setHeightForWidth(self.scrollCategory.sizePolicy().hasHeightForWidth())
+        self.scrollCategory.setSizePolicy(sizePolicy1)
+        self.scrollCategory.setFrameShape(QFrame.Shape.NoFrame)
+        self.scrollCategory.setHorizontalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
+        self.scrollCategory.setWidgetResizable(True)
+        self.scrollCategoryContent = QWidget()
+        self.scrollCategoryContent.setObjectName(u"scrollCategoryContent")
+        self.scrollCategoryContent.setGeometry(QRect(0, 0, 280, 200))
+        self.containerCategoryList = QVBoxLayout(self.scrollCategoryContent)
         self.containerCategoryList.setSpacing(10)
         self.containerCategoryList.setObjectName(u"containerCategoryList")
-
-        self.categoryCardLayout.addLayout(self.containerCategoryList)
-
+        self.containerCategoryList.setContentsMargins(0, 0, 6, 0)
         self.categorySpacer = QSpacerItem(0, 0, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding)
 
-        self.categoryCardLayout.addItem(self.categorySpacer)
+        self.containerCategoryList.addItem(self.categorySpacer)
+
+        self.scrollCategory.setWidget(self.scrollCategoryContent)
+
+        self.categoryCardLayout.addWidget(self.scrollCategory)
 
 
         self.middleLayout.addWidget(self.cardCategory)
@@ -1160,14 +1238,16 @@ class Ui_Analytics(object):
         self.topProductsLayout.addLayout(self.topProductsHeaderRow)
 
         self.tblTopProducts = QTableWidget(self.cardTopProducts)
-        if (self.tblTopProducts.columnCount() < 3):
-            self.tblTopProducts.setColumnCount(3)
+        if (self.tblTopProducts.columnCount() < 4):
+            self.tblTopProducts.setColumnCount(4)
         __qtablewidgetitem = QTableWidgetItem()
         self.tblTopProducts.setHorizontalHeaderItem(0, __qtablewidgetitem)
         __qtablewidgetitem1 = QTableWidgetItem()
         self.tblTopProducts.setHorizontalHeaderItem(1, __qtablewidgetitem1)
         __qtablewidgetitem2 = QTableWidgetItem()
         self.tblTopProducts.setHorizontalHeaderItem(2, __qtablewidgetitem2)
+        __qtablewidgetitem3 = QTableWidgetItem()
+        self.tblTopProducts.setHorizontalHeaderItem(3, __qtablewidgetitem3)
         self.tblTopProducts.setObjectName(u"tblTopProducts")
         self.tblTopProducts.setFocusPolicy(Qt.FocusPolicy.NoFocus)
         self.tblTopProducts.setFrameShape(QFrame.Shape.NoFrame)
@@ -1175,7 +1255,7 @@ class Ui_Analytics(object):
         self.tblTopProducts.setAlternatingRowColors(False)
         self.tblTopProducts.setSelectionMode(QAbstractItemView.SelectionMode.NoSelection)
         self.tblTopProducts.setShowGrid(False)
-        self.tblTopProducts.horizontalHeader().setMinimumSectionSize(90)
+        self.tblTopProducts.horizontalHeader().setMinimumSectionSize(52)
         self.tblTopProducts.horizontalHeader().setDefaultSectionSize(130)
         self.tblTopProducts.horizontalHeader().setHighlightSections(False)
         self.tblTopProducts.horizontalHeader().setStretchLastSection(True)
@@ -1218,14 +1298,17 @@ class Ui_Analytics(object):
         self.lblReturnTrend.setText("")
         self.lblTimeChartTitle.setText(QCoreApplication.translate("Analytics", u"Doanh thu theo th\u1eddi gian", None))
         self.lblCategoryTitle.setText(QCoreApplication.translate("Analytics", u"Ph\u00e2n b\u1ed5 theo danh m\u1ee5c", None))
+        self.lblCategorySub.setText(QCoreApplication.translate("Analytics", u"T\u1ef7 tr\u1ecdng doanh thu theo nh\u00f3m h\u00e0ng", None))
         self.lblTopProductsTitle.setText(QCoreApplication.translate("Analytics", u"Top s\u1ea3n ph\u1ea9m b\u00e1n ch\u1ea1y", None))
         self.btnDetailLink.setText(QCoreApplication.translate("Analytics", u"L\u00e0m m\u1edbi d\u1eef li\u1ec7u", None))
         ___qtablewidgetitem = self.tblTopProducts.horizontalHeaderItem(0)
-        ___qtablewidgetitem.setText(QCoreApplication.translate("Analytics", u"S\u1ea2N PH\u1ea8M", None))
+        ___qtablewidgetitem.setText(QCoreApplication.translate("Analytics", u"STT", None))
         ___qtablewidgetitem1 = self.tblTopProducts.horizontalHeaderItem(1)
-        ___qtablewidgetitem1.setText(QCoreApplication.translate("Analytics", u"S\u1ed0 L\u01af\u1ee2NG", None))
+        ___qtablewidgetitem1.setText(QCoreApplication.translate("Analytics", u"S\u1ea2N PH\u1ea8M", None))
         ___qtablewidgetitem2 = self.tblTopProducts.horizontalHeaderItem(2)
-        ___qtablewidgetitem2.setText(QCoreApplication.translate("Analytics", u"DOANH THU", None))
+        ___qtablewidgetitem2.setText(QCoreApplication.translate("Analytics", u"S\u1ed0 L\u01af\u1ee2NG", None))
+        ___qtablewidgetitem3 = self.tblTopProducts.horizontalHeaderItem(3)
+        ___qtablewidgetitem3.setText(QCoreApplication.translate("Analytics", u"DOANH THU", None))
         pass
     # retranslateUi
 

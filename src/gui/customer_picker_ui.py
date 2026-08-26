@@ -463,6 +463,12 @@ class Ui_Dialog(object):
 "    font-weight: bold;\n"
 "}\n"
 "\n"
+"QLabel#lblHint {\n"
+"    color: #94a3b8;\n"
+"    font-size: 11px;\n"
+"    font-weight: normal;\n"
+"}\n"
+"\n"
 "QLabel#lblStatus {\n"
 "    color: #64748b;\n"
 "    font-size: 12px;\n"
@@ -488,13 +494,13 @@ class Ui_Dialog(object):
 "    background-color: #1e3a8a;\n"
 "}\n"
 "QPushButton#btnSelect:pressed {\n"
-"    background-color: #1e40af;\n"
+"    background-color: #"
+                        "1e40af;\n"
 "}\n"
 "QPushButton#btnSelect:disabled {\n"
 "    background-color: #cbd5e1;\n"
 "    color: #f8fafc;\n"
-""
-                        "}\n"
+"}\n"
 "\n"
 "QPushButton#btnClearCustomer {\n"
 "    background-color: #ffffff;\n"
@@ -517,9 +523,12 @@ class Ui_Dialog(object):
 "}\n"
 "")
         self.verticalLayout = QVBoxLayout(Dialog)
-        self.verticalLayout.setSpacing(12)
+        self.verticalLayout.setSpacing(10)
         self.verticalLayout.setObjectName(u"verticalLayout")
         self.verticalLayout.setContentsMargins(18, 16, 18, 16)
+        self.titleLayout = QVBoxLayout()
+        self.titleLayout.setSpacing(2)
+        self.titleLayout.setObjectName(u"titleLayout")
         self.lblTitle = QLabel(Dialog)
         self.lblTitle.setObjectName(u"lblTitle")
         font = QFont()
@@ -528,7 +537,16 @@ class Ui_Dialog(object):
         font.setBold(True)
         self.lblTitle.setFont(font)
 
-        self.verticalLayout.addWidget(self.lblTitle)
+        self.titleLayout.addWidget(self.lblTitle)
+
+        self.lblHint = QLabel(Dialog)
+        self.lblHint.setObjectName(u"lblHint")
+        self.lblHint.setWordWrap(True)
+
+        self.titleLayout.addWidget(self.lblHint)
+
+
+        self.verticalLayout.addLayout(self.titleLayout)
 
         self.txtSearchCustomer = QLineEdit(Dialog)
         self.txtSearchCustomer.setObjectName(u"txtSearchCustomer")
@@ -586,6 +604,7 @@ class Ui_Dialog(object):
     def retranslateUi(self, Dialog):
         Dialog.setWindowTitle(QCoreApplication.translate("Dialog", u"Ch\u1ecdn kh\u00e1ch h\u00e0ng", None))
         self.lblTitle.setText(QCoreApplication.translate("Dialog", u"Ch\u1ecdn kh\u00e1ch h\u00e0ng cho h\u00f3a \u0111\u01a1n", None))
+        self.lblHint.setText(QCoreApplication.translate("Dialog", u"Kh\u00e1ch \u0111\u01b0\u1ee3c ch\u1ecdn s\u1ebd \u0111\u01b0\u1ee3c t\u00edch \u0111i\u1ec3m v\u00e0 h\u01b0\u1edfng \u01b0u \u0111\u00e3i theo h\u1ea1ng th\u00e0nh vi\u00ean.", None))
         self.txtSearchCustomer.setPlaceholderText(QCoreApplication.translate("Dialog", u"T\u00ecm theo t\u00ean ho\u1eb7c s\u1ed1 \u0111i\u1ec7n tho\u1ea1i", None))
         self.lblStatus.setText("")
 #if QT_CONFIG(tooltip)
