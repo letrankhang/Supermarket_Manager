@@ -600,16 +600,16 @@ QPushButton[class=&quot;socialButton&quot;]:pressed {
     <number>0</number>
    </property>
    <property name="leftMargin">
-    <number>15</number>
+    <number>12</number>
    </property>
    <property name="topMargin">
-    <number>15</number>
+    <number>10</number>
    </property>
    <property name="rightMargin">
-    <number>15</number>
+    <number>12</number>
    </property>
    <property name="bottomMargin">
-    <number>15</number>
+    <number>12</number>
    </property>
    <item>
     <layout class="QVBoxLayout" name="headerLayout">
@@ -632,6 +632,7 @@ QPushButton[class=&quot;socialButton&quot;]:pressed {
       <widget class="QLabel" name="lblTitle">
        <property name="font">
         <font>
+         <family>Segoe UI</family>
          <pointsize>18</pointsize>
          <bold>true</bold>
         </font>
@@ -681,8 +682,8 @@ QPushButton[class=&quot;socialButton&quot;]:pressed {
       <property name="geometry">
        <rect>
         <x>0</x>
-        <y>-1328</y>
-        <width>1060</width>
+        <y>0</y>
+        <width>1066</width>
         <height>1944</height>
        </rect>
       </property>
@@ -2266,7 +2267,7 @@ QPushButton[class=&quot;socialButton&quot;]:pressed {
                            </sizepolicy>
                           </property>
                           <property name="text">
-                           <string>Admin: toàn quyền trên hệ thống, gồm cả quản lý người dùng.</string>
+                           <string>Admin: toàn quyền trên hệ thống, gồm cả quản lý nhân sự và phân quyền.</string>
                           </property>
                           <property name="wordWrap">
                            <bool>true</bool>
@@ -2329,7 +2330,7 @@ QPushButton[class=&quot;socialButton&quot;]:pressed {
                            </sizepolicy>
                           </property>
                           <property name="text">
-                           <string>Manager: các nghiệp vụ kho, hàng hóa và báo cáo.</string>
+                           <string>Warehouse: nhập hàng, sản phẩm và nhà cung cấp; không vào được bán hàng.</string>
                           </property>
                           <property name="wordWrap">
                            <bool>true</bool>
@@ -2392,7 +2393,7 @@ QPushButton[class=&quot;socialButton&quot;]:pressed {
                            </sizepolicy>
                           </property>
                           <property name="text">
-                           <string>Cashier: chỉ dùng màn hình bán hàng tại quầy, các mục quản trị bị ẩn đi.</string>
+                           <string>Cashier: bán hàng tại quầy, tra cứu sản phẩm và quản lý khách hàng.</string>
                           </property>
                           <property name="wordWrap">
                            <bool>true</bool>
