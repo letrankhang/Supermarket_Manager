@@ -13,6 +13,87 @@
   <property name="windowTitle">
    <string>RetaiPro ERP / Trang chủ</string>
   </property>
+  <property name="styleSheet">
+   <string notr="true">QFrame#sidebar_frame,
+QFrame#frame,
+QFrame#frame_3 {
+    background-color: #334155;
+    border: none;
+}
+
+QFrame#sidebar_frame QPushButton {
+    background-color: transparent;
+    color: #cbd5e1;
+    text-align: left;
+    padding: 10px 10px 10px 26px;
+    border: none;
+    border-left: 4px solid transparent;
+    font-size: 13px;
+    font-weight: bold;
+}
+QFrame#sidebar_frame QPushButton:hover {
+    background-color: #475569;
+    color: #ffffff;
+    border-left: 4px solid #94a3b8;
+}
+QFrame#sidebar_frame QPushButton:checked,
+QFrame#sidebar_frame QPushButton:checked:hover {
+    background-color: #475569;
+    color: #ffffff;
+    font-weight: bold;
+    border-left: 4px solid #3b82f6;
+}
+
+QFrame#sidebar_frame QLabel {
+    color: #ffffff;
+    font-weight: bold;
+}
+QFrame#sidebar_frame QLabel#lbl_section_main,
+QFrame#sidebar_frame QLabel#lbl_section_inventory,
+QFrame#sidebar_frame QLabel#lbl_section_system {
+    background-color: transparent;
+    color: #64748b;
+    font-size: 10px;
+    font-weight: bold;
+    padding: 12px 10px 4px 30px;
+}
+QFrame#sidebar_frame QFrame#line_header {
+    background-color: #475569;
+    border: none;
+    margin: 8px 16px 2px 16px;
+}
+
+QWidget#widget_2 {
+    background-color: #ffffff;
+}
+QLabel#lblDateTime {
+    color: #1e3a8a;
+    font-size: 12px;
+    font-weight: 500;
+}
+QLabel#lblGreeting {
+    color: #64748b;
+    font-size: 13px;
+    font-weight: 500;
+}
+QLabel#lblUserName {
+    color: #1d4ed8;
+    font-size: 13px;
+    font-weight: bold;
+}
+QLabel#lblAvatar {
+    background-color: #f1f5f9;
+    border: 1px solid #e2e8f0;
+    border-radius: 20px;
+}
+
+QFrame#sidebar_frame QPushButton:disabled {
+    color: #475569;
+    background-color: transparent;
+    border-left: 4px solid transparent;
+}
+</string>
+  </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QHBoxLayout" name="horizontalLayout">
     <property name="spacing">
@@ -44,98 +125,6 @@
         <height>16777215</height>
        </size>
       </property>
-      <property name="styleSheet">
-       <string notr="true">/* 1. Nền sidebar */
-#sidebar_frame {
-    background-color: #334155;
-}
-
-/* 2. Trạng thái thường của nút menu.
-      border-left trong suốt nhưng VẪN rộng 4px để giữ chỗ sẵn cho thanh dọc,
-      nhờ vậy chữ không bị nhảy sang phải khi hover hay khi được chọn.
-      padding-left giảm 30px -&gt; 26px để bù đúng 4px border (4 + 26 = 30),
-      giữ nguyên vị trí chữ so với giao diện cũ. */
-#sidebar_frame QPushButton {
-    background-color: transparent;
-    color: #cbd5e1;
-    text-align: left;
-    padding: 10px 10px 10px 26px;
-    border: none;
-    border-left: 4px solid transparent;
-    font-size: 13px;
-    font-weight: bold;
-}
-
-/* 3. Hover (rê chuột vào nút chưa chọn): nền sáng nhẹ, chữ trắng,
-      thanh dọc màu XÁM mang nghĩa &quot;xem trước&quot; */
-#sidebar_frame QPushButton:hover {
-    background-color: #475569;
-    color: #ffffff;
-    border-left: 4px solid #94a3b8;
-}
-
-/* 4. Active (nút của trang đang mở): nền sáng nhẹ, chữ trắng đậm,
-      thanh dọc màu XANH DƯƠNG nổi bật */
-#sidebar_frame QPushButton:checked {
-    background-color: #475569;
-    color: #ffffff;
-    font-weight: bold;
-    border-left: 4px solid #3b82f6;
-}
-
-/* 5. Rê chuột vào chính nút đang active thì VẪN giữ thanh xanh dương.
-      Rule này bắt buộc phải đặt SAU rule :hover, vì khi độ đặc hiệu ngang
-      nhau thì Qt ưu tiên rule đứng sau - đó là cách :checked thắng :hover. */
-#sidebar_frame QPushButton:checked:hover {
-    background-color: #475569;
-    color: #ffffff;
-    border-left: 4px solid #3b82f6;
-}
-
-/* 6. Đổi màu chữ Logo và Tiêu đề thành trắng cho nổi bật */
-#sidebar_frame QLabel {
-    color: #ffffff;
-    font-weight: bold;
-}
-
-/* 7. Tiêu đề nhóm menu (MAIN / INVENTORY / SYSTEM).
-      3 label này là con của sidebar_frame nên dính luôn rule số 6 ở trên và
-      bị tô trắng đậm. Muốn đè được rule đó thì selector phải ĐẶC HIỆU HƠN,
-      và ở đây phải viết đủ cả &quot;#sidebar_frame QLabel#ten_label&quot;:
-        - &quot;#sidebar_frame QLabel&quot;        = 1 id + 1 type
-        - &quot;#lbl_section_main&quot;            = 1 id + 0 type  -&gt; THUA, không đủ
-        - &quot;#sidebar_frame QLabel#...&quot;    = 2 id + 1 type  -&gt; THẮNG
-      padding-left 30px để chữ tiêu đề thẳng hàng với chữ trên nút
-      (nút = border-left 4px + padding-left 26px = 30px).
-      padding-top 12px tạo khoảng thở ngăn cách giữa các nhóm. */
-#sidebar_frame QLabel#lbl_section_main,
-#sidebar_frame QLabel#lbl_section_inventory,
-#sidebar_frame QLabel#lbl_section_system {
-    background-color: transparent;
-    color: #64748b;
-    font-size: 10px;
-    font-weight: bold;
-    padding: 12px 10px 4px 30px;
-}
-
-/* 8. Đường kẻ ngang mảnh ngăn giữa phần header (logo + tên app) và phần menu.
-      Đây là QFrame phẳng (NoFrame) chứ KHÔNG dùng frameShape = HLine, vì HLine
-      vẽ đường bằng màu mid/dark/light lấy từ palette chứ không lấy từ QSS, nên
-      trên nền tối sẽ ra vạch nổi 3D sai màu và rất khó ép màu.
-      Mẹo ở đây là dùng box model của QSS: background-color chỉ tô phần NẰM
-      TRONG lề, nên widget cao 11px với lề trên 8px và lề dưới 2px sẽ để lại
-      đúng 1px được tô màu (11 = 8 + 1 + 2), thụt vào 16px mỗi bên.
-      Lề dưới cố ý nhỏ hơn lề trên vì nhãn nhóm &quot;MAIN&quot; ngay bên dưới đã tự có
-      sẵn padding-top 12px rồi; để 8px cả hai phía sẽ làm khoảng dưới rộng gấp
-      đôi khoảng trên.
-      Selector viết đủ &quot;#sidebar_frame QFrame#line_header&quot; (2 id + 1 type) để
-      chắc chắn thắng mọi rule có sẵn, giống cách đã làm ở rule số 7. */
-#sidebar_frame QFrame#line_header {
-    background-color: #475569;
-    border: none;
-    margin: 8px 16px 2px 16px;
-}</string>
-      </property>
       <property name="frameShape">
        <enum>QFrame::Shape::StyledPanel</enum>
       </property>
@@ -150,12 +139,6 @@
            <width>0</width>
            <height>90</height>
           </size>
-         </property>
-         <property name="styleSheet">
-          <string notr="true">#frame {
-    background-color: #334155;
-    border: none; 
-}</string>
          </property>
          <property name="frameShape">
           <enum>QFrame::Shape::StyledPanel</enum>
@@ -246,11 +229,12 @@
                <font>
                 <pointsize>10</pointsize>
                 <italic>false</italic>
-                <bold>true</bold>
+                <fontweight>DemiBold</fontweight>
                </font>
               </property>
               <property name="styleSheet">
-               <string notr="true">color: #AAB4C3;</string>
+               <string notr="true">color: #94a3b8;
+font-weight: 600;</string>
               </property>
               <property name="text">
                <string>Enterprise Suite</string>
@@ -376,12 +360,6 @@
        </item>
        <item>
         <widget class="QFrame" name="frame_3">
-         <property name="styleSheet">
-          <string notr="true">#frame_3 {
-    background-color: #334155;
-    border: none; 
-}</string>
-         </property>
          <property name="frameShape">
           <enum>QFrame::Shape::StyledPanel</enum>
          </property>
@@ -435,11 +413,6 @@
            <height>100</height>
           </size>
          </property>
-         <property name="styleSheet">
-          <string notr="true">#widget_2 {
-    background-color: #ffffff; 
-}</string>
-         </property>
          <layout class="QHBoxLayout" name="horizontalLayout_2">
           <property name="leftMargin">
            <number>20</number>
@@ -455,13 +428,6 @@
           </property>
           <item>
            <widget class="QLabel" name="lblDateTime">
-            <property name="styleSheet">
-             <string notr="true">#lblDateTime {
-    color: #1e3a8a;
-    font-size: 12px;
-    font-weight: 500;
-}</string>
-            </property>
             <property name="text">
              <string>Ngày giờ hiện tại</string>
             </property>
@@ -487,14 +453,6 @@
             </property>
             <item>
              <widget class="QLabel" name="lblGreeting">
-              <property name="styleSheet">
-               <string notr="true">/* Loi dan chao: mau xam nhat, chu thuong de nhuong su chu y cho ten */
-#lblGreeting {
-    color: #64748b;
-    font-size: 13px;
-    font-weight: 500;
-}</string>
-              </property>
               <property name="text">
                <string>Xin chào,</string>
               </property>
@@ -505,14 +463,6 @@
             </item>
             <item>
              <widget class="QLabel" name="lblUserName">
-              <property name="styleSheet">
-               <string notr="true">/* Ten nguoi dung: in dam va to mau xanh thuong hieu cho noi bat */
-#lblUserName {
-    color: #1d4ed8;
-    font-size: 13px;
-    font-weight: bold;
-}</string>
-              </property>
               <property name="text">
                <string>Người dùng</string>
               </property>
@@ -536,13 +486,6 @@
               <width>40</width>
               <height>40</height>
              </size>
-            </property>
-            <property name="styleSheet">
-             <string notr="true">QLabel {
-    border-radius: 20px; /* Bắt buộc phải bằng đúng 1/2 kích thước Width/Height bạn vừa set ở Lỗi 1 */
-    border-image: url(:/images/avata.jpg) 0 0 0 0 stretch stretch;
-    background-color: transparent;
-}</string>
             </property>
             <property name="text">
              <string/>
@@ -577,8 +520,6 @@
    </property>
   </widget>
  </widget>
- <resources>
-  <include location="app_resources.qrc"/>
- </resources>
+ <resources/>
  <connections/>
 </ui>

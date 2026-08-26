@@ -10,63 +10,159 @@ from PySide6.QtWidgets import (
     QAbstractButton, QHBoxLayout, QLabel, QLineEdit, QToolButton, QWidget,
 )
 
+
 logger = logging.getLogger(__name__)
 
 LEFT_ICON_SIZE = 30
 EYE_ICON_SIZE = 24
 RIGHT_MARGIN = 10
 
-# Icon qtawesome khai bao san trong file .ui, giong cach help_center dang lam.
 AWESOME_SIZE = QSize(14, 14)
-AWESOME_COLOR = "#2563eb"
+BUTTON_ICON_SIZE = QSize(16, 16)
+CARD_ICON_SIZE = QSize(20, 20)
 SEARCH_ICON_COLOR = "#94a3b8"
+
+ICONS = {
+    "add": "fa5s.plus",
+    "add-category": "fa5s.folder-plus",
+    "add-customer": "fa5s.user-plus",
+    "add-row": "fa5s.plus",
+    "analytics": "fa5s.chart-line",
+    "back": "fa5s.chevron-left",
+    "barcode": "fa5s.barcode",
+    "card": "fa5s.credit-card",
+    "cart": "fa5s.shopping-cart",
+    "cash": "fa5s.money-bill-wave",
+    "category": "fa5s.tags",
+    "check": "fa5s.check",
+    "clear": "fa5s.times",
+    "customers": "fa5s.users",
+    "dashboard": "fa5s.th-large",
+    "database": "fa5s.database",
+    "delete": "fa5s.trash-alt",
+    "detail": "fa5s.list-ul",
+    "discount": "fa5s.percent",
+    "edit": "fa5s.edit",
+    "collapse": "fa5s.chevron-down",
+    "email": "fa5s.envelope",
+    "expand": "fa5s.chevron-right",
+    "export": "fa5s.file-export",
+    "filter": "fa5s.sliders-h",
+    "forward": "fa5s.chevron-right",
+    "github": "fa5b.github",
+    "guide": "fa5s.book-open",
+    "help": "fa5s.question-circle",
+    "history": "fa5s.history",
+    "import": "fa5s.file-import",
+    "invoice": "fa5s.file-invoice",
+    "keyboard": "fa5s.keyboard",
+    "linkedin": "fa5b.linkedin",
+    "lock": "fa5s.lock",
+    "logout": "fa5s.sign-out-alt",
+    "minus": "fa5s.minus",
+    "next": "fa5s.chevron-right",
+    "pos": "fa5s.shopping-cart",
+    "previous": "fa5s.chevron-left",
+    "print": "fa5s.print",
+    "products": "fa5s.box",
+    "revenue": "fa5s.chart-line",
+    "receipt": "fa5s.receipt",
+    "refresh": "fa5s.sync-alt",
+    "role": "fa5s.user-shield",
+    "save": "fa5s.save",
+    "search": "fa5s.search",
+    "send": "fa5s.paper-plane",
+    "server": "fa5s.server",
+    "settings": "fa5s.cog",
+    "stock": "fa5s.exclamation-triangle",
+    "supplier": "fa5s.truck",
+    "tag": "fa5s.tag",
+    "tools": "fa5s.tools",
+    "transfer": "fa5s.university",
+    "user": "fa5s.user",
+    "user-active": "fa5s.user-check",
+    "user-group": "fa5s.user-friends",
+    "version": "fa5s.code-branch",
+}
+
+TONES = {
+    "default": "#64748b",
+    "primary": "#1d4ed8",
+    "on-primary": "#ffffff",
+    "text": "#0f172a",
+    "muted": "#94a3b8",
+    "danger": "#dc2626",
+    "success": "#10b981",
+    "warning": "#f59e0b",
+    "sidebar": "#cbd5e1",
+    "sidebar-active": "#ffffff",
+    "sidebar-disabled": "#475569",
+}
+
+AWESOME_COLOR = TONES["primary"]
+
+def resolve(name: str) -> str:
+    return ICONS.get(name, name)
+
+def icon(
+    name: str,
+    tone: str = "default",
+    color: Optional[str] = None,
+    color_active: Optional[str] = None,
+    color_disabled: Optional[str] = None,
+) -> QIcon:
+    options = {"color": color or TONES.get(tone, tone)}
+    if color_active:
+        options["color_active"] = TONES.get(color_active, color_active)
+    if color_disabled:
+        options["color_disabled"] = TONES.get(color_disabled, color_disabled)
+    try:
+        return qta.icon(resolve(name), **options)
+    except Exception as error:
+        logger.error("Khong tai duoc icon '%s': %s", name, error)
+        return QIcon()
+
+
+def apply_icon(
+    widget: QWidget,
+    name: str,
+    tone: str = "default",
+    size: QSize = BUTTON_ICON_SIZE,
+    color: Optional[str] = None,
+    color_active: Optional[str] = None,
+    color_disabled: Optional[str] = None,
+) -> None:
+    built = icon(name, tone, color, color_active, color_disabled)
+    if built.isNull():
+        return
+    if isinstance(widget, QLabel):
+        widget.setPixmap(built.pixmap(size))
+    elif isinstance(widget, QAbstractButton):
+        widget.setIcon(built)
+        widget.setIconSize(size)
 
 
 def apply_awesome_icons(root: QWidget, default_size: QSize = AWESOME_SIZE) -> None:
-    """Duyet cay widget cua 'root', gan icon qtawesome cho moi widget co khai bao
-    thuoc tinh dong 'iconName' trong file .ui. Mau lay tu 'iconColor', kich thuoc
-    rieng lay tu 'iconPx' (so nguyen, don vi px).
-
-    Dat ten la 'iconPx' chu khong phai 'iconSize' vi QAbstractButton da co san
-    thuoc tinh 'iconSize' cua Qt, dung trung ten se doc nham gia tri cua Qt."""
     for widget in root.findChildren(QWidget):
         icon_name = widget.property("iconName")
         if not icon_name:
             continue
 
-        color = widget.property("iconColor") or AWESOME_COLOR
         raw_px = widget.property("iconPx")
         size = QSize(int(raw_px), int(raw_px)) if raw_px else default_size
-
-        try:
-            icon = qta.icon(str(icon_name), color=str(color))
-        except Exception as error:
-            logger.error(
-                "Khong tai duoc icon '%s' cua widget '%s': %s",
-                icon_name, widget.objectName(), error,
-            )
-            continue
-
-        if isinstance(widget, QLabel):
-            widget.setPixmap(icon.pixmap(size))
-        elif isinstance(widget, QAbstractButton):
-            widget.setIcon(icon)
-            widget.setIconSize(size)
+        tone = widget.property("iconColor") or "primary"
+        apply_icon(widget, str(icon_name), tone=str(tone), size=size)
 
 
 def add_awesome_left_icon(
     line_edit: QLineEdit,
-    icon_name: str,
+    icon_name: str = "search",
     color: str = SEARCH_ICON_COLOR,
 ) -> None:
-    """Gan icon qtawesome vao dau o nhap (vi du icon kinh lup cho o tim kiem)."""
-    try:
-        line_edit.addAction(
-            qta.icon(icon_name, color=color),
-            QLineEdit.ActionPosition.LeadingPosition,
-        )
-    except Exception as error:
-        logger.error("Khong tai duoc icon '%s' cho o nhap: %s", icon_name, error)
+    built = icon(icon_name, color=color)
+    if not built.isNull():
+        line_edit.addAction(built, QLineEdit.ActionPosition.LeadingPosition)
+
 
 def get_image_path(file_name: str) -> str:
     current_dir = os.path.dirname(os.path.abspath(__file__))
@@ -117,12 +213,14 @@ def show_logo(label: QLabel, file_name: str = "logo.png"):
         )
     )
 
+
 def add_left_icon(line_edit: QLineEdit, *file_names: str, size: int = LEFT_ICON_SIZE):
     for file_name in file_names:
         icon = create_icon(file_name, size)
         if not icon.isNull():
             line_edit.addAction(icon, QLineEdit.ActionPosition.LeadingPosition)
             return
+
 
 def add_toggle_password_button(line_edit: QLineEdit, size: int = EYE_ICON_SIZE, margin_right: int = RIGHT_MARGIN) -> Optional[QToolButton]:
     icon_view = QIcon(get_image_path("view.png"))

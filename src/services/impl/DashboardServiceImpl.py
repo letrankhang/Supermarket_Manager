@@ -9,15 +9,12 @@ from src.converter.DashboardConverter import DashboardConverter
 from src.services.DashboardService import DashboardService
 from src.repositories.impl.DashboardRepositoryImpl import DashboardRepositoryImpl
 
+
 logger = logging.getLogger(__name__)
 
-# Số hóa đơn gần nhất đổ vào bảng "Giao dịch gần đây" của dashboard.
-# Bảng có thanh cuộn nên lấy nhiều hơn số dòng nhìn thấy được.
-SO_GIAO_DICH_GAN_DAY = 20
-
+RECENT_TRANSACTION_LIMIT = 20
 
 class DashboardServiceImpl(DashboardService):
-
     def get_dashboard_data(self, low_stock_threshold: int = 10) -> DashboardDTO:
         try:
             now = datetime.now()
@@ -31,7 +28,6 @@ class DashboardServiceImpl(DashboardService):
             with Database.get_session_ctx() as session:
                 repo = DashboardRepositoryImpl(session)
 
-                # 1. Doanh thu hôm nay và hôm qua
                 today_revenue = repo.get_revenue_by_range(today_start, today_end)
                 yesterday_revenue = repo.get_revenue_by_range(yesterday_start, yesterday_end)
 
@@ -40,7 +36,6 @@ class DashboardServiceImpl(DashboardService):
                 else:
                     revenue_growth_rate = round(((today_revenue - yesterday_revenue) / yesterday_revenue) * 100.0, 2)
 
-                # 2. Số hóa đơn hôm nay và hôm qua
                 today_invoice_count = repo.get_invoice_count_by_range(today_start, today_end)
                 yesterday_invoice_count = repo.get_invoice_count_by_range(yesterday_start, yesterday_end)
 
@@ -49,10 +44,8 @@ class DashboardServiceImpl(DashboardService):
                 else:
                     invoice_growth_rate = round(((today_invoice_count - yesterday_invoice_count) / yesterday_invoice_count) * 100.0, 2)
 
-                # 3. Số sản phẩm sắp hết hàng
                 low_stock_count = repo.get_low_stock_count(low_stock_threshold)
 
-                # 4. Khách hàng mới hôm nay và hôm qua
                 new_customer_count = repo.get_customer_count_by_range(today_start, today_end)
                 yesterday_customer_count = repo.get_customer_count_by_range(yesterday_start, yesterday_end)
 
@@ -61,13 +54,10 @@ class DashboardServiceImpl(DashboardService):
                 else:
                     customer_growth_rate = round(((new_customer_count - yesterday_customer_count) / yesterday_customer_count) * 100.0, 2)
 
-                # 5. Doanh thu chia theo 4 tuần của tháng hiện tại
-                weekly_revenue = self._tinh_doanh_thu_theo_tuan(repo, now.year, now.month)
+                weekly_revenue = self._weekly_revenue(repo, now.year, now.month)
 
-                # 6. Các hóa đơn gần nhất
-                recent_invoices = repo.get_recent_invoices(SO_GIAO_DICH_GAN_DAY)
+                recent_invoices = repo.get_recent_invoices(RECENT_TRANSACTION_LIMIT)
 
-                # Ánh xạ ngay trong phạm vi session: ra ngoài entity mất kết nối, không lazy-load được
                 dashboard_dto = DashboardConverter.to_dashboard_dto(
                     today_revenue=today_revenue,
                     revenue_growth_rate=revenue_growth_rate,
@@ -85,7 +75,6 @@ class DashboardServiceImpl(DashboardService):
 
         except Exception as e:
             logger.error("Lỗi khi lấy dữ liệu tổng hợp Dashboard: %s", e)
-            # DTO rỗng để Dashboard vẫn vẽ được khi truy vấn hỏng
             return DashboardDTO(
                 today_revenue=0.0,
                 revenue_growth_rate=0.0,
@@ -98,12 +87,8 @@ class DashboardServiceImpl(DashboardService):
                 recent_transactions=[]
             )
 
-    def _tinh_doanh_thu_theo_tuan(self, repo: DashboardRepositoryImpl,
-                                  year: int, month: int) -> List[float]:
-        """Chia tháng thành 4 tuần rồi cộng doanh thu từng tuần.
 
-        Tuần cuối kéo tới ngày cuối tháng nên số ngày có thể khác 7.
-        """
+    def _weekly_revenue(self, repo: DashboardRepositoryImpl, year: int, month: int) -> List[float]:
         _, last_day = calendar.monthrange(year, month)
 
         weeks_boundaries = [
@@ -119,12 +104,12 @@ class DashboardServiceImpl(DashboardService):
 
         return weekly_revenue
 
+
     def get_weekly_revenue(self, year: int, month: int) -> List[float]:
-        """Lấy doanh thu 4 tuần của một tháng bất kỳ, phục vụ ô chọn tháng trên dashboard."""
         try:
             with Database.get_session_ctx() as session:
                 repo = DashboardRepositoryImpl(session)
-                return self._tinh_doanh_thu_theo_tuan(repo, year, month)
+                return self._weekly_revenue(repo, year, month)
         except Exception as e:
             logger.error("Không lấy được doanh thu tuần của tháng %s/%s: %s", month, year, e)
             return [0.0, 0.0, 0.0, 0.0]

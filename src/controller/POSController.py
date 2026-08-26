@@ -11,14 +11,12 @@ from PySide6.QtWidgets import (
     QFileDialog, QMessageBox, QPushButton, QSizePolicy, QVBoxLayout, QWidget
 )
 
-import qtawesome as qta
-
 from src.dtos.CustomerDTO import CustomerDTO
 from src.dtos.POSDTO import CartDTO, CartItemDTO, CategoryDTO, CheckoutRequestDTO, ProductDTO
 from src.gui.tabs.pos_ui import Ui_Form
 from src.services.POSService import POSError, ProductNotFoundError
 from src.services.impl.POSServiceImpl import POSServiceImpl
-from src.utils.FormIcon import add_awesome_left_icon
+from src.utils.FormIcon import add_awesome_left_icon, apply_icon, icon
 from src.utils.Formatter import format_currency, format_discount, format_rate_as_percent
 from src.utils.Session import Session
 
@@ -35,7 +33,14 @@ PAYMENT_ICON_COLOR = "#64748b"
 PAYMENT_ICON_COLOR_ACTIVE = "#1d4ed8"
 PAYMENT_ICON_TEXT_GAP = 1
 
-# Nhãn nút thanh toán tiền mặt. Phải khớp với PAYMENT_METHOD_MAP trong POSConverter.
+SMALL_ICON_SIZE = QSize(12, 12)
+
+SMALL_BUTTON_COLORS = {
+    "btnCartMinus": ("#0f172a", "#1d4ed8"),
+    "btnCartPlus": ("#0f172a", "#1d4ed8"),
+    "btnCartRemove": ("#94a3b8", "#dc2626"),
+}
+
 CASH_PAYMENT_LABEL = "Tiền mặt"
 
 class ProductCard(QFrame):
@@ -68,6 +73,7 @@ class ProductCard(QFrame):
         layout.addStretch()
         layout.addLayout(self._create_footer(product))
 
+
     def _create_thumbnail(self, image_path: Optional[str]) -> QLabel:
         thumbnail = QLabel(self)
         thumbnail.setObjectName("lblCardThumbnail")
@@ -86,33 +92,45 @@ class ProductCard(QFrame):
         ))
         return thumbnail
 
+
     def _build_stock_caption(self, product: ProductDTO) -> str:
         stock_text = "Hết hàng" if product.is_out_of_stock else f"Còn {product.current_stock}"
         return f"{product.barcode} · {stock_text}"
 
+
     def _create_footer(self, product: ProductDTO) -> QHBoxLayout:
-        footer = QHBoxLayout()
-        footer.setContentsMargins(0, 0, 0, 0)
+            footer = QHBoxLayout()
+            footer.setContentsMargins(0, 0, 0, 6)
 
-        lbl_price = QLabel(format_currency(product.retail_price), self)
-        lbl_price.setObjectName("lblCardPrice")
-        footer.addWidget(lbl_price)
-        footer.addStretch()
+            lbl_price = QLabel(format_currency(product.retail_price), self)
+            lbl_price.setObjectName("lblCardPrice")
+            footer.addWidget(lbl_price)
+            footer.addStretch()
 
-        self.btn_add = QPushButton("+", self)
-        self.btn_add.setObjectName("btnCardAdd")
-        self.btn_add.setFixedSize(QSize(30, 30))
-        self.btn_add.setCursor(Qt.CursorShape.PointingHandCursor)
+            self.btn_add = QPushButton("+", self)
+            self.btn_add.setObjectName("btnCardAdd")
+            self.btn_add.setFixedSize(QSize(30, 30))
+            self.btn_add.setCursor(Qt.CursorShape.PointingHandCursor)
+            self.btn_add.setToolTip("Thêm vào giỏ hàng")
 
-        self.btn_add.setEnabled(not product.is_out_of_stock)
-        self.btn_add.clicked.connect(lambda: self.add_requested.emit(self.product_id))
-        footer.addWidget(self.btn_add)
+            self.btn_add.setStyleSheet("""
+                QPushButton#btnCardAdd {
+                    padding-bottom: 3px;
+                    font-size: 18px;
+                    font-weight: bold;
+                }
+            """)
 
-        return footer
+            self.btn_add.setEnabled(not product.is_out_of_stock)
+            self.btn_add.clicked.connect(lambda: self.add_requested.emit(self.product_id))
+            footer.addWidget(self.btn_add)
+
+            return footer
 
 class CartRow(QFrame):
     quantity_change_requested = Signal(int, int)
     remove_requested = Signal(int)
+
 
     def __init__(self, item: CartItemDTO, parent: Optional[QWidget] = None) -> None:
         super().__init__(parent)
@@ -125,6 +143,7 @@ class CartRow(QFrame):
 
         layout.addLayout(self._create_top_row(item))
         layout.addLayout(self._create_bottom_row(item))
+
 
     def _create_top_row(self, item: CartItemDTO) -> QHBoxLayout:
         top_row = QHBoxLayout()
@@ -141,6 +160,7 @@ class CartRow(QFrame):
 
         return top_row
 
+
     def _create_bottom_row(self, item: CartItemDTO) -> QHBoxLayout:
         bottom_row = QHBoxLayout()
         bottom_row.setContentsMargins(0, 0, 0, 0)
@@ -150,7 +170,7 @@ class CartRow(QFrame):
         bottom_row.addWidget(lbl_unit_price)
         bottom_row.addStretch()
 
-        self.btn_decrease = self._create_small_button("-", "btnCartMinus")
+        self.btn_decrease = self._create_small_button("minus", "btnCartMinus")
         self.btn_decrease.clicked.connect(
             lambda: self.quantity_change_requested.emit(self.product_id, -1)
         )
@@ -162,24 +182,29 @@ class CartRow(QFrame):
         lbl_quantity.setAlignment(Qt.AlignmentFlag.AlignCenter)
         bottom_row.addWidget(lbl_quantity)
 
-        self.btn_increase = self._create_small_button("+", "btnCartPlus")
+        self.btn_increase = self._create_small_button("add", "btnCartPlus")
         self.btn_increase.clicked.connect(
             lambda: self.quantity_change_requested.emit(self.product_id, 1)
         )
         bottom_row.addWidget(self.btn_increase)
 
-        self.btn_remove = self._create_small_button("✕", "btnCartRemove")
+        self.btn_remove = self._create_small_button("clear", "btnCartRemove")
         self.btn_remove.setToolTip("Xóa sản phẩm khỏi giỏ hàng")
         self.btn_remove.clicked.connect(lambda: self.remove_requested.emit(self.product_id))
         bottom_row.addWidget(self.btn_remove)
 
         return bottom_row
 
-    def _create_small_button(self, text: str, object_name: str) -> QPushButton:
-        button = QPushButton(text, self)
+
+    def _create_small_button(self, icon_name: str, object_name: str) -> QPushButton:
+        button = QPushButton(self)
         button.setObjectName(object_name)
         button.setFixedSize(QSize(28, 28))
         button.setCursor(Qt.CursorShape.PointingHandCursor)
+
+        color, color_active = SMALL_BUTTON_COLORS[object_name]
+        apply_icon(button, icon_name, color=color, color_active=color_active,
+                   size=SMALL_ICON_SIZE)
         return button
 
 class POSController(QWidget, Ui_Form):
@@ -194,7 +219,6 @@ class POSController(QWidget, Ui_Form):
         self.selected_category_id: Optional[int] = None
         self.search_keyword: str = ""
 
-        # Khách đang gắn vào hóa đơn. None nghĩa là Khách lẻ.
         self.selected_customer: Optional[CustomerDTO] = None
 
         self._setup_widget_behaviour()
@@ -207,20 +231,23 @@ class POSController(QWidget, Ui_Form):
 
         self.load_data()
 
+
     def _setup_widget_behaviour(self) -> None:
         for button in (self.btnFilter, self.btnAddCustomer, self.btnClearCart,
                        self.btnEditDiscount, self.btnCheckout):
             button.setCursor(Qt.CursorShape.PointingHandCursor)
 
-        add_awesome_left_icon(self.txtSearch, "fa5s.search")
+        add_awesome_left_icon(self.txtSearch, "search")
 
         self.lblCustomerBadge.setSizePolicy(QSizePolicy.Policy.Maximum, QSizePolicy.Policy.Fixed)
+
 
     def _setup_search_debounce(self) -> None:
         self.search_timer = QTimer(self)
         self.search_timer.setSingleShot(True)
         self.search_timer.setInterval(SEARCH_DEBOUNCE_MS)
         self.search_timer.timeout.connect(self._reload_products)
+
 
     def _setup_category_chips(self) -> None:
         self.category_group = QButtonGroup(self)
@@ -234,6 +261,7 @@ class POSController(QWidget, Ui_Form):
             self.category_group.addButton(chip)
 
             layout.insertWidget(layout.count() - 1, chip)
+
 
     def _create_category_chip(self, category: CategoryDTO, is_default: bool) -> QPushButton:
         chip = QPushButton(category.category_name, self.frame_categories)
@@ -249,6 +277,7 @@ class POSController(QWidget, Ui_Form):
         )
         return chip
 
+
     def _setup_payment_methods(self) -> None:
         self.payment_group = QButtonGroup(self)
         self.payment_group.setExclusive(True)
@@ -260,24 +289,24 @@ class POSController(QWidget, Ui_Form):
         self._setup_payment_icons()
         self.btnPayCash.setChecked(True)
 
+
     def _setup_payment_icons(self) -> None:
         icon_config = {
-            self.btnPayCash: ("fa5s.money-bill-wave", PAYMENT_ICON_COLOR, PAYMENT_ICON_COLOR_ACTIVE),
-            self.btnPayCard: ("fa5s.credit-card", PAYMENT_ICON_COLOR, PAYMENT_ICON_COLOR_ACTIVE),
-            self.btnPayTransfer: ("fa5s.university", PAYMENT_ICON_COLOR, PAYMENT_ICON_COLOR_ACTIVE),
-            self.btnClearCart: ("fa5s.trash-alt", "#ef4444", "#dc2626"), # Màu đỏ cho nút Xóa
+            self.btnPayCash: ("cash", PAYMENT_ICON_COLOR, PAYMENT_ICON_COLOR_ACTIVE),
+            self.btnPayCard: ("card", PAYMENT_ICON_COLOR, PAYMENT_ICON_COLOR_ACTIVE),
+            self.btnPayTransfer: ("transfer", PAYMENT_ICON_COLOR, PAYMENT_ICON_COLOR_ACTIVE),
+            self.btnClearCart: ("delete", PAYMENT_ICON_COLOR, "#dc2626"),
         }
 
         self.payment_icon_normal = {}
         self.payment_icon_active = {}
 
         for button, (icon_name, color_normal, color_active) in icon_config.items():
-            try:
-                self.payment_icon_normal[button] = qta.icon(icon_name, color=color_normal)
-                self.payment_icon_active[button] = qta.icon(icon_name, color=color_active)
-            except Exception as e:
-                logger.error("Không tải được icon '%s' cho nút: %s", icon_name, e)
+            normal = icon(icon_name, color=color_normal)
+            if normal.isNull():
                 continue
+            self.payment_icon_normal[button] = normal
+            self.payment_icon_active[button] = icon(icon_name, color=color_active)
 
             button.setIconSize(PAYMENT_ICON_SIZE)
 
@@ -286,17 +315,18 @@ class POSController(QWidget, Ui_Form):
 
             button.installEventFilter(self)
             
-            # Đăng ký sự kiện đổi màu khi toggle (nếu là nút chọn)
             if button.isCheckable():
                 button.toggled.connect(
                     lambda _checked, target=button: self._update_payment_icon(target, hovered=False)
                 )
             self._update_payment_icon(button, hovered=False)
 
+
     def _apply_icon_text_gap(self, button: QPushButton) -> None:
         gap = " " * PAYMENT_ICON_TEXT_GAP
         if gap and not button.text().startswith(gap):
             button.setText(gap + button.text())
+
 
     def _update_payment_icon(self, button: QPushButton, hovered: bool) -> None:
         if button not in self.payment_icon_normal:
@@ -305,6 +335,7 @@ class POSController(QWidget, Ui_Form):
         is_highlighted = hovered or button.isChecked()
         icons = self.payment_icon_active if is_highlighted else self.payment_icon_normal
         button.setIcon(icons[button])
+
 
     def eventFilter(self, source: QObject, event: QEvent) -> bool:
         if source in getattr(self, "payment_icon_normal", {}):
@@ -315,6 +346,7 @@ class POSController(QWidget, Ui_Form):
 
         return super().eventFilter(source, event)
 
+
     def _setup_connections(self) -> None:
         self.txtSearch.textChanged.connect(self._on_search_text_changed)
         self.txtSearch.returnPressed.connect(self._on_search_submitted)
@@ -323,6 +355,7 @@ class POSController(QWidget, Ui_Form):
         self.btnClearCart.clicked.connect(self._on_clear_cart)
         self.btnEditDiscount.clicked.connect(self._on_edit_discount)
         self.btnCheckout.clicked.connect(self._on_checkout)
+
 
     def _setup_shortcuts(self) -> None:
         self.shortcut_help = QShortcut(QKeySequence("F1"), self)
@@ -340,14 +373,17 @@ class POSController(QWidget, Ui_Form):
         self.shortcut_checkout = QShortcut(QKeySequence("F9"), self)
         self.shortcut_checkout.activated.connect(self.btnCheckout.click)
 
+
     def _show_cashier_name(self) -> None:
         cashier = Session.get_username() if Session.is_active() else None
         self.lblCashierName.setText(f"Thu ngân: {cashier or '---'}")
+
 
     def load_data(self) -> None:
         self._show_cashier_name()
         self._reload_products()
         self._render_cart(self.pos_service.get_cart())
+
 
     def _reload_products(self) -> None:
         products = self.pos_service.get_products(
@@ -356,6 +392,7 @@ class POSController(QWidget, Ui_Form):
         )
         logger.info("POS: nạp %d sản phẩm lên lưới.", len(products))
         self.render_products(products)
+
 
     def render_products(self, products: List[ProductDTO]) -> None:
         self._clear_layout(self.gridLayout_products)
@@ -369,6 +406,7 @@ class POSController(QWidget, Ui_Form):
         self.grid_columns = 0
         self._reflow_product_grid()
 
+
     def _reflow_product_grid(self) -> None:
         available_width = self.scrollProducts.viewport().width() - 40
         columns = max(1, available_width // (CARD_WIDTH + CARD_SPACING))
@@ -381,6 +419,7 @@ class POSController(QWidget, Ui_Form):
             self.gridLayout_products.addWidget(card, index // columns, index % columns)
 
         self.gridLayout_products.setColumnStretch(columns, 1)
+
 
     def _render_cart(self, cart: CartDTO) -> None:
         self.render_cart(cart.items)
@@ -397,6 +436,7 @@ class POSController(QWidget, Ui_Form):
 
         self.btnCheckout.setEnabled(not cart.is_empty)
 
+
     def render_cart(self, cart_items: List[CartItemDTO]) -> None:
         layout = self.verticalLayout_cart
         for index in reversed(range(layout.count())):
@@ -412,6 +452,7 @@ class POSController(QWidget, Ui_Form):
             row.remove_requested.connect(self._on_remove_item)
             layout.insertWidget(position, row)
 
+
     def render_summary(self, item_count: int, sub_total_text: str, discount_text: str,
                        tax_rate_text: str, tax_text: str, grand_total_text: str) -> None:
         self.lblSubTotalCaption.setText(f"Tạm tính ({item_count} sản phẩm)")
@@ -421,20 +462,24 @@ class POSController(QWidget, Ui_Form):
         self.lblTax.setText(tax_text)
         self.lblGrandTotal.setText(grand_total_text)
 
+
     def _clear_layout(self, layout: QLayout) -> None:
         while layout.count():
             widget = layout.takeAt(0).widget()
             if widget is not None:
                 widget.setParent(None)
 
+
     def resizeEvent(self, event: QResizeEvent) -> None:
         super().resizeEvent(event)
         if self.product_cards:
             self._reflow_product_grid()
 
+
     def _on_search_text_changed(self, keyword: str) -> None:
         self.search_keyword = keyword.strip()
         self.search_timer.start()
+
 
     def _on_search_submitted(self) -> None:
         self.search_timer.stop()
@@ -457,42 +502,43 @@ class POSController(QWidget, Ui_Form):
         self._render_cart(cart)
         self.txtSearch.clear()
 
+
     def _on_category_selected(self, category_id: Optional[int]) -> None:
         self.selected_category_id = category_id
         logger.info("POS: lọc theo danh mục id=%s.", category_id)
         self._reload_products()
 
+
     def _on_add_product(self, product_id: int) -> None:
         self._run_cart_action(lambda: self.pos_service.add_product_to_cart(product_id))
+
 
     def _on_change_quantity(self, product_id: int, delta: int) -> None:
         self._run_cart_action(lambda: self.pos_service.change_item_quantity(product_id, delta))
 
+
     def _on_remove_item(self, product_id: int) -> None:
         self._run_cart_action(lambda: self.pos_service.remove_item_from_cart(product_id))
 
-    def _on_pick_customer(self) -> None:
-        """Nút '+KH': mở dialog chọn khách rồi cập nhật nhãn trên hóa đơn.
 
-        Nhập vòng ở đây để tránh hai controller import lẫn nhau lúc nạp module.
-        """
+    def _on_pick_customer(self) -> None:
         from src.controller.CustomerPickerController import CustomerPickerController
 
         dialog = CustomerPickerController(self, selected_customer=self.selected_customer)
 
-        # exec() trả về 0 khi bấm Hủy hoặc đóng cửa sổ, khi đó giữ nguyên khách cũ
         if not dialog.exec():
             return
 
-        # dialog.selected_customer là None nếu người dùng bấm "Bỏ chọn"
         self.selected_customer = dialog.selected_customer
         self._update_customer_badge()
 
+
     def _update_customer_badge(self) -> None:
         if self.selected_customer:
-            self.lblCustomerBadge.setText(f"Khách hàng: {self.selected_customer.ten_hien_thi}")
+            self.lblCustomerBadge.setText(f"Khách hàng: {self.selected_customer.display_name}")
         else:
             self.lblCustomerBadge.setText("Khách hàng lẻ (Mặc định)")
+
 
     def _on_clear_cart(self) -> None:
         answer = QMessageBox.question(
@@ -502,6 +548,7 @@ class POSController(QWidget, Ui_Form):
         )
         if answer == QMessageBox.StandardButton.Yes:
             self.reset_order()
+
 
     def _on_edit_discount(self) -> None:
         from src.controller.DiscountDialogController import DiscountDialogController
@@ -520,52 +567,73 @@ class POSController(QWidget, Ui_Form):
 
         self._run_cart_action(lambda: self.pos_service.apply_discount_rate(discount_rate))
 
+
     def _on_checkout(self) -> None:
-        if not Session.is_active():
-            self._show_error("Phiên đăng nhập đã hết hạn. Vui lòng đăng nhập lại.")
-            return
-
-        if self.pos_service.get_cart().is_empty:
-            self._show_warning("Giỏ hàng đang trống. Vui lòng thêm sản phẩm trước khi thanh toán.")
-            return
-
-        total_amount = self.pos_service.get_cart().summary.grand_total
-        payment_label = self._get_selected_payment_label()
-
-        # Tiền mặt thì mở hộp thoại nhập tiền để tính tiền thối,
-        # các phương thức còn lại giữ nguyên hộp xác nhận cũ.
-        if payment_label == CASH_PAYMENT_LABEL:
-            cash_result = self._ask_cash_payment(total_amount)
-            if cash_result is None:
+            if not Session.is_active():
+                self._show_error("Phiên đăng nhập đã hết hạn. Vui lòng đăng nhập lại.")
                 return
-            cash_received, change_amount = cash_result
-        else:
-            if not self._confirm_payment(total_amount):
+
+            if self.pos_service.get_cart().is_empty:
+                self._show_warning("Giỏ hàng đang trống. Vui lòng thêm sản phẩm trước khi thanh toán.")
                 return
-            cash_received = None
-            change_amount = None
 
-        request = CheckoutRequestDTO(
-            user_id=Session.get_user_id(),
-            payment_method_label=payment_label,
-            customer_id=(self.selected_customer.customer_id
-                         if self.selected_customer else None)
-        )
+            total_amount = self.pos_service.get_cart().summary.grand_total
+            payment_label = self._get_selected_payment_label()
 
-        try:
-            result = self.pos_service.checkout(request)
-        except POSError as e:
-            logger.warning("POS: thanh toán không thành công: %s", e)
-            self._show_error(str(e))
-            return
+            if payment_label == CASH_PAYMENT_LABEL:
+                cash_result = self._ask_cash_payment(total_amount)
+                if cash_result is None:
+                    return
+                cash_received, change_amount = cash_result
+            else:
+                if not self._confirm_payment(total_amount):
+                    return
+                cash_received = None
+                change_amount = None
 
-        QMessageBox.information(self, "Thanh toán thành công", result.message)
+            customer_id = self.selected_customer.customer_id if self.selected_customer else None
 
-        # Hỏi xuất hóa đơn PDF. Người dùng từ chối hay hủy thì đơn vẫn đã thanh toán.
-        self._offer_invoice_pdf(result, cash_received, change_amount)
+            request = CheckoutRequestDTO(
+                user_id=Session.get_user_id(),
+                payment_method_label=payment_label,
+                customer_id=customer_id
+            )
 
-        self._reload_products()
-        self.reset_order()
+            try:
+                result = self.pos_service.checkout(request)
+            except POSError as e:
+                logger.warning("POS: thanh toán không thành công: %s", e)
+                self._show_error(str(e))
+                return
+
+            if customer_id:
+                try:
+                    from src.services.impl.CustomerServiceImpl import CustomerServiceImpl
+                    customer_service = CustomerServiceImpl()
+                    earned_pts, new_total_pts = customer_service.add_purchase_points(
+                        customer_id=customer_id,
+                        total_amount=float(total_amount)
+                    )
+
+                    QMessageBox.information(
+                        self,
+                        "Thanh toán & Tích điểm thành công",
+                        f"{result.message}\n\n"
+                        f"• Số tiền thanh toán: {format_currency(total_amount)}\n"
+                        f"• Điểm thưởng tích lũy: +{earned_pts} điểm\n"
+                        f"• Tổng điểm tích lũy mới: {new_total_pts:,} điểm"
+                    )
+                except Exception as e:
+                    logger.error("POS: Lỗi tích điểm cho khách hàng %d: %s", customer_id, e)
+                    QMessageBox.information(self, "Thanh toán thành công", result.message)
+            else:
+                QMessageBox.information(self, "Thanh toán thành công", result.message)
+
+            self._offer_invoice_pdf(result, cash_received, change_amount)
+
+            self._reload_products()
+            self.reset_order()
+
 
     def _confirm_payment(self, total_amount: Decimal) -> bool:
         formatted_price = format_currency(total_amount)
@@ -579,13 +647,8 @@ class POSController(QWidget, Ui_Form):
 
         return confirm == QMessageBox.StandardButton.Yes
 
-    def _ask_cash_payment(self, total_amount: Decimal) -> Optional[Tuple[Decimal, Decimal]]:
-        """Mở hộp thoại nhập tiền mặt.
 
-        Trả về (tiền khách đưa, tiền thối) nếu người dùng xác nhận,
-        trả về None nếu người dùng hủy để dừng luồng thanh toán.
-        Nhập vòng ở đây để tránh hai controller import lẫn nhau lúc nạp module.
-        """
+    def _ask_cash_payment(self, total_amount: Decimal) -> Optional[Tuple[Decimal, Decimal]]:
         from src.controller.CashPaymentDialogController import CashPaymentDialogController
 
         dialog = CashPaymentDialogController(self, total_amount)
@@ -594,9 +657,9 @@ class POSController(QWidget, Ui_Form):
 
         return dialog.get_cash_received(), dialog.get_change_amount()
 
+
     def _offer_invoice_pdf(self, result, cash_received: Optional[Decimal],
                            change_amount: Optional[Decimal]) -> None:
-        """Hỏi và xuất hóa đơn vừa thanh toán ra file PDF."""
         if result.invoice_id is None:
             return
 
@@ -625,7 +688,6 @@ class POSController(QWidget, Ui_Form):
             build_default_file_name(invoice),
             "File PDF (*.pdf)")
 
-        # Hủy hộp thoại lưu file thì thôi, đơn hàng vẫn đã thanh toán xong.
         if not file_path:
             return
 
@@ -642,6 +704,7 @@ class POSController(QWidget, Ui_Form):
 
         self._ask_open_invoice_file(file_path)
 
+
     def _ask_open_invoice_file(self, file_path: str) -> None:
         answer = QMessageBox.question(
             self,
@@ -656,11 +719,13 @@ class POSController(QWidget, Ui_Form):
 
         QDesktopServices.openUrl(QUrl.fromLocalFile(file_path))
 
+
     def _get_selected_payment_label(self) -> str:
         selected_button = self.payment_group.checkedButton()
         if selected_button is None:
             return "Tiền mặt"
         return selected_button.text().strip()
+
 
     def _run_cart_action(self, action: Callable[[], CartDTO]) -> None:
         try:
@@ -676,12 +741,12 @@ class POSController(QWidget, Ui_Form):
 
         self._render_cart(cart)
 
+
     def reset_order(self) -> None:
         cart = self.pos_service.clear_cart()
         self._render_cart(cart)
         self.lblOrderCode.setText("Đơn hàng mới")
 
-        # Đơn mới thì gỡ khách của đơn cũ ra
         self.selected_customer = None
         self._update_customer_badge()
 
@@ -689,11 +754,14 @@ class POSController(QWidget, Ui_Form):
         self.txtSearch.clear()
         self.txtSearch.setFocus()
 
+
     def _show_warning(self, message: str) -> None:
+
         QMessageBox.warning(self, "Không thực hiện được", message)
 
     def _show_error(self, message: str) -> None:
         QMessageBox.critical(self, "Lỗi", message)
+
 
     def _notify_pending(self, feature_name: str) -> None:
         QMessageBox.information(

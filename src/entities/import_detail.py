@@ -3,9 +3,6 @@ from sqlalchemy.orm import relationship
 from src.entities.base import Base
 
 class ImportDetail(Base):
-    """
-    ImportDetail entity model mapped to the 'import_details' table.
-    """
     __tablename__ = 'import_details'
 
     import_id = Column(Integer, ForeignKey('import_orders.import_id'), primary_key=True)
@@ -13,7 +10,6 @@ class ImportDetail(Base):
     quantity = Column(Integer, nullable=False)
     unit_price = Column(Numeric(15, 2), nullable=False)
 
-    # Relationships
     product = relationship("Product")
 
     def __repr__(self):

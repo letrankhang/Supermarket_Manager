@@ -14,185 +14,335 @@
    <string>Trung tâm hỗ trợ</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">
-QWidget#Form {
+   <string notr="true">QWidget#Form {
     background-color: #f1f5f9;
     color: #0f172a;
     font-family: &quot;Segoe UI&quot;, Arial, sans-serif;
 }
-/* ===== Tiêu đề trang =====
-   Dùng chung kiểu với header của dashboard.ui: tiêu đề đậm cỡ lớn,
-   ngay dưới là một dòng mô tả màu xám, chữ thường, cỡ nhỏ hơn.
-   Cỡ chữ và độ đậm của tiêu đề lấy từ thuộc tính font của lblTitle
-   (pointsize 18, bold) giống hệt QLabel tiêu đề bên Dashboard. */
-QLabel#lblTitle {
-    color: #0f172a;
-    padding: 0px;
-    margin: 0px;
+QWidget {
+    font-family: &quot;Segoe UI&quot;, Arial, sans-serif;
 }
-QLabel#lblSubTitle {
-    color: #6b7280;
-    font-size: 12px;
-    font-weight: normal;
-    margin-top: 4px;
-}
-QScrollArea {
-    border: none;
-    background: transparent;
-}
-QWidget#scrollAreaWidgetContents {
-    background: transparent;
-}
-/* ===== Thẻ nội dung ===== */
-QFrame[class=&quot;card&quot;] {
-    background-color: #ffffff;
-    border: 1px solid #e2e8f0;
-    border-radius: 14px;
-}
-QLabel[class=&quot;cardIcon&quot;] {
-    background-color: #eff6ff;
-    border-radius: 9px;
-}
-QLabel[class=&quot;cardTitle&quot;] {
-    color: #0f172a;
-    font-size: 14px;
-    font-weight: 700;
-}
-QLabel[class=&quot;cardHint&quot;] {
-    color: #94a3b8;
-    font-size: 11px;
-}
-QFrame[class=&quot;divider&quot;] {
-    background-color: #e2e8f0;
-    border: none;
-    min-height: 1px;
-    max-height: 1px;
-}
-/* ===== Mục hướng dẫn thu gọn ===== */
-QToolButton[class=&quot;accordion&quot;] {
+QLabel {
     background-color: transparent;
     border: none;
-    border-radius: 8px;
     color: #0f172a;
-    font-size: 13px;
-    font-weight: 600;
-    padding: 9px 10px;
-    text-align: left;
 }
-QToolButton[class=&quot;accordion&quot;]:hover {
+
+QLineEdit,
+QComboBox,
+QDateEdit,
+QSpinBox,
+QDoubleSpinBox {
+    background-color: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 0px 12px;
+    min-height: 38px;
+    font-size: 13px;
+    color: #0f172a;
+    selection-background-color: #1d4ed8;
+    selection-color: #ffffff;
+}
+QTextEdit {
+    background-color: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 8px 10px;
+    font-size: 13px;
+    color: #0f172a;
+    selection-background-color: #1d4ed8;
+    selection-color: #ffffff;
+}
+QLineEdit:hover,
+QComboBox:hover,
+QDateEdit:hover,
+QSpinBox:hover,
+QDoubleSpinBox:hover,
+QTextEdit:hover {
+    border: 1px solid #cbd5e1;
+}
+QLineEdit:focus,
+QComboBox:focus,
+QDateEdit:focus,
+QSpinBox:focus,
+QDoubleSpinBox:focus,
+QTextEdit:focus {
+    border: 1px solid #1d4ed8;
+}
+QLineEdit:disabled,
+QComboBox:disabled,
+QDateEdit:disabled,
+QSpinBox:disabled,
+QDoubleSpinBox:disabled {
+    background-color: #f8fafc;
+    color: #94a3b8;
+}
+QComboBox::drop-down {
+    subcontrol-origin: padding;
+    subcontrol-position: center right;
+    border: none;
+    background-color: transparent;
+    width: 26px;
+}
+QComboBox::down-arrow {
+    image: url(assets/images/chevron-down.png);
+    width: 10px;
+    height: 10px;
+}
+QComboBox::down-arrow:on {
+    image: url(assets/images/chevron-up.png);
+}
+QComboBox QAbstractItemView {
+    background-color: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 4px;
+    outline: none;
+    selection-background-color: #eff6ff;
+    selection-color: #1d4ed8;
+}
+QSpinBox::up-button,
+QSpinBox::down-button,
+QDoubleSpinBox::up-button,
+QDoubleSpinBox::down-button,
+QDateEdit::up-button,
+QDateEdit::down-button {
+    subcontrol-origin: border;
+    width: 20px;
+    border: none;
+    background-color: transparent;
+}
+QSpinBox::up-button,
+QDoubleSpinBox::up-button,
+QDateEdit::up-button {
+    subcontrol-position: top right;
+}
+QSpinBox::down-button,
+QDoubleSpinBox::down-button,
+QDateEdit::down-button {
+    subcontrol-position: bottom right;
+}
+QSpinBox::up-button:hover,
+QSpinBox::down-button:hover,
+QDoubleSpinBox::up-button:hover,
+QDoubleSpinBox::down-button:hover,
+QDateEdit::up-button:hover,
+QDateEdit::down-button:hover {
     background-color: #f1f5f9;
 }
-QToolButton[class=&quot;accordion&quot;]:checked {
+QSpinBox::up-arrow,
+QDoubleSpinBox::up-arrow,
+QDateEdit::up-arrow {
+    image: url(assets/images/chevron-up.png);
+    width: 9px;
+    height: 9px;
+}
+QSpinBox::down-arrow,
+QDoubleSpinBox::down-arrow,
+QDateEdit::down-arrow {
+    image: url(assets/images/chevron-down.png);
+    width: 9px;
+    height: 9px;
+}
+QCheckBox {
+    background-color: transparent;
+    color: #334155;
+    font-size: 13px;
+    font-weight: bold;
+    spacing: 8px;
+}
+QCheckBox::indicator {
+    width: 16px;
+    height: 16px;
+    border: 1px solid #cbd5e1;
+    border-radius: 4px;
+    background-color: #ffffff;
+}
+QCheckBox::indicator:hover {
+    border: 1px solid #1d4ed8;
+}
+QCheckBox::indicator:checked {
+    background-color: #1d4ed8;
+    border: 1px solid #1d4ed8;
+}
+
+QPushButton {
+    background-color: #ffffff;
+    color: #64748b;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 0px 16px;
+    min-height: 38px;
+    font-size: 12px;
+    font-weight: bold;
+}
+QPushButton:hover {
+    background-color: #eff6ff;
+    color: #1d4ed8;
+    border: 1px solid #1d4ed8;
+}
+QPushButton:pressed {
+    background-color: #dbeafe;
+}
+QPushButton:disabled {
+    background-color: #f8fafc;
+    color: #cbd5e1;
+    border: 1px solid #e2e8f0;
+}
+QPushButton#RowActionButton {
+    background-color: transparent;
+    border: none;
+    border-radius: 6px;
+    padding: 0px;
+    min-width: 28px;
+    max-width: 28px;
+    min-height: 28px;
+    max-height: 28px;
+}
+QPushButton#RowActionButton:hover {
+    background-color: #eff6ff;
+}
+QPushButton#RowActionButton:pressed {
+    background-color: #dbeafe;
+}
+
+QTableWidget {
+    background-color: transparent;
+    border: none;
+    gridline-color: #f1f5f9;
+    font-size: 13px;
+    color: #334155;
+    outline: none;
+}
+QTableWidget::item {
+    padding: 8px;
+    border-bottom: 1px solid #f1f5f9;
+}
+QTableWidget::item:selected {
     background-color: #eff6ff;
     color: #1d4ed8;
 }
-QLabel[class=&quot;bullet&quot;] {
-    color: #93c5fd;
-    font-size: 12px;
-    font-weight: 700;
-}
-QLabel[class=&quot;accordionLine&quot;] {
-    color: #475569;
-    font-size: 12px;
-}
-/* ===== Phím tắt ===== */
-QLabel[class=&quot;keyCap&quot;] {
+QHeaderView {
     background-color: #f8fafc;
-    border: 1px solid #cbd5e1;
-    border-radius: 6px;
-    color: #334155;
-    font-family: Consolas, &quot;Courier New&quot;, monospace;
-    font-size: 11px;
-    font-weight: 700;
-    min-width: 40px;
-    max-width: 40px;
-    min-height: 23px;
-    max-height: 23px;
-}
-QLabel[class=&quot;keyDesc&quot;] {
-    color: #475569;
-    font-size: 12px;
-}
-/* ===== Thông tin hệ thống ===== */
-QLabel[class=&quot;infoKey&quot;] {
-    color: #94a3b8;
-    font-size: 11px;
-}
-QLabel[class=&quot;infoValue&quot;] {
-    color: #0f172a;
-    font-size: 12px;
-    font-weight: 600;
-}
-/* ===== Hỗ trợ nhanh ===== */
-QLabel[class=&quot;supportText&quot;] {
-    color: #64748b;
-    font-size: 12px;
-}
-QPushButton[class=&quot;primaryButton&quot;] {
-    background-color: #2563eb;
     border: none;
-    border-radius: 9px;
-    color: #ffffff;
-    font-size: 12px;
-    font-weight: 700;
-    min-height: 36px;
-    padding: 0px 14px;
+    border-bottom: 1px solid #e2e8f0;
 }
-QPushButton[class=&quot;primaryButton&quot;]:hover {
-    background-color: #1d4ed8;
-}
-QPushButton[class=&quot;primaryButton&quot;]:pressed {
-    background-color: #1e40af;
-}
-/* ===== Đội ngũ phát triển ===== */
-QFrame[class=&quot;memberRow&quot;] {
-    background-color: transparent;
-    border: 1px solid transparent;
-    border-radius: 10px;
-}
-QFrame[class=&quot;memberRow&quot;]:hover {
+QHeaderView::section {
     background-color: #f8fafc;
-    border: 1px solid #e2e8f0;
-}
-QToolButton[class=&quot;avatar&quot;] {
-    background-color: #f1f5f9;
-    border: 1px solid #e2e8f0;
-    border-radius: 20px;
-}
-QLabel[class=&quot;memberName&quot;] {
-    color: #0f172a;
-    font-size: 13px;
-    font-weight: 700;
-}
-QLabel[class=&quot;memberRole&quot;] {
-    background-color: #eff6ff;
-    border-radius: 8px;
-    color: #2563eb;
-    font-size: 10px;
-    font-weight: 700;
-    padding: 2px 8px;
-}
-QLabel[class=&quot;memberDesc&quot;] {
     color: #64748b;
-    font-size: 12px;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 10px 8px;
+    border: none;
+    border-bottom: 1px solid #e2e8f0;
 }
-QPushButton[class=&quot;socialButton&quot;] {
+QTableCornerButton::section {
     background-color: #f8fafc;
-    border: 1px solid #e2e8f0;
-    border-radius: 8px;
-    min-width: 32px;
-    max-width: 32px;
-    min-height: 30px;
-    max-height: 30px;
+    border: none;
 }
-QPushButton[class=&quot;socialButton&quot;]:hover {
-    background-color: #eff6ff;
-    border-color: #93c5fd;
-}
-QPushButton[class=&quot;socialButton&quot;]:pressed {
+
+QLabel[badge=&quot;info&quot;] {
     background-color: #dbeafe;
+    color: #1d4ed8;
+    border-radius: 6px;
+    padding: 3px 10px;
+    font-size: 11px;
+    font-weight: 700;
 }
-/* ===== Thanh cuộn ===== */
+QLabel[badge=&quot;success&quot;] {
+    background-color: #d1fae5;
+    color: #059669;
+    border-radius: 6px;
+    padding: 3px 10px;
+    font-size: 11px;
+    font-weight: 700;
+}
+QLabel[badge=&quot;warning&quot;] {
+    background-color: #ffedd5;
+    color: #ea580c;
+    border-radius: 6px;
+    padding: 3px 10px;
+    font-size: 11px;
+    font-weight: 700;
+}
+QLabel[badge=&quot;danger&quot;] {
+    background-color: #fee2e2;
+    color: #dc2626;
+    border-radius: 6px;
+    padding: 3px 10px;
+    font-size: 11px;
+    font-weight: 700;
+}
+QLabel[badge=&quot;neutral&quot;] {
+    background-color: #e2e8f0;
+    color: #64748b;
+    border-radius: 6px;
+    padding: 3px 10px;
+    font-size: 11px;
+    font-weight: 700;
+}
+QLabel[badge=&quot;violet&quot;] {
+    background-color: #ede9fe;
+    color: #6d28d9;
+    border-radius: 6px;
+    padding: 3px 10px;
+    font-size: 11px;
+    font-weight: 700;
+}
+QLabel[trend=&quot;up&quot;] {
+    background-color: #ecfdf5;
+    color: #059669;
+    border-radius: 4px;
+    padding: 2px 6px;
+    font-size: 11px;
+    font-weight: 700;
+}
+QLabel[trend=&quot;down&quot;] {
+    background-color: #fef2f2;
+    color: #dc2626;
+    border-radius: 4px;
+    padding: 2px 6px;
+    font-size: 11px;
+    font-weight: 700;
+}
+QLabel[trend=&quot;flat&quot;] {
+    background-color: #f1f5f9;
+    color: #64748b;
+    border-radius: 4px;
+    padding: 2px 6px;
+    font-size: 11px;
+    font-weight: 700;
+}
+QLabel[state=&quot;up&quot;] {
+    color: #10b981;
+    font-weight: bold;
+}
+QLabel[state=&quot;down&quot;] {
+    color: #ef4444;
+    font-weight: bold;
+}
+QLabel[state=&quot;flat&quot;] {
+    color: #64748b;
+    font-weight: bold;
+}
+QLabel[state=&quot;warning&quot;] {
+    color: #eab308;
+    font-weight: bold;
+}
+QLabel[state=&quot;safe&quot;] {
+    color: #10b981;
+}
+
+QScrollArea {
+    background-color: transparent;
+    border: none;
+}
+QScrollArea &gt; QWidget &gt; QWidget {
+    background-color: transparent;
+}
+QAbstractScrollArea::viewport {
+    background-color: transparent;
+}
 QScrollBar:vertical {
     background-color: transparent;
     width: 10px;
@@ -262,7 +412,188 @@ QScrollBar::right-arrow:horizontal {
 QScrollBar::add-page:horizontal,
 QScrollBar::sub-page:horizontal {
     background: transparent;
-}</string>
+}
+
+QMenu {
+    background-color: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 6px;
+}
+QMenu::item {
+    background-color: transparent;
+    color: #334155;
+    border-radius: 6px;
+    padding: 7px 18px;
+    font-size: 13px;
+}
+QMenu::item:selected {
+    background-color: #eff6ff;
+    color: #1d4ed8;
+}
+QMenu::separator {
+    height: 1px;
+    background-color: #e2e8f0;
+    margin: 6px 4px;
+}
+
+QLabel#lblTitle {
+    color: #0f172a;
+    padding: 0px;
+    margin: 0px;
+}
+
+QLabel#lblSubTitle {
+    color: #6b7280;
+    font-size: 12px;
+    font-weight: normal;
+    margin-top: 4px;
+}
+
+QWidget#scrollAreaWidgetContents {
+    background-color: transparent;
+    border: none;
+}
+
+QFrame[class=&quot;card&quot;] {
+    background-color: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 14px;
+}
+QLabel[class=&quot;cardIcon&quot;] {
+    background-color: #eff6ff;
+    border-radius: 8px;
+}
+QLabel[class=&quot;cardTitle&quot;] {
+    color: #0f172a;
+    font-size: 14px;
+    font-weight: 700;
+}
+QLabel[class=&quot;cardHint&quot;] {
+    color: #94a3b8;
+    font-size: 11px;
+}
+QFrame[class=&quot;divider&quot;] {
+    background-color: #e2e8f0;
+    border: none;
+    min-height: 1px;
+    max-height: 1px;
+}
+QToolButton[class=&quot;accordion&quot;] {
+    background-color: transparent;
+    border: none;
+    border-radius: 8px;
+    color: #0f172a;
+    font-size: 13px;
+    font-weight: 600;
+    padding: 9px 10px;
+    text-align: left;
+}
+QToolButton[class=&quot;accordion&quot;]:hover {
+    background-color: #f1f5f9;
+}
+QToolButton[class=&quot;accordion&quot;]:checked {
+    background-color: #eff6ff;
+    color: #1d4ed8;
+}
+QLabel[class=&quot;bullet&quot;] {
+    color: #1d4ed8;
+    font-size: 12px;
+    font-weight: 700;
+}
+QLabel[class=&quot;accordionLine&quot;],
+QLabel[class=&quot;keyDesc&quot;] {
+    color: #334155;
+    font-size: 12px;
+}
+QLabel[class=&quot;keyCap&quot;] {
+    background-color: #f8fafc;
+    border: 1px solid #cbd5e1;
+    border-radius: 6px;
+    color: #334155;
+    font-family: Consolas, &quot;Courier New&quot;, monospace;
+    font-size: 11px;
+    font-weight: 700;
+    min-width: 40px;
+    max-width: 40px;
+    min-height: 23px;
+    max-height: 23px;
+}
+QLabel[class=&quot;infoKey&quot;] {
+    color: #94a3b8;
+    font-size: 11px;
+}
+QLabel[class=&quot;infoValue&quot;] {
+    color: #0f172a;
+    font-size: 12px;
+    font-weight: 600;
+}
+QLabel[class=&quot;supportText&quot;],
+QLabel[class=&quot;memberDesc&quot;] {
+    color: #64748b;
+    font-size: 12px;
+}
+QPushButton[class=&quot;primaryButton&quot;] {
+    background-color: #1d4ed8;
+    border: none;
+    border-radius: 8px;
+    color: #ffffff;
+    font-size: 12px;
+    font-weight: 700;
+    min-height: 36px;
+    padding: 0px 14px;
+}
+QPushButton[class=&quot;primaryButton&quot;]:hover {
+    background-color: #1e3a8a;
+}
+QPushButton[class=&quot;primaryButton&quot;]:pressed {
+    background-color: #1e40af;
+}
+QFrame[class=&quot;memberRow&quot;] {
+    background-color: transparent;
+    border: 1px solid transparent;
+    border-radius: 10px;
+}
+QFrame[class=&quot;memberRow&quot;]:hover {
+    background-color: #f8fafc;
+    border: 1px solid #e2e8f0;
+}
+QToolButton[class=&quot;avatar&quot;] {
+    background-color: #f1f5f9;
+    border: 1px solid #e2e8f0;
+    border-radius: 20px;
+}
+QLabel[class=&quot;memberName&quot;] {
+    color: #0f172a;
+    font-size: 13px;
+    font-weight: 700;
+}
+QLabel[class=&quot;memberRole&quot;] {
+    background-color: #eff6ff;
+    border-radius: 8px;
+    color: #1d4ed8;
+    font-size: 10px;
+    font-weight: 700;
+    padding: 2px 8px;
+}
+QPushButton[class=&quot;socialButton&quot;] {
+    background-color: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 0px;
+    min-width: 32px;
+    max-width: 32px;
+    min-height: 30px;
+    max-height: 30px;
+}
+QPushButton[class=&quot;socialButton&quot;]:hover {
+    background-color: #eff6ff;
+    border: 1px solid #1d4ed8;
+}
+QPushButton[class=&quot;socialButton&quot;]:pressed {
+    background-color: #dbeafe;
+}
+</string>
   </property>
   <layout class="QVBoxLayout" name="mainLayout">
    <property name="spacing">
@@ -477,10 +808,10 @@ QScrollBar::sub-page:horizontal {
                     <string>cardIcon</string>
                    </property>
                    <property name="iconName" stdset="0">
-                    <string>fa5s.book-open</string>
+                    <string>guide</string>
                    </property>
                    <property name="iconColor" stdset="0">
-                    <string>#2563eb</string>
+                    <string>primary</string>
                    </property>
                   </widget>
                  </item>
@@ -2148,10 +2479,10 @@ QScrollBar::sub-page:horizontal {
                     <string>cardIcon</string>
                    </property>
                    <property name="iconName" stdset="0">
-                    <string>fa5s.tools</string>
+                    <string>tools</string>
                    </property>
                    <property name="iconColor" stdset="0">
-                    <string>#2563eb</string>
+                    <string>primary</string>
                    </property>
                   </widget>
                  </item>
@@ -3225,10 +3556,10 @@ QScrollBar::sub-page:horizontal {
                     <string>cardIcon</string>
                    </property>
                    <property name="iconName" stdset="0">
-                    <string>fa5s.keyboard</string>
+                    <string>keyboard</string>
                    </property>
                    <property name="iconColor" stdset="0">
-                    <string>#2563eb</string>
+                    <string>primary</string>
                    </property>
                   </widget>
                  </item>
@@ -3596,10 +3927,10 @@ QScrollBar::sub-page:horizontal {
                     <string>cardIcon</string>
                    </property>
                    <property name="iconName" stdset="0">
-                    <string>fa5s.server</string>
+                    <string>server</string>
                    </property>
                    <property name="iconColor" stdset="0">
-                    <string>#2563eb</string>
+                    <string>primary</string>
                    </property>
                   </widget>
                  </item>
@@ -4018,10 +4349,10 @@ QScrollBar::sub-page:horizontal {
                <string>cardIcon</string>
               </property>
               <property name="iconName" stdset="0">
-               <string>fa5s.users</string>
+               <string>customers</string>
               </property>
               <property name="iconColor" stdset="0">
-               <string>#2563eb</string>
+               <string>primary</string>
               </property>
              </widget>
             </item>
@@ -4135,10 +4466,10 @@ QScrollBar::sub-page:horizontal {
                   <string>avatar</string>
                  </property>
                  <property name="iconName" stdset="0">
-                  <string>fa5s.user</string>
+                  <string>user</string>
                  </property>
                  <property name="iconColor" stdset="0">
-                  <string>#94a3b8</string>
+                  <string>muted</string>
                  </property>
                 </widget>
                </item>
@@ -4267,10 +4598,10 @@ QScrollBar::sub-page:horizontal {
                   <string>socialButton</string>
                  </property>
                  <property name="iconName" stdset="0">
-                  <string>fa5b.github</string>
+                  <string>github</string>
                  </property>
                  <property name="iconColor" stdset="0">
-                  <string>#0f172a</string>
+                  <string>text</string>
                  </property>
                  <property name="url" stdset="0">
                   <string>https://github.com/Karie206</string>
@@ -4292,10 +4623,10 @@ QScrollBar::sub-page:horizontal {
                   <string>socialButton</string>
                  </property>
                  <property name="iconName" stdset="0">
-                  <string>fa5b.linkedin</string>
+                  <string>linkedin</string>
                  </property>
                  <property name="iconColor" stdset="0">
-                  <string>#2563eb</string>
+                  <string>primary</string>
                  </property>
                  <property name="url" stdset="0">
                   <string>https://linkedin.com/in/tranthaikiet</string>
@@ -4317,10 +4648,10 @@ QScrollBar::sub-page:horizontal {
                   <string>socialButton</string>
                  </property>
                  <property name="iconName" stdset="0">
-                  <string>fa5s.envelope</string>
+                  <string>email</string>
                  </property>
                  <property name="iconColor" stdset="0">
-                  <string>#64748b</string>
+                  <string>default</string>
                  </property>
                  <property name="email" stdset="0">
                   <string>thaikiet519@gmail.com</string>
@@ -4388,10 +4719,10 @@ QScrollBar::sub-page:horizontal {
                   <string>avatar</string>
                  </property>
                  <property name="iconName" stdset="0">
-                  <string>fa5s.user</string>
+                  <string>user</string>
                  </property>
                  <property name="iconColor" stdset="0">
-                  <string>#94a3b8</string>
+                  <string>muted</string>
                  </property>
                 </widget>
                </item>
@@ -4517,10 +4848,10 @@ QScrollBar::sub-page:horizontal {
                   <string>socialButton</string>
                  </property>
                  <property name="iconName" stdset="0">
-                  <string>fa5b.github</string>
+                  <string>github</string>
                  </property>
                  <property name="iconColor" stdset="0">
-                  <string>#0f172a</string>
+                  <string>text</string>
                  </property>
                  <property name="url" stdset="0">
                   <string>https://github.com/letrankhang</string>
@@ -4542,10 +4873,10 @@ QScrollBar::sub-page:horizontal {
                   <string>socialButton</string>
                  </property>
                  <property name="iconName" stdset="0">
-                  <string>fa5b.linkedin</string>
+                  <string>linkedin</string>
                  </property>
                  <property name="iconColor" stdset="0">
-                  <string>#2563eb</string>
+                  <string>primary</string>
                  </property>
                  <property name="url" stdset="0">
                   <string>https://linkedin.com/in/letrankhang</string>
@@ -4567,10 +4898,10 @@ QScrollBar::sub-page:horizontal {
                   <string>socialButton</string>
                  </property>
                  <property name="iconName" stdset="0">
-                  <string>fa5s.envelope</string>
+                  <string>email</string>
                  </property>
                  <property name="iconColor" stdset="0">
-                  <string>#64748b</string>
+                  <string>default</string>
                  </property>
                  <property name="email" stdset="0">
                   <string>user2@gmail.com</string>
@@ -4638,10 +4969,10 @@ QScrollBar::sub-page:horizontal {
                   <string>avatar</string>
                  </property>
                  <property name="iconName" stdset="0">
-                  <string>fa5s.user</string>
+                  <string>user</string>
                  </property>
                  <property name="iconColor" stdset="0">
-                  <string>#94a3b8</string>
+                  <string>muted</string>
                  </property>
                 </widget>
                </item>
@@ -4767,10 +5098,10 @@ QScrollBar::sub-page:horizontal {
                   <string>socialButton</string>
                  </property>
                  <property name="iconName" stdset="0">
-                  <string>fa5b.github</string>
+                  <string>github</string>
                  </property>
                  <property name="iconColor" stdset="0">
-                  <string>#0f172a</string>
+                  <string>text</string>
                  </property>
                  <property name="url" stdset="0">
                   <string>https://github.com/honggam26</string>
@@ -4792,10 +5123,10 @@ QScrollBar::sub-page:horizontal {
                   <string>socialButton</string>
                  </property>
                  <property name="iconName" stdset="0">
-                  <string>fa5b.linkedin</string>
+                  <string>linkedin</string>
                  </property>
                  <property name="iconColor" stdset="0">
-                  <string>#2563eb</string>
+                  <string>primary</string>
                  </property>
                  <property name="url" stdset="0">
                   <string>https://linkedin.com/in/lehgam</string>
@@ -4817,10 +5148,10 @@ QScrollBar::sub-page:horizontal {
                   <string>socialButton</string>
                  </property>
                  <property name="iconName" stdset="0">
-                  <string>fa5s.envelope</string>
+                  <string>email</string>
                  </property>
                  <property name="iconColor" stdset="0">
-                  <string>#64748b</string>
+                  <string>default</string>
                  </property>
                  <property name="email" stdset="0">
                   <string>user3@gmail.com</string>
@@ -4888,10 +5219,10 @@ QScrollBar::sub-page:horizontal {
                   <string>avatar</string>
                  </property>
                  <property name="iconName" stdset="0">
-                  <string>fa5s.user</string>
+                  <string>user</string>
                  </property>
                  <property name="iconColor" stdset="0">
-                  <string>#94a3b8</string>
+                  <string>muted</string>
                  </property>
                 </widget>
                </item>
@@ -5017,10 +5348,10 @@ QScrollBar::sub-page:horizontal {
                   <string>socialButton</string>
                  </property>
                  <property name="iconName" stdset="0">
-                  <string>fa5b.github</string>
+                  <string>github</string>
                  </property>
                  <property name="iconColor" stdset="0">
-                  <string>#0f172a</string>
+                  <string>text</string>
                  </property>
                  <property name="url" stdset="0">
                   <string>https://github.com/Tuan-Kem</string>
@@ -5042,10 +5373,10 @@ QScrollBar::sub-page:horizontal {
                   <string>socialButton</string>
                  </property>
                  <property name="iconName" stdset="0">
-                  <string>fa5b.linkedin</string>
+                  <string>linkedin</string>
                  </property>
                  <property name="iconColor" stdset="0">
-                  <string>#2563eb</string>
+                  <string>primary</string>
                  </property>
                  <property name="url" stdset="0">
                   <string>https://linkedin.com/in/tuan-kha-love</string>
@@ -5067,10 +5398,10 @@ QScrollBar::sub-page:horizontal {
                   <string>socialButton</string>
                  </property>
                  <property name="iconName" stdset="0">
-                  <string>fa5s.envelope</string>
+                  <string>email</string>
                  </property>
                  <property name="iconColor" stdset="0">
-                  <string>#64748b</string>
+                  <string>default</string>
                  </property>
                  <property name="email" stdset="0">
                   <string>user4@gmail.com</string>
@@ -5138,10 +5469,10 @@ QScrollBar::sub-page:horizontal {
                   <string>avatar</string>
                  </property>
                  <property name="iconName" stdset="0">
-                  <string>fa5s.user</string>
+                  <string>user</string>
                  </property>
                  <property name="iconColor" stdset="0">
-                  <string>#94a3b8</string>
+                  <string>muted</string>
                  </property>
                 </widget>
                </item>
@@ -5267,10 +5598,10 @@ QScrollBar::sub-page:horizontal {
                   <string>socialButton</string>
                  </property>
                  <property name="iconName" stdset="0">
-                  <string>fa5b.github</string>
+                  <string>github</string>
                  </property>
                  <property name="iconColor" stdset="0">
-                  <string>#0f172a</string>
+                  <string>text</string>
                  </property>
                  <property name="url" stdset="0">
                   <string>https://github.com/dc1458</string>
@@ -5292,10 +5623,10 @@ QScrollBar::sub-page:horizontal {
                   <string>socialButton</string>
                  </property>
                  <property name="iconName" stdset="0">
-                  <string>fa5b.linkedin</string>
+                  <string>linkedin</string>
                  </property>
                  <property name="iconColor" stdset="0">
-                  <string>#2563eb</string>
+                  <string>primary</string>
                  </property>
                  <property name="url" stdset="0">
                   <string>https://linkedin.com/in/dcisme</string>
@@ -5317,10 +5648,10 @@ QScrollBar::sub-page:horizontal {
                   <string>socialButton</string>
                  </property>
                  <property name="iconName" stdset="0">
-                  <string>fa5s.envelope</string>
+                  <string>email</string>
                  </property>
                  <property name="iconColor" stdset="0">
-                  <string>#64748b</string>
+                  <string>default</string>
                  </property>
                  <property name="email" stdset="0">
                   <string>user5@gmail.com</string>
@@ -5388,10 +5719,10 @@ QScrollBar::sub-page:horizontal {
                  <string>primaryButton</string>
                 </property>
                 <property name="iconName" stdset="0">
-                 <string>fa5s.paper-plane</string>
+                 <string>send</string>
                 </property>
                 <property name="iconColor" stdset="0">
-                 <string>#ffffff</string>
+                 <string>on-primary</string>
                 </property>
                 <property name="email" stdset="0">
                  <string>thaikiet519@gmail.com</string>

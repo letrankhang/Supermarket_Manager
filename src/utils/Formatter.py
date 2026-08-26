@@ -4,6 +4,7 @@ from typing import Union
 
 from config.settings import POSSettings
 
+
 logger = logging.getLogger(__name__)
 
 Number = Union[int, float, Decimal]
@@ -20,6 +21,7 @@ def format_currency(amount: Number, with_suffix: bool = True) -> str:
         return f"{formatted} {POSSettings.CURRENCY_SUFFIX}"
     return formatted
 
+
 def format_discount(amount: Number) -> str:
     try:
         value = Decimal(str(amount))
@@ -29,6 +31,7 @@ def format_discount(amount: Number) -> str:
     if value <= 0:
         return format_currency(0)
     return f"- {format_currency(value)}"
+
 
 def format_rate_as_percent(rate: Number) -> str:
     try:

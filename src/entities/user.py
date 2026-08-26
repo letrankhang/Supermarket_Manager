@@ -3,9 +3,6 @@ from sqlalchemy.orm import relationship
 from src.entities.base import Base
 
 class User(Base):
-    """
-    User entity model mapped to the 'users' table.
-    """
     __tablename__ = 'users'
 
     user_id = Column(Integer, primary_key=True, autoincrement=True)
@@ -18,7 +15,6 @@ class User(Base):
     created_at = Column(DateTime, server_default=func.now())
     updated_at = Column(DateTime, server_default=func.now(), onupdate=func.now())
 
-    # Relationships
     role = relationship("Role", foreign_keys=[role_id])
 
     def __repr__(self):

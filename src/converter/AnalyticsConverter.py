@@ -34,6 +34,7 @@ class AnalyticsConverter:
             day_label=day_label,
         )
 
+
     @staticmethod
     def to_top_product_dto(row: Tuple[int, str, int, float]) -> TopProductDTO:
         return TopProductDTO(
@@ -42,6 +43,7 @@ class AnalyticsConverter:
             total_quantity=int(row[2] if row[2] is not None else 0),
             total_revenue=float(row[3] if row[3] is not None else 0.0)
         )
+
 
     @staticmethod
     def to_category_sales_dto(row: Tuple[str, float], total_sales: float) -> CategorySalesDTO:
@@ -53,6 +55,7 @@ class AnalyticsConverter:
             percentage=round(pct, 1)
         )
 
+
     @staticmethod
     def to_revenue_by_payment_dto(row: Tuple[str, float, int]) -> RevenueByPaymentDTO:
         return RevenueByPaymentDTO(
@@ -61,12 +64,14 @@ class AnalyticsConverter:
             invoice_count=int(row[2] if row[2] is not None else 0)
         )
 
+
     @staticmethod
     def to_revenue_by_time_slot_dto(row: Tuple[Any, float]) -> RevenueByTimeSlotDTO:
         return RevenueByTimeSlotDTO(
             hour=int(row[0]),
             revenue=float(row[1] if row[1] is not None else 0.0)
         )
+
 
     @staticmethod
     def to_analytics_dto(

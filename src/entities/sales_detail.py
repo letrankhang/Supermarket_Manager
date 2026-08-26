@@ -3,9 +3,6 @@ from sqlalchemy.orm import relationship
 from src.entities.base import Base
 
 class SalesDetail(Base):
-    """
-    SalesDetail entity model mapped to the 'sales_details' table.
-    """
     __tablename__ = 'sales_details'
 
     invoice_id = Column(Integer, ForeignKey('sales_invoices.invoice_id'), primary_key=True)
@@ -14,7 +11,6 @@ class SalesDetail(Base):
     unit_price = Column(Numeric(15, 2), nullable=False)
     cost_price = Column(Numeric(15, 2), nullable=False)
 
-    # Relationships
     invoice = relationship("SalesInvoice", back_populates="details")
     product = relationship("Product", foreign_keys=[product_id])
 

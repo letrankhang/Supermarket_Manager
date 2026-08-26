@@ -5,6 +5,7 @@ from datetime import date
 from src.entities.customer import Customer
 from src.entities.customer_tier import CustomerTier
 
+
 class CustomerManagementRepository(ABC):
     @abstractmethod
     def find_all_customers(self, keyword: Optional[str] = None, tier_id: Optional[int] = None, limit: Optional[int] = None) -> List[Customer]:

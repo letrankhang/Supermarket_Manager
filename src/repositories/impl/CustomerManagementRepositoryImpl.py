@@ -49,6 +49,7 @@ class CustomerManagementRepositoryImpl(CustomerManagementRepository):
             logger.error("Lỗi khi truy vấn danh sách khách hàng (keyword=%s, tier_id=%s): %s", keyword, tier_id, e)
             raise e
 
+
     def find_customer_by_id(self, customer_id: int) -> Optional[Customer]:
         try:
             return (
@@ -60,6 +61,7 @@ class CustomerManagementRepositoryImpl(CustomerManagementRepository):
         except Exception as e:
             logger.error("Lỗi khi tìm khách hàng theo id=%s: %s", customer_id, e)
             raise e
+
 
     def find_customer_by_phone(self, phone: str) -> Optional[Customer]:
         try:
@@ -73,6 +75,7 @@ class CustomerManagementRepositoryImpl(CustomerManagementRepository):
             logger.error("Lỗi khi tìm khách hàng theo phone=%s: %s", phone, e)
             raise e
 
+
     def count_customers(self) -> int:
         try:
             val = self.session.query(func.count(Customer.customer_id)).scalar()
@@ -80,6 +83,7 @@ class CustomerManagementRepositoryImpl(CustomerManagementRepository):
         except Exception as e:
             logger.error("Lỗi khi đếm tổng số khách hàng: %s", e)
             raise e
+
 
     def count_customers_by_tier(self) -> List[Tuple[str, int]]:
         try:
@@ -94,6 +98,7 @@ class CustomerManagementRepositoryImpl(CustomerManagementRepository):
             logger.error("Lỗi khi đếm khách hàng theo từng hạng: %s", e)
             raise e
 
+
     def insert_customer(self, customer: Customer) -> Customer:
         try:
             self.session.add(customer)
@@ -102,6 +107,7 @@ class CustomerManagementRepositoryImpl(CustomerManagementRepository):
         except Exception as e:
             logger.error("Lỗi khi thêm mới khách hàng (phone=%s): %s", customer.phone, e)
             raise e
+
 
     def update_customer(self, customer_id: int, phone: str, full_name: str, dob: Optional[date]) -> None:
         try:
@@ -115,6 +121,7 @@ class CustomerManagementRepositoryImpl(CustomerManagementRepository):
             logger.error("Lỗi khi cập nhật khách hàng id=%s: %s", customer_id, e)
             raise e
 
+
     def delete_customer(self, customer_id: int) -> None:
         try:
             customer = self.session.query(Customer).filter(Customer.customer_id == customer_id).first()
@@ -124,6 +131,7 @@ class CustomerManagementRepositoryImpl(CustomerManagementRepository):
         except Exception as e:
             logger.error("Lỗi khi xóa khách hàng id=%s: %s", customer_id, e)
             raise e
+
 
     def get_all_tiers(self) -> List[CustomerTier]:
         try:

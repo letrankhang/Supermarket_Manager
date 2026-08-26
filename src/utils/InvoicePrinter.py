@@ -3,6 +3,7 @@ import os
 
 from decimal import Decimal
 from typing import List, Optional, Tuple
+from reportlab.lib.styles import ParagraphStyle
 
 try:
     from reportlab.lib import colors
@@ -28,38 +29,28 @@ except ImportError:
 from src.dtos.POSDTO import InvoiceDetailDTO
 from src.utils.Formatter import format_currency
 
+
 logger = logging.getLogger(__name__)
 
 STORE_NAME = "SIÊU THỊ RETAILPRO ERP"
 STORE_ADDRESS = "Hệ thống quản lý bán hàng"
 
-# Khổ giấy và lề. Lề trái bằng lề phải để nội dung cân giữa trang.
-# Mọi bảng đều tính bề rộng theo CONTENT_WIDTH nên không bao giờ lệch hay tràn.
 PAGE_SIZE = A4
 PAGE_MARGIN_X = 18 * mm
 PAGE_MARGIN_TOP = 16 * mm
 PAGE_MARGIN_BOTTOM = 16 * mm
 CONTENT_WIDTH = PAGE_SIZE[0] - (PAGE_MARGIN_X * 2)
 
-# Tỷ lệ bề rộng các cột, tổng của mỗi nhóm luôn bằng 1.0
 INFO_COL_RATIOS = [0.15, 0.35, 0.15, 0.35]
 
-# Cột bảng sản phẩm: STT | Tên | ĐVT | SL | Đơn giá | Thành tiền
 PRODUCT_COL_RATIOS = [0.07, 0.41, 0.09, 0.08, 0.175, 0.175]
 
-# Chỉ số cột trong bảng sản phẩm, dùng để dựng lại khối tổng kết cho thẳng cột
 COL_UNIT = 2
 COL_AMOUNT = 5
 
-# Khối tổng kết nằm nửa phải, nhưng vẫn là một bảng rộng trọn vùng nội dung
-# nên mép phải khớp đúng mép phải bảng sản phẩm phía trên.
-# Khối tổng kết chỉ có 2 cột, trải trọn bề rộng vùng nội dung:
-#   - cột nhãn = toàn bộ phần còn lại, bắt đầu sát mép trái (trùng cột STT của bảng)
-#   - cột số   = đúng bề rộng cột "Thành tiền" nên căn phải thẳng cột với bảng trên
 SUMMARY_VALUE_RATIO = PRODUCT_COL_RATIOS[COL_AMOUNT]
 SUMMARY_LABEL_RATIO = 1.0 - SUMMARY_VALUE_RATIO
 
-# Bảng màu tối giản: chữ gần đen, chữ phụ xám, đường kẻ xám nhạt.
 COLOR_TEXT = "#111827"
 COLOR_TEXT_MUTED = "#6b7280"
 COLOR_LINE = "#e5e7eb"
@@ -69,10 +60,6 @@ COLOR_HEADER_BG = "#f3f4f6"
 FONT_REGULAR = "InvoiceFont"
 FONT_BOLD = "InvoiceFont-Bold"
 
-# Font Unicode để in được tiếng Việt có dấu. Tìm lần lượt:
-# 1. Font đóng gói sẵn trong project (ưu tiên, chạy được trên mọi máy)
-# 2. Font hệ thống Windows / Linux
-# Mỗi mục là (đường dẫn font thường, đường dẫn font đậm).
 PROJECT_FONT_DIR = os.path.join("assets", "fonts")
 
 FONT_CANDIDATES: List[Tuple[str, str]] = [
@@ -90,11 +77,10 @@ FONT_CANDIDATES: List[Tuple[str, str]] = [
 _fonts_registered = False
 
 class InvoicePrintError(Exception):
-    """Không dựng được file PDF hóa đơn."""
     pass
 
+
 def _register_fonts() -> bool:
-    """Nạp font Unicode cho reportlab. Trả về True nếu nhúng được font có dấu."""
     global _fonts_registered
 
     if _fonts_registered:
@@ -107,7 +93,6 @@ def _register_fonts() -> bool:
         try:
             pdfmetrics.registerFont(TTFont(FONT_REGULAR, regular_path))
 
-            # Không phải bộ font nào cũng có bản đậm đi kèm.
             if os.path.exists(bold_path):
                 pdfmetrics.registerFont(TTFont(FONT_BOLD, bold_path))
             else:
@@ -127,7 +112,6 @@ def _register_fonts() -> bool:
 
 
 def _column_widths(ratios: list) -> list:
-    """Đổi tỷ lệ cột thành bề rộng thật, tổng luôn khớp bề rộng vùng nội dung."""
     return [CONTENT_WIDTH * ratio for ratio in ratios]
 
 
@@ -214,7 +198,6 @@ def _build_product_table(invoice: InvoiceDetailDTO) -> Table:
         ("ALIGN", (2, 0), (3, -1), "CENTER"),
         ("ALIGN", (4, 0), (-1, -1), "RIGHT"),
         ("VALIGN", (0, 0), (-1, -1), "MIDDLE"),
-        # Kẻ mảnh, chỉ ngang, không kẻ dọc để giữ nét tối giản
         ("LINEABOVE", (0, 0), (-1, 0), 0.6, colors.HexColor(COLOR_LINE_STRONG)),
         ("LINEBELOW", (0, 0), (-1, 0), 0.8, colors.HexColor(COLOR_LINE_STRONG)),
         ("LINEBELOW", (0, 1), (-1, -1), 0.4, colors.HexColor(COLOR_LINE)),
@@ -224,10 +207,7 @@ def _build_product_table(invoice: InvoiceDetailDTO) -> Table:
     return table
 
 
-def _build_summary(invoice: InvoiceDetailDTO, cash_received: Optional[Decimal],
-                   change_amount: Optional[Decimal]) -> Table:
-    # Bảng chỉ gồm 2 cột: nhãn bắt đầu sát lề trái, số tiền căn phải.
-    # Nhờ tổng bề rộng đúng bằng CONTENT_WIDTH nên hai mép đều khớp bảng sản phẩm.
+def _build_summary(invoice: InvoiceDetailDTO, cash_received: Optional[Decimal], change_amount: Optional[Decimal]) -> Table:
     def make_row(label: str, value: str) -> list:
         return [label, value]
 
@@ -240,51 +220,39 @@ def _build_summary(invoice: InvoiceDetailDTO, cash_received: Optional[Decimal],
 
     rows.append(make_row("Thuế VAT:", format_currency(invoice.tax_amount)))
 
-    # Ghi lại vị trí dòng tổng để tô đậm, vì dòng giảm giá có thể không xuất hiện.
     total_row_index = len(rows)
     rows.append(make_row("TỔNG THANH TOÁN:", format_currency(invoice.final_total)))
 
     rows.append(make_row("Phương thức:", invoice.payment_method_label))
 
-    # Tiền khách đưa và tiền thối không lưu trong DB nên chỉ in khi
-    # màn hình thanh toán truyền sang.
     if cash_received is not None:
         rows.append(make_row("Tiền khách đưa:", format_currency(cash_received)))
 
     if change_amount is not None:
         rows.append(make_row("Tiền thối lại:", format_currency(change_amount)))
 
-    # Hai cột cộng lại đúng bằng CONTENT_WIDTH, không lệch cũng không tràn.
     column_widths = _column_widths([SUMMARY_LABEL_RATIO, SUMMARY_VALUE_RATIO])
 
     table = Table(rows, colWidths=column_widths)
     table.setStyle(TableStyle([
-        # Cột 0 là nhãn, cột 1 là số tiền
         ("FONT", (0, 0), (-1, -1), FONT_REGULAR, 9),
         ("FONT", (0, total_row_index), (-1, total_row_index), FONT_BOLD, 11),
         ("TEXTCOLOR", (0, 0), (-1, -1), colors.HexColor(COLOR_TEXT)),
-        # Các nhãn phụ dưới dòng tổng để màu xám cho nhẹ
         ("TEXTCOLOR", (0, total_row_index + 1), (0, -1), colors.HexColor(COLOR_TEXT_MUTED)),
         ("ALIGN", (0, 0), (0, -1), "LEFT"),
         ("ALIGN", (1, 0), (1, -1), "RIGHT"),
-        # Một đường kẻ ngang trải hết bề rộng, tách bảng sản phẩm với phần tổng kết
         ("LINEABOVE", (0, 0), (-1, 0), 0.6, colors.HexColor(COLOR_LINE_STRONG)),
-        # Đường kẻ bao dòng tổng, chạy hết bề rộng vì bảng chỉ còn hai cột
         ("LINEABOVE", (0, total_row_index), (-1, total_row_index), 0.8, colors.HexColor(COLOR_LINE_STRONG)),
         ("LINEBELOW", (0, total_row_index), (-1, total_row_index), 0.4, colors.HexColor(COLOR_LINE)),
         ("TOPPADDING", (0, 0), (-1, -1), 3),
         ("BOTTOMPADDING", (0, 0), (-1, -1), 3),
-        # Dòng tổng thoáng hơn một chút để làm điểm nhấn
         ("TOPPADDING", (0, total_row_index), (-1, total_row_index), 5),
         ("BOTTOMPADDING", (0, total_row_index), (-1, total_row_index), 5),
     ]))
     return table
 
 
-def export_invoice_pdf(invoice: InvoiceDetailDTO, file_path: str,
-                       cash_received: Optional[Decimal] = None,
-                       change_amount: Optional[Decimal] = None) -> str:
-    """Ghi hóa đơn ra file PDF, trả về đường dẫn file đã ghi."""
+def export_invoice_pdf(invoice: InvoiceDetailDTO, file_path: str, cash_received: Optional[Decimal] = None, change_amount: Optional[Decimal] = None) -> str:
     if not REPORTLAB_AVAILABLE:
         raise InvoicePrintError("Thư viện 'reportlab' chưa được cài đặt trong môi trường Python.")
 

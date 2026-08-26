@@ -1,7 +1,3 @@
-# File: src/repositories/impl/ImportRepositoryImpl.py
-"""Triển khai ImportRepository bằng SQLAlchemy ORM."""
-from __future__ import annotations
-
 import logging
 from typing import List, Optional
 
@@ -14,15 +10,15 @@ logger = logging.getLogger(__name__)
 
 
 class ImportRepositoryImpl(ImportRepository):
-
     def create(self, session: Session, order: ImportOrder) -> ImportOrder:
         try:
             session.add(order)
-            session.flush()  # co import_id de dung tiep trong cung transaction
+            session.flush() 
             return order
         except Exception:
             logger.exception("Loi khi tao phieu nhap hang")
             raise
+
 
     def get_by_id(self, session: Session, import_id: int) -> Optional[ImportOrder]:
         try:
@@ -40,6 +36,7 @@ class ImportRepositoryImpl(ImportRepository):
             logger.exception("Loi khi lay phieu nhap id=%s", import_id)
             raise
 
+
     def list_by_supplier(self, session: Session, supplier_id: int) -> List[ImportOrder]:
         try:
             return (
@@ -56,6 +53,7 @@ class ImportRepositoryImpl(ImportRepository):
         except Exception:
             logger.exception("Loi khi lay phieu nhap theo supplier_id=%s", supplier_id)
             raise
+
 
     def list_all(self, session: Session) -> List[ImportOrder]:
         try:

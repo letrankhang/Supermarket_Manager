@@ -1,9 +1,3 @@
-# File: src/repositories/impl/ProductRepositoryImpl.py
-"""Triển khai ProductRepository bằng SQLAlchemy ORM (ANSI, chạy được cả MySQL/SQL Server).
-Product KHONG co relationship toi Category (theo yeu cau giu nguyen entity),
-nen lay ten danh muc bang outerjoin() thu cong qua category_id thay vi joinedload()."""
-from __future__ import annotations
-
 import logging
 from typing import List, Optional
 
@@ -32,6 +26,7 @@ class ProductRepositoryImpl(ProductRepository):
             logger.exception("Loi khi lay san pham theo id=%s", product_id)
             raise
 
+
     def get_by_barcode(self, session: Session, barcode: str) -> Optional[ProductWithCategoryName]:
         try:
             row = (
@@ -45,12 +40,8 @@ class ProductRepositoryImpl(ProductRepository):
             logger.exception("Loi khi lay san pham theo barcode=%s", barcode)
             raise
 
-    def search(
-        self,
-        session: Session,
-        keyword: str = "",
-        category_id: Optional[int] = None,
-    ) -> List[ProductWithCategoryName]:
+
+    def search(self,session: Session, keyword: str = "", category_id: Optional[int] = None) -> List[ProductWithCategoryName]:
         try:
             query = session.query(Product, Category.category_name).outerjoin(
                 Category, Product.category_id == Category.category_id
@@ -68,6 +59,7 @@ class ProductRepositoryImpl(ProductRepository):
             logger.exception("Loi khi tim kiem san pham (keyword=%s)", keyword)
             raise
 
+
     def list_all(self, session: Session) -> List[ProductWithCategoryName]:
         try:
             rows = (
@@ -80,6 +72,7 @@ class ProductRepositoryImpl(ProductRepository):
         except Exception:
             logger.exception("Loi khi lay danh sach san pham")
             raise
+
 
     def list_low_stock(self, session: Session, threshold: int) -> List[ProductWithCategoryName]:
         try:
@@ -95,14 +88,16 @@ class ProductRepositoryImpl(ProductRepository):
             logger.exception("Loi khi lay danh sach san pham sap het hang")
             raise
 
+
     def create(self, session: Session, product: Product) -> Product:
         try:
             session.add(product)
-            session.flush()  # co product_id ngay ma khong can commit tai day
+            session.flush() 
             return product
         except Exception:
             logger.exception("Loi khi tao san pham moi")
             raise
+
 
     def update(self, session: Session, product: Product) -> Product:
         try:
@@ -112,6 +107,7 @@ class ProductRepositoryImpl(ProductRepository):
         except Exception:
             logger.exception("Loi khi cap nhat san pham id=%s", product.product_id)
             raise
+
 
     def delete(self, session: Session, product_id: int) -> bool:
         try:
@@ -125,13 +121,8 @@ class ProductRepositoryImpl(ProductRepository):
             logger.exception("Loi khi xoa san pham id=%s", product_id)
             raise
 
-    def increase_stock_after_import(
-        self,
-        session: Session,
-        product_id: int,
-        quantity: int,
-        import_unit_price: float,
-    ) -> None:
+
+    def increase_stock_after_import(self, session: Session, product_id: int, quantity: int, import_unit_price: float) -> None:
         try:
             product = (
                 session.query(Product)
@@ -146,7 +137,6 @@ class ProductRepositoryImpl(ProductRepository):
             old_avg = float(product.avg_import_price or 0)
             new_stock = old_stock + quantity
 
-            # Gia nhap binh quan gia quyen
             if new_stock > 0:
                 new_avg = ((old_stock * old_avg) + (quantity * import_unit_price)) / new_stock
             else:

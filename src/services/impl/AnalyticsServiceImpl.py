@@ -12,8 +12,8 @@ from src.entities.sales_invoice import SalesInvoice
 from src.repositories.impl.AnalyticsRepositoryImpl import AnalyticsRepositoryImpl
 from src.services.AnalyticsService import AnalyticsService
 
-logger = logging.getLogger(__name__)
 
+logger = logging.getLogger(__name__)
 
 class AnalyticsServiceImpl(AnalyticsService):
     def get_analytics_by_period(self, period_type: str = "week") -> AnalyticsDTO:
@@ -48,8 +48,7 @@ class AnalyticsServiceImpl(AnalyticsService):
 
             label = f"Tháng {now.month}/{now.year}"
 
-        else:  # "week"
-            # Thứ 2 đầu tuần (weekday = 0)
+        else:  
             start_of_week = now.date() - timedelta(days=now.weekday())
             end_of_week = start_of_week + timedelta(days=6)
 
@@ -71,6 +70,7 @@ class AnalyticsServiceImpl(AnalyticsService):
             prev_end=prev_end,
             period_label=label,
         )
+
 
     def get_analytics_data(self, year: int, month: int) -> AnalyticsDTO:
         try:
@@ -102,6 +102,7 @@ class AnalyticsServiceImpl(AnalyticsService):
             logger.error("Lỗi khi lấy dữ liệu analytics theo tháng %s/%s: %s", month, year, e)
             raise e
 
+
     def _fetch_and_calculate_analytics(
         self,
         curr_start: datetime,
@@ -114,7 +115,6 @@ class AnalyticsServiceImpl(AnalyticsService):
             with Database.get_session_ctx() as session:
                 repo = AnalyticsRepositoryImpl(session)
 
-                # 1. Doanh thu & Tăng trưởng
                 curr_revenue = repo.get_total_revenue(curr_start, curr_end)
                 prev_revenue = repo.get_total_revenue(prev_start, prev_end)
                 if prev_revenue > 0:
@@ -122,7 +122,6 @@ class AnalyticsServiceImpl(AnalyticsService):
                 else:
                     revenue_growth = 100.0 if curr_revenue > 0 else 0.0
 
-                # 2. Đơn hàng & Tăng trưởng
                 curr_invoices = repo.get_invoice_count(curr_start, curr_end)
                 prev_invoices = repo.get_invoice_count(prev_start, prev_end)
                 if prev_invoices > 0:
@@ -130,7 +129,6 @@ class AnalyticsServiceImpl(AnalyticsService):
                 else:
                     invoices_growth = 100.0 if curr_invoices > 0 else 0.0
 
-                # 3. Giá trị trung bình đơn (AOV)
                 curr_aov = (curr_revenue / curr_invoices) if curr_invoices > 0 else 0.0
                 prev_aov = (prev_revenue / prev_invoices) if prev_invoices > 0 else 0.0
                 if prev_aov > 0:
@@ -138,10 +136,8 @@ class AnalyticsServiceImpl(AnalyticsService):
                 else:
                     aov_growth = 0.0
 
-                # 4. Tổng lợi nhuận
                 total_profit = repo.get_total_profit(curr_start, curr_end)
 
-                # 5. Tỷ lệ khách hàng quay lại (Returning Rate)
                 returning_rate, returning_growth = self._calculate_returning_rate(
                     session=session,
                     curr_start=curr_start,
@@ -150,7 +146,6 @@ class AnalyticsServiceImpl(AnalyticsService):
                     prev_end=prev_end,
                 )
 
-                # 6. Biểu đồ & Bảng chi tiết
                 daily_rows = repo.get_daily_revenue(curr_start, curr_end)
                 top_rows = repo.get_top_products(curr_start, curr_end, limit=5)
                 category_rows = repo.get_category_sales(curr_start, curr_end)
@@ -182,6 +177,7 @@ class AnalyticsServiceImpl(AnalyticsService):
             logger.error("Lỗi trong quá trình tính toán Analytics: %s", e)
             raise e
 
+
     def _calculate_returning_rate(
         self,
         session,
@@ -191,7 +187,6 @@ class AnalyticsServiceImpl(AnalyticsService):
         prev_end: datetime,
     ) -> Tuple[float, float]:
         try:
-            # Lấy danh sách customer_id có hóa đơn trong kỳ hiện tại
             curr_customer_rows = (
                 session.query(SalesInvoice.customer_id)
                 .filter(
@@ -206,7 +201,6 @@ class AnalyticsServiceImpl(AnalyticsService):
             if not curr_customers:
                 return 0.0, 0.0
 
-            # Khách quay lại là khách có >= 2 đơn tính đến cuối kỳ hiện tại
             returning_count = 0
             for cid in curr_customers:
                 total_invoices_for_cust = (
@@ -223,7 +217,6 @@ class AnalyticsServiceImpl(AnalyticsService):
 
             returning_rate = round((returning_count / len(curr_customers)) * 100.0, 1)
 
-            # Tính kỳ trước để so sánh tăng trưởng
             prev_customer_rows = (
                 session.query(SalesInvoice.customer_id)
                 .filter(

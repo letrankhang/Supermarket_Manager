@@ -24,124 +24,445 @@ class Ui_Form(object):
         if not Form.objectName():
             Form.setObjectName(u"Form")
         Form.resize(1536, 924)
-        Form.setStyleSheet(u"/* ===== QSS t\u1eadp trung c\u1ee7a Dashboard =====\n"
-"   Tr\u01b0\u1edbc \u0111\u00e2y n\u1eb1m r\u1ea3i r\u00e1c trong DashboardController.py.\n"
-"   Gom v\u1ec1 \u0111\u00e2y \u0111\u1ec3 ch\u1ec9nh giao di\u1ec7n tr\u1ef1c ti\u1ebfp trong Qt Designer.\n"
-"   QSS \u0111\u1eb7t \u1edf widget g\u1ed1c s\u1ebd lan xu\u1ed1ng m\u1ecdi widget con, k\u1ec3 c\u1ea3\n"
-"   widget \u0111\u01b0\u1ee3c t\u1ea1o l\u00fac ch\u1ea1y (b\u1ea3ng, huy hi\u1ec7u icon, nh\u00e3n \u00f4 thao t\u00e1c). */\n"
-"\n"
-"/* N\u00fat \"T\u1ea3i l\u1ea1i d\u1eef li\u1ec7u\" tr\u00ean thanh ti\u00eau \u0111\u1ec1.\n"
-"   D\u00f9ng chung b\u1ea3ng m\u00e0u v\u1edbi n\u00fat ch\u00ednh c\u1ee7a tab POS (#btnCheckout, #btnCardAdd)\n"
-"   \u0111\u1ec3 hai tab nh\u00ecn \u0111\u1ed3ng b\u1ed9. */\n"
-"QPushButton#pushButton {\n"
-"	background-color: #1d4ed8;\n"
-"	color: #ffffff;\n"
-"	border: none;\n"
-"	border-radius: 8px;\n"
-"	padding: 0px 14px;\n"
-"	font-size: 13px;\n"
-"	font-weight: bold;\n"
+        Form.setStyleSheet(u"QWidget#Form {\n"
+"    background-color: #f1f5f9;\n"
+"    color: #0f172a;\n"
+"    font-family: \"Segoe UI\", Arial, sans-serif;\n"
 "}\n"
-"QPushButton#pushButton:hover {\n"
-"	backg"
-                        "round-color: #1e3a8a;\n"
+"QWidget {\n"
+"    font-family: \"Segoe UI\", Arial, sans-serif;\n"
 "}\n"
-"QPushButton#pushButton:pressed {\n"
-"	background-color: #1e40af;\n"
-"}\n"
-"/* Tr\u1ea1ng th\u00e1i \"\u0110ang t\u1ea3i...\" khi controller t\u1ea1m kho\u00e1 n\u00fat */\n"
-"QPushButton#pushButton:disabled {\n"
-"	background-color: #cbd5e1;\n"
-"	color: #f8fafc;\n"
+"QLabel {\n"
+"    background-color: transparent;\n"
+"    border: none;\n"
+"    color: #0f172a;\n"
 "}\n"
 "\n"
-"/* Dong mo ta phu ngay duoi tieu de \"Tong quan he thong\" */\n"
-"QLabel#lblDashboardSubtitle {\n"
-"	color: #6b7280;\n"
-"	font-size: 12px;\n"
-"	font-weight: normal;\n"
-"	margin-top: 4px;\n"
+"QLineEdit,\n"
+"QComboBox,\n"
+"QDateEdit,\n"
+"QSpinBox,\n"
+"QDoubleSpinBox {\n"
+"    background-color: #ffffff;\n"
+"    border: 1px solid #e2e8f0;\n"
+"    border-radius: 8px;\n"
+"    padding: 0px 9px;\n"
+"    min-height: 30px;\n"
+"    font-size: 13px;\n"
+"    color: #0f172a;\n"
+"    selection-background-color: #1d4ed8;\n"
+"    selection-color: #ffffff;\n"
 "}\n"
-"\n"
-"/* Ti\u00eau \u0111\u1ec1 kh\u1ed1i \"Giao d\u1ecbch g\u1ea7n \u0111\u00e2y\" */\n"
-"QLabel#lblTableTitle {\n"
-"	font-weight: bold;\n"
-"	font-size: 14px;\n"
-"	color: #1e293b;\n"
+"QTextEdit {\n"
+"    background-color: #ffffff;\n"
+"    border: 1px solid #e2e8f0;\n"
+"    border-radius: 8px;\n"
+"    padding: 8px 10px;\n"
+"    font-size: 13px;\n"
+"    color: #0f172a;\n"
+"    selection-background-color: #1d4ed8;\n"
+"    selection-color: #ffffff;\n"
 "}\n"
-"\n"
-"/* B\u1ea3ng giao d\u1ecbch g\u1ea7n \u0111\u00e2y */\n"
-"QTableWidget#tblRecentTransactions {\n"
-"	border: none;\n"
-"	gridline-color: #f1f5f9;\n"
-"	background-color: white;\n"
+"QLineEdit:hover,\n"
+"QComboBox:hover,\n"
+"QDateEdit:hover,\n"
+"QS"
+                        "pinBox:hover,\n"
+"QDoubleSpinBox:hover,\n"
+"QTextEdit:hover {\n"
+"    border: 1px solid #cbd5e1;\n"
 "}\n"
-"QTableWidget#tblRecentTransactions::item {\n"
-"	padding: 10px;\n"
-"	border-bottom: 1px solid #f8fafc;\n"
+"QLineEdit:focus,\n"
+"QComboBox:focus,\n"
+"QDateEdit:focus,\n"
+"QSpinBox:focus,\n"
+"QDoubleSpinBox:focus,\n"
+"QTextEdit:focus {\n"
+"    border: 1px solid #1d4ed8;\n"
 "}\n"
-"QTableWidget#tblRecentTransa"
-                        "ctions QHeaderView::section {\n"
-"	background-color: #f8fafc;\n"
-"	padding: 8px;\n"
-"	font-weight: bold;\n"
-"	border: none;\n"
-"	color: #475569;\n"
-"}\n"
-"\n"
-"/* Ch\u1eef ch\u00fa th\u00edch d\u01b0\u1edbi 4 \u00f4 thao t\u00e1c nhanh */\n"
-"QLabel#lblQuickActionCaption {\n"
-"	font-size: 12px;\n"
-"	font-weight: bold;\n"
-"	color: #475569;\n"
-"}\n"
-"\n"
-"/* Huy hi\u1ec7u n\u1ec1n bo g\u00f3c ph\u00eda sau icon c\u1ee7a 4 th\u1ebb th\u1ed1ng k\u00ea */\n"
-"QLabel#badgeRevenue  { background-color: #dbeafe; border-radius: 8px; }\n"
-"QLabel#badgeInvoice  { background-color: #ede9fe; border-radius: 8px; }\n"
-"QLabel#badgeStock    { background-color: #fef3c7; border-radius: 8px; }\n"
-"QLabel#badgeCustomer { background-color: #d1fae5; border-radius: 8px; }\n"
-"\n"
-"/* Nh\u00e3n \u0111\u1ed5i m\u00e0u theo d\u1eef li\u1ec7u.\n"
-"   Controller ch\u1ec9 g\u00e1n thu\u1ed9c t\u00ednh \u0111\u1ed9ng trangThai, m\u00e0u do QSS d\u01b0\u1edbi \u0111\u00e2y quy\u1ebft \u0111\u1ecbnh. */\n"
-"QLabel[trangThai=\"tang\"]    { col"
-                        "or: #10b981; font-weight: bold; }\n"
-"QLabel[trangThai=\"giam\"]    { color: #ef4444; font-weight: bold; }\n"
-"QLabel[trangThai=\"giu\"]     { color: #64748b; font-weight: bold; }\n"
-"QLabel[trangThai=\"canhBao\"] { color: #eab308; font-weight: bold; }\n"
-"QLabel[trangThai=\"anToan\"]  { color: #10b981; }\n"
-"\n"
-"/* =========================================================\n"
-"   Thanh cu\u1ed9n - gi\u1eef gi\u1ed1ng h\u1ec7t pos.ui cho \u0111\u1ed3ng b\u1ed9 to\u00e0n app\n"
-"   Tay k\u00e9o bo tr\u00f2n #cbd5e1, hover #94a3b8, r\u1ed9ng 10px, b\u1ecf m\u0169i t\u00ean.\n"
-"   N\u1ebfu \u0111\u1ed5i \u1edf \u0111\u00e2y th\u00ec nh\u1edb s\u1eeda c\u1ea3 pos.ui cho kh\u1edbp.\n"
-"   ========================================================= */\n"
-"\n"
-"\n"
-"/* ===== Vertical scrollbar ===== */\n"
-"\n"
-"QScrollBar:vertical {\n"
+"QLineEdit:disabled,\n"
+"QComboBox:disabled,\n"
+"QDateEdit:disabled,\n"
+"QSpinBox:disabled,\n"
+"QDoubleSpinBox:disabled {\n"
 "    background-color: #f8fafc;\n"
+"    color: #94a3b8;\n"
+"}\n"
+"\n"
+"QComboBox {\n"
+"    background-color: #ffffff;\n"
+"    color: #334155;\n"
+"    border: 1px solid #e2e8f0;\n"
+"    border-radius: 8px;\n"
+"    padding: 0px 8px 0px 12px;\n"
+"    min-height: 26px;\n"
+"    font-size: 12px;\n"
+"    font-weight: bold;\n"
+"}\n"
+"QComboBox:hover {\n"
+"    border: 1px solid #cbd5e1;\n"
+"    color: #0f172a;\n"
+"}\n"
+"QComboBox:on,\n"
+"QComboBox:focus {\n"
+"    background-color: #ffffff;\n"
+"    border: 1px solid #1d4ed8;\n"
+"}\n"
+"QComboBox::drop-down {\n"
+"    subcontrol-origin: padding;\n"
+"    subcontrol-position: cen"
+                        "ter right;\n"
+"    border: none;\n"
+"    background-color: transparent;\n"
+"    width: 26px;\n"
+"}\n"
+"QComboBox::down-arrow {\n"
+"    image: url(assets/images/chevron-down.png);\n"
+"    width: 10px;\n"
+"    height: 10px;\n"
+"}\n"
+"QComboBox::down-arrow:on {\n"
+"    image: url(assets/images/chevron-up.png);\n"
+"}\n"
+"QComboBox QAbstractItemView {\n"
+"    background-color: #ffffff;\n"
+"    border: 1px solid #e2e8f0;\n"
+"    border-radius: 8px;\n"
+"    padding: 4px;\n"
+"    outline: none;\n"
+"    selection-background-color: #f1f5f9;\n"
+"    selection-color: #0f172a;\n"
+"}\n"
+"QComboBox QAbstractItemView::item {\n"
+"    color: #0f172a;\n"
+"    min-height: 30px;\n"
+"    padding: 4px 10px;\n"
+"    border-radius: 6px;\n"
+"}\n"
+"QComboBox QAbstractItemView::item:hover {\n"
+"    background-color: #f1f5f9;\n"
+"    color: #0f172a;\n"
+"}\n"
+"QComboBox QAbstractItemView::item:selected {\n"
+"    background-color: #e2e8f0;\n"
+"    color: #0f172a;\n"
+"}\n"
+"\n"
+"QLabel#lblTimeChartTitle,\n"
+"QLabel#lblCategoryTitle,\n"
+"QLab"
+                        "el#lblTopProductsTitle {\n"
+"    color: #0f172a;\n"
+"    font-size: 15px;\n"
+"    font-weight: 700;\n"
+"}\n"
+"\n"
+"QLabel#lblCardTitle,\n"
+"QLabel[card_title=\"true\"] {\n"
+"    color: #64748b;\n"
+"    font-size: 13px;\n"
+"    font-weight: 600;\n"
+"}\n"
+"\n"
+"QLabel#lblCardValue,\n"
+"QLabel[card_value=\"true\"] {\n"
+"    color: #0f172a;\n"
+"    font-size: 24px;\n"
+"    font-weight: 800;\n"
+"}\n"
+"\n"
+"QWidget#containerTimeChart {\n"
+"    background-color: transparent;\n"
+"}\n"
+"\n"
+"QProgressBar {\n"
+"    background-color: #e2e8f0;\n"
+"    border: none;\n"
+"    border-radius: 3px;\n"
+"    max-height: 7px;\n"
+"    text-align: center;\n"
+"}\n"
+"\n"
+"QProgressBar::chunk {\n"
+"    background-color: #1d4ed8;\n"
+"    border-radius: 3px;\n"
+"}\n"
+"\n"
+"QPushButton#btnDetailLink {\n"
+"    background-color: transparent;\n"
+"    color: #1d4ed8;\n"
+"    border: none;\n"
+"    border-radius: 6px;\n"
+"    padding: 0px 8px;\n"
+"    min-height: 26px;\n"
+"}\n"
+"\n"
+"QSpinBox::up-button,\n"
+"QSpinBox::down-button,\n"
+"QDoubleSp"
+                        "inBox::up-button,\n"
+"QDoubleSpinBox::down-button,\n"
+"QDateEdit::up-button,\n"
+"QDateEdit::down-button {\n"
+"    subcontrol-origin: border;\n"
+"    width: 20px;\n"
+"    border: none;\n"
+"    background-color: transparent;\n"
+"}\n"
+"QSpinBox::up-button,\n"
+"QDoubleSpinBox::up-button,\n"
+"QDateEdit::up-button {\n"
+"    subcontrol-position: top right;\n"
+"}\n"
+"QSpinBox::down-button,\n"
+"QDoubleSpinBox::down-button,\n"
+"QDateEdit::down-button {\n"
+"    subcontrol-position: bottom right;\n"
+"}\n"
+"QSpinBox::up-button:hover,\n"
+"QSpinBox::down-button:hover,\n"
+"QDoubleSpinBox::up-button:hover,\n"
+"QDoubleSpinBox::down-button:hover,\n"
+"QDateEdit::up-button:hover,\n"
+"QDateEdit::down-button:hover {\n"
+"    background-color: #f1f5f9;\n"
+"}\n"
+"QSpinBox::up-arrow,\n"
+"QDoubleSpinBox::up-arrow,\n"
+"QDateEdit::up-arrow {\n"
+"    image: url(assets/images/chevron-up.png);\n"
+"    width: 9px;\n"
+"    height: 9px;\n"
+"}\n"
+"QSpinBox::down-arrow,\n"
+"QDoubleSpinBox::down-arrow,\n"
+"QDateEdit::down-arrow {\n"
+"    image: url"
+                        "(assets/images/chevron-down.png);\n"
+"    width: 9px;\n"
+"    height: 9px;\n"
+"}\n"
+"QCheckBox {\n"
+"    background-color: transparent;\n"
+"    color: #334155;\n"
+"    font-size: 13px;\n"
+"    font-weight: bold;\n"
+"    spacing: 8px;\n"
+"}\n"
+"QCheckBox::indicator {\n"
+"    width: 16px;\n"
+"    height: 16px;\n"
+"    border: 1px solid #cbd5e1;\n"
+"    border-radius: 4px;\n"
+"    background-color: #ffffff;\n"
+"}\n"
+"QCheckBox::indicator:hover {\n"
+"    border: 1px solid #1d4ed8;\n"
+"}\n"
+"QCheckBox::indicator:checked {\n"
+"    background-color: #1d4ed8;\n"
+"    border: 1px solid #1d4ed8;\n"
+"}\n"
+"\n"
+"QPushButton {\n"
+"    background-color: #ffffff;\n"
+"    color: #64748b;\n"
+"    border: 1px solid #e2e8f0;\n"
+"    border-radius: 8px;\n"
+"    padding: 0px 16px;\n"
+"    min-height: 38px;\n"
+"    font-size: 12px;\n"
+"    font-weight: bold;\n"
+"}\n"
+"QPushButton:hover {\n"
+"    background-color: #eff6ff;\n"
+"    color: #1d4ed8;\n"
+"    border: 1px solid #1d4ed8;\n"
+"}\n"
+"QPushButton:pressed {\n"
+"    background-c"
+                        "olor: #dbeafe;\n"
+"}\n"
+"QPushButton:disabled {\n"
+"    background-color: #f8fafc;\n"
+"    color: #cbd5e1;\n"
+"    border: 1px solid #e2e8f0;\n"
+"}\n"
+"QPushButton#RowActionButton {\n"
+"    background-color: transparent;\n"
+"    border: none;\n"
+"    border-radius: 6px;\n"
+"    padding: 0px;\n"
+"    min-width: 28px;\n"
+"    max-width: 28px;\n"
+"    min-height: 28px;\n"
+"    max-height: 28px;\n"
+"}\n"
+"QPushButton#RowActionButton:hover {\n"
+"    background-color: #eff6ff;\n"
+"}\n"
+"QPushButton#RowActionButton:pressed {\n"
+"    background-color: #dbeafe;\n"
+"}\n"
+"\n"
+"QTableWidget {\n"
+"    background-color: transparent;\n"
+"    border: none;\n"
+"    gridline-color: #f1f5f9;\n"
+"    font-size: 13px;\n"
+"    color: #334155;\n"
+"    outline: none;\n"
+"}\n"
+"QTableWidget::item {\n"
+"    padding: 8px;\n"
+"    border-bottom: 1px solid #f1f5f9;\n"
+"}\n"
+"QTableWidget::item:selected {\n"
+"    background-color: #eff6ff;\n"
+"    color: #1d4ed8;\n"
+"}\n"
+"QHeaderView {\n"
+"    background-color: #f8fafc;\n"
+"    border: n"
+                        "one;\n"
+"    border-bottom: 1px solid #e2e8f0;\n"
+"}\n"
+"QHeaderView::section {\n"
+"    background-color: #f8fafc;\n"
+"    color: #64748b;\n"
+"    font-size: 11px;\n"
+"    font-weight: 700;\n"
+"    padding: 10px 8px;\n"
+"    border: none;\n"
+"    border-bottom: 1px solid #e2e8f0;\n"
+"}\n"
+"QTableCornerButton::section {\n"
+"    background-color: #f8fafc;\n"
+"    border: none;\n"
+"}\n"
+"\n"
+"QLabel[badge=\"info\"] {\n"
+"    background-color: #dbeafe;\n"
+"    color: #1d4ed8;\n"
+"    border-radius: 6px;\n"
+"    padding: 3px 10px;\n"
+"    font-size: 11px;\n"
+"    font-weight: 700;\n"
+"}\n"
+"QLabel[badge=\"success\"] {\n"
+"    background-color: #d1fae5;\n"
+"    color: #059669;\n"
+"    border-radius: 6px;\n"
+"    padding: 3px 10px;\n"
+"    font-size: 11px;\n"
+"    font-weight: 700;\n"
+"}\n"
+"QLabel[badge=\"warning\"] {\n"
+"    background-color: #ffedd5;\n"
+"    color: #ea580c;\n"
+"    border-radius: 6px;\n"
+"    padding: 3px 10px;\n"
+"    font-size: 11px;\n"
+"    font-weight: 700;\n"
+"}\n"
+"QLabel[badge=\"danger\"] {"
+                        "\n"
+"    background-color: #fee2e2;\n"
+"    color: #dc2626;\n"
+"    border-radius: 6px;\n"
+"    padding: 3px 10px;\n"
+"    font-size: 11px;\n"
+"    font-weight: 700;\n"
+"}\n"
+"QLabel[badge=\"neutral\"] {\n"
+"    background-color: #e2e8f0;\n"
+"    color: #64748b;\n"
+"    border-radius: 6px;\n"
+"    padding: 3px 10px;\n"
+"    font-size: 11px;\n"
+"    font-weight: 700;\n"
+"}\n"
+"QLabel[badge=\"violet\"] {\n"
+"    background-color: #ede9fe;\n"
+"    color: #6d28d9;\n"
+"    border-radius: 6px;\n"
+"    padding: 3px 10px;\n"
+"    font-size: 11px;\n"
+"    font-weight: 700;\n"
+"}\n"
+"QLabel[trend=\"up\"] {\n"
+"    background-color: #ecfdf5;\n"
+"    color: #059669;\n"
+"    border-radius: 4px;\n"
+"    padding: 2px 6px;\n"
+"    font-size: 11px;\n"
+"    font-weight: 700;\n"
+"}\n"
+"QLabel[trend=\"down\"] {\n"
+"    background-color: #fef2f2;\n"
+"    color: #dc2626;\n"
+"    border-radius: 4px;\n"
+"    padding: 2px 6px;\n"
+"    font-size: 11px;\n"
+"    font-weight: 700;\n"
+"}\n"
+"QLabel[trend=\"flat\"] {\n"
+"    background-colo"
+                        "r: #f1f5f9;\n"
+"    color: #64748b;\n"
+"    border-radius: 4px;\n"
+"    padding: 2px 6px;\n"
+"    font-size: 11px;\n"
+"    font-weight: 700;\n"
+"}\n"
+"QLabel[state=\"up\"] {\n"
+"    color: #10b981;\n"
+"    font-weight: bold;\n"
+"}\n"
+"QLabel[state=\"down\"] {\n"
+"    color: #ef4444;\n"
+"    font-weight: bold;\n"
+"}\n"
+"QLabel[state=\"flat\"] {\n"
+"    color: #64748b;\n"
+"    font-weight: bold;\n"
+"}\n"
+"QLabel[state=\"warning\"] {\n"
+"    color: #eab308;\n"
+"    font-weight: bold;\n"
+"}\n"
+"QLabel[state=\"safe\"] {\n"
+"    color: #10b981;\n"
+"}\n"
+"\n"
+"QScrollArea {\n"
+"    background-color: transparent;\n"
+"    border: none;\n"
+"}\n"
+"QScrollArea > QWidget > QWidget {\n"
+"    background-color: transparent;\n"
+"}\n"
+"QAbstractScrollArea::viewport {\n"
+"    background-color: transparent;\n"
+"}\n"
+"QScrollBar:vertical {\n"
+"    background-color: transparent;\n"
 "    width: 10px;\n"
 "    margin: 0px;\n"
 "    border: none;\n"
 "}\n"
-"\n"
 "QScrollBar::handle:vertical {\n"
 "    background-color: #cbd5e1;\n"
-"    m"
-                        "in-height: 35px;\n"
+"    min-heig"
+                        "ht: 35px;\n"
 "    border-radius: 5px;\n"
 "}\n"
-"\n"
 "QScrollBar::handle:vertical:hover {\n"
 "    background-color: #94a3b8;\n"
 "}\n"
-"\n"
 "QScrollBar::handle:vertical:pressed {\n"
 "    background-color: #64748b;\n"
 "}\n"
-"\n"
 "QScrollBar::add-line:vertical,\n"
 "QScrollBar::sub-line:vertical {\n"
 "    height: 0px;\n"
@@ -149,7 +470,6 @@ class Ui_Form(object):
 "    background: transparent;\n"
 "    border: none;\n"
 "}\n"
-"\n"
 "QScrollBar::up-arrow:vertical,\n"
 "QScrollBar::down-arrow:vertical {\n"
 "    width: 0px;\n"
@@ -157,37 +477,28 @@ class Ui_Form(object):
 "    background: transparent;\n"
 "    border: none;\n"
 "}\n"
-"\n"
 "QScrollBar::add-page:vertical,\n"
 "QScrollBar::sub-page:vertical {\n"
 "    background: transparent;\n"
 "}\n"
-"\n"
-"\n"
-"/* ===== Horizontal scrollbar ===== */\n"
-"\n"
 "QScrollBar:horizontal {\n"
-"    background-color: #f8fafc;\n"
+"    background-color: transparent;\n"
 "    height: 10px;\n"
 "    margin: 0px;\n"
 "    border: none;\n"
 "}\n"
-"\n"
 "QScrollBar::handle:horizontal {\n"
 "    background-color: #cbd5e1;\n"
 "    min-width: 35px;\n"
 "    border-radius: 5px;\n"
 "}\n"
-""
-                        "\n"
 "QScrollBar::handle:horizontal:hover {\n"
 "    background-color: #94a3b8;\n"
 "}\n"
-"\n"
-"QScrollBar::handle:horizontal:pressed {\n"
+"QScr"
+                        "ollBar::handle:horizontal:pressed {\n"
 "    background-color: #64748b;\n"
 "}\n"
-"\n"
 "QScrollBar::add-line:horizontal,\n"
 "QScrollBar::sub-line:horizontal {\n"
 "    width: 0px;\n"
@@ -195,7 +506,6 @@ class Ui_Form(object):
 "    background: transparent;\n"
 "    border: none;\n"
 "}\n"
-"\n"
 "QScrollBar::left-arrow:horizontal,\n"
 "QScrollBar::right-arrow:horizontal {\n"
 "    width: 0px;\n"
@@ -203,10 +513,155 @@ class Ui_Form(object):
 "    background: transparent;\n"
 "    border: none;\n"
 "}\n"
-"\n"
 "QScrollBar::add-page:horizontal,\n"
 "QScrollBar::sub-page:horizontal {\n"
 "    background: transparent;\n"
+"}\n"
+"\n"
+"QMenu {\n"
+"    background-color: #ffffff;\n"
+"    border: 1px solid #e2e8f0;\n"
+"    border-radius: 8px;\n"
+"    padding: 6px;\n"
+"}\n"
+"QMenu::item {\n"
+"    background-color: transparent;\n"
+"    color: #334155;\n"
+"    border-radius: 6px;\n"
+"    padding: 7px 18px;\n"
+"    font-size: 13px;\n"
+"}\n"
+"QMenu::item:selected {\n"
+"    background-color: #eff6ff;\n"
+"    color: #1d4ed8;\n"
+"}\n"
+"QMenu::separator {\n"
+"    height: 1px;\n"
+"    background-color: #e2"
+                        "e8f0;\n"
+"    margin: 6px 4px;\n"
+"}\n"
+"\n"
+"QFrame#frame,\n"
+"QFrame#frame_2,\n"
+"QFrame#frame_3,\n"
+"QFrame#frame_4,\n"
+"QFrame#frame_5,\n"
+"QFrame#frame_10,\n"
+"QFrame#frame_12,\n"
+"QFrame#frame_13,\n"
+"QFrame#frame_18 {\n"
+"    background-color: transparent;\n"
+"    border: none;\n"
+"}\n"
+"\n"
+"QFrame#frame_14,\n"
+"QFrame#frame_15,\n"
+"QFrame#frame_16,\n"
+"QFrame#frame_17 {\n"
+"    background-color: #ffffff;\n"
+"    border: 1px solid #e2e8f0;\n"
+"    border-radius: 10px;\n"
+"    padding: 3px 8px;\n"
+"}\n"
+"\n"
+"QFrame#frame_6,\n"
+"QFrame#frame_chart,\n"
+"QFrame#frame_table {\n"
+"    background-color: #ffffff;\n"
+"    border: 1px solid #e2e8f0;\n"
+"    border-radius: 10px;\n"
+"}\n"
+"\n"
+"QFrame#frame_7,\n"
+"QFrame#frame_8,\n"
+"QFrame#frame_9,\n"
+"QFrame#frame_11 {\n"
+"    background-color: #f1f5f9;\n"
+"    border: 1px solid #e2e8f0;\n"
+"    border-radius: 10px;\n"
+"}\n"
+"QFrame#frame_7:hover,\n"
+"QFrame#frame_8:hover,\n"
+"QFrame#frame_9:hover,\n"
+"QFrame#frame_11:hover {\n"
+"    background-color: #e2e8f0;\n"
+""
+                        "    border: 1px solid #cbd5e1;\n"
+"}\n"
+"\n"
+"QLabel#lblDashboardTitle {\n"
+"    color: #0f172a;\n"
+"    padding: 0px;\n"
+"    margin: 0px;\n"
+"}\n"
+"\n"
+"QLabel#lblDashboardSubtitle {\n"
+"    color: #6b7280;\n"
+"    font-size: 12px;\n"
+"    font-weight: normal;\n"
+"    margin-top: 4px;\n"
+"}\n"
+"\n"
+"QLabel#lblTableTitle {\n"
+"    color: #0f172a;\n"
+"    font-size: 14px;\n"
+"    font-weight: bold;\n"
+"}\n"
+"\n"
+"QPushButton#btnRefresh {\n"
+"    background-color: #1d4ed8;\n"
+"    color: #ffffff;\n"
+"    border: none;\n"
+"    border-radius: 8px;\n"
+"    padding: 0px 20px;\n"
+"    min-height: 38px;\n"
+"    font-size: 13px;\n"
+"    font-weight: 700;\n"
+"}\n"
+"QPushButton#btnRefresh:hover {\n"
+"    background-color: #1e3a8a;\n"
+"}\n"
+"QPushButton#btnRefresh:pressed {\n"
+"    background-color: #1e40af;\n"
+"}\n"
+"QPushButton#btnRefresh:disabled {\n"
+"    background-color: #cbd5e1;\n"
+"    color: #f8fafc;\n"
+"}\n"
+"\n"
+"QLabel#badgeRevenue {\n"
+"    background-color: #dbeafe;\n"
+"    border-radius: 8px;\n"
+"}\n"
+"QLa"
+                        "bel#badgeInvoice {\n"
+"    background-color: #ede9fe;\n"
+"    border-radius: 8px;\n"
+"}\n"
+"QLabel#badgeStock {\n"
+"    background-color: #fef3c7;\n"
+"    border-radius: 8px;\n"
+"}\n"
+"QLabel#badgeCustomer {\n"
+"    background-color: #d1fae5;\n"
+"    border-radius: 8px;\n"
+"}\n"
+"\n"
+"QLabel#lblQuickActionCaption {\n"
+"    font-size: 12px;\n"
+"    font-weight: bold;\n"
+"    color: #334155;\n"
+"}\n"
+"\n"
+"QLabel#label_4,\n"
+"QLabel#label_10,\n"
+"QLabel#label_8,\n"
+"QLabel#label_6 {\n"
+"    color: #64748b;\n"
+"    font-size: 13px;\n"
+"    font-weight: 600;\n"
+"	font: bold;\n"
 "}")
         self.horizontalLayout = QHBoxLayout(Form)
         self.horizontalLayout.setObjectName(u"horizontalLayout")
@@ -238,13 +693,6 @@ class Ui_Form(object):
         sizePolicy1.setVerticalStretch(0)
         sizePolicy1.setHeightForWidth(self.frame_10.sizePolicy().hasHeightForWidth())
         self.frame_10.setSizePolicy(sizePolicy1)
-        self.frame_10.setStyleSheet(u"#frame_10 {\n"
-"		background-color: transparent;\n"
-"		color: black;\n"
-"		border: none;\n"
-"		outline: none;\n"
-"		padding: 0px;\n"
-"}")
         self.frame_10.setFrameShape(QFrame.Shape.NoFrame)
         self.frame_10.setFrameShadow(QFrame.Shadow.Raised)
         self.formLayout = QFormLayout(self.frame_10)
@@ -252,19 +700,16 @@ class Ui_Form(object):
         self.formLayout.setHorizontalSpacing(0)
         self.formLayout.setVerticalSpacing(0)
         self.formLayout.setContentsMargins(0, 2, 0, 12)
-        self.label = QLabel(self.frame_10)
-        self.label.setObjectName(u"label")
-        self.label.setMinimumSize(QSize(90, 0))
+        self.lblDashboardTitle = QLabel(self.frame_10)
+        self.lblDashboardTitle.setObjectName(u"lblDashboardTitle")
+        self.lblDashboardTitle.setMinimumSize(QSize(90, 0))
         font = QFont()
+        font.setFamilies([u"Segoe UI"])
         font.setPointSize(18)
         font.setBold(True)
-        self.label.setFont(font)
-        self.label.setStyleSheet(u"QLabel {\n"
-"	padding: 0px;\n"
-"	margin: 0px;\n"
-"}")
+        self.lblDashboardTitle.setFont(font)
 
-        self.formLayout.setWidget(0, QFormLayout.ItemRole.LabelRole, self.label)
+        self.formLayout.setWidget(0, QFormLayout.ItemRole.LabelRole, self.lblDashboardTitle)
 
         self.lblDashboardSubtitle = QLabel(self.frame_10)
         self.lblDashboardSubtitle.setObjectName(u"lblDashboardSubtitle")
@@ -272,7 +717,7 @@ class Ui_Form(object):
         self.formLayout.setWidget(1, QFormLayout.ItemRole.LabelRole, self.lblDashboardSubtitle)
 
         self.lblDashboardSubtitle.raise_()
-        self.label.raise_()
+        self.lblDashboardTitle.raise_()
 
         self.horizontalLayout_2.addWidget(self.frame_10)
 
@@ -280,13 +725,13 @@ class Ui_Form(object):
 
         self.horizontalLayout_2.addItem(self.horizontalSpacer)
 
-        self.pushButton = QPushButton(self.frame)
-        self.pushButton.setObjectName(u"pushButton")
-        self.pushButton.setMinimumSize(QSize(140, 40))
-        self.pushButton.setMaximumSize(QSize(140, 40))
-        self.pushButton.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
+        self.btnRefresh = QPushButton(self.frame)
+        self.btnRefresh.setObjectName(u"btnRefresh")
+        self.btnRefresh.setMinimumSize(QSize(140, 38))
+        self.btnRefresh.setMaximumSize(QSize(140, 40))
+        self.btnRefresh.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
 
-        self.horizontalLayout_2.addWidget(self.pushButton)
+        self.horizontalLayout_2.addWidget(self.btnRefresh)
 
 
         self.verticalLayout.addWidget(self.frame)
@@ -310,7 +755,6 @@ class Ui_Form(object):
         sizePolicy3.setVerticalStretch(0)
         sizePolicy3.setHeightForWidth(self.frame_4.sizePolicy().hasHeightForWidth())
         self.frame_4.setSizePolicy(sizePolicy3)
-        self.frame_4.setStyleSheet(u"")
         self.frame_4.setFrameShape(QFrame.Shape.NoFrame)
         self.frame_4.setFrameShadow(QFrame.Shadow.Raised)
         self.gridLayout = QGridLayout(self.frame_4)
@@ -324,11 +768,6 @@ class Ui_Form(object):
         sizePolicy4.setVerticalStretch(0)
         sizePolicy4.setHeightForWidth(self.frame_6.sizePolicy().hasHeightForWidth())
         self.frame_6.setSizePolicy(sizePolicy4)
-        self.frame_6.setStyleSheet(u"#frame_6 {\n"
-"	background-color: white;\n"
-"	border-radius: 10px;\n"
-"	border: 1px solid #e2e8f0;\n"
-"}")
         self.frame_6.setFrameShape(QFrame.Shape.NoFrame)
         self.frame_6.setFrameShadow(QFrame.Shadow.Raised)
         self.gridLayout_2 = QGridLayout(self.frame_6)
@@ -343,16 +782,6 @@ class Ui_Form(object):
         sizePolicy5.setHeightForWidth(self.frame_8.sizePolicy().hasHeightForWidth())
         self.frame_8.setSizePolicy(sizePolicy5)
         self.frame_8.setMinimumSize(QSize(150, 0))
-        self.frame_8.setStyleSheet(u"QFrame#frame_8 {\n"
-"	background-color: #f1f5f9;\n"
-"	border-radius: 10px;\n"
-"	border: 1px solid #e2e8f0;\n"
-"}\n"
-"\n"
-"QFrame#frame_8:hover {\n"
-"	background-color: #e2e8f0;\n"
-"	border: 1px solid #cbd5e1;\n"
-"}")
         self.frame_8.setFrameShape(QFrame.Shape.StyledPanel)
         self.frame_8.setFrameShadow(QFrame.Shadow.Raised)
 
@@ -363,16 +792,6 @@ class Ui_Form(object):
         sizePolicy5.setHeightForWidth(self.frame_9.sizePolicy().hasHeightForWidth())
         self.frame_9.setSizePolicy(sizePolicy5)
         self.frame_9.setMinimumSize(QSize(150, 0))
-        self.frame_9.setStyleSheet(u"QFrame#frame_9 {\n"
-"	background-color: #f1f5f9;\n"
-"	border-radius: 10px;\n"
-"	border: 1px solid #e2e8f0;\n"
-"}\n"
-"\n"
-"QFrame#frame_9:hover {\n"
-"	background-color: #e2e8f0;\n"
-"	border: 1px solid #cbd5e1;\n"
-"}")
         self.frame_9.setFrameShape(QFrame.Shape.StyledPanel)
         self.frame_9.setFrameShadow(QFrame.Shadow.Raised)
 
@@ -387,7 +806,7 @@ class Ui_Form(object):
         self.label_3 = QLabel(self.frame_12)
         self.label_3.setObjectName(u"label_3")
         font1 = QFont()
-        font1.setFamilies([u"MS Shell Dlg 2"])
+        font1.setFamilies([u"Segoe UI"])
         font1.setPointSize(10)
         font1.setBold(True)
         self.label_3.setFont(font1)
@@ -402,16 +821,6 @@ class Ui_Form(object):
         sizePolicy5.setHeightForWidth(self.frame_11.sizePolicy().hasHeightForWidth())
         self.frame_11.setSizePolicy(sizePolicy5)
         self.frame_11.setMinimumSize(QSize(150, 0))
-        self.frame_11.setStyleSheet(u"QFrame#frame_11 {\n"
-"	background-color: #f1f5f9;\n"
-"	border-radius: 10px;\n"
-"	border: 1px solid #e2e8f0;\n"
-"}\n"
-"\n"
-"QFrame#frame_11:hover {\n"
-"	background-color: #e2e8f0;\n"
-"	border: 1px solid #cbd5e1;\n"
-"}")
         self.frame_11.setFrameShape(QFrame.Shape.StyledPanel)
         self.frame_11.setFrameShadow(QFrame.Shadow.Raised)
 
@@ -422,16 +831,6 @@ class Ui_Form(object):
         sizePolicy5.setHeightForWidth(self.frame_7.sizePolicy().hasHeightForWidth())
         self.frame_7.setSizePolicy(sizePolicy5)
         self.frame_7.setMinimumSize(QSize(150, 0))
-        self.frame_7.setStyleSheet(u"QFrame#frame_7 {\n"
-"	background-color: #f1f5f9;\n"
-"	border-radius: 10px;\n"
-"	border: 1px solid #e2e8f0;\n"
-"}\n"
-"\n"
-"QFrame#frame_7:hover {\n"
-"	background-color: #e2e8f0;\n"
-"	border: 1px solid #cbd5e1;\n"
-"}")
         self.frame_7.setFrameShape(QFrame.Shape.StyledPanel)
         self.frame_7.setFrameShadow(QFrame.Shadow.Raised)
 
@@ -447,7 +846,6 @@ class Ui_Form(object):
         sizePolicy6.setVerticalStretch(0)
         sizePolicy6.setHeightForWidth(self.frame_5.sizePolicy().hasHeightForWidth())
         self.frame_5.setSizePolicy(sizePolicy6)
-        self.frame_5.setStyleSheet(u"")
         self.frame_5.setFrameShape(QFrame.Shape.NoFrame)
         self.frame_5.setFrameShadow(QFrame.Shadow.Raised)
         self.verticalLayout_3 = QVBoxLayout(self.frame_5)
@@ -466,12 +864,6 @@ class Ui_Form(object):
         self.frame_17.setObjectName(u"frame_17")
         sizePolicy5.setHeightForWidth(self.frame_17.sizePolicy().hasHeightForWidth())
         self.frame_17.setSizePolicy(sizePolicy5)
-        self.frame_17.setStyleSheet(u"#frame_17 {\n"
-"		background-color: white;\n"
-"		border-radius: 10px;\n"
-"		padding: 3px 8px;\n"
-"		border: 1px solid #e2e8f0; \n"
-"}")
         self.frame_17.setFrameShape(QFrame.Shape.StyledPanel)
         self.frame_17.setFrameShadow(QFrame.Shadow.Raised)
         self.verticalLayout_5 = QVBoxLayout(self.frame_17)
@@ -479,8 +871,9 @@ class Ui_Form(object):
         self.label_6 = QLabel(self.frame_17)
         self.label_6.setObjectName(u"label_6")
         font2 = QFont()
-        font2.setPointSize(11)
+        font2.setFamilies([u"Segoe UI"])
         font2.setBold(True)
+        font2.setItalic(False)
         self.label_6.setFont(font2)
 
         self.verticalLayout_5.addWidget(self.label_6)
@@ -488,7 +881,9 @@ class Ui_Form(object):
         self.label_14 = QLabel(self.frame_17)
         self.label_14.setObjectName(u"label_14")
         font3 = QFont()
+        font3.setFamilies([u"Segoe UI"])
         font3.setPointSize(20)
+        font3.setBold(True)
         self.label_14.setFont(font3)
 
         self.verticalLayout_5.addWidget(self.label_14)
@@ -505,12 +900,6 @@ class Ui_Form(object):
         self.frame_16.setObjectName(u"frame_16")
         sizePolicy5.setHeightForWidth(self.frame_16.sizePolicy().hasHeightForWidth())
         self.frame_16.setSizePolicy(sizePolicy5)
-        self.frame_16.setStyleSheet(u"#frame_16 {\n"
-"		background-color:  white;\n"
-"		border-radius: 10px;\n"
-"		padding: 3px 8px;\n"
-"		border: 1px solid #e2e8f0; \n"
-"}")
         self.frame_16.setFrameShape(QFrame.Shape.StyledPanel)
         self.frame_16.setFrameShadow(QFrame.Shadow.Raised)
         self.verticalLayout_6 = QVBoxLayout(self.frame_16)
@@ -539,12 +928,6 @@ class Ui_Form(object):
         self.frame_15.setObjectName(u"frame_15")
         sizePolicy5.setHeightForWidth(self.frame_15.sizePolicy().hasHeightForWidth())
         self.frame_15.setSizePolicy(sizePolicy5)
-        self.frame_15.setStyleSheet(u"#frame_15 {\n"
-"		background-color: white;\n"
-"		border-radius: 10px;\n"
-"		padding: 3px 8px;\n"
-"		border: 1px solid #e2e8f0; \n"
-"}")
         self.frame_15.setFrameShape(QFrame.Shape.StyledPanel)
         self.frame_15.setFrameShadow(QFrame.Shadow.Raised)
         self.verticalLayout_7 = QVBoxLayout(self.frame_15)
@@ -557,10 +940,7 @@ class Ui_Form(object):
 
         self.label_11 = QLabel(self.frame_15)
         self.label_11.setObjectName(u"label_11")
-        font4 = QFont()
-        font4.setPointSize(20)
-        font4.setBold(False)
-        self.label_11.setFont(font4)
+        self.label_11.setFont(font3)
 
         self.verticalLayout_7.addWidget(self.label_11)
 
@@ -576,25 +956,54 @@ class Ui_Form(object):
         self.frame_14.setObjectName(u"frame_14")
         sizePolicy5.setHeightForWidth(self.frame_14.sizePolicy().hasHeightForWidth())
         self.frame_14.setSizePolicy(sizePolicy5)
-        self.frame_14.setStyleSheet(u"#frame_14 {\n"
-"		background-color: white;\n"
-"		border-radius: 10px;\n"
-"		padding: 3px 8px;\n"
-"		border: 1px solid #e2e8f0; \n"
-"}")
         self.frame_14.setFrameShape(QFrame.Shape.StyledPanel)
         self.frame_14.setFrameShadow(QFrame.Shadow.Raised)
         self.verticalLayout_4 = QVBoxLayout(self.frame_14)
         self.verticalLayout_4.setObjectName(u"verticalLayout_4")
         self.label_4 = QLabel(self.frame_14)
         self.label_4.setObjectName(u"label_4")
+        palette = QPalette()
+        brush = QBrush(QColor(100, 116, 139, 255))
+        brush.setStyle(Qt.BrushStyle.SolidPattern)
+        palette.setBrush(QPalette.ColorGroup.Active, QPalette.ColorRole.WindowText, brush)
+        brush1 = QBrush(QColor(0, 0, 0, 0))
+        brush1.setStyle(Qt.BrushStyle.SolidPattern)
+        palette.setBrush(QPalette.ColorGroup.Active, QPalette.ColorRole.Button, brush1)
+        palette.setBrush(QPalette.ColorGroup.Active, QPalette.ColorRole.Text, brush)
+        palette.setBrush(QPalette.ColorGroup.Active, QPalette.ColorRole.ButtonText, brush)
+        palette.setBrush(QPalette.ColorGroup.Active, QPalette.ColorRole.Base, brush1)
+        palette.setBrush(QPalette.ColorGroup.Active, QPalette.ColorRole.Window, brush1)
+        brush2 = QBrush(QColor(100, 116, 139, 128))
+        brush2.setStyle(Qt.BrushStyle.SolidPattern)
+#if QT_VERSION >= QT_VERSION_CHECK(5, 12, 0)
+        palette.setBrush(QPalette.ColorGroup.Active, QPalette.ColorRole.PlaceholderText, brush2)
+#endif
+        palette.setBrush(QPalette.ColorGroup.Inactive, QPalette.ColorRole.WindowText, brush)
+        palette.setBrush(QPalette.ColorGroup.Inactive, QPalette.ColorRole.Button, brush1)
+        palette.setBrush(QPalette.ColorGroup.Inactive, QPalette.ColorRole.Text, brush)
+        palette.setBrush(QPalette.ColorGroup.Inactive, QPalette.ColorRole.ButtonText, brush)
+        palette.setBrush(QPalette.ColorGroup.Inactive, QPalette.ColorRole.Base, brush1)
+        palette.setBrush(QPalette.ColorGroup.Inactive, QPalette.ColorRole.Window, brush1)
+#if QT_VERSION >= QT_VERSION_CHECK(5, 12, 0)
+        palette.setBrush(QPalette.ColorGroup.Inactive, QPalette.ColorRole.PlaceholderText, brush2)
+#endif
+        palette.setBrush(QPalette.ColorGroup.Disabled, QPalette.ColorRole.WindowText, brush)
+        palette.setBrush(QPalette.ColorGroup.Disabled, QPalette.ColorRole.Button, brush1)
+        palette.setBrush(QPalette.ColorGroup.Disabled, QPalette.ColorRole.Text, brush)
+        palette.setBrush(QPalette.ColorGroup.Disabled, QPalette.ColorRole.ButtonText, brush)
+        palette.setBrush(QPalette.ColorGroup.Disabled, QPalette.ColorRole.Base, brush1)
+        palette.setBrush(QPalette.ColorGroup.Disabled, QPalette.ColorRole.Window, brush1)
+#if QT_VERSION >= QT_VERSION_CHECK(5, 12, 0)
+        palette.setBrush(QPalette.ColorGroup.Disabled, QPalette.ColorRole.PlaceholderText, brush2)
+#endif
+        self.label_4.setPalette(palette)
         self.label_4.setFont(font2)
 
         self.verticalLayout_4.addWidget(self.label_4)
 
         self.label_5 = QLabel(self.frame_14)
         self.label_5.setObjectName(u"label_5")
-        self.label_5.setFont(font4)
+        self.label_5.setFont(font3)
 
         self.verticalLayout_4.addWidget(self.label_5)
 
@@ -641,11 +1050,6 @@ class Ui_Form(object):
         sizePolicy8.setVerticalStretch(0)
         sizePolicy8.setHeightForWidth(self.frame_chart.sizePolicy().hasHeightForWidth())
         self.frame_chart.setSizePolicy(sizePolicy8)
-        self.frame_chart.setStyleSheet(u"QFrame#frame_chart { \n"
-"	background-color: white; \n"
-"	border-radius: 10px; \n"
-"	border: 1px solid #e2e8f0; \n"
-"}")
         self.frame_chart.setFrameShape(QFrame.Shape.StyledPanel)
         self.verticalLayout_8 = QVBoxLayout(self.frame_chart)
         self.verticalLayout_8.setSpacing(10)
@@ -655,9 +1059,6 @@ class Ui_Form(object):
         self.frame_18.setObjectName(u"frame_18")
         self.frame_18.setMinimumSize(QSize(0, 32))
         self.frame_18.setMaximumSize(QSize(16777215, 32))
-        self.frame_18.setStyleSheet(u"#frame_18{\n"
-"	padding: 0px;\n"
-"}")
         self.frame_18.setFrameShape(QFrame.Shape.NoFrame)
         self.frame_18.setFrameShadow(QFrame.Shadow.Raised)
         self.horizontalLayout_5 = QHBoxLayout(self.frame_18)
@@ -688,8 +1089,7 @@ class Ui_Form(object):
         self.comboBox.addItem("")
         self.comboBox.addItem("")
         self.comboBox.setObjectName(u"comboBox")
-        self.comboBox.setMaximumSize(QSize(90, 16777215))
-        self.comboBox.setStyleSheet(u"")
+        self.comboBox.setMaximumSize(QSize(100, 16777215))
 
         self.horizontalLayout_5.addWidget(self.comboBox)
 
@@ -711,11 +1111,6 @@ class Ui_Form(object):
         sizePolicy9.setVerticalStretch(0)
         sizePolicy9.setHeightForWidth(self.frame_table.sizePolicy().hasHeightForWidth())
         self.frame_table.setSizePolicy(sizePolicy9)
-        self.frame_table.setStyleSheet(u"QFrame#frame_table { \n"
-"	background-color: white; \n"
-"	border-radius: 10px; \n"
-"	border: 1px solid #e2e8f0; \n"
-"}")
         self.frame_table.setFrameShape(QFrame.Shape.StyledPanel)
 
         self.horizontalLayout_bottom.addWidget(self.frame_table)
@@ -734,9 +1129,9 @@ class Ui_Form(object):
 
     def retranslateUi(self, Form):
         Form.setWindowTitle(QCoreApplication.translate("Form", u"Form", None))
-        self.label.setText(QCoreApplication.translate("Form", u"T\u1ed5ng quan h\u1ec7 th\u1ed1ng", None))
+        self.lblDashboardTitle.setText(QCoreApplication.translate("Form", u"T\u1ed5ng quan h\u1ec7 th\u1ed1ng", None))
         self.lblDashboardSubtitle.setText(QCoreApplication.translate("Form", u"Theo d\u00f5i doanh thu, h\u00f3a \u0111\u01a1n v\u00e0 ho\u1ea1t \u0111\u1ed9ng kinh doanh trong ng\u00e0y", None))
-        self.pushButton.setText(QCoreApplication.translate("Form", u"T\u1ea3i l\u1ea1i d\u1eef li\u1ec7u", None))
+        self.btnRefresh.setText(QCoreApplication.translate("Form", u"T\u1ea3i l\u1ea1i d\u1eef li\u1ec7u", None))
         self.label_3.setText(QCoreApplication.translate("Form", u"Thao t\u00e1c nhanh", None))
         self.label_6.setText(QCoreApplication.translate("Form", u"T\u1ed5ng h\u00f3a \u0111\u01a1n", None))
         self.label_14.setText(QCoreApplication.translate("Form", u"S\u1ed1 h\u00f3a \u0111\u01a1n", None))

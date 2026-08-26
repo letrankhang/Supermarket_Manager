@@ -14,11 +14,13 @@ class CustomerDetailDTO:
     discount_percent: int
     created_at: Optional[datetime]
 
+
 @dataclass
 class CustomerManagementDTO:
     customers: List[CustomerDetailDTO]
     total_count: int
     tier_summary: Dict[str, int]
+
 
 @dataclass
 class CustomerFormDTO:

@@ -27,6 +27,7 @@ class CustomerRepositoryImpl(CustomerRepository):
             logger.error("Lỗi khi truy vấn khách hàng (keyword=%s): %s", keyword, e)
             raise e
 
+
     def _apply_keyword_filter(self, query: Query, keyword: Optional[str]) -> Query:
         cleaned_keyword = (keyword or "").strip()
         if not cleaned_keyword:

@@ -1,7 +1,3 @@
-# File: src/services/impl/ProductServiceImpl.py
-"""Trien khai nghiep vu Quan ly San pham. Nhan vao/tra ra DTO, khong lo Entity ra ngoai."""
-from __future__ import annotations
-
 import logging
 from typing import List, Optional
 
@@ -19,8 +15,8 @@ logger = logging.getLogger(__name__)
 class ProductServiceImpl(ProductService):
 
     def __init__(self, repository: Optional[ProductRepository] = None) -> None:
-        # Cho phep inject repository khac khi test (mock), mac dinh dung Impl that.
         self._repo: ProductRepository = repository or ProductRepositoryImpl()
+
 
     def search_products(
         self, keyword: str = "", category_id: Optional[int] = None
@@ -33,6 +29,7 @@ class ProductServiceImpl(ProductService):
             logger.exception("Loi khi tim kiem san pham")
             raise RuntimeError("Khong the tim kiem san pham. Vui long thu lai.")
 
+
     def get_all_products(self) -> List[ProductDTO]:
         try:
             with Database.get_session_ctx() as session:
@@ -41,6 +38,7 @@ class ProductServiceImpl(ProductService):
         except Exception:
             logger.exception("Loi khi lay danh sach san pham")
             raise RuntimeError("Khong the tai danh sach san pham. Vui long thu lai.")
+
 
     def get_product_by_id(self, product_id: int) -> Optional[ProductDTO]:
         try:
@@ -54,8 +52,8 @@ class ProductServiceImpl(ProductService):
             logger.exception("Loi khi lay san pham id=%s", product_id)
             raise RuntimeError("Khong the tai thong tin san pham. Vui long thu lai.")
 
+
     def get_low_stock_products(self) -> List[ProductDTO]:
-        """Nguong canh bao het hang lay tu config, khong hard-code."""
         try:
             threshold: int = POSSettings.LOW_STOCK_THRESHOLD
             with Database.get_session_ctx() as session:
@@ -64,6 +62,7 @@ class ProductServiceImpl(ProductService):
         except Exception:
             logger.exception("Loi khi lay danh sach san pham sap het hang")
             raise RuntimeError("Khong the tai danh sach san pham sap het hang.")
+
 
     def create_product(self, dto: CreateProductDTO) -> ProductDTO:
         self._validate_product_input(dto.barcode, dto.product_name, dto.unit, dto.retail_price)
@@ -81,6 +80,7 @@ class ProductServiceImpl(ProductService):
         except Exception:
             logger.exception("Loi khi tao san pham moi")
             raise RuntimeError("Khong the tao san pham. Vui long thu lai.")
+
 
     def update_product(self, dto: UpdateProductDTO) -> ProductDTO:
         self._validate_product_input(dto.barcode, dto.product_name, dto.unit, dto.retail_price)
@@ -104,6 +104,7 @@ class ProductServiceImpl(ProductService):
             logger.exception("Loi khi cap nhat san pham id=%s", dto.product_id)
             raise RuntimeError("Khong the cap nhat san pham. Vui long thu lai.")
 
+
     def delete_product(self, product_id: int) -> bool:
         try:
             with Database.get_session_ctx() as session:
@@ -114,6 +115,7 @@ class ProductServiceImpl(ProductService):
                 "Khong the xoa san pham. San pham co the dang duoc tham chieu boi "
                 "hoa don/phieu nhap."
             )
+
 
     @staticmethod
     def _validate_product_input(

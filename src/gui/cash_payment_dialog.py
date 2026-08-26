@@ -16,151 +16,548 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
 from PySide6.QtWidgets import (QApplication, QDialog, QFrame, QHBoxLayout,
-    QLabel, QLineEdit, QPushButton, QSizePolicy,
-    QSpacerItem, QVBoxLayout, QWidget)
+    QLabel, QLayout, QLineEdit, QPushButton,
+    QSizePolicy, QSpacerItem, QVBoxLayout, QWidget)
 
 class Ui_CashPaymentDialog(object):
     def setupUi(self, CashPaymentDialog):
         if not CashPaymentDialog.objectName():
             CashPaymentDialog.setObjectName(u"CashPaymentDialog")
-        CashPaymentDialog.resize(420, 439)
-        CashPaymentDialog.setStyleSheet(u"QDialog {\n"
-"    background-color: #ffffff;\n"
-"}\n"
-"QLabel#lblTitle {\n"
-"    color: #0f172a;\n"
-"    font-size: 16px;\n"
-"    font-weight: 700;\n"
-"}\n"
-"QLabel#lblSubTitle {\n"
-"    color: #64748b;\n"
-"    font-size: 12px;\n"
-"}\n"
-"QFrame#frameTotal {\n"
-"    background-color: #f8fafc;\n"
-"    border: 1px solid #e2e8f0;\n"
-"    border-radius: 10px;\n"
-"}\n"
-"QLabel#lblTotalCaption {\n"
-"    color: #64748b;\n"
-"    font-size: 12px;\n"
-"}\n"
-"QLabel#lblTotalValue {\n"
-"    color: #0f172a;\n"
-"    font-size: 20px;\n"
-"    font-weight: 700;\n"
-"}\n"
-"QLabel#lblCashCaption {\n"
-"    color: #334155;\n"
-"    font-size: 13px;\n"
-"    font-weight: 600;\n"
-"}\n"
-"QLineEdit#txtCashReceived {\n"
-"    background-color: #ffffff;\n"
-"    color: #0f172a;\n"
-"    border: 1px solid #cbd5e1;\n"
-"    border-radius: 8px;\n"
-"    padding: 10px 12px;\n"
-"    font-size: 18px;\n"
-"    font-weight: 700;\n"
-"    selection-background-color: #2563eb;\n"
-"    selection-color: #ffffff;\n"
-"}\n"
-"QLineEdit#txtCashReceived:hover {\n"
-" "
-                        "   border: 1px solid #94a3b8;\n"
-"}\n"
-"QLineEdit#txtCashReceived:focus {\n"
-"    border: 1px solid #2563eb;\n"
-"}\n"
-"QPushButton[class=\"quickAmount\"] {\n"
-"    background-color: #f8fafc;\n"
-"    color: #334155;\n"
-"    border: 1px solid #cbd5e1;\n"
-"    border-radius: 8px;\n"
-"    padding: 6px 4px;\n"
-"    font-size: 12px;\n"
-"    font-weight: 600;\n"
-"}\n"
-"QPushButton[class=\"quickAmount\"]:hover {\n"
-"    background-color: #eff6ff;\n"
-"    border: 1px solid #93c5fd;\n"
-"    color: #1d4ed8;\n"
-"}\n"
-"QPushButton[class=\"quickAmount\"]:pressed {\n"
-"    background-color: #dbeafe;\n"
-"}\n"
-"QFrame#frameChange {\n"
-"    background-color: #f0fdf4;\n"
-"    border: 1px solid #bbf7d0;\n"
-"    border-radius: 10px;\n"
-"}\n"
-"QLabel#lblChangeCaption {\n"
-"    color: #15803d;\n"
-"    font-size: 12px;\n"
-"}\n"
-"QLabel#lblChangeValue {\n"
-"    color: #15803d;\n"
-"    font-size: 20px;\n"
-"    font-weight: 700;\n"
-"}\n"
-"QLabel#lblError {\n"
-"    color: #dc2626;\n"
-"    font-size: 12px;\n"
-"    font-weight: 600;\n"
-"}\n"
-""
-                        "QPushButton#btnConfirm {\n"
-"    background-color: #2563eb;\n"
-"    color: #ffffff;\n"
-"    border: none;\n"
-"    border-radius: 8px;\n"
-"    padding: 9px 18px;\n"
-"    font-size: 14px;\n"
-"    font-weight: 600;\n"
-"}\n"
-"QPushButton#btnConfirm:hover {\n"
-"    background-color: #1d4ed8;\n"
-"}\n"
-"QPushButton#btnConfirm:pressed {\n"
-"    background-color: #1e40af;\n"
-"}\n"
-"QPushButton#btnConfirm:disabled {\n"
-"    background-color: #cbd5e1;\n"
-"    color: #94a3b8;\n"
-"}\n"
-"QPushButton#btnCancel {\n"
-"    background-color: #f8fafc;\n"
-"    color: #475569;\n"
-"    border: 1px solid #cbd5e1;\n"
-"    border-radius: 8px;\n"
-"    padding: 9px 18px;\n"
-"    font-size: 14px;\n"
-"    font-weight: 500;\n"
-"}\n"
-"QPushButton#btnCancel:hover {\n"
-"    background-color: #f1f5f9;\n"
-"    border: 1px solid #94a3b8;\n"
-"    color: #334155;\n"
-"}\n"
-"QPushButton#btnCancel:pressed {\n"
-"    background-color: #e2e8f0;\n"
-"}")
+        CashPaymentDialog.resize(420, 415)
+        CashPaymentDialog.setStyleSheet(u"""QDialog#CashPaymentDialog {
+    background-color: #ffffff;
+    color: #0f172a;
+    font-family: "Segoe UI", Arial, sans-serif;
+}
+QWidget {
+    font-family: "Segoe UI", Arial, sans-serif;
+}
+QLabel {
+    background-color: transparent;
+    border: none;
+    color: #0f172a;
+}
+
+QLineEdit,
+QComboBox,
+QDateEdit,
+QSpinBox,
+QDoubleSpinBox {
+    background-color: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 0px 12px;
+    min-height: 38px;
+    font-size: 13px;
+    color: #0f172a;
+    selection-background-color: #1d4ed8;
+    selection-color: #ffffff;
+}
+QTextEdit {
+    background-color: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 8px 10px;
+    font-size: 13px;
+    color: #0f172a;
+    selection-background-color: #1d4ed8;
+    selection-color: #ffffff;
+}
+QLineEdit:hover,
+QComboBox:hover,
+QDateEdit:hover,
+QSpinBox:hover,
+QDoubleSpinBox:hover,
+QTextEdit:hover {
+    border: 1px solid #cbd5e1;
+}
+QLineEdit:focus,
+QComboBox:focus,
+QDateEdit:focus,
+QSpinBox:focus,
+QDoubleSpinBox:focus,
+QTextEdit:focus {
+    border: 1px solid #1d4ed8;
+}
+QLineEdit:disabled,
+QComboBox:disabled,
+QDateEdit:disabled,
+QSpinBox:disabled,
+QDoubleSpinBox:disabled {
+    background-color: #f8fafc;
+    color: #94a3b8;
+}
+QComboBox::drop-down {
+    subcontrol-origin: padding;
+    subcontrol-position: center right;
+    border: none;
+    background-color: transparent;
+    width: 26px;
+}
+QComboBox::down-arrow {
+    image: url(assets/images/chevron-down.png);
+    width: 10px;
+    height: 10px;
+}
+QComboBox::down-arrow:on {
+    image: url(assets/images/chevron-up.png);
+}
+QComboBox QAbstractItemView {
+    background-color: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 4px;
+    outline: none;
+    selection-background-color: #eff6ff;
+    selection-color: #1d4ed8;
+}
+QSpinBox::up-button,
+QSpinBox::down-button,
+QDoubleSpinBox::up-button,
+QDoubleSpinBox::down-button,
+QDateEdit::up-button,
+QDateEdit::down-button {
+    subcontrol-origin: border;
+    width: 20px;
+    border: none;
+    background-color: transparent;
+}
+QSpinBox::up-button,
+QDoubleSpinBox::up-button,
+QDateEdit::up-button {
+    subcontrol-position: top right;
+}
+QSpinBox::down-button,
+QDoubleSpinBox::down-button,
+QDateEdit::down-button {
+    subcontrol-position: bottom right;
+}
+QSpinBox::up-button:hover,
+QSpinBox::down-button:hover,
+QDoubleSpinBox::up-button:hover,
+QDoubleSpinBox::down-button:hover,
+QDateEdit::up-button:hover,
+QDateEdit::down-button:hover {
+    background-color: #f1f5f9;
+}
+QSpinBox::up-arrow,
+QDoubleSpinBox::up-arrow,
+QDateEdit::up-arrow {
+    image: url(assets/images/chevron-up.png);
+    width: 9px;
+    height: 9px;
+}
+QSpinBox::down-arrow,
+QDoubleSpinBox::down-arrow,
+QDateEdit::down-arrow {
+    image: url(assets/images/chevron-down.png);
+    width: 9px;
+    height: 9px;
+}
+QCheckBox {
+    background-color: transparent;
+    color: #334155;
+    font-size: 13px;
+    font-weight: bold;
+    spacing: 8px;
+}
+QCheckBox::indicator {
+    width: 16px;
+    height: 16px;
+    border: 1px solid #cbd5e1;
+    border-radius: 4px;
+    background-color: #ffffff;
+}
+QCheckBox::indicator:hover {
+    border: 1px solid #1d4ed8;
+}
+QCheckBox::indicator:checked {
+    background-color: #1d4ed8;
+    border: 1px solid #1d4ed8;
+}
+
+QPushButton {
+    background-color: #ffffff;
+    color: #64748b;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 0px 16px;
+    min-height: 38px;
+    font-size: 12px;
+    font-weight: bold;
+}
+QPushButton:hover {
+    background-color: #eff6ff;
+    color: #1d4ed8;
+    border: 1px solid #1d4ed8;
+}
+QPushButton:pressed {
+    background-color: #dbeafe;
+}
+QPushButton:disabled {
+    background-color: #f8fafc;
+    color: #cbd5e1;
+    border: 1px solid #e2e8f0;
+}
+QPushButton#RowActionButton {
+    background-color: transparent;
+    border: none;
+    border-radius: 6px;
+    padding: 0px;
+    min-width: 28px;
+    max-width: 28px;
+    min-height: 28px;
+    max-height: 28px;
+}
+QPushButton#RowActionButton:hover {
+    background-color: #eff6ff;
+}
+QPushButton#RowActionButton:pressed {
+    background-color: #dbeafe;
+}
+
+QTableWidget {
+    background-color: transparent;
+    border: none;
+    gridline-color: #f1f5f9;
+    font-size: 13px;
+    color: #334155;
+    outline: none;
+}
+QTableWidget::item {
+    padding: 8px;
+    border-bottom: 1px solid #f1f5f9;
+}
+QTableWidget::item:selected {
+    background-color: #eff6ff;
+    color: #1d4ed8;
+}
+QHeaderView {
+    background-color: #f8fafc;
+    border: none;
+    border-bottom: 1px solid #e2e8f0;
+}
+QHeaderView::section {
+    background-color: #f8fafc;
+    color: #64748b;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 10px 8px;
+    border: none;
+    border-bottom: 1px solid #e2e8f0;
+}
+QTableCornerButton::section {
+    background-color: #f8fafc;
+    border: none;
+}
+
+QLabel[badge="info"] {
+    background-color: #dbeafe;
+    color: #1d4ed8;
+    border-radius: 6px;
+    padding: 3px 10px;
+    font-size: 11px;
+    font-weight: 700;
+}
+QLabel[badge="success"] {
+    background-color: #d1fae5;
+    color: #059669;
+    border-radius: 6px;
+    padding: 3px 10px;
+    font-size: 11px;
+    font-weight: 700;
+}
+QLabel[badge="warning"] {
+    background-color: #ffedd5;
+    color: #ea580c;
+    border-radius: 6px;
+    padding: 3px 10px;
+    font-size: 11px;
+    font-weight: 700;
+}
+QLabel[badge="danger"] {
+    background-color: #fee2e2;
+    color: #dc2626;
+    border-radius: 6px;
+    padding: 3px 10px;
+    font-size: 11px;
+    font-weight: 700;
+}
+QLabel[badge="neutral"] {
+    background-color: #e2e8f0;
+    color: #64748b;
+    border-radius: 6px;
+    padding: 3px 10px;
+    font-size: 11px;
+    font-weight: 700;
+}
+QLabel[badge="violet"] {
+    background-color: #ede9fe;
+    color: #6d28d9;
+    border-radius: 6px;
+    padding: 3px 10px;
+    font-size: 11px;
+    font-weight: 700;
+}
+QLabel[trend="up"] {
+    background-color: #ecfdf5;
+    color: #059669;
+    border-radius: 4px;
+    padding: 2px 6px;
+    font-size: 11px;
+    font-weight: 700;
+}
+QLabel[trend="down"] {
+    background-color: #fef2f2;
+    color: #dc2626;
+    border-radius: 4px;
+    padding: 2px 6px;
+    font-size: 11px;
+    font-weight: 700;
+}
+QLabel[trend="flat"] {
+    background-color: #f1f5f9;
+    color: #64748b;
+    border-radius: 4px;
+    padding: 2px 6px;
+    font-size: 11px;
+    font-weight: 700;
+}
+QLabel[state="up"] {
+    color: #10b981;
+    font-weight: bold;
+}
+QLabel[state="down"] {
+    color: #dc2626;
+    font-weight: bold;
+}
+QLabel[state="flat"] {
+    color: #64748b;
+    font-weight: bold;
+}
+QLabel[state="warning"] {
+    color: #ea580c;
+    font-weight: bold;
+}
+QLabel[state="safe"] {
+    color: #10b981;
+    font-weight: bold;
+}
+
+QScrollArea {
+    background-color: transparent;
+    border: none;
+}
+QScrollArea > QWidget > QWidget {
+    background-color: transparent;
+}
+QAbstractScrollArea::viewport {
+    background-color: transparent;
+}
+QScrollBar:vertical {
+    background-color: transparent;
+    width: 10px;
+    margin: 0px;
+    border: none;
+}
+QScrollBar::handle:vertical {
+    background-color: #cbd5e1;
+    min-height: 35px;
+    border-radius: 5px;
+}
+QScrollBar::handle:vertical:hover {
+    background-color: #94a3b8;
+}
+QScrollBar::handle:vertical:pressed {
+    background-color: #64748b;
+}
+QScrollBar::add-line:vertical,
+QScrollBar::sub-line:vertical {
+    height: 0px;
+    width: 0px;
+    background: transparent;
+    border: none;
+}
+QScrollBar::up-arrow:vertical,
+QScrollBar::down-arrow:vertical {
+    width: 0px;
+    height: 0px;
+    background: transparent;
+    border: none;
+}
+QScrollBar::add-page:vertical,
+QScrollBar::sub-page:vertical {
+    background: transparent;
+}
+QScrollBar:horizontal {
+    background-color: transparent;
+    height: 10px;
+    margin: 0px;
+    border: none;
+}
+QScrollBar::handle:horizontal {
+    background-color: #cbd5e1;
+    min-width: 35px;
+    border-radius: 5px;
+}
+QScrollBar::handle:horizontal:hover {
+    background-color: #94a3b8;
+}
+QScrollBar::handle:horizontal:pressed {
+    background-color: #64748b;
+}
+QScrollBar::add-line:horizontal,
+QScrollBar::sub-line:horizontal {
+    width: 0px;
+    height: 0px;
+    background: transparent;
+    border: none;
+}
+QScrollBar::left-arrow:horizontal,
+QScrollBar::right-arrow:horizontal {
+    width: 0px;
+    height: 0px;
+    background: transparent;
+    border: none;
+}
+QScrollBar::add-page:horizontal,
+QScrollBar::sub-page:horizontal {
+    background: transparent;
+}
+
+QMenu {
+    background-color: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 6px;
+}
+QMenu::item {
+    background-color: transparent;
+    color: #334155;
+    border-radius: 6px;
+    padding: 7px 18px;
+    font-size: 13px;
+}
+QMenu::item:selected {
+    background-color: #eff6ff;
+    color: #1d4ed8;
+}
+QMenu::separator {
+    height: 1px;
+    background-color: #e2e8f0;
+    margin: 6px 4px;
+}
+
+QLabel#lblTitle {
+    color: #0f172a;
+    font-weight: bold;
+}
+
+QLabel#lblSubTitle {
+    color: #6b7280;
+    font-size: 12px;
+    font-weight: normal;
+    margin-top: 4px;
+}
+
+QFrame#frameTotal {
+    background-color: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+}
+
+QLabel#lblTotalCaption,
+QLabel#lblCashCaption {
+    color: #64748b;
+    font-size: 12px;
+}
+
+QLabel#lblTotalValue {
+    color: #0f172a;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+QPushButton#btnConfirm {
+    background-color: #1d4ed8;
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    padding: 0px 20px;
+    min-height: 38px;
+    font-size: 13px;
+    font-weight: 700;
+}
+QPushButton#btnConfirm:hover {
+    background-color: #1e3a8a;
+}
+QPushButton#btnConfirm:pressed {
+    background-color: #1e40af;
+}
+QPushButton#btnConfirm:disabled {
+    background-color: #cbd5e1;
+    color: #f8fafc;
+}
+
+QLineEdit#txtCashReceived {
+    font-size: 18px;
+    font-weight: 700;
+    min-height: 44px;
+}
+QFrame#frameChange {
+    background-color: #f0fdf4;
+    border: 1px solid #bbf7d0;
+    border-radius: 10px;
+}
+QLabel#lblChangeCaption {
+    color: #15803d;
+    font-size: 12px;
+}
+QLabel#lblChangeValue {
+    color: #15803d;
+    font-size: 20px;
+    font-weight: 700;
+}
+QLabel#lblError {
+    color: #dc2626;
+    font-size: 12px;
+    font-weight: 600;
+}
+QPushButton#btnQuick50,
+QPushButton#btnQuick100,
+QPushButton#btnQuick200,
+QPushButton#btnQuick500,
+QPushButton#btnExactAmount {
+    padding: 0px 4px;
+    min-height: 34px;
+    font-size: 12px;
+}
+""")
         self.mainLayout = QVBoxLayout(CashPaymentDialog)
         self.mainLayout.setSpacing(12)
         self.mainLayout.setObjectName(u"mainLayout")
-        self.mainLayout.setContentsMargins(20, 20, 20, 20)
+        self.mainLayout.setSizeConstraint(QLayout.SizeConstraint.SetMinimumSize)
+        self.mainLayout.setContentsMargins(19, 16, 20, 16)
         self.headerLayout = QVBoxLayout()
-        self.headerLayout.setSpacing(2)
+        self.headerLayout.setSpacing(0)
         self.headerLayout.setObjectName(u"headerLayout")
         self.headerLayout.setContentsMargins(0, 0, 0, 0)
         self.lblTitle = QLabel(CashPaymentDialog)
         self.lblTitle.setObjectName(u"lblTitle")
+        font = QFont()
+        font.setFamilies([u"Segoe UI"])
+        font.setPointSize(15)
+        font.setBold(True)
+        self.lblTitle.setFont(font)
 
         self.headerLayout.addWidget(self.lblTitle)
 
         self.lblSubTitle = QLabel(CashPaymentDialog)
         self.lblSubTitle.setObjectName(u"lblSubTitle")
+        font1 = QFont()
+        font1.setFamilies([u"Segoe UI"])
+        font1.setBold(False)
+        self.lblSubTitle.setFont(font1)
 
         self.headerLayout.addWidget(self.lblSubTitle)
 
@@ -269,10 +666,6 @@ class Ui_CashPaymentDialog(object):
         self.lblError.setWordWrap(True)
 
         self.mainLayout.addWidget(self.lblError)
-
-        self.bottomSpacer = QSpacerItem(20, 6, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding)
-
-        self.mainLayout.addItem(self.bottomSpacer)
 
         self.actionLayout = QHBoxLayout()
         self.actionLayout.setSpacing(10)

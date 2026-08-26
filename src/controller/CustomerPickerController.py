@@ -25,11 +25,12 @@ class CustomerPickerController(QDialog, Ui_Dialog):
 
         self.selected_customer: Optional[CustomerDTO] = None
 
-        self._danh_sach: List[CustomerDTO] = []
+        self._customers: List[CustomerDTO] = []
 
         self._setup_table()
         self._setup_events()
         self._load_customers("")
+
 
     def _setup_table(self) -> None:
         self.tblCustomers.setColumnCount(2)
@@ -44,10 +45,11 @@ class CustomerPickerController(QDialog, Ui_Dialog):
         self.tblCustomers.setSelectionBehavior(QAbstractItemView.SelectionBehavior.SelectRows)
         self.tblCustomers.setSelectionMode(QAbstractItemView.SelectionMode.SingleSelection)
 
+
     def _setup_events(self) -> None:
         self.txtSearchCustomer.textChanged.connect(self._load_customers)
 
-        self.tblCustomers.itemSelectionChanged.connect(self._cap_nhat_trang_thai_nut)
+        self.tblCustomers.itemSelectionChanged.connect(self._update_button_state)
 
         self.tblCustomers.itemDoubleClicked.connect(lambda _item: self._on_select())
 
@@ -55,70 +57,77 @@ class CustomerPickerController(QDialog, Ui_Dialog):
         self.btnClearCustomer.clicked.connect(self._on_clear)
         self.btnCancel.clicked.connect(self.reject)
 
+
     def _load_customers(self, keyword: str) -> None:
         try:
-            self._danh_sach = self._service.search_customers(keyword)
+            self._customers = self._service.search_customers(keyword)
         except Exception as e:
             logger.exception("Không tải được danh sách khách hàng: %s", e)
-            self._danh_sach = []
+            self._customers = []
             self.lblStatus.setText("Không tải được danh sách khách hàng.")
             self.tblCustomers.setRowCount(0)
-            self._cap_nhat_trang_thai_nut()
+            self._update_button_state()
             return
 
-        self._do_len_bang(self._danh_sach)
-        self._cap_nhat_dong_trang_thai(keyword)
-        self._cap_nhat_trang_thai_nut()
+        self._fill_table(self._customers)
+        self._update_status_line(keyword)
+        self._update_button_state()
 
-    def _do_len_bang(self, danh_sach: List[CustomerDTO]) -> None:
+
+    def _fill_table(self, dtos: List[CustomerDTO]) -> None:
         self.tblCustomers.setRowCount(0)
 
-        for dong, khach in enumerate(danh_sach):
-            self.tblCustomers.insertRow(dong)
+        for row, customer in enumerate(dtos):
+            self.tblCustomers.insertRow(row)
 
-            o_ten = QTableWidgetItem(khach.ten_hien_thi)
-            o_ten.setTextAlignment(Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignVCenter)
-            self.tblCustomers.setItem(dong, COL_NAME, o_ten)
+            name_cell = QTableWidgetItem(customer.display_name)
+            name_cell.setTextAlignment(Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignVCenter)
+            self.tblCustomers.setItem(row, COL_NAME, name_cell)
 
-            o_sdt = QTableWidgetItem(khach.phone)
-            o_sdt.setTextAlignment(Qt.AlignmentFlag.AlignCenter)
-            self.tblCustomers.setItem(dong, COL_PHONE, o_sdt)
+            phone_cell = QTableWidgetItem(customer.phone)
+            phone_cell.setTextAlignment(Qt.AlignmentFlag.AlignCenter)
+            self.tblCustomers.setItem(row, COL_PHONE, phone_cell)
 
-    def _cap_nhat_dong_trang_thai(self, keyword: str) -> None:
-        so_luong = len(self._danh_sach)
 
-        if so_luong == 0:
+    def _update_status_line(self, keyword: str) -> None:
+        count = len(self._customers)
+
+        if count == 0:
             self.lblStatus.setText(
                 f"Không tìm thấy khách hàng nào khớp '{keyword}'."
                 if keyword.strip() else "Chưa có khách hàng nào trong hệ thống."
             )
             return
 
-        self.lblStatus.setText(f"Tìm thấy {so_luong} khách hàng.")
+        self.lblStatus.setText(f"Tìm thấy {count} khách hàng.")
 
-    def _cap_nhat_trang_thai_nut(self) -> None:
-        self.btnSelect.setEnabled(self._lay_dong_dang_chon() is not None)
 
-    def _lay_dong_dang_chon(self) -> Optional[int]:
-        dong_da_chon = self.tblCustomers.selectionModel().selectedRows()
-        if not dong_da_chon:
+    def _update_button_state(self) -> None:
+        self.btnSelect.setEnabled(self._selected_row_index() is not None)
+
+
+    def _selected_row_index(self) -> Optional[int]:
+        selected_rows = self.tblCustomers.selectionModel().selectedRows()
+        if not selected_rows:
             return None
 
-        chi_so = dong_da_chon[0].row()
+        index = selected_rows[0].row()
 
-        if chi_so < 0 or chi_so >= len(self._danh_sach):
+        if index < 0 or index >= len(self._customers):
             return None
 
-        return chi_so
+        return index
+
 
     def _on_select(self) -> None:
-        chi_so = self._lay_dong_dang_chon()
-        if chi_so is None:
+        index = self._selected_row_index()
+        if index is None:
             return
 
-        self.selected_customer = self._danh_sach[chi_so]
+        self.selected_customer = self._customers[index]
         logger.info("POS: đã chọn khách hàng id=%s.", self.selected_customer.customer_id)
         self.accept()
+
 
     def _on_clear(self) -> None:
         self.selected_customer = None

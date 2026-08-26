@@ -6,6 +6,7 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
+
 logger = logging.getLogger(__name__)
 
 def _get_decimal(env_key: str, default: str) -> Decimal:
@@ -18,6 +19,7 @@ def _get_decimal(env_key: str, default: str) -> Decimal:
             env_key, raw_value, default
         )
         return Decimal(default)
+
 
 def _get_int(env_key: str, default: str) -> int:
     raw_value = os.getenv(env_key, default)

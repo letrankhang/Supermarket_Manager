@@ -3,9 +3,6 @@ from sqlalchemy.orm import relationship
 from src.entities.base import Base
 
 class SalesInvoice(Base):
-    """
-    SalesInvoice entity model mapped to the 'sales_invoices' table.
-    """
     __tablename__ = 'sales_invoices'
 
     invoice_id = Column(Integer, primary_key=True, autoincrement=True)
@@ -19,7 +16,6 @@ class SalesInvoice(Base):
     final_total = Column(Numeric(15, 2), nullable=False)
     payment_method = Column(Enum('Cash', 'Banking', 'E-Wallet', name='payment_method_enum'), server_default='Cash')
 
-    # Relationships
     customer = relationship("Customer", foreign_keys=[customer_id])
     user = relationship("User", foreign_keys=[user_id])
     details = relationship("SalesDetail", back_populates="invoice", cascade="all, delete-orphan")

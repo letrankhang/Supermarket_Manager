@@ -1,4 +1,4 @@
-<?xml version="1.0" ?>
+<?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
  <class>CashPaymentDialog</class>
  <widget class="QDialog" name="CashPaymentDialog">
@@ -7,77 +7,491 @@
     <x>0</x>
     <y>0</y>
     <width>420</width>
-    <height>360</height>
+    <height>415</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Thanh toán tiền mặt</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">QDialog {
+   <string notr="true">QDialog#CashPaymentDialog {
+    background-color: #ffffff;
+    color: #0f172a;
+    font-family: &quot;Segoe UI&quot;, Arial, sans-serif;
+}
+QWidget {
+    font-family: &quot;Segoe UI&quot;, Arial, sans-serif;
+}
+QLabel {
+    background-color: transparent;
+    border: none;
+    color: #0f172a;
+}
+
+QLineEdit,
+QComboBox,
+QDateEdit,
+QSpinBox,
+QDoubleSpinBox {
+    background-color: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 0px 12px;
+    min-height: 38px;
+    font-size: 13px;
+    color: #0f172a;
+    selection-background-color: #1d4ed8;
+    selection-color: #ffffff;
+}
+QTextEdit {
+    background-color: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 8px 10px;
+    font-size: 13px;
+    color: #0f172a;
+    selection-background-color: #1d4ed8;
+    selection-color: #ffffff;
+}
+QLineEdit:hover,
+QComboBox:hover,
+QDateEdit:hover,
+QSpinBox:hover,
+QDoubleSpinBox:hover,
+QTextEdit:hover {
+    border: 1px solid #cbd5e1;
+}
+QLineEdit:focus,
+QComboBox:focus,
+QDateEdit:focus,
+QSpinBox:focus,
+QDoubleSpinBox:focus,
+QTextEdit:focus {
+    border: 1px solid #1d4ed8;
+}
+QLineEdit:disabled,
+QComboBox:disabled,
+QDateEdit:disabled,
+QSpinBox:disabled,
+QDoubleSpinBox:disabled {
+    background-color: #f8fafc;
+    color: #94a3b8;
+}
+QComboBox::drop-down {
+    subcontrol-origin: padding;
+    subcontrol-position: center right;
+    border: none;
+    background-color: transparent;
+    width: 26px;
+}
+QComboBox::down-arrow {
+    image: url(assets/images/chevron-down.png);
+    width: 10px;
+    height: 10px;
+}
+QComboBox::down-arrow:on {
+    image: url(assets/images/chevron-up.png);
+}
+QComboBox QAbstractItemView {
+    background-color: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 4px;
+    outline: none;
+    selection-background-color: #eff6ff;
+    selection-color: #1d4ed8;
+}
+QSpinBox::up-button,
+QSpinBox::down-button,
+QDoubleSpinBox::up-button,
+QDoubleSpinBox::down-button,
+QDateEdit::up-button,
+QDateEdit::down-button {
+    subcontrol-origin: border;
+    width: 20px;
+    border: none;
+    background-color: transparent;
+}
+QSpinBox::up-button,
+QDoubleSpinBox::up-button,
+QDateEdit::up-button {
+    subcontrol-position: top right;
+}
+QSpinBox::down-button,
+QDoubleSpinBox::down-button,
+QDateEdit::down-button {
+    subcontrol-position: bottom right;
+}
+QSpinBox::up-button:hover,
+QSpinBox::down-button:hover,
+QDoubleSpinBox::up-button:hover,
+QDoubleSpinBox::down-button:hover,
+QDateEdit::up-button:hover,
+QDateEdit::down-button:hover {
+    background-color: #f1f5f9;
+}
+QSpinBox::up-arrow,
+QDoubleSpinBox::up-arrow,
+QDateEdit::up-arrow {
+    image: url(assets/images/chevron-up.png);
+    width: 9px;
+    height: 9px;
+}
+QSpinBox::down-arrow,
+QDoubleSpinBox::down-arrow,
+QDateEdit::down-arrow {
+    image: url(assets/images/chevron-down.png);
+    width: 9px;
+    height: 9px;
+}
+QCheckBox {
+    background-color: transparent;
+    color: #334155;
+    font-size: 13px;
+    font-weight: bold;
+    spacing: 8px;
+}
+QCheckBox::indicator {
+    width: 16px;
+    height: 16px;
+    border: 1px solid #cbd5e1;
+    border-radius: 4px;
     background-color: #ffffff;
 }
-QLabel#lblTitle {
-    color: #0f172a;
-    font-size: 16px;
+QCheckBox::indicator:hover {
+    border: 1px solid #1d4ed8;
+}
+QCheckBox::indicator:checked {
+    background-color: #1d4ed8;
+    border: 1px solid #1d4ed8;
+}
+
+QPushButton {
+    background-color: #ffffff;
+    color: #64748b;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 0px 16px;
+    min-height: 38px;
+    font-size: 12px;
+    font-weight: bold;
+}
+QPushButton:hover {
+    background-color: #eff6ff;
+    color: #1d4ed8;
+    border: 1px solid #1d4ed8;
+}
+QPushButton:pressed {
+    background-color: #dbeafe;
+}
+QPushButton:disabled {
+    background-color: #f8fafc;
+    color: #cbd5e1;
+    border: 1px solid #e2e8f0;
+}
+QPushButton#RowActionButton {
+    background-color: transparent;
+    border: none;
+    border-radius: 6px;
+    padding: 0px;
+    min-width: 28px;
+    max-width: 28px;
+    min-height: 28px;
+    max-height: 28px;
+}
+QPushButton#RowActionButton:hover {
+    background-color: #eff6ff;
+}
+QPushButton#RowActionButton:pressed {
+    background-color: #dbeafe;
+}
+
+QTableWidget {
+    background-color: transparent;
+    border: none;
+    gridline-color: #f1f5f9;
+    font-size: 13px;
+    color: #334155;
+    outline: none;
+}
+QTableWidget::item {
+    padding: 8px;
+    border-bottom: 1px solid #f1f5f9;
+}
+QTableWidget::item:selected {
+    background-color: #eff6ff;
+    color: #1d4ed8;
+}
+QHeaderView {
+    background-color: #f8fafc;
+    border: none;
+    border-bottom: 1px solid #e2e8f0;
+}
+QHeaderView::section {
+    background-color: #f8fafc;
+    color: #64748b;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 10px 8px;
+    border: none;
+    border-bottom: 1px solid #e2e8f0;
+}
+QTableCornerButton::section {
+    background-color: #f8fafc;
+    border: none;
+}
+
+QLabel[badge=&quot;info&quot;] {
+    background-color: #dbeafe;
+    color: #1d4ed8;
+    border-radius: 6px;
+    padding: 3px 10px;
+    font-size: 11px;
     font-weight: 700;
 }
-QLabel#lblSubTitle {
-    color: #64748b;
-    font-size: 12px;
+QLabel[badge=&quot;success&quot;] {
+    background-color: #d1fae5;
+    color: #059669;
+    border-radius: 6px;
+    padding: 3px 10px;
+    font-size: 11px;
+    font-weight: 700;
 }
+QLabel[badge=&quot;warning&quot;] {
+    background-color: #ffedd5;
+    color: #ea580c;
+    border-radius: 6px;
+    padding: 3px 10px;
+    font-size: 11px;
+    font-weight: 700;
+}
+QLabel[badge=&quot;danger&quot;] {
+    background-color: #fee2e2;
+    color: #dc2626;
+    border-radius: 6px;
+    padding: 3px 10px;
+    font-size: 11px;
+    font-weight: 700;
+}
+QLabel[badge=&quot;neutral&quot;] {
+    background-color: #e2e8f0;
+    color: #64748b;
+    border-radius: 6px;
+    padding: 3px 10px;
+    font-size: 11px;
+    font-weight: 700;
+}
+QLabel[badge=&quot;violet&quot;] {
+    background-color: #ede9fe;
+    color: #6d28d9;
+    border-radius: 6px;
+    padding: 3px 10px;
+    font-size: 11px;
+    font-weight: 700;
+}
+QLabel[trend=&quot;up&quot;] {
+    background-color: #ecfdf5;
+    color: #059669;
+    border-radius: 4px;
+    padding: 2px 6px;
+    font-size: 11px;
+    font-weight: 700;
+}
+QLabel[trend=&quot;down&quot;] {
+    background-color: #fef2f2;
+    color: #dc2626;
+    border-radius: 4px;
+    padding: 2px 6px;
+    font-size: 11px;
+    font-weight: 700;
+}
+QLabel[trend=&quot;flat&quot;] {
+    background-color: #f1f5f9;
+    color: #64748b;
+    border-radius: 4px;
+    padding: 2px 6px;
+    font-size: 11px;
+    font-weight: 700;
+}
+QLabel[state=&quot;up&quot;] {
+    color: #10b981;
+    font-weight: bold;
+}
+QLabel[state=&quot;down&quot;] {
+    color: #ef4444;
+    font-weight: bold;
+}
+QLabel[state=&quot;flat&quot;] {
+    color: #64748b;
+    font-weight: bold;
+}
+QLabel[state=&quot;warning&quot;] {
+    color: #eab308;
+    font-weight: bold;
+}
+QLabel[state=&quot;safe&quot;] {
+    color: #10b981;
+}
+
+QScrollArea {
+    background-color: transparent;
+    border: none;
+}
+QScrollArea &gt; QWidget &gt; QWidget {
+    background-color: transparent;
+}
+QAbstractScrollArea::viewport {
+    background-color: transparent;
+}
+QScrollBar:vertical {
+    background-color: transparent;
+    width: 10px;
+    margin: 0px;
+    border: none;
+}
+QScrollBar::handle:vertical {
+    background-color: #cbd5e1;
+    min-height: 35px;
+    border-radius: 5px;
+}
+QScrollBar::handle:vertical:hover {
+    background-color: #94a3b8;
+}
+QScrollBar::handle:vertical:pressed {
+    background-color: #64748b;
+}
+QScrollBar::add-line:vertical,
+QScrollBar::sub-line:vertical {
+    height: 0px;
+    width: 0px;
+    background: transparent;
+    border: none;
+}
+QScrollBar::up-arrow:vertical,
+QScrollBar::down-arrow:vertical {
+    width: 0px;
+    height: 0px;
+    background: transparent;
+    border: none;
+}
+QScrollBar::add-page:vertical,
+QScrollBar::sub-page:vertical {
+    background: transparent;
+}
+QScrollBar:horizontal {
+    background-color: transparent;
+    height: 10px;
+    margin: 0px;
+    border: none;
+}
+QScrollBar::handle:horizontal {
+    background-color: #cbd5e1;
+    min-width: 35px;
+    border-radius: 5px;
+}
+QScrollBar::handle:horizontal:hover {
+    background-color: #94a3b8;
+}
+QScrollBar::handle:horizontal:pressed {
+    background-color: #64748b;
+}
+QScrollBar::add-line:horizontal,
+QScrollBar::sub-line:horizontal {
+    width: 0px;
+    height: 0px;
+    background: transparent;
+    border: none;
+}
+QScrollBar::left-arrow:horizontal,
+QScrollBar::right-arrow:horizontal {
+    width: 0px;
+    height: 0px;
+    background: transparent;
+    border: none;
+}
+QScrollBar::add-page:horizontal,
+QScrollBar::sub-page:horizontal {
+    background: transparent;
+}
+
+QMenu {
+    background-color: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 6px;
+}
+QMenu::item {
+    background-color: transparent;
+    color: #334155;
+    border-radius: 6px;
+    padding: 7px 18px;
+    font-size: 13px;
+}
+QMenu::item:selected {
+    background-color: #eff6ff;
+    color: #1d4ed8;
+}
+QMenu::separator {
+    height: 1px;
+    background-color: #e2e8f0;
+    margin: 6px 4px;
+}
+
+QLabel#lblTitle {
+    color: #0f172a;
+    font-weight: bold;
+}
+
+QLabel#lblSubTitle {
+    color: #6b7280;
+    font-size: 12px;
+    font-weight: normal;
+    margin-top: 4px;
+}
+
 QFrame#frameTotal {
-    background-color: #f8fafc;
+    background-color: #ffffff;
     border: 1px solid #e2e8f0;
     border-radius: 10px;
 }
-QLabel#lblTotalCaption {
+
+QLabel#lblTotalCaption,
+QLabel#lblCashCaption {
     color: #64748b;
     font-size: 12px;
 }
+
 QLabel#lblTotalValue {
     color: #0f172a;
     font-size: 20px;
+    font-weight: bold;
+}
+
+QPushButton#btnConfirm {
+    background-color: #1d4ed8;
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    padding: 0px 20px;
+    min-height: 38px;
+    font-size: 13px;
     font-weight: 700;
 }
-QLabel#lblCashCaption {
-    color: #334155;
-    font-size: 13px;
-    font-weight: 600;
+QPushButton#btnConfirm:hover {
+    background-color: #1e3a8a;
 }
+QPushButton#btnConfirm:pressed {
+    background-color: #1e40af;
+}
+QPushButton#btnConfirm:disabled {
+    background-color: #cbd5e1;
+    color: #f8fafc;
+}
+
 QLineEdit#txtCashReceived {
-    background-color: #ffffff;
-    color: #0f172a;
-    border: 1px solid #cbd5e1;
-    border-radius: 8px;
-    padding: 10px 12px;
     font-size: 18px;
     font-weight: 700;
-    selection-background-color: #2563eb;
-    selection-color: #ffffff;
-}
-QLineEdit#txtCashReceived:hover {
-    border: 1px solid #94a3b8;
-}
-QLineEdit#txtCashReceived:focus {
-    border: 1px solid #2563eb;
-}
-QPushButton[class=&quot;quickAmount&quot;] {
-    background-color: #f8fafc;
-    color: #334155;
-    border: 1px solid #cbd5e1;
-    border-radius: 8px;
-    padding: 6px 4px;
-    font-size: 12px;
-    font-weight: 600;
-}
-QPushButton[class=&quot;quickAmount&quot;]:hover {
-    background-color: #eff6ff;
-    border: 1px solid #93c5fd;
-    color: #1d4ed8;
-}
-QPushButton[class=&quot;quickAmount&quot;]:pressed {
-    background-color: #dbeafe;
+    min-height: 44px;
 }
 QFrame#frameChange {
     background-color: #f0fdf4;
@@ -98,52 +512,26 @@ QLabel#lblError {
     font-size: 12px;
     font-weight: 600;
 }
-QPushButton#btnConfirm {
-    background-color: #2563eb;
-    color: #ffffff;
-    border: none;
-    border-radius: 8px;
-    padding: 9px 18px;
-    font-size: 14px;
-    font-weight: 600;
+QPushButton#btnQuick50,
+QPushButton#btnQuick100,
+QPushButton#btnQuick200,
+QPushButton#btnQuick500,
+QPushButton#btnExactAmount {
+    padding: 0px 4px;
+    min-height: 34px;
+    font-size: 12px;
 }
-QPushButton#btnConfirm:hover {
-    background-color: #1d4ed8;
-}
-QPushButton#btnConfirm:pressed {
-    background-color: #1e40af;
-}
-QPushButton#btnConfirm:disabled {
-    background-color: #cbd5e1;
-    color: #94a3b8;
-}
-QPushButton#btnCancel {
-    background-color: #f8fafc;
-    color: #475569;
-    border: 1px solid #cbd5e1;
-    border-radius: 8px;
-    padding: 9px 18px;
-    font-size: 14px;
-    font-weight: 500;
-}
-QPushButton#btnCancel:hover {
-    background-color: #f1f5f9;
-    border: 1px solid #94a3b8;
-    color: #334155;
-}
-QPushButton#btnCancel:pressed {
-    background-color: #e2e8f0;
-}</string>
+</string>
   </property>
   <layout class="QVBoxLayout" name="mainLayout">
-   <property name="sizeConstraint">
-    <enum>QLayout::SizeConstraint::SetMinimumSize</enum>
-   </property>
    <property name="spacing">
     <number>12</number>
    </property>
+   <property name="sizeConstraint">
+    <enum>QLayout::SizeConstraint::SetMinimumSize</enum>
+   </property>
    <property name="leftMargin">
-    <number>20</number>
+    <number>19</number>
    </property>
    <property name="topMargin">
     <number>16</number>
@@ -157,7 +545,7 @@ QPushButton#btnCancel:pressed {
    <item>
     <layout class="QVBoxLayout" name="headerLayout">
      <property name="spacing">
-      <number>2</number>
+      <number>0</number>
      </property>
      <property name="leftMargin">
       <number>0</number>
@@ -173,6 +561,13 @@ QPushButton#btnCancel:pressed {
      </property>
      <item>
       <widget class="QLabel" name="lblTitle">
+       <property name="font">
+        <font>
+         <family>Segoe UI</family>
+         <pointsize>15</pointsize>
+         <bold>true</bold>
+        </font>
+       </property>
        <property name="text">
         <string>Thanh toán tiền mặt</string>
        </property>
@@ -180,6 +575,13 @@ QPushButton#btnCancel:pressed {
      </item>
      <item>
       <widget class="QLabel" name="lblSubTitle">
+       <property name="font">
+        <font>
+         <family>Segoe UI</family>
+         <pointsize>-1</pointsize>
+         <bold>false</bold>
+        </font>
+       </property>
        <property name="text">
         <string>Nhập số tiền khách đưa để tính tiền thối lại</string>
        </property>

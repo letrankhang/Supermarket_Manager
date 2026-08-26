@@ -1,15 +1,7 @@
-# File: src/services/ImportService.py
-"""Interface (hop dong) cho nghiep vu Nhap hang.
-Dinh nghia cac phuong thuc ma ImportServiceImpl phai trien khai,
-tuan thu nguyen tac Dependency Inversion (SOLID) - giong pattern
-cua LoginService / LoginServiceImpl."""
-from __future__ import annotations
-
 from abc import ABC, abstractmethod
 from typing import List, Optional
 
 from src.dtos.ImportDTO import CreateImportOrderDTO, ImportOrderDTO
-
 
 class ImportService(ABC):
 

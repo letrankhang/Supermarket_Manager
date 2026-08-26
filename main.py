@@ -1,3 +1,4 @@
+import os
 import sys
 import logging
 from PySide6.QtWidgets import QApplication
@@ -8,7 +9,17 @@ from src.utils.Theme import apply_light_theme
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(name)s: %(message)s")
 
+PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
+
+def pin_working_directory() -> None:
+    if os.getcwd() != PROJECT_ROOT:
+        os.chdir(PROJECT_ROOT)
+        logging.info("Đã ghim thư mục làm việc %s", PROJECT_ROOT)
+        
+
 def main() -> None:
+    pin_working_directory()
+
     logging.info("!!! Khởi tạo Cơ sở dữ liệu !!!")
     try:
         Database.initialize()

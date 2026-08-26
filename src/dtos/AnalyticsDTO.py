@@ -1,20 +1,13 @@
-"""src/dtos/AnalyticsDTO.py
-
-Data Transfer Objects cho phân hệ Phân tích bán hàng.
-"""
-
 from dataclasses import dataclass
 from typing import List, Optional
 from datetime import date
-
 
 @dataclass
 class DailyRevenueDTO:
     date: date
     revenue: float
     invoice_count: int
-    day_label: str = ""  # Thứ 2, Thứ 3,...
-
+    day_label: str = "" 
 
 @dataclass
 class TopProductDTO:
@@ -41,20 +34,20 @@ class RevenueByTimeSlotDTO:
 class CategorySalesDTO:
     category_name: str
     total_revenue: float
-    percentage: float  # 0 - 100%
+    percentage: float  
 
 
 @dataclass
 class AnalyticsDTO:
     period_label: str
     total_revenue: float
-    revenue_growth: float  # e.g. 12.5 (%)
+    revenue_growth: float  
     total_invoices: int
-    invoices_growth: float  # e.g. 8.2 (%)
+    invoices_growth: float  
     avg_order_value: float
-    aov_growth: float  # e.g. -2.1 (%)
-    returning_rate: float  # e.g. 42.8 (%)
-    returning_growth: float  # e.g. 5.4 (%)
+    aov_growth: float 
+    returning_rate: float  
+    returning_growth: float  
     total_profit: float
     daily_revenues: List[DailyRevenueDTO]
     top_products: List[TopProductDTO]

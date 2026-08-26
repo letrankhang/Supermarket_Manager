@@ -1,9 +1,3 @@
-# File: src/controller/AddProductDialogController.py
-"""Controller cho hop thoai Them/Sua San pham (add_product_dialog.ui, class AddProductDialog).
-Dung chung cho ca Them moi va Sua: truyen initial=ProductDTO de mo che do Sua.
-Khong xu ly nghiep vu tai day - goi thang ProductService/CategoryService."""
-from __future__ import annotations
-
 import logging
 import random
 from typing import List, Optional
@@ -13,15 +7,14 @@ from PySide6.QtWidgets import QDialog, QMessageBox
 
 from src.dtos.CategoryDTO import CategoryDTO
 from src.dtos.ProductDTO import CreateProductDTO, ProductDTO, UpdateProductDTO
-from src.gui.tabs.add_product_dialog import Ui_AddProductDialog
+from src.gui.add_product_dialog_ui import Ui_AddProductDialog
 from src.services.CategoryService import CategoryService
 from src.services.impl.ProductServiceImpl import ProductServiceImpl
 
+
 logger = logging.getLogger(__name__)
 
-
 def _generate_barcode() -> str:
-    """Sinh ma vach ngau nhien gom 8 chu so, dung khi mo dialog o che do Them moi."""
     return "".join(str(random.randint(0, 9)) for _ in range(8))
 
 
@@ -29,9 +22,11 @@ class _AsyncWorker(QObject):
     finished = pyqtSignal(object)
     failed = pyqtSignal(str)
 
+
     def __init__(self, func, *args, **kwargs) -> None:
         super().__init__()
         self._func, self._args, self._kwargs = func, args, kwargs
+
 
     def run(self) -> None:
         try:
@@ -40,9 +35,7 @@ class _AsyncWorker(QObject):
             logger.exception("AddProductDialogController worker loi")
             self.failed.emit(str(exc))
 
-
 class AddProductDialogController(QDialog, Ui_AddProductDialog):
-
     def __init__(self, parent=None, initial: Optional[ProductDTO] = None) -> None:
         super().__init__(parent)
         self.setupUi(self)
@@ -61,14 +54,10 @@ class AddProductDialogController(QDialog, Ui_AddProductDialog):
         if initial is not None:
             self._prefill(initial)
         else:
-            # Che do Them moi: tu sinh san ma vach 8 chu so cho nguoi dung
             self.txtBarcode.setText(_generate_barcode())
 
-    # ---------------- Nhan chu theo che do Them / Sua ----------------
 
     def _apply_mode_labels(self, is_edit: bool) -> None:
-        """Dat tieu de cua so va phan header trong dialog theo che do dang mo.
-        Chi doi chu, khong dong den giao dien (dinh nghia trong add_product_dialog.ui)."""
         if is_edit:
             self.setWindowTitle("Sửa sản phẩm")
             self.lblDialogTitle.setText("Sửa sản phẩm")
@@ -80,10 +69,10 @@ class AddProductDialogController(QDialog, Ui_AddProductDialog):
             self.lblDialogSubtitle.setText("Điền thông tin sản phẩm, mã vạch được sinh tự động.")
             self.btnSave.setText("Lưu sản phẩm")
 
-    # ---------------- Nap danh muc vao combobox ----------------
 
     def _load_categories(self) -> None:
         self._run_async(self._category_service.get_all_categories, self._render_categories)
+
 
     def _render_categories(self, categories: List[CategoryDTO]) -> None:
         self.cboCategory.clear()
@@ -96,7 +85,6 @@ class AddProductDialogController(QDialog, Ui_AddProductDialog):
             if index >= 0:
                 self.cboCategory.setCurrentIndex(index)
 
-    # ---------------- Che do Sua: do du lieu co san len form ----------------
 
     def _prefill(self, product: ProductDTO) -> None:
         self.txtBarcode.setText(product.barcode)
@@ -105,7 +93,6 @@ class AddProductDialogController(QDialog, Ui_AddProductDialog):
         self.spnRetailPrice.setValue(product.retail_price)
         self.txtImage.setText(product.image or "")
 
-    # ---------------- Luu ----------------
 
     def _on_save_clicked(self) -> None:
         barcode = self.txtBarcode.text().strip()
@@ -141,15 +128,16 @@ class AddProductDialogController(QDialog, Ui_AddProductDialog):
             )
             self._run_async(self._product_service.update_product, self._on_saved, dto=dto)
 
+
     def _on_saved(self, product: ProductDTO) -> None:
         self.result_product = product
         self.accept()
+
 
     def _on_failed(self, message: str) -> None:
         self.btnSave.setEnabled(True)
         QMessageBox.warning(self, "Lỗi", message)
 
-    # ---------------- Ha tang chung (giong ban da sua loi crash QThread) ----------------
 
     def _run_async(self, func, on_success, **kwargs) -> None:
         thread = QThread(self)

@@ -6,6 +6,7 @@ from src.entities.product import Product
 from src.entities.sales_detail import SalesDetail
 from src.entities.sales_invoice import SalesInvoice
 
+
 class POSRepository(ABC):
     @abstractmethod
     def find_all_categories(self) -> List[Category]:

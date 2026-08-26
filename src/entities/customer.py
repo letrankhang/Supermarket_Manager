@@ -3,9 +3,6 @@ from sqlalchemy.orm import relationship
 from src.entities.base import Base
 
 class Customer(Base):
-    """
-    Customer entity model mapped to the 'customers' table.
-    """
     __tablename__ = 'customers'
 
     customer_id = Column(Integer, primary_key=True, autoincrement=True)
@@ -18,7 +15,6 @@ class Customer(Base):
     created_at = Column(DateTime, server_default=func.now())
     updated_at = Column(DateTime, server_default=func.now(), onupdate=func.now())
 
-    # Relationships
     tier = relationship("CustomerTier", back_populates="customers")
 
     def __repr__(self):

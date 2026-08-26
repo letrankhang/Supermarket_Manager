@@ -14,120 +14,435 @@
    <string>Form</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">/* ===== QSS tập trung của Dashboard =====
-   Trước đây nằm rải rác trong DashboardController.py.
-   Gom về đây để chỉnh giao diện trực tiếp trong Qt Designer.
-   QSS đặt ở widget gốc sẽ lan xuống mọi widget con, kể cả
-   widget được tạo lúc chạy (bảng, huy hiệu icon, nhãn ô thao tác). */
-
-/* Nút &quot;Tải lại dữ liệu&quot; trên thanh tiêu đề.
-   Dùng chung bảng màu với nút chính của tab POS (#btnCheckout, #btnCardAdd)
-   để hai tab nhìn đồng bộ. */
-QPushButton#pushButton {
-	background-color: #1d4ed8;
-	color: #ffffff;
-	border: none;
-	border-radius: 8px;
-	padding: 0px 14px;
-	font-size: 13px;
-	font-weight: bold;
+   <string notr="true">QWidget#Form {
+    background-color: #f1f5f9;
+    color: #0f172a;
+    font-family: &quot;Segoe UI&quot;, Arial, sans-serif;
 }
-QPushButton#pushButton:hover {
-	background-color: #1e3a8a;
+QWidget {
+    font-family: &quot;Segoe UI&quot;, Arial, sans-serif;
 }
-QPushButton#pushButton:pressed {
-	background-color: #1e40af;
-}
-/* Trạng thái &quot;Đang tải...&quot; khi controller tạm khoá nút */
-QPushButton#pushButton:disabled {
-	background-color: #cbd5e1;
-	color: #f8fafc;
+QLabel {
+    background-color: transparent;
+    border: none;
+    color: #0f172a;
 }
 
-/* Dong mo ta phu ngay duoi tieu de &quot;Tong quan he thong&quot; */
-QLabel#lblDashboardSubtitle {
-	color: #6b7280;
-	font-size: 12px;
-	font-weight: normal;
-	margin-top: 4px;
+QLineEdit,
+QComboBox,
+QDateEdit,
+QSpinBox,
+QDoubleSpinBox {
+    background-color: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 0px 9px;
+    min-height: 30px;
+    font-size: 13px;
+    color: #0f172a;
+    selection-background-color: #1d4ed8;
+    selection-color: #ffffff;
 }
-
-/* Tiêu đề khối &quot;Giao dịch gần đây&quot; */
-QLabel#lblTableTitle {
-	font-weight: bold;
-	font-size: 14px;
-	color: #1e293b;
+QTextEdit {
+    background-color: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 8px 10px;
+    font-size: 13px;
+    color: #0f172a;
+    selection-background-color: #1d4ed8;
+    selection-color: #ffffff;
 }
-
-/* Bảng giao dịch gần đây */
-QTableWidget#tblRecentTransactions {
-	border: none;
-	gridline-color: #f1f5f9;
-	background-color: white;
+QLineEdit:hover,
+QComboBox:hover,
+QDateEdit:hover,
+QSpinBox:hover,
+QDoubleSpinBox:hover,
+QTextEdit:hover {
+    border: 1px solid #cbd5e1;
 }
-QTableWidget#tblRecentTransactions::item {
-	padding: 10px;
-	border-bottom: 1px solid #f8fafc;
+QLineEdit:focus,
+QComboBox:focus,
+QDateEdit:focus,
+QSpinBox:focus,
+QDoubleSpinBox:focus,
+QTextEdit:focus {
+    border: 1px solid #1d4ed8;
 }
-QTableWidget#tblRecentTransactions QHeaderView::section {
-	background-color: #f8fafc;
-	padding: 8px;
-	font-weight: bold;
-	border: none;
-	color: #475569;
-}
-
-/* Chữ chú thích dưới 4 ô thao tác nhanh */
-QLabel#lblQuickActionCaption {
-	font-size: 12px;
-	font-weight: bold;
-	color: #475569;
-}
-
-/* Huy hiệu nền bo góc phía sau icon của 4 thẻ thống kê */
-QLabel#badgeRevenue  { background-color: #dbeafe; border-radius: 8px; }
-QLabel#badgeInvoice  { background-color: #ede9fe; border-radius: 8px; }
-QLabel#badgeStock    { background-color: #fef3c7; border-radius: 8px; }
-QLabel#badgeCustomer { background-color: #d1fae5; border-radius: 8px; }
-
-/* Nhãn đổi màu theo dữ liệu.
-   Controller chỉ gán thuộc tính động trangThai, màu do QSS dưới đây quyết định. */
-QLabel[trangThai=&quot;tang&quot;]    { color: #10b981; font-weight: bold; }
-QLabel[trangThai=&quot;giam&quot;]    { color: #ef4444; font-weight: bold; }
-QLabel[trangThai=&quot;giu&quot;]     { color: #64748b; font-weight: bold; }
-QLabel[trangThai=&quot;canhBao&quot;] { color: #eab308; font-weight: bold; }
-QLabel[trangThai=&quot;anToan&quot;]  { color: #10b981; }
-
-/* =========================================================
-   Thanh cuộn - giữ giống hệt pos.ui cho đồng bộ toàn app
-   Tay kéo bo tròn #cbd5e1, hover #94a3b8, rộng 10px, bỏ mũi tên.
-   Nếu đổi ở đây thì nhớ sửa cả pos.ui cho khớp.
-   ========================================================= */
-
-
-/* ===== Vertical scrollbar ===== */
-
-QScrollBar:vertical {
+QLineEdit:disabled,
+QComboBox:disabled,
+QDateEdit:disabled,
+QSpinBox:disabled,
+QDoubleSpinBox:disabled {
     background-color: #f8fafc;
+    color: #94a3b8;
+}
+
+QComboBox {
+    background-color: #ffffff;
+    color: #334155;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 0px 8px 0px 12px;
+    min-height: 26px;
+    font-size: 12px;
+    font-weight: bold;
+}
+QComboBox:hover {
+    border: 1px solid #cbd5e1;
+    color: #0f172a;
+}
+QComboBox:on,
+QComboBox:focus {
+    background-color: #ffffff;
+    border: 1px solid #1d4ed8;
+}
+QComboBox::drop-down {
+    subcontrol-origin: padding;
+    subcontrol-position: center right;
+    border: none;
+    background-color: transparent;
+    width: 26px;
+}
+QComboBox::down-arrow {
+    image: url(assets/images/chevron-down.png);
+    width: 10px;
+    height: 10px;
+}
+QComboBox::down-arrow:on {
+    image: url(assets/images/chevron-up.png);
+}
+QComboBox QAbstractItemView {
+    background-color: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 4px;
+    outline: none;
+    selection-background-color: #f1f5f9;
+    selection-color: #0f172a;
+}
+QComboBox QAbstractItemView::item {
+    color: #0f172a;
+    min-height: 30px;
+    padding: 4px 10px;
+    border-radius: 6px;
+}
+QComboBox QAbstractItemView::item:hover {
+    background-color: #f1f5f9;
+    color: #0f172a;
+}
+QComboBox QAbstractItemView::item:selected {
+    background-color: #e2e8f0;
+    color: #0f172a;
+}
+
+QLabel#lblTimeChartTitle,
+QLabel#lblCategoryTitle,
+QLabel#lblTopProductsTitle {
+    color: #0f172a;
+    font-size: 15px;
+    font-weight: 700;
+}
+
+QLabel#lblCardTitle,
+QLabel[card_title=&quot;true&quot;] {
+    color: #64748b;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+QLabel#lblCardValue,
+QLabel[card_value=&quot;true&quot;] {
+    color: #0f172a;
+    font-size: 24px;
+    font-weight: 800;
+}
+
+QWidget#containerTimeChart {
+    background-color: transparent;
+}
+
+QProgressBar {
+    background-color: #e2e8f0;
+    border: none;
+    border-radius: 3px;
+    max-height: 7px;
+    text-align: center;
+}
+
+QProgressBar::chunk {
+    background-color: #1d4ed8;
+    border-radius: 3px;
+}
+
+QPushButton#btnDetailLink {
+    background-color: transparent;
+    color: #1d4ed8;
+    border: none;
+    border-radius: 6px;
+    padding: 0px 8px;
+    min-height: 26px;
+}
+
+QSpinBox::up-button,
+QSpinBox::down-button,
+QDoubleSpinBox::up-button,
+QDoubleSpinBox::down-button,
+QDateEdit::up-button,
+QDateEdit::down-button {
+    subcontrol-origin: border;
+    width: 20px;
+    border: none;
+    background-color: transparent;
+}
+QSpinBox::up-button,
+QDoubleSpinBox::up-button,
+QDateEdit::up-button {
+    subcontrol-position: top right;
+}
+QSpinBox::down-button,
+QDoubleSpinBox::down-button,
+QDateEdit::down-button {
+    subcontrol-position: bottom right;
+}
+QSpinBox::up-button:hover,
+QSpinBox::down-button:hover,
+QDoubleSpinBox::up-button:hover,
+QDoubleSpinBox::down-button:hover,
+QDateEdit::up-button:hover,
+QDateEdit::down-button:hover {
+    background-color: #f1f5f9;
+}
+QSpinBox::up-arrow,
+QDoubleSpinBox::up-arrow,
+QDateEdit::up-arrow {
+    image: url(assets/images/chevron-up.png);
+    width: 9px;
+    height: 9px;
+}
+QSpinBox::down-arrow,
+QDoubleSpinBox::down-arrow,
+QDateEdit::down-arrow {
+    image: url(assets/images/chevron-down.png);
+    width: 9px;
+    height: 9px;
+}
+QCheckBox {
+    background-color: transparent;
+    color: #334155;
+    font-size: 13px;
+    font-weight: bold;
+    spacing: 8px;
+}
+QCheckBox::indicator {
+    width: 16px;
+    height: 16px;
+    border: 1px solid #cbd5e1;
+    border-radius: 4px;
+    background-color: #ffffff;
+}
+QCheckBox::indicator:hover {
+    border: 1px solid #1d4ed8;
+}
+QCheckBox::indicator:checked {
+    background-color: #1d4ed8;
+    border: 1px solid #1d4ed8;
+}
+
+QPushButton {
+    background-color: #ffffff;
+    color: #64748b;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 0px 16px;
+    min-height: 38px;
+    font-size: 12px;
+    font-weight: bold;
+}
+QPushButton:hover {
+    background-color: #eff6ff;
+    color: #1d4ed8;
+    border: 1px solid #1d4ed8;
+}
+QPushButton:pressed {
+    background-color: #dbeafe;
+}
+QPushButton:disabled {
+    background-color: #f8fafc;
+    color: #cbd5e1;
+    border: 1px solid #e2e8f0;
+}
+QPushButton#RowActionButton {
+    background-color: transparent;
+    border: none;
+    border-radius: 6px;
+    padding: 0px;
+    min-width: 28px;
+    max-width: 28px;
+    min-height: 28px;
+    max-height: 28px;
+}
+QPushButton#RowActionButton:hover {
+    background-color: #eff6ff;
+}
+QPushButton#RowActionButton:pressed {
+    background-color: #dbeafe;
+}
+
+QTableWidget {
+    background-color: transparent;
+    border: none;
+    gridline-color: #f1f5f9;
+    font-size: 13px;
+    color: #334155;
+    outline: none;
+}
+QTableWidget::item {
+    padding: 8px;
+    border-bottom: 1px solid #f1f5f9;
+}
+QTableWidget::item:selected {
+    background-color: #eff6ff;
+    color: #1d4ed8;
+}
+QHeaderView {
+    background-color: #f8fafc;
+    border: none;
+    border-bottom: 1px solid #e2e8f0;
+}
+QHeaderView::section {
+    background-color: #f8fafc;
+    color: #64748b;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 10px 8px;
+    border: none;
+    border-bottom: 1px solid #e2e8f0;
+}
+QTableCornerButton::section {
+    background-color: #f8fafc;
+    border: none;
+}
+
+QLabel[badge=&quot;info&quot;] {
+    background-color: #dbeafe;
+    color: #1d4ed8;
+    border-radius: 6px;
+    padding: 3px 10px;
+    font-size: 11px;
+    font-weight: 700;
+}
+QLabel[badge=&quot;success&quot;] {
+    background-color: #d1fae5;
+    color: #059669;
+    border-radius: 6px;
+    padding: 3px 10px;
+    font-size: 11px;
+    font-weight: 700;
+}
+QLabel[badge=&quot;warning&quot;] {
+    background-color: #ffedd5;
+    color: #ea580c;
+    border-radius: 6px;
+    padding: 3px 10px;
+    font-size: 11px;
+    font-weight: 700;
+}
+QLabel[badge=&quot;danger&quot;] {
+    background-color: #fee2e2;
+    color: #dc2626;
+    border-radius: 6px;
+    padding: 3px 10px;
+    font-size: 11px;
+    font-weight: 700;
+}
+QLabel[badge=&quot;neutral&quot;] {
+    background-color: #e2e8f0;
+    color: #64748b;
+    border-radius: 6px;
+    padding: 3px 10px;
+    font-size: 11px;
+    font-weight: 700;
+}
+QLabel[badge=&quot;violet&quot;] {
+    background-color: #ede9fe;
+    color: #6d28d9;
+    border-radius: 6px;
+    padding: 3px 10px;
+    font-size: 11px;
+    font-weight: 700;
+}
+QLabel[trend=&quot;up&quot;] {
+    background-color: #ecfdf5;
+    color: #059669;
+    border-radius: 4px;
+    padding: 2px 6px;
+    font-size: 11px;
+    font-weight: 700;
+}
+QLabel[trend=&quot;down&quot;] {
+    background-color: #fef2f2;
+    color: #dc2626;
+    border-radius: 4px;
+    padding: 2px 6px;
+    font-size: 11px;
+    font-weight: 700;
+}
+QLabel[trend=&quot;flat&quot;] {
+    background-color: #f1f5f9;
+    color: #64748b;
+    border-radius: 4px;
+    padding: 2px 6px;
+    font-size: 11px;
+    font-weight: 700;
+}
+QLabel[state=&quot;up&quot;] {
+    color: #10b981;
+    font-weight: bold;
+}
+QLabel[state=&quot;down&quot;] {
+    color: #ef4444;
+    font-weight: bold;
+}
+QLabel[state=&quot;flat&quot;] {
+    color: #64748b;
+    font-weight: bold;
+}
+QLabel[state=&quot;warning&quot;] {
+    color: #eab308;
+    font-weight: bold;
+}
+QLabel[state=&quot;safe&quot;] {
+    color: #10b981;
+}
+
+QScrollArea {
+    background-color: transparent;
+    border: none;
+}
+QScrollArea &gt; QWidget &gt; QWidget {
+    background-color: transparent;
+}
+QAbstractScrollArea::viewport {
+    background-color: transparent;
+}
+QScrollBar:vertical {
+    background-color: transparent;
     width: 10px;
     margin: 0px;
     border: none;
 }
-
 QScrollBar::handle:vertical {
     background-color: #cbd5e1;
     min-height: 35px;
     border-radius: 5px;
 }
-
 QScrollBar::handle:vertical:hover {
     background-color: #94a3b8;
 }
-
 QScrollBar::handle:vertical:pressed {
     background-color: #64748b;
 }
-
 QScrollBar::add-line:vertical,
 QScrollBar::sub-line:vertical {
     height: 0px;
@@ -135,7 +450,6 @@ QScrollBar::sub-line:vertical {
     background: transparent;
     border: none;
 }
-
 QScrollBar::up-arrow:vertical,
 QScrollBar::down-arrow:vertical {
     width: 0px;
@@ -143,36 +457,27 @@ QScrollBar::down-arrow:vertical {
     background: transparent;
     border: none;
 }
-
 QScrollBar::add-page:vertical,
 QScrollBar::sub-page:vertical {
     background: transparent;
 }
-
-
-/* ===== Horizontal scrollbar ===== */
-
 QScrollBar:horizontal {
-    background-color: #f8fafc;
+    background-color: transparent;
     height: 10px;
     margin: 0px;
     border: none;
 }
-
 QScrollBar::handle:horizontal {
     background-color: #cbd5e1;
     min-width: 35px;
     border-radius: 5px;
 }
-
 QScrollBar::handle:horizontal:hover {
     background-color: #94a3b8;
 }
-
 QScrollBar::handle:horizontal:pressed {
     background-color: #64748b;
 }
-
 QScrollBar::add-line:horizontal,
 QScrollBar::sub-line:horizontal {
     width: 0px;
@@ -180,7 +485,6 @@ QScrollBar::sub-line:horizontal {
     background: transparent;
     border: none;
 }
-
 QScrollBar::left-arrow:horizontal,
 QScrollBar::right-arrow:horizontal {
     width: 0px;
@@ -188,10 +492,152 @@ QScrollBar::right-arrow:horizontal {
     background: transparent;
     border: none;
 }
-
 QScrollBar::add-page:horizontal,
 QScrollBar::sub-page:horizontal {
     background: transparent;
+}
+
+QMenu {
+    background-color: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 6px;
+}
+QMenu::item {
+    background-color: transparent;
+    color: #334155;
+    border-radius: 6px;
+    padding: 7px 18px;
+    font-size: 13px;
+}
+QMenu::item:selected {
+    background-color: #eff6ff;
+    color: #1d4ed8;
+}
+QMenu::separator {
+    height: 1px;
+    background-color: #e2e8f0;
+    margin: 6px 4px;
+}
+
+QFrame#frame,
+QFrame#frame_2,
+QFrame#frame_3,
+QFrame#frame_4,
+QFrame#frame_5,
+QFrame#frame_10,
+QFrame#frame_12,
+QFrame#frame_13,
+QFrame#frame_18 {
+    background-color: transparent;
+    border: none;
+}
+
+QFrame#frame_14,
+QFrame#frame_15,
+QFrame#frame_16,
+QFrame#frame_17 {
+    background-color: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    padding: 3px 8px;
+}
+
+QFrame#frame_6,
+QFrame#frame_chart,
+QFrame#frame_table {
+    background-color: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+}
+
+QFrame#frame_7,
+QFrame#frame_8,
+QFrame#frame_9,
+QFrame#frame_11 {
+    background-color: #f1f5f9;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+}
+QFrame#frame_7:hover,
+QFrame#frame_8:hover,
+QFrame#frame_9:hover,
+QFrame#frame_11:hover {
+    background-color: #e2e8f0;
+    border: 1px solid #cbd5e1;
+}
+
+QLabel#lblDashboardTitle {
+    color: #0f172a;
+    padding: 0px;
+    margin: 0px;
+}
+
+QLabel#lblDashboardSubtitle {
+    color: #6b7280;
+    font-size: 12px;
+    font-weight: normal;
+    margin-top: 4px;
+}
+
+QLabel#lblTableTitle {
+    color: #0f172a;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+QPushButton#btnRefresh {
+    background-color: #1d4ed8;
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    padding: 0px 20px;
+    min-height: 38px;
+    font-size: 13px;
+    font-weight: 700;
+}
+QPushButton#btnRefresh:hover {
+    background-color: #1e3a8a;
+}
+QPushButton#btnRefresh:pressed {
+    background-color: #1e40af;
+}
+QPushButton#btnRefresh:disabled {
+    background-color: #cbd5e1;
+    color: #f8fafc;
+}
+
+QLabel#badgeRevenue {
+    background-color: #dbeafe;
+    border-radius: 8px;
+}
+QLabel#badgeInvoice {
+    background-color: #ede9fe;
+    border-radius: 8px;
+}
+QLabel#badgeStock {
+    background-color: #fef3c7;
+    border-radius: 8px;
+}
+QLabel#badgeCustomer {
+    background-color: #d1fae5;
+    border-radius: 8px;
+}
+
+QLabel#lblQuickActionCaption {
+    font-size: 12px;
+    font-weight: bold;
+    color: #334155;
+}
+
+QLabel#label_4,
+QLabel#label_10,
+QLabel#label_8,
+QLabel#label_6 {
+    color: #64748b;
+    font-size: 13px;
+    font-weight: 600;
+	font: bold;
 }</string>
   </property>
   <layout class="QHBoxLayout" name="horizontalLayout">
@@ -269,15 +715,6 @@ QScrollBar::sub-page:horizontal {
              <verstretch>0</verstretch>
             </sizepolicy>
            </property>
-           <property name="styleSheet">
-            <string notr="true">#frame_10 {
-		background-color: transparent;
-		color: black;
-		border: none;
-		outline: none;
-		padding: 0px;
-}</string>
-           </property>
            <property name="frameShape">
             <enum>QFrame::Shape::NoFrame</enum>
            </property>
@@ -304,7 +741,7 @@ QScrollBar::sub-page:horizontal {
              <number>12</number>
             </property>
             <item row="0" column="0">
-             <widget class="QLabel" name="label">
+             <widget class="QLabel" name="lblDashboardTitle">
               <property name="minimumSize">
                <size>
                 <width>90</width>
@@ -313,15 +750,10 @@ QScrollBar::sub-page:horizontal {
               </property>
               <property name="font">
                <font>
+                <family>Segoe UI</family>
                 <pointsize>18</pointsize>
                 <bold>true</bold>
                </font>
-              </property>
-              <property name="styleSheet">
-               <string notr="true">QLabel {
-	padding: 0px;
-	margin: 0px;
-}</string>
               </property>
               <property name="text">
                <string>Tổng quan hệ thống</string>
@@ -337,7 +769,7 @@ QScrollBar::sub-page:horizontal {
             </item>
            </layout>
            <zorder>lblDashboardSubtitle</zorder>
-           <zorder>label</zorder>
+           <zorder>lblDashboardTitle</zorder>
           </widget>
          </item>
          <item>
@@ -354,11 +786,11 @@ QScrollBar::sub-page:horizontal {
           </spacer>
          </item>
          <item>
-          <widget class="QPushButton" name="pushButton">
+          <widget class="QPushButton" name="btnRefresh">
            <property name="minimumSize">
             <size>
              <width>140</width>
-             <height>40</height>
+             <height>38</height>
             </size>
            </property>
            <property name="maximumSize">
@@ -413,9 +845,6 @@ QScrollBar::sub-page:horizontal {
              <verstretch>0</verstretch>
             </sizepolicy>
            </property>
-           <property name="styleSheet">
-            <string notr="true"/>
-           </property>
            <property name="frameShape">
             <enum>QFrame::Shape::NoFrame</enum>
            </property>
@@ -445,13 +874,6 @@ QScrollBar::sub-page:horizontal {
                 <horstretch>0</horstretch>
                 <verstretch>0</verstretch>
                </sizepolicy>
-              </property>
-              <property name="styleSheet">
-               <string notr="true">#frame_6 {
-	background-color: white;
-	border-radius: 10px;
-	border: 1px solid #e2e8f0;
-}</string>
               </property>
               <property name="frameShape">
                <enum>QFrame::Shape::NoFrame</enum>
@@ -489,18 +911,6 @@ QScrollBar::sub-page:horizontal {
                    <height>0</height>
                   </size>
                  </property>
-                 <property name="styleSheet">
-                  <string notr="true">QFrame#frame_8 {
-	background-color: #f1f5f9;
-	border-radius: 10px;
-	border: 1px solid #e2e8f0;
-}
-
-QFrame#frame_8:hover {
-	background-color: #e2e8f0;
-	border: 1px solid #cbd5e1;
-}</string>
-                 </property>
                  <property name="frameShape">
                   <enum>QFrame::Shape::StyledPanel</enum>
                  </property>
@@ -523,18 +933,6 @@ QFrame#frame_8:hover {
                    <height>0</height>
                   </size>
                  </property>
-                 <property name="styleSheet">
-                  <string notr="true">QFrame#frame_9 {
-	background-color: #f1f5f9;
-	border-radius: 10px;
-	border: 1px solid #e2e8f0;
-}
-
-QFrame#frame_9:hover {
-	background-color: #e2e8f0;
-	border: 1px solid #cbd5e1;
-}</string>
-                 </property>
                  <property name="frameShape">
                   <enum>QFrame::Shape::StyledPanel</enum>
                  </property>
@@ -556,7 +954,7 @@ QFrame#frame_9:hover {
                    <widget class="QLabel" name="label_3">
                     <property name="font">
                      <font>
-                      <family>MS Shell Dlg 2</family>
+                      <family>Segoe UI</family>
                       <pointsize>10</pointsize>
                       <bold>true</bold>
                      </font>
@@ -583,18 +981,6 @@ QFrame#frame_9:hover {
                    <height>0</height>
                   </size>
                  </property>
-                 <property name="styleSheet">
-                  <string notr="true">QFrame#frame_11 {
-	background-color: #f1f5f9;
-	border-radius: 10px;
-	border: 1px solid #e2e8f0;
-}
-
-QFrame#frame_11:hover {
-	background-color: #e2e8f0;
-	border: 1px solid #cbd5e1;
-}</string>
-                 </property>
                  <property name="frameShape">
                   <enum>QFrame::Shape::StyledPanel</enum>
                  </property>
@@ -617,18 +1003,6 @@ QFrame#frame_11:hover {
                    <height>0</height>
                   </size>
                  </property>
-                 <property name="styleSheet">
-                  <string notr="true">QFrame#frame_7 {
-	background-color: #f1f5f9;
-	border-radius: 10px;
-	border: 1px solid #e2e8f0;
-}
-
-QFrame#frame_7:hover {
-	background-color: #e2e8f0;
-	border: 1px solid #cbd5e1;
-}</string>
-                 </property>
                  <property name="frameShape">
                   <enum>QFrame::Shape::StyledPanel</enum>
                  </property>
@@ -647,9 +1021,6 @@ QFrame#frame_7:hover {
                 <horstretch>3</horstretch>
                 <verstretch>0</verstretch>
                </sizepolicy>
-              </property>
-              <property name="styleSheet">
-               <string notr="true"/>
               </property>
               <property name="frameShape">
                <enum>QFrame::Shape::NoFrame</enum>
@@ -705,14 +1076,6 @@ QFrame#frame_7:hover {
                       <verstretch>0</verstretch>
                      </sizepolicy>
                     </property>
-                    <property name="styleSheet">
-                     <string notr="true">#frame_17 {
-		background-color: white;
-		border-radius: 10px;
-		padding: 3px 8px;
-		border: 1px solid #e2e8f0; 
-}</string>
-                    </property>
                     <property name="frameShape">
                      <enum>QFrame::Shape::StyledPanel</enum>
                     </property>
@@ -724,7 +1087,9 @@ QFrame#frame_7:hover {
                       <widget class="QLabel" name="label_6">
                        <property name="font">
                         <font>
-                         <pointsize>11</pointsize>
+                         <family>Segoe UI</family>
+                         <pointsize>-1</pointsize>
+                         <italic>false</italic>
                          <bold>true</bold>
                         </font>
                        </property>
@@ -737,7 +1102,9 @@ QFrame#frame_7:hover {
                       <widget class="QLabel" name="label_14">
                        <property name="font">
                         <font>
+                         <family>Segoe UI</family>
                          <pointsize>20</pointsize>
+                         <bold>true</bold>
                         </font>
                        </property>
                        <property name="text">
@@ -763,14 +1130,6 @@ QFrame#frame_7:hover {
                       <verstretch>0</verstretch>
                      </sizepolicy>
                     </property>
-                    <property name="styleSheet">
-                     <string notr="true">#frame_16 {
-		background-color:  white;
-		border-radius: 10px;
-		padding: 3px 8px;
-		border: 1px solid #e2e8f0; 
-}</string>
-                    </property>
                     <property name="frameShape">
                      <enum>QFrame::Shape::StyledPanel</enum>
                     </property>
@@ -782,7 +1141,9 @@ QFrame#frame_7:hover {
                       <widget class="QLabel" name="label_8">
                        <property name="font">
                         <font>
-                         <pointsize>11</pointsize>
+                         <family>Segoe UI</family>
+                         <pointsize>-1</pointsize>
+                         <italic>false</italic>
                          <bold>true</bold>
                         </font>
                        </property>
@@ -795,7 +1156,9 @@ QFrame#frame_7:hover {
                       <widget class="QLabel" name="label_9">
                        <property name="font">
                         <font>
+                         <family>Segoe UI</family>
                          <pointsize>20</pointsize>
+                         <bold>true</bold>
                         </font>
                        </property>
                        <property name="text">
@@ -821,14 +1184,6 @@ QFrame#frame_7:hover {
                       <verstretch>0</verstretch>
                      </sizepolicy>
                     </property>
-                    <property name="styleSheet">
-                     <string notr="true">#frame_15 {
-		background-color: white;
-		border-radius: 10px;
-		padding: 3px 8px;
-		border: 1px solid #e2e8f0; 
-}</string>
-                    </property>
                     <property name="frameShape">
                      <enum>QFrame::Shape::StyledPanel</enum>
                     </property>
@@ -840,7 +1195,9 @@ QFrame#frame_7:hover {
                       <widget class="QLabel" name="label_10">
                        <property name="font">
                         <font>
-                         <pointsize>11</pointsize>
+                         <family>Segoe UI</family>
+                         <pointsize>-1</pointsize>
+                         <italic>false</italic>
                          <bold>true</bold>
                         </font>
                        </property>
@@ -853,8 +1210,9 @@ QFrame#frame_7:hover {
                       <widget class="QLabel" name="label_11">
                        <property name="font">
                         <font>
+                         <family>Segoe UI</family>
                          <pointsize>20</pointsize>
-                         <bold>false</bold>
+                         <bold>true</bold>
                         </font>
                        </property>
                        <property name="text">
@@ -880,14 +1238,6 @@ QFrame#frame_7:hover {
                       <verstretch>0</verstretch>
                      </sizepolicy>
                     </property>
-                    <property name="styleSheet">
-                     <string notr="true">#frame_14 {
-		background-color: white;
-		border-radius: 10px;
-		padding: 3px 8px;
-		border: 1px solid #e2e8f0; 
-}</string>
-                    </property>
                     <property name="frameShape">
                      <enum>QFrame::Shape::StyledPanel</enum>
                     </property>
@@ -897,9 +1247,210 @@ QFrame#frame_7:hover {
                     <layout class="QVBoxLayout" name="verticalLayout_4">
                      <item>
                       <widget class="QLabel" name="label_4">
+                       <property name="palette">
+                        <palette>
+                         <active>
+                          <colorrole role="WindowText">
+                           <brush brushstyle="SolidPattern">
+                            <color alpha="255">
+                             <red>100</red>
+                             <green>116</green>
+                             <blue>139</blue>
+                            </color>
+                           </brush>
+                          </colorrole>
+                          <colorrole role="Button">
+                           <brush brushstyle="SolidPattern">
+                            <color alpha="0">
+                             <red>0</red>
+                             <green>0</green>
+                             <blue>0</blue>
+                            </color>
+                           </brush>
+                          </colorrole>
+                          <colorrole role="Text">
+                           <brush brushstyle="SolidPattern">
+                            <color alpha="255">
+                             <red>100</red>
+                             <green>116</green>
+                             <blue>139</blue>
+                            </color>
+                           </brush>
+                          </colorrole>
+                          <colorrole role="ButtonText">
+                           <brush brushstyle="SolidPattern">
+                            <color alpha="255">
+                             <red>100</red>
+                             <green>116</green>
+                             <blue>139</blue>
+                            </color>
+                           </brush>
+                          </colorrole>
+                          <colorrole role="Base">
+                           <brush brushstyle="SolidPattern">
+                            <color alpha="0">
+                             <red>0</red>
+                             <green>0</green>
+                             <blue>0</blue>
+                            </color>
+                           </brush>
+                          </colorrole>
+                          <colorrole role="Window">
+                           <brush brushstyle="SolidPattern">
+                            <color alpha="0">
+                             <red>0</red>
+                             <green>0</green>
+                             <blue>0</blue>
+                            </color>
+                           </brush>
+                          </colorrole>
+                          <colorrole role="PlaceholderText">
+                           <brush brushstyle="SolidPattern">
+                            <color alpha="128">
+                             <red>100</red>
+                             <green>116</green>
+                             <blue>139</blue>
+                            </color>
+                           </brush>
+                          </colorrole>
+                         </active>
+                         <inactive>
+                          <colorrole role="WindowText">
+                           <brush brushstyle="SolidPattern">
+                            <color alpha="255">
+                             <red>100</red>
+                             <green>116</green>
+                             <blue>139</blue>
+                            </color>
+                           </brush>
+                          </colorrole>
+                          <colorrole role="Button">
+                           <brush brushstyle="SolidPattern">
+                            <color alpha="0">
+                             <red>0</red>
+                             <green>0</green>
+                             <blue>0</blue>
+                            </color>
+                           </brush>
+                          </colorrole>
+                          <colorrole role="Text">
+                           <brush brushstyle="SolidPattern">
+                            <color alpha="255">
+                             <red>100</red>
+                             <green>116</green>
+                             <blue>139</blue>
+                            </color>
+                           </brush>
+                          </colorrole>
+                          <colorrole role="ButtonText">
+                           <brush brushstyle="SolidPattern">
+                            <color alpha="255">
+                             <red>100</red>
+                             <green>116</green>
+                             <blue>139</blue>
+                            </color>
+                           </brush>
+                          </colorrole>
+                          <colorrole role="Base">
+                           <brush brushstyle="SolidPattern">
+                            <color alpha="0">
+                             <red>0</red>
+                             <green>0</green>
+                             <blue>0</blue>
+                            </color>
+                           </brush>
+                          </colorrole>
+                          <colorrole role="Window">
+                           <brush brushstyle="SolidPattern">
+                            <color alpha="0">
+                             <red>0</red>
+                             <green>0</green>
+                             <blue>0</blue>
+                            </color>
+                           </brush>
+                          </colorrole>
+                          <colorrole role="PlaceholderText">
+                           <brush brushstyle="SolidPattern">
+                            <color alpha="128">
+                             <red>100</red>
+                             <green>116</green>
+                             <blue>139</blue>
+                            </color>
+                           </brush>
+                          </colorrole>
+                         </inactive>
+                         <disabled>
+                          <colorrole role="WindowText">
+                           <brush brushstyle="SolidPattern">
+                            <color alpha="255">
+                             <red>100</red>
+                             <green>116</green>
+                             <blue>139</blue>
+                            </color>
+                           </brush>
+                          </colorrole>
+                          <colorrole role="Button">
+                           <brush brushstyle="SolidPattern">
+                            <color alpha="0">
+                             <red>0</red>
+                             <green>0</green>
+                             <blue>0</blue>
+                            </color>
+                           </brush>
+                          </colorrole>
+                          <colorrole role="Text">
+                           <brush brushstyle="SolidPattern">
+                            <color alpha="255">
+                             <red>100</red>
+                             <green>116</green>
+                             <blue>139</blue>
+                            </color>
+                           </brush>
+                          </colorrole>
+                          <colorrole role="ButtonText">
+                           <brush brushstyle="SolidPattern">
+                            <color alpha="255">
+                             <red>100</red>
+                             <green>116</green>
+                             <blue>139</blue>
+                            </color>
+                           </brush>
+                          </colorrole>
+                          <colorrole role="Base">
+                           <brush brushstyle="SolidPattern">
+                            <color alpha="0">
+                             <red>0</red>
+                             <green>0</green>
+                             <blue>0</blue>
+                            </color>
+                           </brush>
+                          </colorrole>
+                          <colorrole role="Window">
+                           <brush brushstyle="SolidPattern">
+                            <color alpha="0">
+                             <red>0</red>
+                             <green>0</green>
+                             <blue>0</blue>
+                            </color>
+                           </brush>
+                          </colorrole>
+                          <colorrole role="PlaceholderText">
+                           <brush brushstyle="SolidPattern">
+                            <color alpha="128">
+                             <red>100</red>
+                             <green>116</green>
+                             <blue>139</blue>
+                            </color>
+                           </brush>
+                          </colorrole>
+                         </disabled>
+                        </palette>
+                       </property>
                        <property name="font">
                         <font>
-                         <pointsize>11</pointsize>
+                         <family>Segoe UI</family>
+                         <pointsize>-1</pointsize>
+                         <italic>false</italic>
                          <bold>true</bold>
                         </font>
                        </property>
@@ -912,8 +1463,9 @@ QFrame#frame_7:hover {
                       <widget class="QLabel" name="label_5">
                        <property name="font">
                         <font>
+                         <family>Segoe UI</family>
                          <pointsize>20</pointsize>
-                         <bold>false</bold>
+                         <bold>true</bold>
                         </font>
                        </property>
                        <property name="text">
@@ -984,13 +1536,6 @@ QFrame#frame_7:hover {
              <verstretch>0</verstretch>
             </sizepolicy>
            </property>
-           <property name="styleSheet">
-            <string notr="true">QFrame#frame_chart { 
-	background-color: white; 
-	border-radius: 10px; 
-	border: 1px solid #e2e8f0; 
-}</string>
-           </property>
            <property name="frameShape">
             <enum>QFrame::Shape::StyledPanel</enum>
            </property>
@@ -1024,11 +1569,6 @@ QFrame#frame_7:hover {
                 <height>32</height>
                </size>
               </property>
-              <property name="styleSheet">
-               <string notr="true">#frame_18{
-	padding: 0px;
-}</string>
-              </property>
               <property name="frameShape">
                <enum>QFrame::Shape::NoFrame</enum>
               </property>
@@ -1055,7 +1595,7 @@ QFrame#frame_7:hover {
                 <widget class="QLabel" name="label_16">
                  <property name="font">
                   <font>
-                   <family>MS Shell Dlg 2</family>
+                   <family>Segoe UI</family>
                    <pointsize>10</pointsize>
                    <bold>true</bold>
                   </font>
@@ -1082,12 +1622,9 @@ QFrame#frame_7:hover {
                 <widget class="QComboBox" name="comboBox">
                  <property name="maximumSize">
                   <size>
-                   <width>90</width>
+                   <width>100</width>
                    <height>16777215</height>
                   </size>
-                 </property>
-                 <property name="styleSheet">
-                  <string notr="true"/>
                  </property>
                  <item>
                   <property name="text">
@@ -1167,13 +1704,6 @@ QFrame#frame_7:hover {
              <horstretch>4</horstretch>
              <verstretch>0</verstretch>
             </sizepolicy>
-           </property>
-           <property name="styleSheet">
-            <string notr="true">QFrame#frame_table { 
-	background-color: white; 
-	border-radius: 10px; 
-	border: 1px solid #e2e8f0; 
-}</string>
            </property>
            <property name="frameShape">
             <enum>QFrame::Shape::StyledPanel</enum>

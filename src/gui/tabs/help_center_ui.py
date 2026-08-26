@@ -24,192 +24,345 @@ class Ui_Form(object):
         if not Form.objectName():
             Form.setObjectName(u"Form")
         Form.resize(1100, 720)
-        Form.setStyleSheet(u"\n"
-"QWidget#Form {\n"
+        Form.setStyleSheet(u"QWidget#Form {\n"
 "    background-color: #f1f5f9;\n"
 "    color: #0f172a;\n"
 "    font-family: \"Segoe UI\", Arial, sans-serif;\n"
 "}\n"
-"/* ===== Ti\u00eau \u0111\u1ec1 trang =====\n"
-"   D\u00f9ng chung ki\u1ec3u v\u1edbi header c\u1ee7a dashboard.ui: ti\u00eau \u0111\u1ec1 \u0111\u1eadm c\u1ee1 l\u1edbn,\n"
-"   ngay d\u01b0\u1edbi l\u00e0 m\u1ed9t d\u00f2ng m\u00f4 t\u1ea3 m\u00e0u x\u00e1m, ch\u1eef th\u01b0\u1eddng, c\u1ee1 nh\u1ecf h\u01a1n.\n"
-"   C\u1ee1 ch\u1eef v\u00e0 \u0111\u1ed9 \u0111\u1eadm c\u1ee7a ti\u00eau \u0111\u1ec1 l\u1ea5y t\u1eeb thu\u1ed9c t\u00ednh font c\u1ee7a lblTitle\n"
-"   (pointsize 18, bold) gi\u1ed1ng h\u1ec7t QLabel ti\u00eau \u0111\u1ec1 b\u00ean Dashboard. */\n"
-"QLabel#lblTitle {\n"
-"    color: #0f172a;\n"
-"    padding: 0px;\n"
-"    margin: 0px;\n"
+"QWidget {\n"
+"    font-family: \"Segoe UI\", Arial, sans-serif;\n"
 "}\n"
-"QLabel#lblSubTitle {\n"
-"    color: #6b7280;\n"
-"    font-size: 12px;\n"
-"    font-weight: normal;\n"
-"    margin-top: 4px;\n"
-"}\n"
-"QScrollArea {\n"
-"    border: none;\n"
-"    background: transparent;\n"
-"}\n"
-"QWi"
-                        "dget#scrollAreaWidgetContents {\n"
-"    background: transparent;\n"
-"}\n"
-"/* ===== Th\u1ebb n\u1ed9i dung ===== */\n"
-"QFrame[class=\"card\"] {\n"
-"    background-color: #ffffff;\n"
-"    border: 1px solid #e2e8f0;\n"
-"    border-radius: 14px;\n"
-"}\n"
-"QLabel[class=\"cardIcon\"] {\n"
-"    background-color: #eff6ff;\n"
-"    border-radius: 9px;\n"
-"}\n"
-"QLabel[class=\"cardTitle\"] {\n"
-"    color: #0f172a;\n"
-"    font-size: 14px;\n"
-"    font-weight: 700;\n"
-"}\n"
-"QLabel[class=\"cardHint\"] {\n"
-"    color: #94a3b8;\n"
-"    font-size: 11px;\n"
-"}\n"
-"QFrame[class=\"divider\"] {\n"
-"    background-color: #e2e8f0;\n"
-"    border: none;\n"
-"    min-height: 1px;\n"
-"    max-height: 1px;\n"
-"}\n"
-"/* ===== M\u1ee5c h\u01b0\u1edbng d\u1eabn thu g\u1ecdn ===== */\n"
-"QToolButton[class=\"accordion\"] {\n"
+"QLabel {\n"
 "    background-color: transparent;\n"
 "    border: none;\n"
-"    border-radius: 8px;\n"
 "    color: #0f172a;\n"
+"}\n"
+"\n"
+"QLineEdit,\n"
+"QComboBox,\n"
+"QDateEdit,\n"
+"QSpinBox,\n"
+"QDoubleSpinBox {\n"
+"    background-color: #ffffff;\n"
+"    border: 1px solid #e2e8f0;\n"
+"    border-radius: 8px;\n"
+"    padding: 0px 12px;\n"
+"    min-height: 38px;\n"
 "    font-size: 13px;\n"
-"    font-weight: 600;\n"
-"    padding: 9px 10px;\n"
-"    text-align: left;\n"
-""
-                        "}\n"
-"QToolButton[class=\"accordion\"]:hover {\n"
+"    color: #0f172a;\n"
+"    selection-background-color: #1d4ed8;\n"
+"    selection-color: #ffffff;\n"
+"}\n"
+"QTextEdit {\n"
+"    background-color: #ffffff;\n"
+"    border: 1px solid #e2e8f0;\n"
+"    border-radius: 8px;\n"
+"    padding: 8px 10px;\n"
+"    font-size: 13px;\n"
+"    color: #0f172a;\n"
+"    selection-background-color: #1d4ed8;\n"
+"    selection-color: #ffffff;\n"
+"}\n"
+"QLineEdit:hover,\n"
+"QComboBox:hover,\n"
+"QDateEdit:hover,\n"
+"Q"
+                        "SpinBox:hover,\n"
+"QDoubleSpinBox:hover,\n"
+"QTextEdit:hover {\n"
+"    border: 1px solid #cbd5e1;\n"
+"}\n"
+"QLineEdit:focus,\n"
+"QComboBox:focus,\n"
+"QDateEdit:focus,\n"
+"QSpinBox:focus,\n"
+"QDoubleSpinBox:focus,\n"
+"QTextEdit:focus {\n"
+"    border: 1px solid #1d4ed8;\n"
+"}\n"
+"QLineEdit:disabled,\n"
+"QComboBox:disabled,\n"
+"QDateEdit:disabled,\n"
+"QSpinBox:disabled,\n"
+"QDoubleSpinBox:disabled {\n"
+"    background-color: #f8fafc;\n"
+"    color: #94a3b8;\n"
+"}\n"
+"QComboBox::drop-down {\n"
+"    subcontrol-origin: padding;\n"
+"    subcontrol-position: center right;\n"
+"    border: none;\n"
+"    background-color: transparent;\n"
+"    width: 26px;\n"
+"}\n"
+"QComboBox::down-arrow {\n"
+"    image: url(assets/images/chevron-down.png);\n"
+"    width: 10px;\n"
+"    height: 10px;\n"
+"}\n"
+"QComboBox::down-arrow:on {\n"
+"    image: url(assets/images/chevron-up.png);\n"
+"}\n"
+"QComboBox QAbstractItemView {\n"
+"    background-color: #ffffff;\n"
+"    border: 1px solid #e2e8f0;\n"
+"    border-radius: 8px;\n"
+"    padding: "
+                        "4px;\n"
+"    outline: none;\n"
+"    selection-background-color: #eff6ff;\n"
+"    selection-color: #1d4ed8;\n"
+"}\n"
+"QSpinBox::up-button,\n"
+"QSpinBox::down-button,\n"
+"QDoubleSpinBox::up-button,\n"
+"QDoubleSpinBox::down-button,\n"
+"QDateEdit::up-button,\n"
+"QDateEdit::down-button {\n"
+"    subcontrol-origin: border;\n"
+"    width: 20px;\n"
+"    border: none;\n"
+"    background-color: transparent;\n"
+"}\n"
+"QSpinBox::up-button,\n"
+"QDoubleSpinBox::up-button,\n"
+"QDateEdit::up-button {\n"
+"    subcontrol-position: top right;\n"
+"}\n"
+"QSpinBox::down-button,\n"
+"QDoubleSpinBox::down-button,\n"
+"QDateEdit::down-button {\n"
+"    subcontrol-position: bottom right;\n"
+"}\n"
+"QSpinBox::up-button:hover,\n"
+"QSpinBox::down-button:hover,\n"
+"QDoubleSpinBox::up-button:hover,\n"
+"QDoubleSpinBox::down-button:hover,\n"
+"QDateEdit::up-button:hover,\n"
+"QDateEdit::down-button:hover {\n"
 "    background-color: #f1f5f9;\n"
 "}\n"
-"QToolButton[class=\"accordion\"]:checked {\n"
+"QSpinBox::up-arrow,\n"
+"QDoubleSpinBox::up-arrow,\n"
+"QDateEdit::up-arrow {\n"
+"    image: url(asse"
+                        "ts/images/chevron-up.png);\n"
+"    width: 9px;\n"
+"    height: 9px;\n"
+"}\n"
+"QSpinBox::down-arrow,\n"
+"QDoubleSpinBox::down-arrow,\n"
+"QDateEdit::down-arrow {\n"
+"    image: url(assets/images/chevron-down.png);\n"
+"    width: 9px;\n"
+"    height: 9px;\n"
+"}\n"
+"QCheckBox {\n"
+"    background-color: transparent;\n"
+"    color: #334155;\n"
+"    font-size: 13px;\n"
+"    font-weight: bold;\n"
+"    spacing: 8px;\n"
+"}\n"
+"QCheckBox::indicator {\n"
+"    width: 16px;\n"
+"    height: 16px;\n"
+"    border: 1px solid #cbd5e1;\n"
+"    border-radius: 4px;\n"
+"    background-color: #ffffff;\n"
+"}\n"
+"QCheckBox::indicator:hover {\n"
+"    border: 1px solid #1d4ed8;\n"
+"}\n"
+"QCheckBox::indicator:checked {\n"
+"    background-color: #1d4ed8;\n"
+"    border: 1px solid #1d4ed8;\n"
+"}\n"
+"\n"
+"QPushButton {\n"
+"    background-color: #ffffff;\n"
+"    color: #64748b;\n"
+"    border: 1px solid #e2e8f0;\n"
+"    border-radius: 8px;\n"
+"    padding: 0px 16px;\n"
+"    min-height: 38px;\n"
+"    font-size: 12px;\n"
+"    font-weight: bold"
+                        ";\n"
+"}\n"
+"QPushButton:hover {\n"
+"    background-color: #eff6ff;\n"
+"    color: #1d4ed8;\n"
+"    border: 1px solid #1d4ed8;\n"
+"}\n"
+"QPushButton:pressed {\n"
+"    background-color: #dbeafe;\n"
+"}\n"
+"QPushButton:disabled {\n"
+"    background-color: #f8fafc;\n"
+"    color: #cbd5e1;\n"
+"    border: 1px solid #e2e8f0;\n"
+"}\n"
+"QPushButton#RowActionButton {\n"
+"    background-color: transparent;\n"
+"    border: none;\n"
+"    border-radius: 6px;\n"
+"    padding: 0px;\n"
+"    min-width: 28px;\n"
+"    max-width: 28px;\n"
+"    min-height: 28px;\n"
+"    max-height: 28px;\n"
+"}\n"
+"QPushButton#RowActionButton:hover {\n"
+"    background-color: #eff6ff;\n"
+"}\n"
+"QPushButton#RowActionButton:pressed {\n"
+"    background-color: #dbeafe;\n"
+"}\n"
+"\n"
+"QTableWidget {\n"
+"    background-color: transparent;\n"
+"    border: none;\n"
+"    gridline-color: #f1f5f9;\n"
+"    font-size: 13px;\n"
+"    color: #334155;\n"
+"    outline: none;\n"
+"}\n"
+"QTableWidget::item {\n"
+"    padding: 8px;\n"
+"    border-bottom: 1px solid #f1f5f"
+                        "9;\n"
+"}\n"
+"QTableWidget::item:selected {\n"
 "    background-color: #eff6ff;\n"
 "    color: #1d4ed8;\n"
 "}\n"
-"QLabel[class=\"bullet\"] {\n"
-"    color: #93c5fd;\n"
-"    font-size: 12px;\n"
-"    font-weight: 700;\n"
-"}\n"
-"QLabel[class=\"accordionLine\"] {\n"
-"    color: #475569;\n"
-"    font-size: 12px;\n"
-"}\n"
-"/* ===== Ph\u00edm t\u1eaft ===== */\n"
-"QLabel[class=\"keyCap\"] {\n"
+"QHeaderView {\n"
 "    background-color: #f8fafc;\n"
-"    border: 1px solid #cbd5e1;\n"
-"    border-radius: 6px;\n"
-"    color: #334155;\n"
-"    font-family: Consolas, \"Courier New\", monospace;\n"
+"    border: none;\n"
+"    border-bottom: 1px solid #e2e8f0;\n"
+"}\n"
+"QHeaderView::section {\n"
+"    background-color: #f8fafc;\n"
+"    color: #64748b;\n"
 "    font-size: 11px;\n"
 "    font-weight: 700;\n"
-"    min-width: 40px;\n"
-"    max-width: 40px;\n"
-"    min-height: 23px;\n"
-"    max-height: 23px;\n"
-"}\n"
-"QLabel[class=\"keyDesc\"] {\n"
-"    color: #475569;\n"
-"    font-size: 12px;\n"
-"}\n"
-"/* ===== Th\u00f4ng tin h\u1ec7 th\u1ed1ng ===== */\n"
-"QLabel[class=\"infoKey\"] {\n"
-"    color: #94a3b8;\n"
-"    f"
-                        "ont-size: 11px;\n"
-"}\n"
-"QLabel[class=\"infoValue\"] {\n"
-"    color: #0f172a;\n"
-"    font-size: 12px;\n"
-"    font-weight: 600;\n"
-"}\n"
-"/* ===== H\u1ed7 tr\u1ee3 nhanh ===== */\n"
-"QLabel[class=\"supportText\"] {\n"
-"    color: #64748b;\n"
-"    font-size: 12px;\n"
-"}\n"
-"QPushButton[class=\"primaryButton\"] {\n"
-"    background-color: #2563eb;\n"
+"    padding: 10px 8px;\n"
 "    border: none;\n"
-"    border-radius: 9px;\n"
-"    color: #ffffff;\n"
-"    font-size: 12px;\n"
-"    font-weight: 700;\n"
-"    min-height: 36px;\n"
-"    padding: 0px 14px;\n"
+"    border-bottom: 1px solid #e2e8f0;\n"
 "}\n"
-"QPushButton[class=\"primaryButton\"]:hover {\n"
-"    background-color: #1d4ed8;\n"
-"}\n"
-"QPushButton[class=\"primaryButton\"]:pressed {\n"
-"    background-color: #1e40af;\n"
-"}\n"
-"/* ===== \u0110\u1ed9i ng\u0169 ph\u00e1t tri\u1ec3n ===== */\n"
-"QFrame[class=\"memberRow\"] {\n"
-"    background-color: transparent;\n"
-"    border: 1px solid transparent;\n"
-"    border-radius: 10px;\n"
-"}\n"
-"QFrame[class=\"memberRow\"]:hover {\n"
+"QTableCornerButton::section {\n"
 "    background-color: #f8fafc;\n"
-"    border: 1px "
-                        "solid #e2e8f0;\n"
+"    border: none;\n"
 "}\n"
-"QToolButton[class=\"avatar\"] {\n"
-"    background-color: #f1f5f9;\n"
-"    border: 1px solid #e2e8f0;\n"
-"    border-radius: 20px;\n"
-"}\n"
-"QLabel[class=\"memberName\"] {\n"
-"    color: #0f172a;\n"
-"    font-size: 13px;\n"
+"\n"
+"QLabel[badge=\"info\"] {\n"
+"    background-color: #dbeafe;\n"
+"    color: #1d4ed8;\n"
+"    border-radius: 6px;\n"
+"    padding: 3px 10px;\n"
+"    font-size: 11px;\n"
 "    font-weight: 700;\n"
 "}\n"
-"QLabel[class=\"memberRole\"] {\n"
-"    background-color: #eff6ff;\n"
-"    border-radius: 8px;\n"
-"    color: #2563eb;\n"
-"    font-size: 10px;\n"
+"QLabel[badge=\"success\"] {\n"
+"    background-color: #d1fae5;\n"
+"    color: #059669;\n"
+"    border-radius: 6px;\n"
+"    padding: 3px 10px;\n"
+"    font-size: 11px;\n"
 "    font-weight: 700;\n"
-"    padding: 2px 8px;\n"
 "}\n"
-"QLabel[class=\"memberDesc\"] {\n"
+"QLabel[badge=\"warning\"] {\n"
+"    background-colo"
+                        "r: #ffedd5;\n"
+"    color: #ea580c;\n"
+"    border-radius: 6px;\n"
+"    padding: 3px 10px;\n"
+"    font-size: 11px;\n"
+"    font-weight: 700;\n"
+"}\n"
+"QLabel[badge=\"danger\"] {\n"
+"    background-color: #fee2e2;\n"
+"    color: #dc2626;\n"
+"    border-radius: 6px;\n"
+"    padding: 3px 10px;\n"
+"    font-size: 11px;\n"
+"    font-weight: 700;\n"
+"}\n"
+"QLabel[badge=\"neutral\"] {\n"
+"    background-color: #e2e8f0;\n"
 "    color: #64748b;\n"
-"    font-size: 12px;\n"
+"    border-radius: 6px;\n"
+"    padding: 3px 10px;\n"
+"    font-size: 11px;\n"
+"    font-weight: 700;\n"
 "}\n"
-"QPushButton[class=\"socialButton\"] {\n"
-"    background-color: #f8fafc;\n"
-"    border: 1px solid #e2e8f0;\n"
-"    border-radius: 8px;\n"
-"    min-width: 32px;\n"
-"    max-width: 32px;\n"
-"    min-height: 30px;\n"
-"    max-height: 30px;\n"
+"QLabel[badge=\"violet\"] {\n"
+"    background-color: #ede9fe;\n"
+"    color: #6d28d9;\n"
+"    border-radius: 6px;\n"
+"    padding: 3px 10px;\n"
+"    font-size: 11px;\n"
+"    font-weight: 700;\n"
 "}\n"
-"QPushButton[class=\"socialButton\"]:hover {\n"
-"    background-color: #eff6ff;\n"
-"    border-color: #93c5fd;\n"
+"QLabel[trend=\"up\"] {\n"
+"    background-color: #ecfdf5;\n"
+"    color: #059669;\n"
+"    border-radius: 4px;\n"
+"    padding: 2px 6px;\n"
+"    font-size: 11px;\n"
+"    font-weight: 700;\n"
 "}\n"
-"QPushButton[class=\"socialButton\"]:pressed {\n"
-"    background-color: #dbeafe;"
-                        "\n"
+"QLabel[trend=\"down\"] {\n"
+"    background-color: #fef2f2;\n"
+"    c"
+                        "olor: #dc2626;\n"
+"    border-radius: 4px;\n"
+"    padding: 2px 6px;\n"
+"    font-size: 11px;\n"
+"    font-weight: 700;\n"
 "}\n"
-"/* ===== Thanh cu\u1ed9n ===== */\n"
-"QScrollBar:vertical {\n"
+"QLabel[trend=\"flat\"] {\n"
+"    background-color: #f1f5f9;\n"
+"    color: #64748b;\n"
+"    border-radius: 4px;\n"
+"    padding: 2px 6px;\n"
+"    font-size: 11px;\n"
+"    font-weight: 700;\n"
+"}\n"
+"QLabel[state=\"up\"] {\n"
+"    color: #10b981;\n"
+"    font-weight: bold;\n"
+"}\n"
+"QLabel[state=\"down\"] {\n"
+"    color: #ef4444;\n"
+"    font-weight: bold;\n"
+"}\n"
+"QLabel[state=\"flat\"] {\n"
+"    color: #64748b;\n"
+"    font-weight: bold;\n"
+"}\n"
+"QLabel[state=\"warning\"] {\n"
+"    color: #eab308;\n"
+"    font-weight: bold;\n"
+"}\n"
+"QLabel[state=\"safe\"] {\n"
+"    color: #10b981;\n"
+"}\n"
+"\n"
+"QScrollArea {\n"
 "    background-color: transparent;\n"
+"    border: none;\n"
+"}\n"
+"QScrollArea > QWidget > QWidget {\n"
+"    background-color: transparent;\n"
+"}\n"
+"QAbstractScrollArea::viewport {\n"
+"    background-color: transparent;\n"
+"}\n"
+"QScrollBar:vertical {\n"
+"    backgrou"
+                        "nd-color: transparent;\n"
 "    width: 10px;\n"
 "    margin: 0px;\n"
 "    border: none;\n"
@@ -246,12 +399,12 @@ class Ui_Form(object):
 "QScrollBar:horizontal {\n"
 "    background-color: transparent;\n"
 "    height: 10px;\n"
-" "
-                        "   margin: 0px;\n"
+"    margin: 0px;\n"
 "    border: none;\n"
 "}\n"
 "QScrollBar::handle:horizontal {\n"
-"    background-color: #cbd5e1;\n"
+"   "
+                        " background-color: #cbd5e1;\n"
 "    min-width: 35px;\n"
 "    border-radius: 5px;\n"
 "}\n"
@@ -278,7 +431,193 @@ class Ui_Form(object):
 "QScrollBar::add-page:horizontal,\n"
 "QScrollBar::sub-page:horizontal {\n"
 "    background: transparent;\n"
-"}")
+"}\n"
+"\n"
+"QMenu {\n"
+"    background-color: #ffffff;\n"
+"    border: 1px solid #e2e8f0;\n"
+"    border-radius: 8px;\n"
+"    padding: 6px;\n"
+"}\n"
+"QMenu::item {\n"
+"    background-color: transparent;\n"
+"    color: #334155;\n"
+"    border-radius: 6px;\n"
+"    padding: 7px 18px;\n"
+"    font-size:"
+                        " 13px;\n"
+"}\n"
+"QMenu::item:selected {\n"
+"    background-color: #eff6ff;\n"
+"    color: #1d4ed8;\n"
+"}\n"
+"QMenu::separator {\n"
+"    height: 1px;\n"
+"    background-color: #e2e8f0;\n"
+"    margin: 6px 4px;\n"
+"}\n"
+"\n"
+"QLabel#lblTitle {\n"
+"    color: #0f172a;\n"
+"    padding: 0px;\n"
+"    margin: 0px;\n"
+"}\n"
+"\n"
+"QLabel#lblSubTitle {\n"
+"    color: #6b7280;\n"
+"    font-size: 12px;\n"
+"    font-weight: normal;\n"
+"    margin-top: 4px;\n"
+"}\n"
+"\n"
+"QWidget#scrollAreaWidgetContents {\n"
+"    background-color: transparent;\n"
+"    border: none;\n"
+"}\n"
+"\n"
+"QFrame[class=\"card\"] {\n"
+"    background-color: #ffffff;\n"
+"    border: 1px solid #e2e8f0;\n"
+"    border-radius: 14px;\n"
+"}\n"
+"QLabel[class=\"cardIcon\"] {\n"
+"    background-color: #eff6ff;\n"
+"    border-radius: 8px;\n"
+"}\n"
+"QLabel[class=\"cardTitle\"] {\n"
+"    color: #0f172a;\n"
+"    font-size: 14px;\n"
+"    font-weight: 700;\n"
+"}\n"
+"QLabel[class=\"cardHint\"] {\n"
+"    color: #94a3b8;\n"
+"    font-size: 11px;\n"
+"}\n"
+"QFrame[class"
+                        "=\"divider\"] {\n"
+"    background-color: #e2e8f0;\n"
+"    border: none;\n"
+"    min-height: 1px;\n"
+"    max-height: 1px;\n"
+"}\n"
+"QToolButton[class=\"accordion\"] {\n"
+"    background-color: transparent;\n"
+"    border: none;\n"
+"    border-radius: 8px;\n"
+"    color: #0f172a;\n"
+"    font-size: 13px;\n"
+"    font-weight: 600;\n"
+"    padding: 9px 10px;\n"
+"    text-align: left;\n"
+"}\n"
+"QToolButton[class=\"accordion\"]:hover {\n"
+"    background-color: #f1f5f9;\n"
+"}\n"
+"QToolButton[class=\"accordion\"]:checked {\n"
+"    background-color: #eff6ff;\n"
+"    color: #1d4ed8;\n"
+"}\n"
+"QLabel[class=\"bullet\"] {\n"
+"    color: #1d4ed8;\n"
+"    font-size: 12px;\n"
+"    font-weight: 700;\n"
+"}\n"
+"QLabel[class=\"accordionLine\"],\n"
+"QLabel[class=\"keyDesc\"] {\n"
+"    color: #334155;\n"
+"    font-size: 12px;\n"
+"}\n"
+"QLabel[class=\"keyCap\"] {\n"
+"    background-color: #f8fafc;\n"
+"    border: 1px solid #cbd5e1;\n"
+"    border-radius: 6px;\n"
+"    color: #334155;\n"
+"    font-family: Consolas, \"Courier New\","
+                        " monospace;\n"
+"    font-size: 11px;\n"
+"    font-weight: 700;\n"
+"    min-width: 40px;\n"
+"    max-width: 40px;\n"
+"    min-height: 23px;\n"
+"    max-height: 23px;\n"
+"}\n"
+"QLabel[class=\"infoKey\"] {\n"
+"    color: #94a3b8;\n"
+"    font-size: 11px;\n"
+"}\n"
+"QLabel[class=\"infoValue\"] {\n"
+"    color: #0f172a;\n"
+"    font-size: 12px;\n"
+"    font-weight: 600;\n"
+"}\n"
+"QLabel[class=\"supportText\"],\n"
+"QLabel[class=\"memberDesc\"] {\n"
+"    color: #64748b;\n"
+"    font-size: 12px;\n"
+"}\n"
+"QPushButton[class=\"primaryButton\"] {\n"
+"    background-color: #1d4ed8;\n"
+"    border: none;\n"
+"    border-radius: 8px;\n"
+"    color: #ffffff;\n"
+"    font-size: 12px;\n"
+"    font-weight: 700;\n"
+"    min-height: 36px;\n"
+"    padding: 0px 14px;\n"
+"}\n"
+"QPushButton[class=\"primaryButton\"]:hover {\n"
+"    background-color: #1e3a8a;\n"
+"}\n"
+"QPushButton[class=\"primaryButton\"]:pressed {\n"
+"    background-color: #1e40af;\n"
+"}\n"
+"QFrame[class=\"memberRow\"] {\n"
+"    background-color: transparent;\n"
+"    bo"
+                        "rder: 1px solid transparent;\n"
+"    border-radius: 10px;\n"
+"}\n"
+"QFrame[class=\"memberRow\"]:hover {\n"
+"    background-color: #f8fafc;\n"
+"    border: 1px solid #e2e8f0;\n"
+"}\n"
+"QToolButton[class=\"avatar\"] {\n"
+"    background-color: #f1f5f9;\n"
+"    border: 1px solid #e2e8f0;\n"
+"    border-radius: 20px;\n"
+"}\n"
+"QLabel[class=\"memberName\"] {\n"
+"    color: #0f172a;\n"
+"    font-size: 13px;\n"
+"    font-weight: 700;\n"
+"}\n"
+"QLabel[class=\"memberRole\"] {\n"
+"    background-color: #eff6ff;\n"
+"    border-radius: 8px;\n"
+"    color: #1d4ed8;\n"
+"    font-size: 10px;\n"
+"    font-weight: 700;\n"
+"    padding: 2px 8px;\n"
+"}\n"
+"QPushButton[class=\"socialButton\"] {\n"
+"    background-color: #f8fafc;\n"
+"    border: 1px solid #e2e8f0;\n"
+"    border-radius: 8px;\n"
+"    padding: 0px;\n"
+"    min-width: 32px;\n"
+"    max-width: 32px;\n"
+"    min-height: 30px;\n"
+"    max-height: 30px;\n"
+"}\n"
+"QPushButton[class=\"socialButton\"]:hover {\n"
+"    background-color: #eff6ff;\n"
+"    border: 1px solid #1d4"
+                        "ed8;\n"
+"}\n"
+"QPushButton[class=\"socialButton\"]:pressed {\n"
+"    background-color: #dbeafe;\n"
+"}\n"
+"")
         self.mainLayout = QVBoxLayout(Form)
         self.mainLayout.setSpacing(0)
         self.mainLayout.setObjectName(u"mainLayout")
@@ -2189,8 +2528,8 @@ class Ui_Form(object):
         self.guideCard.setProperty(u"class", QCoreApplication.translate("Form", u"card", None))
         self.guideCardIcon.setText("")
         self.guideCardIcon.setProperty(u"class", QCoreApplication.translate("Form", u"cardIcon", None))
-        self.guideCardIcon.setProperty(u"iconName", QCoreApplication.translate("Form", u"fa5s.book-open", None))
-        self.guideCardIcon.setProperty(u"iconColor", QCoreApplication.translate("Form", u"#2563eb", None))
+        self.guideCardIcon.setProperty(u"iconName", QCoreApplication.translate("Form", u"guide", None))
+        self.guideCardIcon.setProperty(u"iconColor", QCoreApplication.translate("Form", u"primary", None))
         self.guideCardTitle.setText(QCoreApplication.translate("Form", u"H\u01b0\u1edbng d\u1eabn nhanh", None))
         self.guideCardTitle.setProperty(u"class", QCoreApplication.translate("Form", u"cardTitle", None))
         self.guideCardHint.setText(QCoreApplication.translate("Form", u"B\u1ea5m v\u00e0o t\u1eebng m\u1ee5c \u0111\u1ec3 xem chi ti\u1ebft", None))
@@ -2287,8 +2626,8 @@ class Ui_Form(object):
         self.issuesCard.setProperty(u"class", QCoreApplication.translate("Form", u"card", None))
         self.issuesCardIcon.setText("")
         self.issuesCardIcon.setProperty(u"class", QCoreApplication.translate("Form", u"cardIcon", None))
-        self.issuesCardIcon.setProperty(u"iconName", QCoreApplication.translate("Form", u"fa5s.tools", None))
-        self.issuesCardIcon.setProperty(u"iconColor", QCoreApplication.translate("Form", u"#2563eb", None))
+        self.issuesCardIcon.setProperty(u"iconName", QCoreApplication.translate("Form", u"tools", None))
+        self.issuesCardIcon.setProperty(u"iconColor", QCoreApplication.translate("Form", u"primary", None))
         self.issuesCardTitle.setText(QCoreApplication.translate("Form", u"S\u1ef1 c\u1ed1 th\u01b0\u1eddng g\u1eb7p", None))
         self.issuesCardTitle.setProperty(u"class", QCoreApplication.translate("Form", u"cardTitle", None))
         self.issuesCardDivider.setProperty(u"class", QCoreApplication.translate("Form", u"divider", None))
@@ -2343,8 +2682,8 @@ class Ui_Form(object):
         self.shortcutsCard.setProperty(u"class", QCoreApplication.translate("Form", u"card", None))
         self.shortcutsCardIcon.setText("")
         self.shortcutsCardIcon.setProperty(u"class", QCoreApplication.translate("Form", u"cardIcon", None))
-        self.shortcutsCardIcon.setProperty(u"iconName", QCoreApplication.translate("Form", u"fa5s.keyboard", None))
-        self.shortcutsCardIcon.setProperty(u"iconColor", QCoreApplication.translate("Form", u"#2563eb", None))
+        self.shortcutsCardIcon.setProperty(u"iconName", QCoreApplication.translate("Form", u"keyboard", None))
+        self.shortcutsCardIcon.setProperty(u"iconColor", QCoreApplication.translate("Form", u"primary", None))
         self.shortcutsCardTitle.setText(QCoreApplication.translate("Form", u"Ph\u00edm t\u1eaft", None))
         self.shortcutsCardTitle.setProperty(u"class", QCoreApplication.translate("Form", u"cardTitle", None))
         self.shortcutsCardHint.setText(QCoreApplication.translate("Form", u"Ch\u1ec9 d\u00f9ng trong m\u00e0n h\u00ecnh b\u00e1n h\u00e0ng", None))
@@ -2369,8 +2708,8 @@ class Ui_Form(object):
         self.systemCard.setProperty(u"class", QCoreApplication.translate("Form", u"card", None))
         self.systemCardIcon.setText("")
         self.systemCardIcon.setProperty(u"class", QCoreApplication.translate("Form", u"cardIcon", None))
-        self.systemCardIcon.setProperty(u"iconName", QCoreApplication.translate("Form", u"fa5s.server", None))
-        self.systemCardIcon.setProperty(u"iconColor", QCoreApplication.translate("Form", u"#2563eb", None))
+        self.systemCardIcon.setProperty(u"iconName", QCoreApplication.translate("Form", u"server", None))
+        self.systemCardIcon.setProperty(u"iconColor", QCoreApplication.translate("Form", u"primary", None))
         self.systemCardTitle.setText(QCoreApplication.translate("Form", u"Th\u00f4ng tin h\u1ec7 th\u1ed1ng", None))
         self.systemCardTitle.setProperty(u"class", QCoreApplication.translate("Form", u"cardTitle", None))
         self.systemCardDivider.setProperty(u"class", QCoreApplication.translate("Form", u"divider", None))
@@ -2397,8 +2736,8 @@ class Ui_Form(object):
         self.teamCard.setProperty(u"class", QCoreApplication.translate("Form", u"card", None))
         self.teamCardIcon.setText("")
         self.teamCardIcon.setProperty(u"class", QCoreApplication.translate("Form", u"cardIcon", None))
-        self.teamCardIcon.setProperty(u"iconName", QCoreApplication.translate("Form", u"fa5s.users", None))
-        self.teamCardIcon.setProperty(u"iconColor", QCoreApplication.translate("Form", u"#2563eb", None))
+        self.teamCardIcon.setProperty(u"iconName", QCoreApplication.translate("Form", u"customers", None))
+        self.teamCardIcon.setProperty(u"iconColor", QCoreApplication.translate("Form", u"primary", None))
         self.teamCardTitle.setText(QCoreApplication.translate("Form", u"\u0110\u1ed9i ng\u0169 ph\u00e1t tri\u1ec3n", None))
         self.teamCardTitle.setProperty(u"class", QCoreApplication.translate("Form", u"cardTitle", None))
         self.teamCardHint.setText(QCoreApplication.translate("Form", u"Li\u00ean h\u1ec7 tr\u1ef1c ti\u1ebfp khi c\u1ea7n h\u1ed7 tr\u1ee3 s\u00e2u h\u01a1n", None))
@@ -2407,8 +2746,8 @@ class Ui_Form(object):
         self.memberRow1.setProperty(u"class", QCoreApplication.translate("Form", u"memberRow", None))
         self.avatarMember1.setText("")
         self.avatarMember1.setProperty(u"class", QCoreApplication.translate("Form", u"avatar", None))
-        self.avatarMember1.setProperty(u"iconName", QCoreApplication.translate("Form", u"fa5s.user", None))
-        self.avatarMember1.setProperty(u"iconColor", QCoreApplication.translate("Form", u"#94a3b8", None))
+        self.avatarMember1.setProperty(u"iconName", QCoreApplication.translate("Form", u"user", None))
+        self.avatarMember1.setProperty(u"iconColor", QCoreApplication.translate("Form", u"muted", None))
         self.nameMember1.setText(QCoreApplication.translate("Form", u"Tr\u1ea7n Th\u00e1i Ki\u1ec7t", None))
         self.nameMember1.setProperty(u"class", QCoreApplication.translate("Form", u"memberName", None))
         self.roleMember1.setText(QCoreApplication.translate("Form", u"Th\u00e0nh vi\u00ean s\u00e1ng l\u1eadp", None))
@@ -2420,31 +2759,31 @@ class Ui_Form(object):
 #endif // QT_CONFIG(tooltip)
         self.btnGithub1.setText("")
         self.btnGithub1.setProperty(u"class", QCoreApplication.translate("Form", u"socialButton", None))
-        self.btnGithub1.setProperty(u"iconName", QCoreApplication.translate("Form", u"fa5b.github", None))
-        self.btnGithub1.setProperty(u"iconColor", QCoreApplication.translate("Form", u"#0f172a", None))
+        self.btnGithub1.setProperty(u"iconName", QCoreApplication.translate("Form", u"github", None))
+        self.btnGithub1.setProperty(u"iconColor", QCoreApplication.translate("Form", u"text", None))
         self.btnGithub1.setProperty(u"url", QCoreApplication.translate("Form", u"https://github.com/Karie206", None))
 #if QT_CONFIG(tooltip)
         self.btnLinkedin1.setToolTip(QCoreApplication.translate("Form", u"Xem LinkedIn", None))
 #endif // QT_CONFIG(tooltip)
         self.btnLinkedin1.setText("")
         self.btnLinkedin1.setProperty(u"class", QCoreApplication.translate("Form", u"socialButton", None))
-        self.btnLinkedin1.setProperty(u"iconName", QCoreApplication.translate("Form", u"fa5b.linkedin", None))
-        self.btnLinkedin1.setProperty(u"iconColor", QCoreApplication.translate("Form", u"#2563eb", None))
+        self.btnLinkedin1.setProperty(u"iconName", QCoreApplication.translate("Form", u"linkedin", None))
+        self.btnLinkedin1.setProperty(u"iconColor", QCoreApplication.translate("Form", u"primary", None))
         self.btnLinkedin1.setProperty(u"url", QCoreApplication.translate("Form", u"https://linkedin.com/in/tranthaikiet", None))
 #if QT_CONFIG(tooltip)
         self.btnEmail1.setToolTip(QCoreApplication.translate("Form", u"G\u1eedi email", None))
 #endif // QT_CONFIG(tooltip)
         self.btnEmail1.setText("")
         self.btnEmail1.setProperty(u"class", QCoreApplication.translate("Form", u"socialButton", None))
-        self.btnEmail1.setProperty(u"iconName", QCoreApplication.translate("Form", u"fa5s.envelope", None))
-        self.btnEmail1.setProperty(u"iconColor", QCoreApplication.translate("Form", u"#64748b", None))
+        self.btnEmail1.setProperty(u"iconName", QCoreApplication.translate("Form", u"email", None))
+        self.btnEmail1.setProperty(u"iconColor", QCoreApplication.translate("Form", u"default", None))
         self.btnEmail1.setProperty(u"email", QCoreApplication.translate("Form", u"thaikiet519@gmail.com", None))
         self.teamDivider1.setProperty(u"class", QCoreApplication.translate("Form", u"divider", None))
         self.memberRow2.setProperty(u"class", QCoreApplication.translate("Form", u"memberRow", None))
         self.avatarMember2.setText("")
         self.avatarMember2.setProperty(u"class", QCoreApplication.translate("Form", u"avatar", None))
-        self.avatarMember2.setProperty(u"iconName", QCoreApplication.translate("Form", u"fa5s.user", None))
-        self.avatarMember2.setProperty(u"iconColor", QCoreApplication.translate("Form", u"#94a3b8", None))
+        self.avatarMember2.setProperty(u"iconName", QCoreApplication.translate("Form", u"user", None))
+        self.avatarMember2.setProperty(u"iconColor", QCoreApplication.translate("Form", u"muted", None))
         self.nameMember2.setText(QCoreApplication.translate("Form", u"L\u00ea Tr\u1ea7n Khang", None))
         self.nameMember2.setProperty(u"class", QCoreApplication.translate("Form", u"memberName", None))
         self.roleMember2.setText(QCoreApplication.translate("Form", u"Th\u00e0nh vi\u00ean s\u00e1ng l\u1eadp", None))
@@ -2456,31 +2795,31 @@ class Ui_Form(object):
 #endif // QT_CONFIG(tooltip)
         self.btnGithub2.setText("")
         self.btnGithub2.setProperty(u"class", QCoreApplication.translate("Form", u"socialButton", None))
-        self.btnGithub2.setProperty(u"iconName", QCoreApplication.translate("Form", u"fa5b.github", None))
-        self.btnGithub2.setProperty(u"iconColor", QCoreApplication.translate("Form", u"#0f172a", None))
+        self.btnGithub2.setProperty(u"iconName", QCoreApplication.translate("Form", u"github", None))
+        self.btnGithub2.setProperty(u"iconColor", QCoreApplication.translate("Form", u"text", None))
         self.btnGithub2.setProperty(u"url", QCoreApplication.translate("Form", u"https://github.com/letrankhang", None))
 #if QT_CONFIG(tooltip)
         self.btnLinkedin2.setToolTip(QCoreApplication.translate("Form", u"Xem LinkedIn", None))
 #endif // QT_CONFIG(tooltip)
         self.btnLinkedin2.setText("")
         self.btnLinkedin2.setProperty(u"class", QCoreApplication.translate("Form", u"socialButton", None))
-        self.btnLinkedin2.setProperty(u"iconName", QCoreApplication.translate("Form", u"fa5b.linkedin", None))
-        self.btnLinkedin2.setProperty(u"iconColor", QCoreApplication.translate("Form", u"#2563eb", None))
+        self.btnLinkedin2.setProperty(u"iconName", QCoreApplication.translate("Form", u"linkedin", None))
+        self.btnLinkedin2.setProperty(u"iconColor", QCoreApplication.translate("Form", u"primary", None))
         self.btnLinkedin2.setProperty(u"url", QCoreApplication.translate("Form", u"https://linkedin.com/in/letrankhang", None))
 #if QT_CONFIG(tooltip)
         self.btnEmail2.setToolTip(QCoreApplication.translate("Form", u"G\u1eedi email", None))
 #endif // QT_CONFIG(tooltip)
         self.btnEmail2.setText("")
         self.btnEmail2.setProperty(u"class", QCoreApplication.translate("Form", u"socialButton", None))
-        self.btnEmail2.setProperty(u"iconName", QCoreApplication.translate("Form", u"fa5s.envelope", None))
-        self.btnEmail2.setProperty(u"iconColor", QCoreApplication.translate("Form", u"#64748b", None))
+        self.btnEmail2.setProperty(u"iconName", QCoreApplication.translate("Form", u"email", None))
+        self.btnEmail2.setProperty(u"iconColor", QCoreApplication.translate("Form", u"default", None))
         self.btnEmail2.setProperty(u"email", QCoreApplication.translate("Form", u"user2@gmail.com", None))
         self.teamDivider2.setProperty(u"class", QCoreApplication.translate("Form", u"divider", None))
         self.memberRow3.setProperty(u"class", QCoreApplication.translate("Form", u"memberRow", None))
         self.avatarMember3.setText("")
         self.avatarMember3.setProperty(u"class", QCoreApplication.translate("Form", u"avatar", None))
-        self.avatarMember3.setProperty(u"iconName", QCoreApplication.translate("Form", u"fa5s.user", None))
-        self.avatarMember3.setProperty(u"iconColor", QCoreApplication.translate("Form", u"#94a3b8", None))
+        self.avatarMember3.setProperty(u"iconName", QCoreApplication.translate("Form", u"user", None))
+        self.avatarMember3.setProperty(u"iconColor", QCoreApplication.translate("Form", u"muted", None))
         self.nameMember3.setText(QCoreApplication.translate("Form", u"L\u00ea H\u1ed3ng G\u1ea5m", None))
         self.nameMember3.setProperty(u"class", QCoreApplication.translate("Form", u"memberName", None))
         self.roleMember3.setText(QCoreApplication.translate("Form", u"Th\u00e0nh vi\u00ean s\u00e1ng l\u1eadp", None))
@@ -2492,31 +2831,31 @@ class Ui_Form(object):
 #endif // QT_CONFIG(tooltip)
         self.btnGithub3.setText("")
         self.btnGithub3.setProperty(u"class", QCoreApplication.translate("Form", u"socialButton", None))
-        self.btnGithub3.setProperty(u"iconName", QCoreApplication.translate("Form", u"fa5b.github", None))
-        self.btnGithub3.setProperty(u"iconColor", QCoreApplication.translate("Form", u"#0f172a", None))
+        self.btnGithub3.setProperty(u"iconName", QCoreApplication.translate("Form", u"github", None))
+        self.btnGithub3.setProperty(u"iconColor", QCoreApplication.translate("Form", u"text", None))
         self.btnGithub3.setProperty(u"url", QCoreApplication.translate("Form", u"https://github.com/honggam26", None))
 #if QT_CONFIG(tooltip)
         self.btnLinkedin3.setToolTip(QCoreApplication.translate("Form", u"Xem LinkedIn", None))
 #endif // QT_CONFIG(tooltip)
         self.btnLinkedin3.setText("")
         self.btnLinkedin3.setProperty(u"class", QCoreApplication.translate("Form", u"socialButton", None))
-        self.btnLinkedin3.setProperty(u"iconName", QCoreApplication.translate("Form", u"fa5b.linkedin", None))
-        self.btnLinkedin3.setProperty(u"iconColor", QCoreApplication.translate("Form", u"#2563eb", None))
+        self.btnLinkedin3.setProperty(u"iconName", QCoreApplication.translate("Form", u"linkedin", None))
+        self.btnLinkedin3.setProperty(u"iconColor", QCoreApplication.translate("Form", u"primary", None))
         self.btnLinkedin3.setProperty(u"url", QCoreApplication.translate("Form", u"https://linkedin.com/in/lehgam", None))
 #if QT_CONFIG(tooltip)
         self.btnEmail3.setToolTip(QCoreApplication.translate("Form", u"G\u1eedi email", None))
 #endif // QT_CONFIG(tooltip)
         self.btnEmail3.setText("")
         self.btnEmail3.setProperty(u"class", QCoreApplication.translate("Form", u"socialButton", None))
-        self.btnEmail3.setProperty(u"iconName", QCoreApplication.translate("Form", u"fa5s.envelope", None))
-        self.btnEmail3.setProperty(u"iconColor", QCoreApplication.translate("Form", u"#64748b", None))
+        self.btnEmail3.setProperty(u"iconName", QCoreApplication.translate("Form", u"email", None))
+        self.btnEmail3.setProperty(u"iconColor", QCoreApplication.translate("Form", u"default", None))
         self.btnEmail3.setProperty(u"email", QCoreApplication.translate("Form", u"user3@gmail.com", None))
         self.teamDivider3.setProperty(u"class", QCoreApplication.translate("Form", u"divider", None))
         self.memberRow4.setProperty(u"class", QCoreApplication.translate("Form", u"memberRow", None))
         self.avatarMember4.setText("")
         self.avatarMember4.setProperty(u"class", QCoreApplication.translate("Form", u"avatar", None))
-        self.avatarMember4.setProperty(u"iconName", QCoreApplication.translate("Form", u"fa5s.user", None))
-        self.avatarMember4.setProperty(u"iconColor", QCoreApplication.translate("Form", u"#94a3b8", None))
+        self.avatarMember4.setProperty(u"iconName", QCoreApplication.translate("Form", u"user", None))
+        self.avatarMember4.setProperty(u"iconColor", QCoreApplication.translate("Form", u"muted", None))
         self.nameMember4.setText(QCoreApplication.translate("Form", u"Phan Tu\u1ea5n Kha", None))
         self.nameMember4.setProperty(u"class", QCoreApplication.translate("Form", u"memberName", None))
         self.roleMember4.setText(QCoreApplication.translate("Form", u"Th\u00e0nh vi\u00ean s\u00e1ng l\u1eadp", None))
@@ -2528,31 +2867,31 @@ class Ui_Form(object):
 #endif // QT_CONFIG(tooltip)
         self.btnGithub4.setText("")
         self.btnGithub4.setProperty(u"class", QCoreApplication.translate("Form", u"socialButton", None))
-        self.btnGithub4.setProperty(u"iconName", QCoreApplication.translate("Form", u"fa5b.github", None))
-        self.btnGithub4.setProperty(u"iconColor", QCoreApplication.translate("Form", u"#0f172a", None))
+        self.btnGithub4.setProperty(u"iconName", QCoreApplication.translate("Form", u"github", None))
+        self.btnGithub4.setProperty(u"iconColor", QCoreApplication.translate("Form", u"text", None))
         self.btnGithub4.setProperty(u"url", QCoreApplication.translate("Form", u"https://github.com/Tuan-Kem", None))
 #if QT_CONFIG(tooltip)
         self.btnLinkedin4.setToolTip(QCoreApplication.translate("Form", u"Xem LinkedIn", None))
 #endif // QT_CONFIG(tooltip)
         self.btnLinkedin4.setText("")
         self.btnLinkedin4.setProperty(u"class", QCoreApplication.translate("Form", u"socialButton", None))
-        self.btnLinkedin4.setProperty(u"iconName", QCoreApplication.translate("Form", u"fa5b.linkedin", None))
-        self.btnLinkedin4.setProperty(u"iconColor", QCoreApplication.translate("Form", u"#2563eb", None))
+        self.btnLinkedin4.setProperty(u"iconName", QCoreApplication.translate("Form", u"linkedin", None))
+        self.btnLinkedin4.setProperty(u"iconColor", QCoreApplication.translate("Form", u"primary", None))
         self.btnLinkedin4.setProperty(u"url", QCoreApplication.translate("Form", u"https://linkedin.com/in/tuan-kha-love", None))
 #if QT_CONFIG(tooltip)
         self.btnEmail4.setToolTip(QCoreApplication.translate("Form", u"G\u1eedi email", None))
 #endif // QT_CONFIG(tooltip)
         self.btnEmail4.setText("")
         self.btnEmail4.setProperty(u"class", QCoreApplication.translate("Form", u"socialButton", None))
-        self.btnEmail4.setProperty(u"iconName", QCoreApplication.translate("Form", u"fa5s.envelope", None))
-        self.btnEmail4.setProperty(u"iconColor", QCoreApplication.translate("Form", u"#64748b", None))
+        self.btnEmail4.setProperty(u"iconName", QCoreApplication.translate("Form", u"email", None))
+        self.btnEmail4.setProperty(u"iconColor", QCoreApplication.translate("Form", u"default", None))
         self.btnEmail4.setProperty(u"email", QCoreApplication.translate("Form", u"user4@gmail.com", None))
         self.teamDivider4.setProperty(u"class", QCoreApplication.translate("Form", u"divider", None))
         self.memberRow5.setProperty(u"class", QCoreApplication.translate("Form", u"memberRow", None))
         self.avatarMember5.setText("")
         self.avatarMember5.setProperty(u"class", QCoreApplication.translate("Form", u"avatar", None))
-        self.avatarMember5.setProperty(u"iconName", QCoreApplication.translate("Form", u"fa5s.user", None))
-        self.avatarMember5.setProperty(u"iconColor", QCoreApplication.translate("Form", u"#94a3b8", None))
+        self.avatarMember5.setProperty(u"iconName", QCoreApplication.translate("Form", u"user", None))
+        self.avatarMember5.setProperty(u"iconColor", QCoreApplication.translate("Form", u"muted", None))
         self.nameMember5.setText(QCoreApplication.translate("Form", u"\u0110\u1eb7ng Ho\u00e0ng Qu\u1ed1c C\u01b0\u1eddng", None))
         self.nameMember5.setProperty(u"class", QCoreApplication.translate("Form", u"memberName", None))
         self.roleMember5.setText(QCoreApplication.translate("Form", u"Th\u00e0nh vi\u00ean s\u00e1ng l\u1eadp", None))
@@ -2564,32 +2903,32 @@ class Ui_Form(object):
 #endif // QT_CONFIG(tooltip)
         self.btnGithub5.setText("")
         self.btnGithub5.setProperty(u"class", QCoreApplication.translate("Form", u"socialButton", None))
-        self.btnGithub5.setProperty(u"iconName", QCoreApplication.translate("Form", u"fa5b.github", None))
-        self.btnGithub5.setProperty(u"iconColor", QCoreApplication.translate("Form", u"#0f172a", None))
+        self.btnGithub5.setProperty(u"iconName", QCoreApplication.translate("Form", u"github", None))
+        self.btnGithub5.setProperty(u"iconColor", QCoreApplication.translate("Form", u"text", None))
         self.btnGithub5.setProperty(u"url", QCoreApplication.translate("Form", u"https://github.com/dc1458", None))
 #if QT_CONFIG(tooltip)
         self.btnLinkedin5.setToolTip(QCoreApplication.translate("Form", u"Xem LinkedIn", None))
 #endif // QT_CONFIG(tooltip)
         self.btnLinkedin5.setText("")
         self.btnLinkedin5.setProperty(u"class", QCoreApplication.translate("Form", u"socialButton", None))
-        self.btnLinkedin5.setProperty(u"iconName", QCoreApplication.translate("Form", u"fa5b.linkedin", None))
-        self.btnLinkedin5.setProperty(u"iconColor", QCoreApplication.translate("Form", u"#2563eb", None))
+        self.btnLinkedin5.setProperty(u"iconName", QCoreApplication.translate("Form", u"linkedin", None))
+        self.btnLinkedin5.setProperty(u"iconColor", QCoreApplication.translate("Form", u"primary", None))
         self.btnLinkedin5.setProperty(u"url", QCoreApplication.translate("Form", u"https://linkedin.com/in/dcisme", None))
 #if QT_CONFIG(tooltip)
         self.btnEmail5.setToolTip(QCoreApplication.translate("Form", u"G\u1eedi email", None))
 #endif // QT_CONFIG(tooltip)
         self.btnEmail5.setText("")
         self.btnEmail5.setProperty(u"class", QCoreApplication.translate("Form", u"socialButton", None))
-        self.btnEmail5.setProperty(u"iconName", QCoreApplication.translate("Form", u"fa5s.envelope", None))
-        self.btnEmail5.setProperty(u"iconColor", QCoreApplication.translate("Form", u"#64748b", None))
+        self.btnEmail5.setProperty(u"iconName", QCoreApplication.translate("Form", u"email", None))
+        self.btnEmail5.setProperty(u"iconColor", QCoreApplication.translate("Form", u"default", None))
         self.btnEmail5.setProperty(u"email", QCoreApplication.translate("Form", u"user5@gmail.com", None))
         self.teamSupportDivider.setProperty(u"class", QCoreApplication.translate("Form", u"divider", None))
         self.supportText.setText(QCoreApplication.translate("Form", u"Kh\u00f4ng t\u00ecm th\u1ea5y c\u00e2u tr\u1ea3 l\u1eddi trong h\u01b0\u1edbng d\u1eabn? G\u1eedi email cho nh\u00f3m ph\u00e1t tri\u1ec3n, ch\u00fang t\u00f4i s\u1ebd ph\u1ea3n h\u1ed3i s\u1edbm nh\u1ea5t.", None))
         self.supportText.setProperty(u"class", QCoreApplication.translate("Form", u"supportText", None))
         self.btnSupportEmail.setText(QCoreApplication.translate("Form", u"G\u1eedi email h\u1ed7 tr\u1ee3", None))
         self.btnSupportEmail.setProperty(u"class", QCoreApplication.translate("Form", u"primaryButton", None))
-        self.btnSupportEmail.setProperty(u"iconName", QCoreApplication.translate("Form", u"fa5s.paper-plane", None))
-        self.btnSupportEmail.setProperty(u"iconColor", QCoreApplication.translate("Form", u"#ffffff", None))
+        self.btnSupportEmail.setProperty(u"iconName", QCoreApplication.translate("Form", u"send", None))
+        self.btnSupportEmail.setProperty(u"iconColor", QCoreApplication.translate("Form", u"on-primary", None))
         self.btnSupportEmail.setProperty(u"email", QCoreApplication.translate("Form", u"thaikiet519@gmail.com", None))
     # retranslateUi
 

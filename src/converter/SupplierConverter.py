@@ -1,5 +1,4 @@
 from src.dtos.SupplierDTO import SupplierDTO
-# Giả sử bạn đã có class Supplier trong src.entities.supplier
 from src.entities.supplier import Supplier
 
 class SupplierConverter:

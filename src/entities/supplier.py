@@ -2,9 +2,6 @@ from sqlalchemy import Column, Integer, String, Text, DateTime, func
 from src.entities.base import Base
 
 class Supplier(Base):
-    """
-    Supplier entity model mapped to the 'suppliers' table.
-    """
     __tablename__ = 'suppliers'
 
     supplier_id = Column(Integer, primary_key=True, autoincrement=True)

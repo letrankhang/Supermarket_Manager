@@ -14,128 +14,352 @@
    <string>Form</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">QWidget {
+   <string notr="true">QWidget#Form {
     background-color: #ffffff;
+    color: #0f172a;
+    font-family: &quot;Segoe UI&quot;, Arial, sans-serif;
 }
-
+QWidget {
+    font-family: &quot;Segoe UI&quot;, Arial, sans-serif;
+}
 QLabel {
     background-color: transparent;
     border: none;
     color: #0f172a;
 }
 
-#frame_topbar {
-    background-color: #ffffff;
-    border-bottom: 1px solid #e2e8f0;
-}
-
-#lblScanSubtitle {
-    color: #6b7280;
-    font-size: 12px;
-    font-weight: normal;
-    margin-top: 4px;
-}
-
-#lblCashierName {
-    color: #64748b;
-}
-
-#frame_filters {
-    background-color: #ffffff;
-    border-bottom: 1px solid #e2e8f0;
-}
-
-QLineEdit {
+QLineEdit,
+QComboBox,
+QDateEdit,
+QSpinBox,
+QDoubleSpinBox {
     background-color: #ffffff;
     border: 1px solid #e2e8f0;
     border-radius: 8px;
-    padding: 4px 12px;
+    padding: 0px 12px;
+    min-height: 38px;
     font-size: 13px;
     color: #0f172a;
+    selection-background-color: #1d4ed8;
+    selection-color: #ffffff;
 }
-
-QLineEdit:focus {
-    border: 1px solid #1d4ed8;
-}
-
-#CategoryChip {
+QTextEdit {
     background-color: #ffffff;
-    color: #64748b;
     border: 1px solid #e2e8f0;
-    border-radius: 16px;
-    padding: 4px 16px;
-    font-size: 12px;
-    font-weight: bold;
+    border-radius: 8px;
+    padding: 8px 10px;
+    font-size: 13px;
+    color: #0f172a;
+    selection-background-color: #1d4ed8;
+    selection-color: #ffffff;
 }
-
-#CategoryChip:hover {
+QLineEdit:hover,
+QComboBox:hover,
+QDateEdit:hover,
+QSpinBox:hover,
+QDoubleSpinBox:hover,
+QTextEdit:hover {
+    border: 1px solid #cbd5e1;
+}
+QLineEdit:focus,
+QComboBox:focus,
+QDateEdit:focus,
+QSpinBox:focus,
+QDoubleSpinBox:focus,
+QTextEdit:focus {
     border: 1px solid #1d4ed8;
-    color: #1d4ed8;
+}
+QLineEdit:disabled,
+QComboBox:disabled,
+QDateEdit:disabled,
+QSpinBox:disabled,
+QDoubleSpinBox:disabled {
+    background-color: #f8fafc;
+    color: #94a3b8;
+}
+QComboBox::drop-down {
+    subcontrol-origin: padding;
+    subcontrol-position: center right;
+    border: none;
+    background-color: transparent;
+    width: 26px;
+}
+QComboBox::down-arrow {
+    image: url(assets/images/chevron-down.png);
+    width: 10px;
+    height: 10px;
+}
+QComboBox::down-arrow:on {
+    image: url(assets/images/chevron-up.png);
+}
+QComboBox QAbstractItemView {
+    background-color: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 4px;
+    outline: none;
+    selection-background-color: #eff6ff;
+    selection-color: #1d4ed8;
+}
+QSpinBox::up-button,
+QSpinBox::down-button,
+QDoubleSpinBox::up-button,
+QDoubleSpinBox::down-button,
+QDateEdit::up-button,
+QDateEdit::down-button {
+    subcontrol-origin: border;
+    width: 20px;
+    border: none;
+    background-color: transparent;
+}
+QSpinBox::up-button,
+QDoubleSpinBox::up-button,
+QDateEdit::up-button {
+    subcontrol-position: top right;
+}
+QSpinBox::down-button,
+QDoubleSpinBox::down-button,
+QDateEdit::down-button {
+    subcontrol-position: bottom right;
+}
+QSpinBox::up-button:hover,
+QSpinBox::down-button:hover,
+QDoubleSpinBox::up-button:hover,
+QDoubleSpinBox::down-button:hover,
+QDateEdit::up-button:hover,
+QDateEdit::down-button:hover {
+    background-color: #f1f5f9;
+}
+QSpinBox::up-arrow,
+QDoubleSpinBox::up-arrow,
+QDateEdit::up-arrow {
+    image: url(assets/images/chevron-up.png);
+    width: 9px;
+    height: 9px;
+}
+QSpinBox::down-arrow,
+QDoubleSpinBox::down-arrow,
+QDateEdit::down-arrow {
+    image: url(assets/images/chevron-down.png);
+    width: 9px;
+    height: 9px;
+}
+QCheckBox {
+    background-color: transparent;
+    color: #334155;
+    font-size: 13px;
+    font-weight: bold;
+    spacing: 8px;
+}
+QCheckBox::indicator {
+    width: 16px;
+    height: 16px;
+    border: 1px solid #cbd5e1;
+    border-radius: 4px;
+    background-color: #ffffff;
+}
+QCheckBox::indicator:hover {
+    border: 1px solid #1d4ed8;
+}
+QCheckBox::indicator:checked {
+    background-color: #1d4ed8;
+    border: 1px solid #1d4ed8;
 }
 
-#CategoryChip:checked {
-    background-color: #1e3a8a;
-    color: #ffffff;
-    border: 1px solid #1e3a8a;
-}
-
-#btnFilter,
-#btnAddCustomer {
+QPushButton {
     background-color: #ffffff;
     color: #64748b;
     border: 1px solid #e2e8f0;
     border-radius: 8px;
+    padding: 0px 16px;
+    min-height: 38px;
     font-size: 12px;
     font-weight: bold;
 }
-
-#btnFilter:hover,
-#btnAddCustomer:hover {
+QPushButton:hover {
     background-color: #eff6ff;
     color: #1d4ed8;
     border: 1px solid #1d4ed8;
 }
-
-#btnClearCart {
-    background-color: #ffffff;
-    color: #dc2626;
+QPushButton:pressed {
+    background-color: #dbeafe;
+}
+QPushButton:disabled {
+    background-color: #f8fafc;
+    color: #cbd5e1;
     border: 1px solid #e2e8f0;
-    border-radius: 8px;
-    font-size: 12px;
-    font-weight: bold;
+}
+QPushButton#RowActionButton {
+    background-color: transparent;
+    border: none;
+    border-radius: 6px;
+    padding: 0px;
+    min-width: 28px;
+    max-width: 28px;
+    min-height: 28px;
+    max-height: 28px;
+}
+QPushButton#RowActionButton:hover {
+    background-color: #eff6ff;
+}
+QPushButton#RowActionButton:pressed {
+    background-color: #dbeafe;
 }
 
-#btnClearCart:hover {
+QTableWidget {
+    background-color: transparent;
+    border: none;
+    gridline-color: #f1f5f9;
+    font-size: 13px;
+    color: #334155;
+    outline: none;
+}
+QTableWidget::item {
+    padding: 8px;
+    border-bottom: 1px solid #f1f5f9;
+}
+QTableWidget::item:selected {
+    background-color: #eff6ff;
+    color: #1d4ed8;
+}
+QHeaderView {
+    background-color: #f8fafc;
+    border: none;
+    border-bottom: 1px solid #e2e8f0;
+}
+QHeaderView::section {
+    background-color: #f8fafc;
+    color: #64748b;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 10px 8px;
+    border: none;
+    border-bottom: 1px solid #e2e8f0;
+}
+QTableCornerButton::section {
+    background-color: #f8fafc;
+    border: none;
+}
+
+QLabel[badge=&quot;info&quot;] {
+    background-color: #dbeafe;
+    color: #1d4ed8;
+    border-radius: 6px;
+    padding: 3px 10px;
+    font-size: 11px;
+    font-weight: 700;
+}
+QLabel[badge=&quot;success&quot;] {
+    background-color: #d1fae5;
+    color: #059669;
+    border-radius: 6px;
+    padding: 3px 10px;
+    font-size: 11px;
+    font-weight: 700;
+}
+QLabel[badge=&quot;warning&quot;] {
+    background-color: #ffedd5;
+    color: #ea580c;
+    border-radius: 6px;
+    padding: 3px 10px;
+    font-size: 11px;
+    font-weight: 700;
+}
+QLabel[badge=&quot;danger&quot;] {
+    background-color: #fee2e2;
+    color: #dc2626;
+    border-radius: 6px;
+    padding: 3px 10px;
+    font-size: 11px;
+    font-weight: 700;
+}
+QLabel[badge=&quot;neutral&quot;] {
+    background-color: #e2e8f0;
+    color: #64748b;
+    border-radius: 6px;
+    padding: 3px 10px;
+    font-size: 11px;
+    font-weight: 700;
+}
+QLabel[badge=&quot;violet&quot;] {
+    background-color: #ede9fe;
+    color: #6d28d9;
+    border-radius: 6px;
+    padding: 3px 10px;
+    font-size: 11px;
+    font-weight: 700;
+}
+QLabel[trend=&quot;up&quot;] {
+    background-color: #ecfdf5;
+    color: #059669;
+    border-radius: 4px;
+    padding: 2px 6px;
+    font-size: 11px;
+    font-weight: 700;
+}
+QLabel[trend=&quot;down&quot;] {
     background-color: #fef2f2;
-    border: 1px solid #dc2626;
+    color: #dc2626;
+    border-radius: 4px;
+    padding: 2px 6px;
+    font-size: 11px;
+    font-weight: 700;
+}
+QLabel[trend=&quot;flat&quot;] {
+    background-color: #f1f5f9;
+    color: #64748b;
+    border-radius: 4px;
+    padding: 2px 6px;
+    font-size: 11px;
+    font-weight: 700;
+}
+QLabel[state=&quot;up&quot;] {
+    color: #10b981;
+    font-weight: bold;
+}
+QLabel[state=&quot;down&quot;] {
+    color: #ef4444;
+    font-weight: bold;
+}
+QLabel[state=&quot;flat&quot;] {
+    color: #64748b;
+    font-weight: bold;
+}
+QLabel[state=&quot;warning&quot;] {
+    color: #eab308;
+    font-weight: bold;
+}
+QLabel[state=&quot;safe&quot;] {
+    color: #10b981;
 }
 
 QScrollArea {
     background-color: transparent;
     border: none;
 }
-
+QScrollArea &gt; QWidget &gt; QWidget {
+    background-color: transparent;
+}
+QAbstractScrollArea::viewport {
+    background-color: transparent;
+}
 QScrollBar:vertical {
-    background-color: #f8fafc;
+    background-color: transparent;
     width: 10px;
     margin: 0px;
     border: none;
 }
-
 QScrollBar::handle:vertical {
     background-color: #cbd5e1;
     min-height: 35px;
     border-radius: 5px;
 }
-
 QScrollBar::handle:vertical:hover {
     background-color: #94a3b8;
 }
-
 QScrollBar::handle:vertical:pressed {
     background-color: #64748b;
 }
-
 QScrollBar::add-line:vertical,
 QScrollBar::sub-line:vertical {
     height: 0px;
@@ -143,7 +367,6 @@ QScrollBar::sub-line:vertical {
     background: transparent;
     border: none;
 }
-
 QScrollBar::up-arrow:vertical,
 QScrollBar::down-arrow:vertical {
     width: 0px;
@@ -151,33 +374,27 @@ QScrollBar::down-arrow:vertical {
     background: transparent;
     border: none;
 }
-
 QScrollBar::add-page:vertical,
 QScrollBar::sub-page:vertical {
     background: transparent;
 }
-
 QScrollBar:horizontal {
-    background-color: #f8fafc;
+    background-color: transparent;
     height: 10px;
     margin: 0px;
     border: none;
 }
-
 QScrollBar::handle:horizontal {
     background-color: #cbd5e1;
     min-width: 35px;
     border-radius: 5px;
 }
-
 QScrollBar::handle:horizontal:hover {
     background-color: #94a3b8;
 }
-
 QScrollBar::handle:horizontal:pressed {
     background-color: #64748b;
 }
-
 QScrollBar::add-line:horizontal,
 QScrollBar::sub-line:horizontal {
     width: 0px;
@@ -185,7 +402,6 @@ QScrollBar::sub-line:horizontal {
     background: transparent;
     border: none;
 }
-
 QScrollBar::left-arrow:horizontal,
 QScrollBar::right-arrow:horizontal {
     width: 0px;
@@ -193,74 +409,240 @@ QScrollBar::right-arrow:horizontal {
     background: transparent;
     border: none;
 }
-
 QScrollBar::add-page:horizontal,
 QScrollBar::sub-page:horizontal {
     background: transparent;
 }
 
-#ProductCard {
+QMenu {
     background-color: #ffffff;
     border: 1px solid #e2e8f0;
-    border-radius: 10px;
-}
-
-#ProductCard:hover {
-    border: 1px solid #1d4ed8;
-}
-
-#lblCardThumbnail {
-    background-color: #fbfcfd;
-    border: 1px solid #e2e8f0;
     border-radius: 8px;
-    color: #64748b;
+    padding: 6px;
 }
-
-#lblCardName {
-    font-size: 13px;
-    font-weight: bold;
-}
-
-#lblCardBarcode {
-    color: #64748b;
-    font-size: 11px;
-}
-
-#lblCardPrice {
-    color: #1d4ed8;
-    font-size: 13px;
-    font-weight: bold;
-}
-
-#btnCardAdd {
-    background-color: #1d4ed8;
-    color: #ffffff;
-    border: none;
+QMenu::item {
+    background-color: transparent;
+    color: #334155;
     border-radius: 6px;
-    font-size: 16px;
-    font-weight: bold;
+    padding: 7px 18px;
+    font-size: 13px;
+}
+QMenu::item:selected {
+    background-color: #eff6ff;
+    color: #1d4ed8;
+}
+QMenu::separator {
+    height: 1px;
+    background-color: #e2e8f0;
+    margin: 6px 4px;
 }
 
-#btnCardAdd:hover {
-    background-color: #1e3a8a;
+QFrame#frame_topbar,
+QFrame#frame_filters,
+QFrame#frame_shortcuts,
+QFrame#frame_summary,
+QFrame#frame_order_header,
+QFrame#frame_search_row,
+QFrame#frame_categories,
+QFrame#frame_payment_methods,
+QFrame#frame_checkout {
+    background-color: transparent;
+    border: none;
 }
 
-#frame_shortcuts {
+QFrame#frame_topbar,
+QFrame#frame_filters {
+    background-color: #ffffff;
+    border-bottom: 1px solid #e2e8f0;
+}
+QFrame#frame_shortcuts,
+QFrame#frame_summary {
     background-color: #ffffff;
     border-top: 1px solid #e2e8f0;
 }
-
-#frame_order {
+QFrame#frame_order {
     background-color: #ffffff;
     border-left: 1px solid #e2e8f0;
 }
-
-#frame_order_header {
+QFrame#frame_order_header {
     background-color: #ffffff;
     border-bottom: 1px solid #e2e8f0;
 }
 
-#lblCustomerBadge {
+QLabel#lblScanCaption {
+    color: #0f172a;
+    padding: 0px;
+    margin: 0px;
+}
+
+QLabel#lblScanSubtitle {
+    color: #6b7280;
+    font-size: 12px;
+    font-weight: normal;
+    margin-top: 4px;
+}
+
+QLabel#lblCashierName,
+QLabel#lblCartEmpty,
+QLabel#lblSubTotalCaption,
+QLabel#lblTaxCaption,
+QLabel#lblCartItemUnitPrice,
+QLabel#lblGrandTotalCaption {
+    color: #64748b;
+    font-size: 13px;
+}
+
+QPushButton#CategoryChip {
+    background-color: #ffffff;
+    color: #64748b;
+    border: 1px solid #e2e8f0;
+    border-radius: 16px;
+    padding: 4px 16px;
+    min-height: 30px;
+    font-size: 12px;
+    font-weight: bold;
+}
+QPushButton#CategoryChip:hover {
+    border: 1px solid #1d4ed8;
+    color: #1d4ed8;
+}
+QPushButton#CategoryChip:checked {
+    background-color: #1d4ed8;
+    color: #ffffff;
+    border: 1px solid #1d4ed8;
+}
+
+QPushButton#btnCardAdd {
+     padding-bottom: 3px;
+	 font-size: 18px;
+     font-weight: bold;
+}
+
+QPushButton#btnClearCart {
+    background-color: #ffffff;
+    color: #dc2626;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 0px 16px;
+    min-height: 38px;
+    font-size: 12px;
+    font-weight: bold;
+}
+QPushButton#btnClearCart:hover {
+    background-color: #fef2f2;
+    border: 1px solid #dc2626;
+}
+QPushButton#btnClearCart:disabled {
+    background-color: #f8fafc;
+    color: #cbd5e1;
+    border: 1px solid #e2e8f0;
+}
+
+QPushButton#btnEditDiscount {
+    background-color: transparent;
+    color: #1d4ed8;
+    border: none;
+    padding: 0px;
+    min-height: 0px;
+    font-size: 13px;
+    font-weight: bold;
+}
+QPushButton#btnEditDiscount:hover {
+    color: #1e3a8a;
+    text-decoration: underline;
+}
+QPushButton#btnEditDiscount:pressed {
+    color: #1e40af;
+}
+QPushButton#btnEditDiscount:disabled {
+    background-color: transparent;
+    border: none;
+    color: #94a3b8;
+    text-decoration: none;
+}
+
+QPushButton#btnCheckout {
+    background-color: #1d4ed8;
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    padding: 0px 20px;
+    min-height: 38px;
+    font-size: 13px;
+    font-weight: 700;
+}
+QPushButton#btnCheckout:hover {
+    background-color: #1e3a8a;
+}
+QPushButton#btnCheckout:pressed {
+    background-color: #1e40af;
+}
+QPushButton#btnCheckout:disabled {
+    background-color: #cbd5e1;
+    color: #f8fafc;
+}
+
+QPushButton#btnPayCash,
+QPushButton#btnPayCard,
+QPushButton#btnPayTransfer {
+    background-color: #ffffff;
+    color: #64748b;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 0px 16px;
+    min-height: 34px;
+    font-size: 12px;
+    font-weight: bold;
+}
+QPushButton#btnPayCash:hover,
+QPushButton#btnPayCard:hover,
+QPushButton#btnPayTransfer:hover {
+    border: 1px solid #1d4ed8;
+    color: #1d4ed8;
+}
+QPushButton#btnPayCash:checked,
+QPushButton#btnPayCard:checked,
+QPushButton#btnPayTransfer:checked {
+    background-color: #eff6ff;
+    border: 1px solid #1d4ed8;
+    color: #1d4ed8;
+}
+
+QFrame#ProductCard {
+    background-color: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+}
+QFrame#ProductCard:hover {
+    border: 1px solid #1d4ed8;
+}
+QFrame#CartRow {
+    background-color: #ffffff;
+    border: none;
+    border-bottom: 1px solid #f1f5f9;
+}
+QLabel#lblCardThumbnail {
+    background-color: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    color: #64748b;
+}
+QLabel#lblCardName,
+QLabel#lblCartItemName,
+QLabel#lblCartItemTotal {
+    font-size: 13px;
+    font-weight: bold;
+}
+QLabel#lblCardBarcode {
+    color: #64748b;
+    font-size: 11px;
+}
+QLabel#lblCardPrice {
+    color: #1d4ed8;
+    font-size: 13px;
+    font-weight: bold;
+}
+QLabel#lblCustomerBadge {
     background-color: #eff6ff;
     color: #1d4ed8;
     border-radius: 12px;
@@ -268,150 +650,73 @@ QScrollBar::sub-page:horizontal {
     font-size: 12px;
     font-weight: bold;
 }
-
-#lblCartEmpty {
-    color: #64748b;
-}
-
-#CartRow {
-    background-color: #ffffff;
-    border: none;
-    border-bottom: 1px solid #f1f5f9;
-}
-
-#lblCartItemName,
-#lblCartItemTotal {
+QLabel#lblDiscount {
+    color: #dc2626;
     font-size: 13px;
+}
+QLabel#lblSubTotal,
+QLabel#lblTax,
+QLabel#lblCartItemQuantity {
+    font-size: 13px;
+}
+QFrame#line_summary {
+    color: #e2e8f0;
+    background-color: #e2e8f0;
+    border: none;
+}
+
+QLabel#lblGrandTotal {
+    color: #1d4ed8;
+    font-size: 22px;
     font-weight: bold;
 }
 
-#lblCartItemUnitPrice {
-    color: #64748b;
-    font-size: 12px;
+QPushButton#btnCardAdd {
+    background-color: #1d4ed8;
+    color: #ffffff;
+    border: none;
+    border-radius: 6px;
+    padding: 0px;
+    min-height: 0px;
+    font-size: 16px;
+    font-weight: bold;
 }
-
-#lblCartItemQuantity {
-    font-size: 13px;
+QPushButton#btnCardAdd:hover {
+    background-color: #1e3a8a;
 }
-
-#btnCartMinus,
-#btnCartPlus {
+QPushButton#btnCartMinus,
+QPushButton#btnCartPlus {
     background-color: #ffffff;
     color: #0f172a;
     border: 1px solid #e2e8f0;
     border-radius: 6px;
+    padding: 0px;
+    min-height: 0px;
     font-size: 14px;
     font-weight: bold;
 }
-
-#btnCartMinus:hover,
-#btnCartPlus:hover {
+QPushButton#btnCartMinus:hover,
+QPushButton#btnCartPlus:hover {
     background-color: #eff6ff;
     border: 1px solid #1d4ed8;
     color: #1d4ed8;
 }
-
-#btnCartRemove {
+QPushButton#btnCartRemove {
     background-color: #ffffff;
     color: #94a3b8;
     border: 1px solid #e2e8f0;
     border-radius: 6px;
+    padding: 0px;
+    min-height: 0px;
     font-size: 13px;
     font-weight: bold;
 }
-
-#btnCartRemove:hover {
+QPushButton#btnCartRemove:hover {
     background-color: #fef2f2;
     border: 1px solid #dc2626;
     color: #dc2626;
 }
-
-#frame_summary {
-    background-color: #ffffff;
-    border-top: 1px solid #e2e8f0;
-}
-
-#lblSubTotalCaption,
-#lblTaxCaption {
-    color: #64748b;
-    font-size: 13px;
-}
-
-#lblSubTotal,
-#lblTax {
-    font-size: 13px;
-}
-
-#lblDiscount {
-    color: #dc2626;
-    font-size: 13px;
-}
-
-#btnEditDiscount {
-    background-color: transparent;
-    color: #64748b;
-    border: none;
-    text-align: left;
-    font-size: 13px;
-}
-
-#btnEditDiscount:hover {
-    color: #1d4ed8;
-    text-decoration: underline;
-}
-
-#line_summary {
-    color: #e2e8f0;
-    background-color: #e2e8f0;
-}
-
-#lblGrandTotal {
-    color: #1d4ed8;
-}
-
-#btnPayCash,
-#btnPayCard,
-#btnPayTransfer {
-    background-color: #ffffff;
-    color: #64748b;
-    border: 1px solid #e2e8f0;
-    border-radius: 8px;
-    font-size: 12px;
-    font-weight: bold;
-}
-
-#btnPayCash:hover,
-#btnPayCard:hover,
-#btnPayTransfer:hover {
-    border: 1px solid #1d4ed8;
-    color: #1d4ed8;
-}
-
-#btnPayCash:checked,
-#btnPayCard:checked,
-#btnPayTransfer:checked {
-    background-color: #eff6ff;
-    border: 1px solid #1d4ed8;
-    color: #1d4ed8;
-}
-
-#btnCheckout {
-    background-color: #1e3a8a;
-    color: #ffffff;
-    border: none;
-    border-radius: 8px;
-    font-size: 14px;
-    font-weight: bold;
-}
-
-#btnCheckout:hover {
-    background-color: #1d4ed8;
-}
-
-#btnCheckout:disabled {
-    background-color: #cbd5e1;
-    color: #f8fafc;
-}</string>
+</string>
   </property>
   <layout class="QHBoxLayout" name="horizontalLayout">
    <property name="spacing">
@@ -505,6 +810,7 @@ QScrollBar::sub-page:horizontal {
             <widget class="QLabel" name="lblScanCaption">
              <property name="font">
               <font>
+               <family>Segoe UI</family>
                <pointsize>18</pointsize>
                <bold>true</bold>
               </font>
@@ -588,7 +894,7 @@ QScrollBar::sub-page:horizontal {
              <widget class="QLineEdit" name="txtSearch">
               <property name="minimumSize">
                <size>
-                <width>0</width>
+                <width>123</width>
                 <height>40</height>
                </size>
               </property>
@@ -601,7 +907,7 @@ QScrollBar::sub-page:horizontal {
              <widget class="QPushButton" name="btnFilter">
               <property name="minimumSize">
                <size>
-                <width>46</width>
+                <width>52</width>
                 <height>40</height>
                </size>
               </property>
@@ -843,6 +1149,7 @@ QScrollBar::sub-page:horizontal {
           <widget class="QLabel" name="lblOrderCode">
            <property name="font">
             <font>
+             <family>Segoe UI</family>
              <pointsize>15</pointsize>
              <bold>true</bold>
             </font>
@@ -856,8 +1163,8 @@ QScrollBar::sub-page:horizontal {
           <widget class="QPushButton" name="btnAddCustomer">
            <property name="minimumSize">
             <size>
-             <width>99</width>
-             <height>36</height>
+             <width>115</width>
+             <height>40</height>
             </size>
            </property>
            <property name="maximumSize">
@@ -872,9 +1179,6 @@ QScrollBar::sub-page:horizontal {
            <property name="toolTip">
             <string>Gắn khách hàng vào hóa đơn</string>
            </property>
-           <property name="styleSheet">
-            <string notr="true"/>
-           </property>
            <property name="text">
             <string>+ Khách hàng</string>
            </property>
@@ -885,7 +1189,7 @@ QScrollBar::sub-page:horizontal {
            <property name="minimumSize">
             <size>
              <width>40</width>
-             <height>36</height>
+             <height>40</height>
             </size>
            </property>
            <property name="maximumSize">
@@ -941,7 +1245,7 @@ QScrollBar::sub-page:horizontal {
            <x>0</x>
            <y>0</y>
            <width>420</width>
-           <height>421</height>
+           <height>446</height>
           </rect>
          </property>
          <layout class="QVBoxLayout" name="verticalLayout_cart">
@@ -970,7 +1274,8 @@ QScrollBar::sub-page:horizontal {
             </property>
             <property name="font">
              <font>
-              <pointsize>10</pointsize>
+              <family>Segoe UI</family>
+              <pointsize>-1</pointsize>
              </font>
             </property>
             <property name="text">
@@ -1001,7 +1306,7 @@ QScrollBar::sub-page:horizontal {
           <number>20</number>
          </property>
          <property name="bottomMargin">
-          <number>16</number>
+          <number>5</number>
          </property>
          <item row="0" column="0">
           <widget class="QLabel" name="lblSubTotalCaption">
@@ -1025,14 +1330,26 @@ QScrollBar::sub-page:horizontal {
            <property name="minimumSize">
             <size>
              <width>0</width>
-             <height>26</height>
+             <height>0</height>
             </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>55</width>
+             <height>16777215</height>
+            </size>
+           </property>
+           <property name="focusPolicy">
+            <enum>Qt::FocusPolicy::StrongFocus</enum>
            </property>
            <property name="toolTip">
             <string>Nhập mức giá cho hóa đơn</string>
            </property>
            <property name="text">
             <string>Giảm giá</string>
+           </property>
+           <property name="autoDefault">
+            <bool>false</bool>
            </property>
           </widget>
          </item>
@@ -1089,7 +1406,8 @@ QScrollBar::sub-page:horizontal {
           <widget class="QLabel" name="lblGrandTotalCaption">
            <property name="font">
             <font>
-             <pointsize>12</pointsize>
+             <family>Segoe UI</family>
+             <pointsize>-1</pointsize>
              <bold>true</bold>
             </font>
            </property>
@@ -1102,7 +1420,8 @@ QScrollBar::sub-page:horizontal {
           <widget class="QLabel" name="lblGrandTotal">
            <property name="font">
             <font>
-             <pointsize>20</pointsize>
+             <family>Segoe UI</family>
+             <pointsize>-1</pointsize>
              <bold>true</bold>
             </font>
            </property>
@@ -1133,7 +1452,7 @@ QScrollBar::sub-page:horizontal {
              <number>0</number>
             </property>
             <property name="topMargin">
-             <number>6</number>
+             <number>0</number>
             </property>
             <property name="rightMargin">
              <number>0</number>
@@ -1146,7 +1465,13 @@ QScrollBar::sub-page:horizontal {
               <property name="minimumSize">
                <size>
                 <width>0</width>
-                <height>58</height>
+                <height>36</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>16777215</width>
+                <height>50</height>
                </size>
               </property>
               <property name="cursor">
@@ -1168,7 +1493,13 @@ QScrollBar::sub-page:horizontal {
               <property name="minimumSize">
                <size>
                 <width>0</width>
-                <height>58</height>
+                <height>36</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>16777215</width>
+                <height>50</height>
                </size>
               </property>
               <property name="cursor">
@@ -1187,7 +1518,13 @@ QScrollBar::sub-page:horizontal {
               <property name="minimumSize">
                <size>
                 <width>0</width>
-                <height>58</height>
+                <height>36</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>16777215</width>
+                <height>50</height>
                </size>
               </property>
               <property name="cursor">
@@ -1225,24 +1562,33 @@ QScrollBar::sub-page:horizontal {
          <enum>QFrame::Shape::NoFrame</enum>
         </property>
         <layout class="QVBoxLayout" name="verticalLayout_checkout">
+         <property name="spacing">
+          <number>0</number>
+         </property>
          <property name="leftMargin">
           <number>20</number>
          </property>
          <property name="topMargin">
-          <number>14</number>
+          <number>0</number>
          </property>
          <property name="rightMargin">
           <number>20</number>
          </property>
          <property name="bottomMargin">
-          <number>18</number>
+          <number>0</number>
          </property>
          <item>
           <widget class="QPushButton" name="btnCheckout">
            <property name="minimumSize">
             <size>
              <width>0</width>
-             <height>54</height>
+             <height>38</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>16777215</width>
+             <height>55</height>
             </size>
            </property>
            <property name="cursor">

@@ -10,9 +10,9 @@ from PySide6.QtWidgets import (
     QToolButton, QWidget,
 )
 
-import qtawesome as qta
-
 from src.gui.tabs.help_center_ui import Ui_Form
+from src.utils.FormIcon import apply_icon
+from src.utils.Theme import repolish
 from src.utils.Session import Session
 
 logger = logging.getLogger(__name__)
@@ -24,10 +24,10 @@ AVATAR_ICON_SIZE = QSize(18, 18)
 SOCIAL_ICON_SIZE = QSize(15, 15)
 ACCORDION_ICON_SIZE = QSize(11, 11)
 
-PRIMARY_COLOR = "#2563eb"
+PRIMARY_COLOR = "#1d4ed8"
 MUTED_COLOR = "#94a3b8"
 
-ROLE_NAMES_VI = {
+ROLE_DISPLAY_NAMES = {
     "admin": "Quản trị viên",
     "cashier": "Thu ngân",
     "warehouse": "Nhân viên kho",
@@ -52,6 +52,7 @@ class HelpCenterController(QWidget, Ui_Form):
         self.refresh_qss()
         self.update_system_info()
 
+
     def apply_icons(self) -> None:
         for widget in self.findChildren(QWidget):
             icon_name = widget.property("iconName")
@@ -59,25 +60,10 @@ class HelpCenterController(QWidget, Ui_Form):
             if not icon_name:
                 continue
 
-            color = widget.property("iconColor") or PRIMARY_COLOR
+            tone = widget.property("iconColor") or "primary"
             size = ICON_SIZES.get(widget.property("class"), CARD_ICON_SIZE)
+            apply_icon(widget, str(icon_name), tone=str(tone), size=size)
 
-            try:
-                icon = qta.icon(icon_name, color=color)
-            except Exception as error:
-                logger.error(
-                    "Không tải được icon '%s' của widget '%s': %s",
-                    icon_name,
-                    widget.objectName(),
-                    error,
-                )
-                continue
-
-            if isinstance(widget, QLabel):
-                widget.setPixmap(icon.pixmap(size))
-            elif isinstance(widget, QAbstractButton):
-                widget.setIcon(icon)
-                widget.setIconSize(size)
 
     def setup_accordions(self) -> None:
         for button in self.findChildren(QToolButton):
@@ -105,6 +91,7 @@ class HelpCenterController(QWidget, Ui_Form):
                 self.toggle_accordion(btn, widget, checked)
             )
 
+
     def toggle_accordion(self, button: QToolButton, content: QWidget, opened: bool) -> None:
         content.setVisible(opened)
         self.update_accordion_icon(button, opened)
@@ -117,29 +104,12 @@ class HelpCenterController(QWidget, Ui_Form):
 
         self.scrollAreaWidgetContents.adjustSize()
 
+
     def update_accordion_icon(self, button: QToolButton, opened: bool) -> None:
-        icon_name = (
-            "fa5s.chevron-down"
-            if opened
-            else "fa5s.chevron-right"
-        )
+        icon_name = "collapse" if opened else "expand"
+        tone = "primary" if opened else "muted"
+        apply_icon(button, icon_name, tone=tone, size=ACCORDION_ICON_SIZE)
 
-        icon_color = PRIMARY_COLOR if opened else MUTED_COLOR
-
-        try:
-            button.setIcon(
-                qta.icon(
-                    icon_name,
-                    color=icon_color,
-                )
-            )
-            button.setIconSize(ACCORDION_ICON_SIZE)
-        except Exception as error:
-            logger.error(
-                "Không tải được icon '%s' cho mục hướng dẫn: %s",
-                icon_name,
-                error,
-            )
 
     def setup_links(self) -> None:
         for button in self.findChildren(QAbstractButton):
@@ -155,6 +125,7 @@ class HelpCenterController(QWidget, Ui_Form):
                 self.open_link(target)
             )
 
+
     @staticmethod
     def build_email_link(email: str) -> str:
         return (
@@ -162,9 +133,11 @@ class HelpCenterController(QWidget, Ui_Form):
             f"?view=cm&fs=1&to={email}"
         )
 
+
     @staticmethod
     def open_link(url: str) -> None:
         QDesktopServices.openUrl(QUrl(url))
+
 
     def update_system_info(self) -> None:
         db_type = os.getenv("DB_TYPE", "mysql").strip().lower()
@@ -201,17 +174,14 @@ class HelpCenterController(QWidget, Ui_Form):
         self.valueCurrentUser.setText(Session.get_username() or "—")
 
         role_name = Session.get_role_name() or ""
-        role_display = ROLE_NAMES_VI.get(role_name.strip().lower(), role_name or "—")
+        role_display = ROLE_DISPLAY_NAMES.get(role_name.strip().lower(), role_name or "—")
         self.valueRole.setText(role_display)
+
 
     def showEvent(self, event) -> None:
         super().showEvent(event)
         self.update_system_info()
 
-    def refresh_qss(self) -> None:
-        self.setStyleSheet(self.styleSheet())
 
-        for widget in self.findChildren(QWidget):
-            if widget.property("class"):
-                widget.style().unpolish(widget)
-                widget.style().polish(widget)
+    def refresh_qss(self) -> None:
+        repolish(self)

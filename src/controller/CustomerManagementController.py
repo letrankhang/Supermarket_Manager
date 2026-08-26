@@ -1,32 +1,26 @@
-"""src/controller/CustomerManagementController.py
-
-Điều khiển tab Quản lý khách hàng theo thiết kế chuẩn Image 1:
-- Header với nút 'View Purchase History' và '+ Add New Customer'
-- 3 thẻ thống kê: Tổng Thành Viên, Hoạt động (Tháng này), Điểm đã phát hành
-- Khung bảng với tìm kiếm, lọc, phân trang, nút Sửa / Xóa trên toolbar,
-  hỗ trợ click đúp để sửa, click chuột phải context menu.
-- Kế thừa QWidget và Ui_CustomerManagement (src/gui/customer_management_ui.py).
-"""
-
 import logging
 from typing import List, Optional, Tuple
 
 from PySide6 import QtWidgets, QtCore, QtGui
 from PySide6.QtWidgets import (
-    QWidget, QHBoxLayout, QLabel, QPushButton, QTableWidgetItem,
-    QHeaderView, QAbstractItemView, QMessageBox, QMenu,
+    QWidget, QFrame, QHBoxLayout, QLabel, QPushButton, QTableWidgetItem,
+    QHeaderView, QAbstractItemView, QMessageBox, QMenu, QSizePolicy,
+    QSpacerItem,
 )
 from PySide6.QtCore import Qt, QSize, QThread, Signal, QTimer, QPoint, QModelIndex
 from PySide6.QtGui import QFont, QAction, QColor
 
-import qtawesome as qta
-
-from src.gui.customer_management_ui import Ui_CustomerManagement
+from src.gui.tabs.customer_management_ui import Ui_CustomerManagement
 from src.dtos.CustomerManagementDTO import (
     CustomerManagementDTO, CustomerDetailDTO, CustomerFormDTO,
 )
 from src.services.impl.CustomerManagementServiceImpl import CustomerManagementServiceImpl
 from src.controller.CustomerFormDialog import CustomerFormDialog
+from src.utils.FormIcon import (
+    add_awesome_left_icon, apply_icon, icon, apply_awesome_icons,
+)
+from src.utils.Theme import badge_cell, repolish, set_trend
+
 
 logger = logging.getLogger(__name__)
 
@@ -34,13 +28,25 @@ ICON_SIZE = QSize(16, 16)
 SEARCH_DEBOUNCE_MS = 300
 PAGE_SIZE = 10
 
+RANK_ALIASES = (
+    (("DIAMOND", "KIM CƯƠNG"), "DIAMOND", "violet"),
+    (("GOLD", "VÀNG"), "GOLD", "warning"),
+    (("SILVER", "BẠC"), "SILVER", "neutral"),
+)
+RANK_FALLBACK = ("BRONZE", "info")
 
-# ── Worker ───────────────────────────────────────────────────────
+def rank_display(tier_name: str) -> Tuple[str, str]:
+    upper = (tier_name or "").upper()
+    for keywords, label, variant in RANK_ALIASES:
+        if any(keyword in upper for keyword in keywords):
+            return label, variant
+    return RANK_FALLBACK
+
+
 class CustomerManagementWorker(QThread):
-    """Tải danh sách khách hàng ở luồng nền."""
-
     data_fetched = Signal(CustomerManagementDTO)
     error_occurred = Signal(str)
+
 
     def __init__(
         self,
@@ -52,6 +58,7 @@ class CustomerManagementWorker(QThread):
         self._keyword = keyword
         self._tier_id = tier_id
         self._service = CustomerManagementServiceImpl()
+
 
     def run(self) -> None:
         try:
@@ -66,13 +73,14 @@ class CustomerManagementWorker(QThread):
             self.error_occurred.emit(str(e))
 
 
-# ── Controller ───────────────────────────────────────────────────
 class CustomerManagementController(QWidget, Ui_CustomerManagement):
-    """Màn hình Quản lý khách hàng chuẩn giao diện Image 1."""
-
     def __init__(self, parent: Optional[QWidget] = None) -> None:
         super().__init__(parent)
         self.setupUi(self)
+        try:
+            apply_awesome_icons(self)
+        except Exception as e:
+            logger.debug("Bỏ qua apply_awesome_icons: %s", e)
 
         self._worker: Optional[CustomerManagementWorker] = None
         self._service = CustomerManagementServiceImpl()
@@ -84,51 +92,47 @@ class CustomerManagementController(QWidget, Ui_CustomerManagement):
         self._current_page = 1
         self._page_size = PAGE_SIZE
 
-        self.txtSearch.setAttribute(Qt.WidgetAttribute.WA_InputMethodEnabled, True)
-        self.txtSearch.setFont(QFont("Segoe UI", 10))
+        if hasattr(self, "txtSearch"):
+            self.txtSearch.setAttribute(Qt.WidgetAttribute.WA_InputMethodEnabled, True)
+            self.txtSearch.setFont(QFont("Segoe UI", 10))
 
         self._setup_icons()
         self._setup_table()
         self._setup_filter_menu()
         self._setup_connections()
 
+        repolish(self)
+
+
     def _setup_icons(self) -> None:
-        """Nạp icon chuẩn qtawesome cho các nút và badge."""
-        try:
-            self.btnPurchaseHistory.setIcon(qta.icon("fa5s.history", color="#1e293b"))
-            self.btnPurchaseHistory.setIconSize(ICON_SIZE)
+        for widget_name, name, tone in (
+            ("btnPurchaseHistory", "history", "default"),
+            ("btnEditCustomer", "edit", "primary"),
+            ("btnDeleteCustomer", "delete", "danger"),
+            ("btnFilter", "filter", "default"),
+            ("badgeTotal", "user-group", "primary"),
+            ("badgeActive", "user-active", "success"),
+            ("badgePoints", "tag", "warning"),
+        ):
+            if hasattr(self, widget_name):
+                apply_icon(getattr(self, widget_name), name, tone=tone, size=ICON_SIZE)
 
-            self.btnAddCustomer.setIcon(qta.icon("fa5s.user-plus", color="#ffffff"))
-            self.btnAddCustomer.setIconSize(ICON_SIZE)
+        if hasattr(self, "txtSearch"):
+            add_awesome_left_icon(self.txtSearch, "search")
 
-            self.btnEditCustomer.setIcon(qta.icon("fa5s.edit", color="#1d4ed8"))
-            self.btnEditCustomer.setIconSize(ICON_SIZE)
+        if hasattr(self, "btnPrevPage"):
+            self.btnPrevPage.setText("‹")
+            self.btnPrevPage.setFont(QFont("Segoe UI", 12, QFont.Weight.Bold))
 
-            self.btnDeleteCustomer.setIcon(qta.icon("fa5s.trash-alt", color="#dc2626"))
-            self.btnDeleteCustomer.setIconSize(ICON_SIZE)
+        if hasattr(self, "btnNextPage"):
+            self.btnNextPage.setText("›")
+            self.btnNextPage.setFont(QFont("Segoe UI", 12, QFont.Weight.Bold))
 
-            self.btnFilter.setIcon(qta.icon("fa5s.sliders-h", color="#475569"))
-            self.btnFilter.setIconSize(ICON_SIZE)
-
-            self.badgeTotal.setPixmap(qta.icon("fa5s.user-friends", color="#2563eb").pixmap(ICON_SIZE))
-            self.badgeActive.setPixmap(qta.icon("fa5s.user-check", color="#10b981").pixmap(ICON_SIZE))
-            self.badgePoints.setPixmap(qta.icon("fa5s.tag", color="#f59e0b").pixmap(ICON_SIZE))
-        except Exception as e:
-            logger.error("Không tải được icon giao diện khách hàng: %s", e)
 
     def _setup_table(self) -> None:
-        """Cấu hình bảng khách hàng theo Image 1."""
-        self.tblCustomers.setColumnCount(6)
-        self.tblCustomers.setHorizontalHeaderLabels([
-            "Phone (ID)", "Tên Khách Hàng", "Ngày Sinh",
-            "Tổng Điểm", "Hạng (Rank)", "Tổng Chi Tiêu",
-        ])
-        self.tblCustomers.verticalHeader().setVisible(False)
-        self.tblCustomers.verticalHeader().setDefaultSectionSize(46)
-        self.tblCustomers.verticalHeader().setMinimumSectionSize(44)
-        self.tblCustomers.setEditTriggers(QAbstractItemView.EditTrigger.NoEditTriggers)
-        self.tblCustomers.setSelectionBehavior(QAbstractItemView.SelectionBehavior.SelectRows)
-        self.tblCustomers.setSelectionMode(QAbstractItemView.SelectionMode.SingleSelection)
+        if not hasattr(self, "tblCustomers"):
+            return
+
         self.tblCustomers.setFocusPolicy(Qt.FocusPolicy.NoFocus)
 
         header_view = self.tblCustomers.horizontalHeader()
@@ -138,24 +142,19 @@ class CustomerManagementController(QWidget, Ui_CustomerManagement):
         header_view.setSectionResizeMode(4, QHeaderView.ResizeMode.Fixed)
         self.tblCustomers.setColumnWidth(4, 120)
 
-        # Context menu cho sửa / xóa khi click chuột phải
         self.tblCustomers.setContextMenuPolicy(Qt.ContextMenuPolicy.CustomContextMenu)
         self.tblCustomers.customContextMenuRequested.connect(self._on_table_context_menu)
 
-        # Debounce timer cho ô tìm kiếm
         self._search_timer = QTimer(self)
         self._search_timer.setSingleShot(True)
         self._search_timer.setInterval(SEARCH_DEBOUNCE_MS)
 
+
     def _setup_filter_menu(self) -> None:
-        """Menu popup khi click vào nút Filter."""
         self._filter_menu = QMenu(self)
-        self._filter_menu.setStyleSheet("""
-            QMenu { background-color: #ffffff; border: 1px solid #e2e8f0; border-radius: 8px; padding: 4px; }
-            QMenu::item { padding: 6px 16px; font-size: 13px; color: #1e293b; border-radius: 4px; }
-            QMenu::item:selected { background-color: #f1f5f9; color: #002d72; font-weight: bold; }
-        """)
-        self.btnFilter.clicked.connect(self._show_filter_menu)
+        if hasattr(self, "btnFilter"):
+            self.btnFilter.clicked.connect(self._show_filter_menu)
+
 
     def _show_filter_menu(self) -> None:
         self._filter_menu.clear()
@@ -165,47 +164,57 @@ class CustomerManagementController(QWidget, Ui_CustomerManagement):
         self._filter_menu.addSeparator()
 
         for tid, tname in self._tiers:
-            act = QAction(tname, self)
+            act = QAction(rank_display(tname)[0], self)
             act.triggered.connect(lambda checked=False, t_id=tid: self._set_tier_filter(t_id))
             self._filter_menu.addAction(act)
 
-        self._filter_menu.exec(self.btnFilter.mapToGlobal(QPoint(0, self.btnFilter.height())))
+        if hasattr(self, "btnFilter"):
+            self._filter_menu.exec(self.btnFilter.mapToGlobal(QPoint(0, self.btnFilter.height())))
+
 
     def _set_tier_filter(self, tier_id: Optional[int]) -> None:
         self._selected_tier_id = tier_id
         self._current_page = 1
         self.load_data()
 
-    # ── Connections ──────────────────────────────────────────────
+
     def _setup_connections(self) -> None:
-        self.btnAddCustomer.clicked.connect(self._on_add_customer)
-        self.btnEditCustomer.clicked.connect(self._on_edit_selected_customer)
-        self.btnDeleteCustomer.clicked.connect(self._on_delete_selected_customer)
-        self.btnPurchaseHistory.clicked.connect(self._on_view_purchase_history)
-        self.btnLoadMore.clicked.connect(self._on_load_more)
+        for btn_attr, handler in (
+            ("btnAddCustomer", self._on_add_customer),
+            ("btnEditCustomer", self._on_edit_selected_customer),
+            ("btnDeleteCustomer", self._on_delete_selected_customer),
+            ("btnPurchaseHistory", self._on_view_purchase_history),
+            ("btnLoadMore", self._on_load_more),
+            ("btnPrevPage", self._on_prev_page),
+            ("btnNextPage", self._on_next_page),
+        ):
+            if hasattr(self, btn_attr):
+                getattr(self, btn_attr).clicked.connect(handler)
 
-        self.btnPrevPage.clicked.connect(self._on_prev_page)
-        self.btnNextPage.clicked.connect(self._on_next_page)
+        if hasattr(self, "tblCustomers"):
+            self.tblCustomers.doubleClicked.connect(self._on_table_double_clicked)
 
-        self.tblCustomers.doubleClicked.connect(self._on_table_double_clicked)
+        if hasattr(self, "txtSearch"):
+            self.txtSearch.textChanged.connect(self._on_search_changed)
+            if hasattr(self, "_search_timer"):
+                self._search_timer.timeout.connect(self._trigger_search)
 
-        self.txtSearch.textChanged.connect(self._on_search_changed)
-        self._search_timer.timeout.connect(self._trigger_search)
 
     def _on_search_changed(self, _text: str) -> None:
-        self._search_timer.start()
+        if hasattr(self, "_search_timer"):
+            self._search_timer.start()
+
 
     def _trigger_search(self) -> None:
         self._current_page = 1
         self.load_data()
 
-    # ── Load data ────────────────────────────────────────────────
+
     def load_data(self) -> None:
-        """Gọi khi chuyển sang tab Customers hoặc tìm kiếm."""
         if self._worker and self._worker.isRunning():
             return
 
-        keyword = self.txtSearch.text().strip() or None
+        keyword = self.txtSearch.text().strip() if hasattr(self, "txtSearch") and self.txtSearch.text() else None
         tier_id = self._selected_tier_id
 
         self._worker = CustomerManagementWorker(keyword, tier_id)
@@ -213,6 +222,7 @@ class CustomerManagementController(QWidget, Ui_CustomerManagement):
         self._worker.error_occurred.connect(self._on_error)
         self._worker.finished.connect(self._on_worker_finished)
         self._worker.start()
+
 
     def _on_data_fetched(self, data: CustomerManagementDTO) -> None:
         self._all_customers = data.customers
@@ -223,35 +233,49 @@ class CustomerManagementController(QWidget, Ui_CustomerManagement):
             f"{total_pts / 1_000:,.0f}k" if total_pts >= 1_000 else f"{total_pts:,}"
         )
 
-        # 1. Update 3 Top Cards (Image 1)
-        self.lblTotalVal.setText(f"{data.total_count:,}")
-        self.lblTotalTrend.setText("↗ +4.2% so với tháng trước")
+        if hasattr(self, "lblTotalVal"):
+            self.lblTotalVal.setText(f"{data.total_count:,}")
+        if hasattr(self, "lblTotalTrend"):
+            self.lblTotalTrend.setText("↗ +4.2% so với tháng trước")
+            set_trend(self.lblTotalTrend, "up")
 
         active_count = max(1, int(data.total_count * 0.25)) if data.total_count > 0 else 0
-        self.lblActiveVal.setText(f"{active_count:,}")
-        self.lblActiveTrend.setText("25% tỷ lệ giữ chân")
+        if hasattr(self, "lblActiveVal"):
+            self.lblActiveVal.setText(f"{active_count:,}")
+        if hasattr(self, "lblActiveTrend"):
+            self.lblActiveTrend.setText("→ 25% tỷ lệ giữ chân")
+            set_trend(self.lblActiveTrend, "flat")
 
-        self.lblPointsVal.setText(pts_formatted)
-        self.lblPointsTrend.setText("↗ +12k tuần này")
+        if hasattr(self, "lblPointsVal"):
+            self.lblPointsVal.setText(pts_formatted)
+        if hasattr(self, "lblPointsTrend"):
+            self.lblPointsTrend.setText("↗ +12k tuần này")
+            set_trend(self.lblPointsTrend, "up")
 
-        # 2. Update Tiers list for filter
         if not self._tiers:
             try:
                 self._tiers = self._service.get_tiers()
             except Exception as e:
                 logger.error("Không thể tải danh sách hạng: %s", e)
 
-        # 3. Render Table page
         self._render_current_page()
 
+
     def _render_current_page(self) -> None:
+        if not hasattr(self, "tblCustomers"):
+            return
+
         total = len(self._filtered_customers)
         if total == 0:
             self.tblCustomers.setRowCount(0)
-            self.lblPaginationInfo.setText("Hiển thị 0 của 0")
-            self.btnPrevPage.setEnabled(False)
-            self.btnNextPage.setEnabled(False)
-            self.btnLoadMore.setVisible(False)
+            if hasattr(self, "lblPaginationInfo"):
+                self.lblPaginationInfo.setText("Hiển thị 0 của 0 khách hàng")
+            if hasattr(self, "btnPrevPage"):
+                self.btnPrevPage.setEnabled(False)
+            if hasattr(self, "btnNextPage"):
+                self.btnNextPage.setEnabled(False)
+            if hasattr(self, "btnLoadMore"):
+                self.btnLoadMore.setVisible(False)
             return
 
         total_pages = (total + self._page_size - 1) // self._page_size
@@ -260,13 +284,18 @@ class CustomerManagementController(QWidget, Ui_CustomerManagement):
         start_idx = (self._current_page - 1) * self._page_size
         end_idx = min(start_idx + self._page_size, total)
 
-        self.lblPaginationInfo.setText(f"Hiển thị {start_idx + 1}-{end_idx} của {total:,}")
-        self.btnPrevPage.setEnabled(self._current_page > 1)
-        self.btnNextPage.setEnabled(self._current_page < total_pages)
-        self.btnLoadMore.setVisible(self._current_page < total_pages)
+        if hasattr(self, "lblPaginationInfo"):
+            self.lblPaginationInfo.setText(f"Hiển thị {start_idx + 1} đến {end_idx} của {total:,} khách hàng")
+        if hasattr(self, "btnPrevPage"):
+            self.btnPrevPage.setEnabled(self._current_page > 1)
+        if hasattr(self, "btnNextPage"):
+            self.btnNextPage.setEnabled(self._current_page < total_pages)
+        if hasattr(self, "btnLoadMore"):
+            self.btnLoadMore.setVisible(self._current_page < total_pages)
 
         page_data = self._filtered_customers[start_idx:end_idx]
         self._populate_table(page_data)
+
 
     def _populate_table(self, customers: List[CustomerDetailDTO]) -> None:
         self.tblCustomers.setRowCount(0)
@@ -274,25 +303,21 @@ class CustomerManagementController(QWidget, Ui_CustomerManagement):
             self.tblCustomers.insertRow(idx)
             self.tblCustomers.setRowHeight(idx, 46)
 
-            # 0. Phone (ID)
             phone_item = QTableWidgetItem(c.phone)
             phone_item.setTextAlignment(Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignVCenter)
             phone_item.setData(Qt.ItemDataRole.UserRole, c.customer_id)
             self.tblCustomers.setItem(idx, 0, phone_item)
 
-            # 1. Tên Khách Hàng (bold)
             name_item = QTableWidgetItem(c.full_name or "")
             name_item.setFont(QFont("MS Shell Dlg 2", 9, QFont.Weight.Bold))
             name_item.setTextAlignment(Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignVCenter)
             self.tblCustomers.setItem(idx, 1, name_item)
 
-            # 2. Ngày Sinh
             dob_text = c.dob.strftime("%d/%m/%Y") if c.dob else "—"
             dob_item = QTableWidgetItem(dob_text)
             dob_item.setTextAlignment(Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignVCenter)
             self.tblCustomers.setItem(idx, 2, dob_item)
 
-            # 3. Tổng Điểm (Blue bold if high)
             pts_item = QTableWidgetItem(f"{c.total_points:,}")
             if c.total_points >= 10000:
                 pts_item.setFont(QFont("MS Shell Dlg 2", 9, QFont.Weight.Bold))
@@ -300,50 +325,24 @@ class CustomerManagementController(QWidget, Ui_CustomerManagement):
             pts_item.setTextAlignment(Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignVCenter)
             self.tblCustomers.setItem(idx, 3, pts_item)
 
-            # 4. Hạng (Rank) - Pill Badge Widget
             badge = self._create_rank_badge(c.tier_name)
             self.tblCustomers.setCellWidget(idx, 4, badge)
 
-            # 5. Tổng Chi Tiêu
             spent_item = QTableWidgetItem(f"{c.total_spent:,.0f} đ")
             spent_item.setTextAlignment(Qt.AlignmentFlag.AlignRight | Qt.AlignmentFlag.AlignVCenter)
             self.tblCustomers.setItem(idx, 5, spent_item)
 
+
     def _create_rank_badge(self, tier_name: str) -> QWidget:
-        """Tạo huy hiệu Hạng dạng Pill chuẩn Image 1 (BRONZE, SILVER, GOLD, DIAMOND)."""
-        badge_container = QWidget()
-        badge_layout = QHBoxLayout(badge_container)
-        badge_layout.setContentsMargins(4, 4, 4, 4)
-        badge_layout.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        label, variant = rank_display(tier_name)
+        return badge_cell(label, variant, min_width=80)
 
-        t_upper = (tier_name or "ĐỒNG").upper()
-        lbl = QLabel()
-        lbl.setFont(QFont("Segoe UI", 8, QFont.Weight.Bold))
-        lbl.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        lbl.setFixedHeight(24)
-        lbl.setMinimumWidth(80)
 
-        if "DIAMOND" in t_upper or "KIM CƯƠNG" in t_upper:
-            lbl.setText("DIAMOND")
-            lbl.setStyleSheet("background-color: #ede9fe; color: #6d28d9; border-radius: 12px; padding: 2px 10px;")
-        elif "GOLD" in t_upper or "VÀNG" in t_upper:
-            lbl.setText("GOLD")
-            lbl.setStyleSheet("background-color: #fef9c3; color: #a16207; border-radius: 12px; padding: 2px 10px;")
-        elif "SILVER" in t_upper or "BẠC" in t_upper:
-            lbl.setText("SILVER")
-            lbl.setStyleSheet("background-color: #e2e8f0; color: #475569; border-radius: 12px; padding: 2px 10px;")
-        else:  # BRONZE / ĐỒNG
-            lbl.setText("BRONZE")
-            lbl.setStyleSheet("background-color: #ffedd5; color: #c2410c; border-radius: 12px; padding: 2px 10px;")
-
-        badge_layout.addWidget(lbl)
-        return badge_container
-
-    # ── Pagination Handlers ──────────────────────────────────────
     def _on_prev_page(self) -> None:
         if self._current_page > 1:
             self._current_page -= 1
             self._render_current_page()
+
 
     def _on_next_page(self) -> None:
         total = len(self._filtered_customers)
@@ -352,28 +351,32 @@ class CustomerManagementController(QWidget, Ui_CustomerManagement):
             self._current_page += 1
             self._render_current_page()
 
+
     def _on_load_more(self) -> None:
         self._page_size += 10
         self._render_current_page()
 
-    # ── Table Click & Actions ────────────────────────────────────
+
     def _on_table_double_clicked(self, index: QModelIndex) -> None:
-        """Nhấn đúp chuột vào bất kỳ dòng nào để sửa thông tin khách hàng."""
         row = index.row()
-        if row >= 0:
+        if row >= 0 and hasattr(self, "tblCustomers"):
             item = self.tblCustomers.item(row, 0)
             if item:
                 cid = item.data(Qt.ItemDataRole.UserRole)
                 if cid:
                     self._on_edit_customer(cid)
 
+
     def _get_selected_customer_id(self) -> Optional[int]:
+        if not hasattr(self, "tblCustomers"):
+            return None
         selected_row = self.tblCustomers.currentRow()
         if selected_row >= 0:
             item = self.tblCustomers.item(selected_row, 0)
             if item:
                 return item.data(Qt.ItemDataRole.UserRole)
         return None
+
 
     def _on_edit_selected_customer(self) -> None:
         cid = self._get_selected_customer_id()
@@ -385,6 +388,7 @@ class CustomerManagementController(QWidget, Ui_CustomerManagement):
                 "Vui lòng bấm chọn một khách hàng trong bảng trước khi nhấn 'Sửa'."
             )
 
+
     def _on_delete_selected_customer(self) -> None:
         cid = self._get_selected_customer_id()
         if cid is not None:
@@ -394,6 +398,7 @@ class CustomerManagementController(QWidget, Ui_CustomerManagement):
                 self, "Chưa chọn khách hàng",
                 "Vui lòng bấm chọn một khách hàng trong bảng trước khi nhấn 'Xóa'."
             )
+
 
     def _on_view_purchase_history(self) -> None:
         cid = self._get_selected_customer_id()
@@ -410,7 +415,10 @@ class CustomerManagementController(QWidget, Ui_CustomerManagement):
                 "Vui lòng chọn một khách hàng trong bảng để xem chi tiết lịch sử mua hàng."
             )
 
+
     def _on_table_context_menu(self, pos: QPoint) -> None:
+        if not hasattr(self, "tblCustomers"):
+            return
         selected_row = self.tblCustomers.currentRow()
         if selected_row < 0:
             return
@@ -421,29 +429,23 @@ class CustomerManagementController(QWidget, Ui_CustomerManagement):
         cid = item.data(Qt.ItemDataRole.UserRole)
 
         menu = QMenu(self)
-        menu.setStyleSheet("""
-            QMenu { background-color: #ffffff; border: 1px solid #e2e8f0; border-radius: 8px; padding: 4px; }
-            QMenu::item { padding: 6px 16px; font-size: 13px; color: #1e293b; border-radius: 4px; }
-            QMenu::item:selected { background-color: #f1f5f9; color: #002d72; font-weight: bold; }
-        """)
-
-        act_edit = QAction("✏️ Chỉnh sửa thông tin", self)
+        act_edit = QAction(icon("edit"), "Chỉnh sửa thông tin", self)
         act_edit.triggered.connect(lambda: self._on_edit_customer(cid))
         menu.addAction(act_edit)
 
-        act_history = QAction("📜 Xem lịch sử mua hàng", self)
+        act_history = QAction(icon("history"), "Xem lịch sử mua hàng", self)
         act_history.triggered.connect(self._on_view_purchase_history)
         menu.addAction(act_history)
 
         menu.addSeparator()
 
-        act_delete = QAction("🗑️ Xóa khách hàng này", self)
+        act_delete = QAction(icon("delete", "danger"), "Xóa khách hàng này", self)
         act_delete.triggered.connect(lambda: self._on_delete_customer(cid))
         menu.addAction(act_delete)
 
         menu.exec(self.tblCustomers.viewport().mapToGlobal(pos))
 
-    # ── CRUD Operations ──────────────────────────────────────────
+
     def _on_add_customer(self) -> None:
         dialog = CustomerFormDialog(self)
         if dialog.exec() == CustomerFormDialog.DialogCode.Accepted and dialog.result_form:
@@ -456,6 +458,7 @@ class CustomerManagementController(QWidget, Ui_CustomerManagement):
             except Exception as e:
                 logger.exception("Lỗi khi thêm khách hàng: %s", e)
                 QMessageBox.critical(self, "Lỗi hệ thống", "Không thể thêm khách hàng. Vui lòng thử lại.")
+
 
     def _on_edit_customer(self, customer_id: int) -> None:
         customer = self._find_customer_by_id(customer_id)
@@ -474,6 +477,7 @@ class CustomerManagementController(QWidget, Ui_CustomerManagement):
             except Exception as e:
                 logger.exception("Lỗi khi cập nhật khách hàng: %s", e)
                 QMessageBox.critical(self, "Lỗi hệ thống", "Không thể cập nhật. Vui lòng thử lại.")
+
 
     def _on_delete_customer(self, customer_id: int) -> None:
         customer = self._find_customer_by_id(customer_id)
@@ -502,14 +506,17 @@ class CustomerManagementController(QWidget, Ui_CustomerManagement):
                 logger.exception("Lỗi khi xóa khách hàng: %s", e)
                 QMessageBox.critical(self, "Lỗi hệ thống", "Không thể xóa khách hàng. Vui lòng thử lại.")
 
+
     def _find_customer_by_id(self, customer_id: int) -> Optional[CustomerDetailDTO]:
         for c in self._all_customers:
             if c.customer_id == customer_id:
                 return c
         return None
 
+
     def _on_error(self, msg: str) -> None:
         logger.error("Customer load error: %s", msg)
+
 
     def _on_worker_finished(self) -> None:
         pass

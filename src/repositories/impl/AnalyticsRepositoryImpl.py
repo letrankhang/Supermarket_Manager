@@ -18,6 +18,7 @@ class AnalyticsRepositoryImpl(AnalyticsRepository):
     def __init__(self, session: Session) -> None:
         self.session = session
 
+
     def get_daily_revenue(self, start_date: datetime, end_date: datetime) -> List[Tuple[Any, float, int]]:
         try:
             dialect_name = ""
@@ -55,6 +56,7 @@ class AnalyticsRepositoryImpl(AnalyticsRepository):
             logger.error("Lỗi khi truy vấn doanh thu theo ngày [%s - %s]: %s", start_date, end_date, e)
             raise e
 
+
     def get_total_revenue(self, start_date: datetime, end_date: datetime) -> float:
         try:
             val = (
@@ -69,6 +71,7 @@ class AnalyticsRepositoryImpl(AnalyticsRepository):
         except Exception as e:
             logger.error("Lỗi khi truy vấn tổng doanh thu [%s - %s]: %s", start_date, end_date, e)
             raise e
+
 
     def get_total_profit(self, start_date: datetime, end_date: datetime) -> float:
         try:
@@ -88,6 +91,7 @@ class AnalyticsRepositoryImpl(AnalyticsRepository):
             logger.error("Lỗi khi truy vấn tổng lợi nhuận [%s - %s]: %s", start_date, end_date, e)
             raise e
 
+
     def get_invoice_count(self, start_date: datetime, end_date: datetime) -> int:
         try:
             val = (
@@ -102,6 +106,7 @@ class AnalyticsRepositoryImpl(AnalyticsRepository):
         except Exception as e:
             logger.error("Lỗi khi truy vấn số lượng hóa đơn [%s - %s]: %s", start_date, end_date, e)
             raise e
+
 
     def get_top_products(
         self, start_date: datetime, end_date: datetime, limit: int = 5
@@ -138,6 +143,7 @@ class AnalyticsRepositoryImpl(AnalyticsRepository):
             logger.error("Lỗi khi truy vấn top sản phẩm [%s - %s]: %s", start_date, end_date, e)
             raise e
 
+
     def get_category_sales(self, start_date: datetime, end_date: datetime) -> List[Tuple[str, float]]:
         try:
             results = (
@@ -167,6 +173,7 @@ class AnalyticsRepositoryImpl(AnalyticsRepository):
             logger.error("Lỗi khi truy vấn doanh thu theo danh mục [%s - %s]: %s", start_date, end_date, e)
             raise e
 
+
     def get_revenue_by_payment_method(
         self, start_date: datetime, end_date: datetime
     ) -> List[Tuple[str, float, int]]:
@@ -195,6 +202,7 @@ class AnalyticsRepositoryImpl(AnalyticsRepository):
         except Exception as e:
             logger.error("Lỗi khi truy vấn doanh thu theo phương thức thanh toán [%s - %s]: %s", start_date, end_date, e)
             raise e
+
 
     def get_revenue_by_hour(self, start_date: datetime, end_date: datetime) -> List[Tuple[int, float]]:
         try:

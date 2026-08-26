@@ -3,9 +3,6 @@ from sqlalchemy.orm import relationship
 from src.entities.base import Base
 
 class ImportOrder(Base):
-    """
-    ImportOrder entity model mapped to the 'import_orders' table.
-    """
     __tablename__ = 'import_orders'
 
     import_id = Column(Integer, primary_key=True, autoincrement=True)
@@ -15,7 +12,6 @@ class ImportOrder(Base):
     total_amount = Column(Numeric(15, 2), default=0.0)
     note = Column(Text)
 
-    # Relationships
     supplier = relationship("Supplier")
     details = relationship("ImportDetail")
     user = relationship("User")

@@ -2,9 +2,6 @@ from sqlalchemy import Column, Integer, String, DateTime, func
 from src.entities.base import Base
 
 class Role(Base):
-    """
-    Role entity model mapped to the 'roles' table.
-    """
     __tablename__ = 'roles'
 
     role_id = Column(Integer, primary_key=True, autoincrement=True)

@@ -25,6 +25,7 @@ class DashboardRepositoryImpl(DashboardRepository):
             logger.error("Error querying revenue by range [%s - %s]: %s", start_date, end_date, e)
             raise e
 
+
     def get_invoice_count_by_range(self, start_date: datetime, end_date: datetime) -> int:
         try:
             query_val = self.session.query(func.count(SalesInvoice.invoice_id))\
@@ -33,6 +34,7 @@ class DashboardRepositoryImpl(DashboardRepository):
         except Exception as e:
             logger.error("Error querying invoice count by range [%s - %s]: %s", start_date, end_date, e)
             raise e
+
 
     def get_low_stock_count(self, threshold: int) -> int:
         try:
@@ -43,6 +45,7 @@ class DashboardRepositoryImpl(DashboardRepository):
             logger.error("Error querying low stock count with threshold %d: %s", threshold, e)
             raise e
 
+
     def get_customer_count_by_range(self, start_date: datetime, end_date: datetime) -> int:
         try:
             query_val = self.session.query(func.count(Customer.customer_id))\
@@ -51,6 +54,7 @@ class DashboardRepositoryImpl(DashboardRepository):
         except Exception as e:
             logger.error("Error querying customer count by range [%s - %s]: %s", start_date, end_date, e)
             raise e
+
 
     def get_recent_invoices(self, limit: int = 5) -> List[SalesInvoice]:
         try:

@@ -1,15 +1,7 @@
-# File: src/services/ProductService.py
-"""Interface (hop dong) cho nghiep vu Quan ly San pham.
-Dinh nghia cac phuong thuc ma ProductServiceImpl phai trien khai,
-tuan thu nguyen tac Dependency Inversion (SOLID) - giong pattern
-cua LoginService / LoginServiceImpl va ImportService / ImportServiceImpl."""
-from __future__ import annotations
-
 from abc import ABC, abstractmethod
 from typing import List, Optional
 
 from src.dtos.ProductDTO import CreateProductDTO, ProductDTO, UpdateProductDTO
-
 
 class ProductService(ABC):
 

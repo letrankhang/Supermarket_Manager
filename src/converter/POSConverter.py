@@ -18,9 +18,6 @@ PAYMENT_METHOD_MAP: Dict[str, str] = {
 
 DEFAULT_PAYMENT_METHOD: str = "Cash"
 
-# Map ngược từ giá trị lưu trong DB về nhãn tiếng Việt hiển thị trên hóa đơn.
-# Phải khớp với PAYMENT_METHOD_MAP ở trên: app đang quy ước
-# "Thẻ" -> E-Wallet và "Chuyển khoản" -> Banking.
 PAYMENT_METHOD_LABEL_MAP: Dict[str, str] = {
     "Cash": "Tiền mặt",
     "Banking": "Chuyển khoản",
@@ -41,6 +38,7 @@ class POSConverter:
             logger.warning("Không thể ép giá trị '%s' về Decimal, dùng 0.", value)
             return Decimal("0")
 
+
     @classmethod
     def to_category_dto(cls, category: Category) -> CategoryDTO:
         return CategoryDTO(
@@ -48,9 +46,11 @@ class POSConverter:
             category_name=category.category_name or ""
         )
 
+
     @classmethod
     def to_category_dto_list(cls, categories: List[Category]) -> List[CategoryDTO]:
         return [cls.to_category_dto(category) for category in categories]
+
 
     @classmethod
     def to_product_dto(cls, product: Product) -> ProductDTO:
@@ -65,9 +65,11 @@ class POSConverter:
             cost_price=cls.to_decimal(product.avg_import_price)
         )
 
+
     @classmethod
     def to_product_dto_list(cls, products: List[Product]) -> List[ProductDTO]:
         return [cls.to_product_dto(product) for product in products]
+
 
     @classmethod
     def to_cart_item_dto(cls, product: ProductDTO, quantity: int) -> CartItemDTO:
@@ -80,6 +82,7 @@ class POSConverter:
             cost_price=product.cost_price
         )
 
+
     @classmethod
     def to_sales_detail(cls, invoice_id: int, item: CartItemDTO) -> SalesDetail:
         return SalesDetail(
@@ -90,9 +93,11 @@ class POSConverter:
             cost_price=item.cost_price
         )
 
+
     @classmethod
     def to_sales_detail_list(cls, invoice_id: int, items: List[CartItemDTO]) -> List[SalesDetail]:
         return [cls.to_sales_detail(invoice_id, item) for item in items]
+
 
     @staticmethod
     def to_payment_method_value(payment_method_label: str) -> str:
@@ -105,9 +110,11 @@ class POSConverter:
             return DEFAULT_PAYMENT_METHOD
         return value
 
+
     @staticmethod
     def to_invoice_code(invoice_id: int) -> str:
         return f"#INV-{invoice_id:03d}"
+
 
     @staticmethod
     def to_payment_method_label(payment_method_value: str) -> str:
@@ -122,6 +129,7 @@ class POSConverter:
                 return cleaned
             return CASH_PAYMENT_LABEL
         return label
+
 
     @staticmethod
     def to_invoice_line_dto(detail: SalesDetail, product: Product) -> InvoiceLineDTO:

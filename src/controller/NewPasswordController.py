@@ -2,11 +2,11 @@ import logging
 
 from PySide6.QtWidgets import QMainWindow, QMessageBox
 
-from src.controller.PasswordResetWorker import THONG_BAO_LOI_CHUNG
+from src.controller.PasswordResetWorker import GENERIC_ERROR_MESSAGE
 from src.gui.new_password_ui import Ui_MainWindow
 from src.services.PasswordResetService import PasswordResetError
 from src.services.impl.PasswordResetServiceImpl import PasswordResetServiceImpl
-from src.utils.FormIcon import show_logo, add_left_icon, add_toggle_password_button
+from src.utils.FormIcon import add_left_icon, add_toggle_password_button, show_logo
 
 logger = logging.getLogger(__name__)
 
@@ -22,18 +22,21 @@ class NewPasswordController(QMainWindow, Ui_MainWindow):
         self._setup_ui()
         self._setup_events()
 
+
     def _setup_ui(self) -> None:
 
         show_logo(self.lblLogo)
 
-        for o_nhap in (self.lineEdit_newpassword, self.lineEdit_againpassword):
-            add_left_icon(o_nhap, "lock.png")
-            add_toggle_password_button(o_nhap)
+        for password_field in (self.lineEdit_newpassword, self.lineEdit_againpassword):
+            add_left_icon(password_field, "lock.png")
+            add_toggle_password_button(password_field)
+
 
     def _setup_events(self) -> None:
         self.pushButton_accept.clicked.connect(self.handle_newpassword)
         self.lineEdit_againpassword.returnPressed.connect(self.handle_newpassword)
         self.btnBackToLogin.clicked.connect(self._go_to_login)
+
 
     def _go_to_login(self) -> None:
         from src.controller.LoginController import LoginController
@@ -41,6 +44,7 @@ class NewPasswordController(QMainWindow, Ui_MainWindow):
         self.login_window = LoginController()
         self.login_window.show()
         self.close()
+
 
     def handle_newpassword(self) -> None:
         new_password = self.lineEdit_newpassword.text()
@@ -61,7 +65,7 @@ class NewPasswordController(QMainWindow, Ui_MainWindow):
             return
         except Exception:
             logger.exception("Lỗi ngoài dự tính khi đặt lại mật khẩu cho %s", self._email)
-            QMessageBox.critical(self, "Lỗi hệ thống", THONG_BAO_LOI_CHUNG)
+            QMessageBox.critical(self, "Lỗi hệ thống", GENERIC_ERROR_MESSAGE)
             return
 
         QMessageBox.information(self, "Thành công", "Đổi mật khẩu mới thành công!")

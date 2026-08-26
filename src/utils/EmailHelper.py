@@ -4,6 +4,7 @@ import smtplib
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 
+
 logger = logging.getLogger(__name__)
 
 SENDER_NAME = "Supermarket Manager"
@@ -103,6 +104,7 @@ class EmailHelper:
         </html>
         """
         return EmailHelper.send(to_email, subject, html_body)
+
 
     @staticmethod
     def send(to_email: str, subject: str, html_body: str) -> bool:

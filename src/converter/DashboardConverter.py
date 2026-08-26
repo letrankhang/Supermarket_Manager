@@ -1,5 +1,3 @@
-# File: D:\Python\Supermarket_Manager\src\converter\DashboardConverter.py
-
 import logging
 from datetime import datetime, time, timedelta
 from typing import List
@@ -9,31 +7,11 @@ from src.converter.POSConverter import PAYMENT_METHOD_MAP
 
 logger = logging.getLogger(__name__)
 
-# Đảo ngược bảng của POS để dùng chung một bộ nhãn: "Cash" -> "Tiền mặt", ...
-# Lấy từ POSConverter thay vì gõ lại, để đổi nhãn ở POS thì Dashboard đổi theo.
-NHAN_THANH_TOAN = {ma: nhan for nhan, ma in PAYMENT_METHOD_MAP.items()}
-
+PAYMENT_METHOD_LABELS = {code: label for label, code in PAYMENT_METHOD_MAP.items()}
 
 class DashboardConverter:
-    """
-    Converter class containing utility methods to map sales entities and
-    aggregated metrics into Dashboard DTOs.
-    """
-
     @staticmethod
     def format_invoice_time(invoice_date: datetime) -> str:
-        """
-        Formats the invoice datetime into a human-friendly string.
-        - If today: "10:45 AM"
-        - If yesterday: "Hôm qua"
-        - Older: "dd/MM/yyyy"
-
-        Args:
-            invoice_date (datetime): The datetime of the invoice.
-
-        Returns:
-            str: Formatted string representing the time.
-        """
         if not invoice_date:
             return ""
             
@@ -54,24 +32,14 @@ class DashboardConverter:
             logger.error("Lỗi khi định dạng thời gian hóa đơn: %s", e)
             return invoice_date.strftime("%d/%m/%Y")
 
+
     @classmethod
     def to_recent_transaction_dto(cls, invoice: SalesInvoice) -> RecentTransactionDTO:
-        """
-        Maps a SalesInvoice entity to a RecentTransactionDTO.
-
-        Args:
-            invoice (SalesInvoice): The sales invoice database entity.
-
-        Returns:
-            RecentTransactionDTO: The mapped data transfer object.
-        """
         invoice_id = invoice.invoice_id
-        # Format code as #INV-001, #INV-002, etc.
         invoice_code = f"#INV-{invoice_id:03d}"
         formatted_time = cls.format_invoice_time(invoice.invoice_date)
         final_total = float(invoice.final_total) if invoice.final_total is not None else 0.0
-        # Hóa đơn cũ có thể để trống payment_method, mặc định coi như tiền mặt
-        payment_method = NHAN_THANH_TOAN.get(invoice.payment_method, "Tiền mặt")
+        payment_method = PAYMENT_METHOD_LABELS.get(invoice.payment_method, "Tiền mặt")
 
         return RecentTransactionDTO(
             invoice_id=invoice_id,
@@ -81,6 +49,7 @@ class DashboardConverter:
             final_total=final_total,
             payment_method=payment_method
         )
+
 
     @classmethod
     def to_dashboard_dto(
@@ -95,23 +64,6 @@ class DashboardConverter:
         weekly_revenue: List[float],
         recent_invoices: List[SalesInvoice]
     ) -> DashboardDTO:
-        """
-        Constructs a complete DashboardDTO using aggregated metrics and raw recent invoice entities.
-
-        Args:
-            today_revenue (float): Total revenue today.
-            revenue_growth_rate (float): Revenue growth rate today vs yesterday in %.
-            today_invoice_count (int): Total count of invoices today.
-            invoice_growth_rate (float): Invoice count growth rate today vs yesterday in %.
-            low_stock_count (int): Number of products below low stock threshold.
-            new_customer_count (int): Number of new customers registered today.
-            customer_growth_rate (float): New customer growth rate today vs yesterday in %.
-            weekly_revenue (List[float]): List of monthly weekly revenues.
-            recent_invoices (List[SalesInvoice]): List of raw SalesInvoice entities to convert.
-
-        Returns:
-            DashboardDTO: The finalized system overview DTO.
-        """
         recent_tx_dtos = [cls.to_recent_transaction_dto(inv) for inv in recent_invoices]
         
         return DashboardDTO(

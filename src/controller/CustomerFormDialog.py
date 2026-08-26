@@ -1,9 +1,3 @@
-"""src/controller/CustomerFormDialog.py
-
-Dialog thêm / sửa thông tin khách hàng.
-Kế thừa từ QDialog và Ui_CustomerFormDialog (src/gui/customer_form_dialog_ui.py).
-"""
-
 import logging
 from datetime import date
 from typing import Optional
@@ -15,12 +9,10 @@ from PySide6.QtGui import QFont
 from src.gui.customer_form_dialog_ui import Ui_CustomerFormDialog
 from src.dtos.CustomerManagementDTO import CustomerDetailDTO, CustomerFormDTO
 
+
 logger = logging.getLogger(__name__)
 
-
 class CustomerFormDialog(QDialog, Ui_CustomerFormDialog):
-    """Dialog thêm hoặc sửa khách hàng."""
-
     def __init__(
         self,
         parent: Optional[QWidget] = None,
@@ -31,7 +23,6 @@ class CustomerFormDialog(QDialog, Ui_CustomerFormDialog):
         self._customer = customer
         self._result_form: Optional[CustomerFormDTO] = None
 
-        # Bật bộ gõ tiếng Việt (IME / UniKey / EVKey) và font Segoe UI
         self.txtName.setAttribute(Qt.WidgetAttribute.WA_InputMethodEnabled, True)
         self.txtPhone.setAttribute(Qt.WidgetAttribute.WA_InputMethodEnabled, True)
         self.txtName.setFont(QFont("Segoe UI", 10))
@@ -40,19 +31,24 @@ class CustomerFormDialog(QDialog, Ui_CustomerFormDialog):
         self._setup_events()
         self._prefill_data()
 
+
     @property
     def result_form(self) -> Optional[CustomerFormDTO]:
         return self._result_form
+
 
     def _setup_events(self) -> None:
         self.btnCancel.clicked.connect(self.reject)
         self.btnSave.clicked.connect(self._on_save)
         self.chkNoDob.toggled.connect(self._on_no_dob_toggled)
 
-    # ── Điền sẵn khi sửa ────────────────────────────────────────
+
     def _prefill_data(self) -> None:
         if self._customer is not None:
-            self.lblDialogTitle.setText("Sửa thông tin khách hàng")
+            self.lblHeaderTitle.setText("Sửa thông tin khách hàng")
+            self.lblHeaderSubtitle.setText(
+                "Cập nhật thông tin liên hệ của khách hàng. Mục có dấu (*) là bắt buộc."
+            )
             self.setWindowTitle("Sửa khách hàng")
             self.btnSave.setText("Lưu thay đổi")
 
@@ -68,16 +64,22 @@ class CustomerFormDialog(QDialog, Ui_CustomerFormDialog):
                 self.chkNoDob.setChecked(True)
                 self.dateDob.setEnabled(False)
         else:
-            self.lblDialogTitle.setText("Thêm khách hàng mới")
+            self.lblHeaderTitle.setText("Thêm khách hàng mới")
             self.setWindowTitle("Thêm khách hàng mới")
             self.btnSave.setText("Thêm mới")
             self.chkNoDob.setChecked(True)
             self.dateDob.setEnabled(False)
 
+        # Chieu cao bam theo noi dung, khong chua khoang trong thua truoc 2 nut
+        self.setFixedWidth(460)
+        self.adjustSize()
+        self.setFixedHeight(self.height())
+
+
     def _on_no_dob_toggled(self, checked: bool) -> None:
         self.dateDob.setEnabled(not checked)
 
-    # ── Validate & Save ──────────────────────────────────────────
+
     def _on_save(self) -> None:
         name = self.txtName.text().strip()
         phone = self.txtPhone.text().strip()

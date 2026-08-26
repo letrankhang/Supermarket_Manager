@@ -1,11 +1,6 @@
-# File: src/dtos/CategoryDTO.py
-"""DTO cho nghiệp vụ Danh mục."""
-from __future__ import annotations
-
 from dataclasses import dataclass
 from datetime import datetime
 from typing import Optional
-
 
 @dataclass(frozen=True)
 class CategoryDTO:

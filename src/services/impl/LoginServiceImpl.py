@@ -28,19 +28,15 @@ class LoginServiceImpl(LoginService):
                     logger.warning("Đăng nhập thất bại: Tài khoản '%s' đã bị khóa.", username)
                     return None
 
-                # Xắc thực mật khẩu bằng PasswordHasher
                 if not verify_password(password, user.password_hash):
                     logger.warning("Đăng nhập thất bại: Mật khẩu không chính xác cho tài khoản '%s'.", username)
                     return None
 
-                # Lấy thông tin vai trò từ cơ sở dữ liệu
                 role = db_session.query(Role).filter_by(role_id=user.role_id).first()
                 role_name = role.role_name if role else "User"
 
-                # Khởi tạo session người dùng
                 UserSession.start_session(user.user_id, user.username, role_name)
 
-                # Tách đối tượng khỏi session trước khi đóng context manager để tránh DetachedInstanceError
                 make_transient(user)
 
                 logger.info("Người dùng '%s' đăng nhập thành công với vai trò '%s'.", username, role_name)

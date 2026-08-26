@@ -3,9 +3,6 @@ from sqlalchemy.orm import relationship
 from src.entities.base import Base
 
 class Product(Base):
-    """
-    Product entity model mapped to the 'products' table.
-    """
     __tablename__ = 'products'
 
     product_id = Column(Integer, primary_key=True, autoincrement=True)
@@ -20,7 +17,6 @@ class Product(Base):
     created_at = Column(DateTime, server_default=func.now())
     updated_at = Column(DateTime, server_default=func.now(), onupdate=func.now())
 
-    # Relationships
     category = relationship("Category", foreign_keys=[category_id])
 
     def __repr__(self):

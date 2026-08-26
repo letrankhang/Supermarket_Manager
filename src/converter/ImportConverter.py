@@ -1,7 +1,3 @@
-# File: src/converter/ImportConverter.py
-"""Ánh xạ qua lại giữa Entity ImportOrder/ImportDetail và ImportDTO."""
-from __future__ import annotations
-
 from typing import Optional
 
 from src.dtos.ImportDTO import ImportDetailDTO, ImportOrderDTO
@@ -10,7 +6,6 @@ from src.entities.import_detail import ImportDetail
 
 
 class ImportConverter:
-
     @staticmethod
     def detail_to_dto(entity: ImportDetail) -> ImportDetailDTO:
         product_name = entity.product.product_name if getattr(entity, "product", None) else None
@@ -20,6 +15,7 @@ class ImportConverter:
             quantity=int(entity.quantity or 0),
             unit_price=float(entity.unit_price or 0),
         )
+
 
     @staticmethod
     def order_to_dto(entity: ImportOrder) -> ImportOrderDTO:

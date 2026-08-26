@@ -1,8 +1,10 @@
 import logging
 from typing import Dict
 
-from PySide6.QtGui import QColor, QPalette
-from PySide6.QtWidgets import QApplication
+from PySide6.QtCore import Qt
+from PySide6.QtGui import QColor, QFont, QPalette
+from PySide6.QtWidgets import QApplication, QHBoxLayout, QLabel, QWidget
+
 
 logger = logging.getLogger(__name__)
 
@@ -18,6 +20,7 @@ LIGHT_COLORS: Dict[str, str] = {
     "tooltip_base": "#ffffff",
     "disabled_text": "#94a3b8",
 }
+
 
 def build_light_palette() -> QPalette:
     palette: QPalette = QPalette()
@@ -40,6 +43,7 @@ def build_light_palette() -> QPalette:
     palette.setColor(disabled, QPalette.ColorRole.WindowText, QColor(LIGHT_COLORS["disabled_text"]))
     return palette
 
+
 def apply_light_theme(app: QApplication):
     try:
         app.setStyle("Fusion")
@@ -47,3 +51,49 @@ def apply_light_theme(app: QApplication):
         logger.info("Đã áp dụng light theme.")
     except Exception as e:
         logger.error("Không thể áp dụng light theme: %s", e)
+
+
+def set_dynamic_property(widget: QWidget, name: str, value: str) -> None:
+    widget.setProperty(name, value)
+    style = widget.style()
+    style.unpolish(widget)
+    style.polish(widget)
+    widget.update()
+
+
+def set_badge(widget: QWidget, variant: str) -> None:
+    set_dynamic_property(widget, "badge", variant)
+
+
+def set_trend(widget: QWidget, direction: str) -> None:
+    set_dynamic_property(widget, "trend", direction)
+
+
+def set_state(widget: QWidget, state: str) -> None:
+    set_dynamic_property(widget, "state", state)
+
+
+def repolish(root: QWidget) -> None:
+    root.setStyleSheet(root.styleSheet())
+    for widget in root.findChildren(QWidget):
+        style = widget.style()
+        style.unpolish(widget)
+        style.polish(widget)
+    root.update()
+
+
+def badge_cell(text: str, variant: str, min_width: int = 88) -> QWidget:
+    container = QWidget()
+    layout = QHBoxLayout(container)
+    layout.setContentsMargins(4, 4, 4, 4)
+    layout.setAlignment(Qt.AlignmentFlag.AlignCenter)
+
+    label = QLabel(text)
+    label.setFont(QFont("Segoe UI", 8, QFont.Weight.Bold))
+    label.setAlignment(Qt.AlignmentFlag.AlignCenter)
+    label.setFixedHeight(24)
+    label.setMinimumWidth(min_width)
+    set_badge(label, variant)
+
+    layout.addWidget(label)
+    return container

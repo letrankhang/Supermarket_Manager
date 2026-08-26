@@ -2,10 +2,6 @@ from sqlalchemy import Column, Integer, DateTime, ForeignKey, func
 from src.entities.base import Base
 
 class SupplierProduct(Base):
-    """
-    SupplierProduct association model mapped to the 'supplier_products' table.
-    Defines the relationship between Suppliers and Products.
-    """
     __tablename__ = 'supplier_products'
 
     supplier_id = Column(Integer, ForeignKey('suppliers.supplier_id'), primary_key=True)

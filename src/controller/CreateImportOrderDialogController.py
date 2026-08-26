@@ -1,5 +1,3 @@
-# src/controller/CreateImportOrderDialogController.py
-
 import logging
 
 from PySide6.QtCore import Qt
@@ -11,7 +9,7 @@ from PySide6.QtWidgets import (
 )
 
 from config.database import Database
-from src.gui.tabs.create_import_order_dialog import (
+from src.gui.create_import_order_dialog_ui import (
     Ui_CreateImportOrderDialog,
 )
 from src.entities.product import Product
@@ -22,8 +20,8 @@ from src.dtos.ImportDTO import (
     CreateImportLineDTO,
 )
 
-logger = logging.getLogger(__name__)
 
+logger = logging.getLogger(__name__)
 
 class CreateImportDialogController(QDialog, Ui_CreateImportOrderDialog):
 
@@ -33,7 +31,6 @@ class CreateImportDialogController(QDialog, Ui_CreateImportOrderDialog):
 
         self._service = ImportServiceImpl()
 
-        # Lưu dữ liệu dạng dict, không giữ object SQLAlchemy
         self._products = []
 
         self._setup_ui()
@@ -41,9 +38,6 @@ class CreateImportDialogController(QDialog, Ui_CreateImportOrderDialog):
         self._load_products()
         self._setup_events()
 
-    # =========================================================
-    # GIAO DIỆN
-    # =========================================================
 
     def _setup_ui(self):
         header = self.tblImportDetails.horizontalHeader()
@@ -66,16 +60,12 @@ class CreateImportDialogController(QDialog, Ui_CreateImportOrderDialog):
 
         self.lblTotalAmount.setText("0 VNĐ")
 
-        # Đảm bảo ComboBox hoạt động
         self.cboSupplier.setEnabled(True)
         self.cboSupplier.setEditable(False)
 
-        self.cbothemsp.setEnabled(True)
-        self.cbothemsp.setEditable(False)
+        self.cboProduct.setEnabled(True)
+        self.cboProduct.setEditable(False)
 
-    # =========================================================
-    # SỰ KIỆN
-    # =========================================================
 
     def _setup_events(self):
         self.btnAddProductRow.clicked.connect(self._add_product_row)
@@ -86,9 +76,6 @@ class CreateImportDialogController(QDialog, Ui_CreateImportOrderDialog):
             self._on_cell_changed
         )
 
-    # =========================================================
-    # LOAD NHÀ CUNG CẤP
-    # =========================================================
 
     def _load_suppliers(self):
         try:
@@ -132,16 +119,12 @@ class CreateImportDialogController(QDialog, Ui_CreateImportOrderDialog):
                 f"Không thể tải nhà cung cấp:\n{exc}",
             )
 
-    # =========================================================
-    # LOAD SẢN PHẨM
-    # =========================================================
 
     def _load_products(self):
         try:
             with Database.get_session_ctx() as session:
                 products = session.query(Product).all()
 
-                # Chuyển thành dict trước khi session đóng
                 self._products = [
                     {
                         "product_id": product.product_id,
@@ -154,9 +137,9 @@ class CreateImportDialogController(QDialog, Ui_CreateImportOrderDialog):
                     for product in products
                 ]
 
-            self.cbothemsp.clear()
+            self.cboProduct.clear()
 
-            self.cbothemsp.addItem(
+            self.cboProduct.addItem(
                 "-- Chọn sản phẩm --",
                 None,
             )
@@ -167,13 +150,13 @@ class CreateImportDialogController(QDialog, Ui_CreateImportOrderDialog):
                     f"{product['product_name']}"
                 )
 
-                self.cbothemsp.addItem(
+                self.cboProduct.addItem(
                     text,
                     product["product_id"],
                 )
 
-            self.cbothemsp.setCurrentIndex(0)
-            self.cbothemsp.setEnabled(True)
+            self.cboProduct.setCurrentIndex(0)
+            self.cboProduct.setEnabled(True)
 
             logger.info(
                 "Đã load %d sản phẩm vào ComboBox.",
@@ -189,12 +172,9 @@ class CreateImportDialogController(QDialog, Ui_CreateImportOrderDialog):
                 f"Không thể tải sản phẩm:\n{exc}",
             )
 
-    # =========================================================
-    # THÊM SẢN PHẨM VÀO BẢNG
-    # =========================================================
 
     def _add_product_row(self):
-        product_id = self.cbothemsp.currentData()
+        product_id = self.cboProduct.currentData()
 
         if product_id is None:
             QMessageBox.warning(
@@ -241,7 +221,6 @@ class CreateImportDialogController(QDialog, Ui_CreateImportOrderDialog):
         row = self.tblImportDetails.rowCount()
         self.tblImportDetails.insertRow(row)
 
-        # Mã sản phẩm
         code_item = QTableWidgetItem(
             str(product["barcode"])
         )
@@ -250,7 +229,6 @@ class CreateImportDialogController(QDialog, Ui_CreateImportOrderDialog):
             product["product_id"],
         )
 
-        # Tên sản phẩm
         name_item = QTableWidgetItem(
             str(product["product_name"])
         )
@@ -259,13 +237,10 @@ class CreateImportDialogController(QDialog, Ui_CreateImportOrderDialog):
             & ~Qt.ItemFlag.ItemIsEditable
         )
 
-        # Số lượng
         qty_item = QTableWidgetItem("1")
 
-        # Giá nhập
         price_item = QTableWidgetItem("0")
 
-        # Thành tiền
         total_item = QTableWidgetItem("0 VNĐ")
         total_item.setFlags(
             total_item.flags()
@@ -288,14 +263,10 @@ class CreateImportDialogController(QDialog, Ui_CreateImportOrderDialog):
             row, 4, total_item
         )
 
-        # Đưa ComboBox về lựa chọn đầu tiên
-        self.cbothemsp.setCurrentIndex(0)
+        self.cboProduct.setCurrentIndex(0)
 
         self._recalculate_total()
 
-    # =========================================================
-    # TÍNH TIỀN
-    # =========================================================
 
     def _on_cell_changed(self, row, col):
         if col not in (2, 3):
@@ -327,6 +298,7 @@ class CreateImportDialogController(QDialog, Ui_CreateImportOrderDialog):
 
         self._recalculate_total()
 
+
     def _recalculate_total(self):
         total = 0
 
@@ -341,6 +313,7 @@ class CreateImportDialogController(QDialog, Ui_CreateImportOrderDialog):
         self.lblTotalAmount.setText(
             f"{total:,.0f} VNĐ".replace(",", ".")
         )
+
 
     def _get_number(self, row, column):
         item = self.tblImportDetails.item(
@@ -361,9 +334,6 @@ class CreateImportDialogController(QDialog, Ui_CreateImportOrderDialog):
         except ValueError:
             return 0
 
-    # =========================================================
-    # LƯU PHIẾU NHẬP
-    # =========================================================
 
     def _save_import_order(self):
         if self.tblImportDetails.rowCount() == 0:
@@ -441,7 +411,6 @@ class CreateImportDialogController(QDialog, Ui_CreateImportOrderDialog):
                 )
                 return
 
-            # TODO: thay bằng user đang đăng nhập
             user_id = 1
 
             dto = CreateImportOrderDTO(

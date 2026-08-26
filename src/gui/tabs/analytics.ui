@@ -1,0 +1,1559 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Analytics</class>
+ <widget class="QWidget" name="Analytics">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1280</width>
+    <height>860</height>
+   </rect>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">QWidget#Analytics {
+    background-color: #f1f5f9;
+    color: #0f172a;
+    font-family: &quot;Segoe UI&quot;, Arial, sans-serif;
+}
+QWidget {
+    font-family: &quot;Segoe UI&quot;, Arial, sans-serif;
+}
+QLabel {
+    background-color: transparent;
+    border: none;
+    color: #0f172a;
+}
+
+QLineEdit,
+QComboBox,
+QDateEdit,
+QSpinBox,
+QDoubleSpinBox {
+    background-color: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 0px 12px;
+    min-height: 38px;
+    font-size: 13px;
+    color: #0f172a;
+    selection-background-color: #1d4ed8;
+    selection-color: #ffffff;
+}
+QTextEdit {
+    background-color: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 8px 10px;
+    font-size: 13px;
+    color: #0f172a;
+    selection-background-color: #1d4ed8;
+    selection-color: #ffffff;
+}
+QLineEdit:hover,
+QComboBox:hover,
+QDateEdit:hover,
+QSpinBox:hover,
+QDoubleSpinBox:hover,
+QTextEdit:hover {
+    border: 1px solid #cbd5e1;
+}
+QLineEdit:focus,
+QComboBox:focus,
+QDateEdit:focus,
+QSpinBox:focus,
+QDoubleSpinBox:focus,
+QTextEdit:focus {
+    border: 1px solid #1d4ed8;
+}
+QLineEdit:disabled,
+QComboBox:disabled,
+QDateEdit:disabled,
+QSpinBox:disabled,
+QDoubleSpinBox:disabled {
+    background-color: #f8fafc;
+    color: #94a3b8;
+}
+QComboBox::drop-down {
+    subcontrol-origin: padding;
+    subcontrol-position: center right;
+    border: none;
+    background-color: transparent;
+    width: 26px;
+}
+QComboBox::down-arrow {
+    image: url(assets/images/chevron-down.png);
+    width: 10px;
+    height: 10px;
+}
+QComboBox::down-arrow:on {
+    image: url(assets/images/chevron-up.png);
+}
+QComboBox QAbstractItemView {
+    background-color: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 4px;
+    outline: none;
+    selection-background-color: #eff6ff;
+    selection-color: #1d4ed8;
+}
+QSpinBox::up-button,
+QSpinBox::down-button,
+QDoubleSpinBox::up-button,
+QDoubleSpinBox::down-button,
+QDateEdit::up-button,
+QDateEdit::down-button {
+    subcontrol-origin: border;
+    width: 20px;
+    border: none;
+    background-color: transparent;
+}
+QSpinBox::up-button,
+QDoubleSpinBox::up-button,
+QDateEdit::up-button {
+    subcontrol-position: top right;
+}
+QSpinBox::down-button,
+QDoubleSpinBox::down-button,
+QDateEdit::down-button {
+    subcontrol-position: bottom right;
+}
+QSpinBox::up-button:hover,
+QSpinBox::down-button:hover,
+QDoubleSpinBox::up-button:hover,
+QDoubleSpinBox::down-button:hover,
+QDateEdit::up-button:hover,
+QDateEdit::down-button:hover {
+    background-color: #f1f5f9;
+}
+QSpinBox::up-arrow,
+QDoubleSpinBox::up-arrow,
+QDateEdit::up-arrow {
+    image: url(assets/images/chevron-up.png);
+    width: 9px;
+    height: 9px;
+}
+QSpinBox::down-arrow,
+QDoubleSpinBox::down-arrow,
+QDateEdit::down-arrow {
+    image: url(assets/images/chevron-down.png);
+    width: 9px;
+    height: 9px;
+}
+QCheckBox {
+    background-color: transparent;
+    color: #334155;
+    font-size: 13px;
+    font-weight: bold;
+    spacing: 8px;
+}
+QCheckBox::indicator {
+    width: 16px;
+    height: 16px;
+    border: 1px solid #cbd5e1;
+    border-radius: 4px;
+    background-color: #ffffff;
+}
+QCheckBox::indicator:hover {
+    border: 1px solid #1d4ed8;
+}
+QCheckBox::indicator:checked {
+    background-color: #1d4ed8;
+    border: 1px solid #1d4ed8;
+}
+
+QPushButton {
+    background-color: #ffffff;
+    color: #64748b;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 0px 16px;
+    min-height: 38px;
+    font-size: 12px;
+    font-weight: bold;
+}
+QPushButton:hover {
+    background-color: #eff6ff;
+    color: #1d4ed8;
+    border: 1px solid #1d4ed8;
+}
+QPushButton:pressed {
+    background-color: #dbeafe;
+}
+QPushButton:disabled {
+    background-color: #f8fafc;
+    color: #cbd5e1;
+    border: 1px solid #e2e8f0;
+}
+QPushButton#RowActionButton {
+    background-color: transparent;
+    border: none;
+    border-radius: 6px;
+    padding: 0px;
+    min-width: 28px;
+    max-width: 28px;
+    min-height: 28px;
+    max-height: 28px;
+}
+QPushButton#RowActionButton:hover {
+    background-color: #eff6ff;
+}
+QPushButton#RowActionButton:pressed {
+    background-color: #dbeafe;
+}
+
+QTableWidget {
+    background-color: transparent;
+    border: none;
+    gridline-color: #f1f5f9;
+    font-size: 13px;
+    color: #334155;
+    outline: none;
+}
+QTableWidget::item {
+    padding: 8px;
+    border-bottom: 1px solid #f1f5f9;
+}
+QTableWidget::item:selected {
+    background-color: #eff6ff;
+    color: #1d4ed8;
+}
+QHeaderView {
+    background-color: #f8fafc;
+    border: none;
+    border-bottom: 1px solid #e2e8f0;
+}
+QHeaderView::section {
+    background-color: #f8fafc;
+    color: #64748b;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 10px 8px;
+    border: none;
+    border-bottom: 1px solid #e2e8f0;
+}
+QTableCornerButton::section {
+    background-color: #f8fafc;
+    border: none;
+}
+
+QLabel[badge=&quot;info&quot;] {
+    background-color: #dbeafe;
+    color: #1d4ed8;
+    border-radius: 6px;
+    padding: 3px 10px;
+    font-size: 11px;
+    font-weight: 700;
+}
+QLabel[badge=&quot;success&quot;] {
+    background-color: #d1fae5;
+    color: #059669;
+    border-radius: 6px;
+    padding: 3px 10px;
+    font-size: 11px;
+    font-weight: 700;
+}
+QLabel[badge=&quot;warning&quot;] {
+    background-color: #ffedd5;
+    color: #ea580c;
+    border-radius: 6px;
+    padding: 3px 10px;
+    font-size: 11px;
+    font-weight: 700;
+}
+QLabel[badge=&quot;danger&quot;] {
+    background-color: #fee2e2;
+    color: #dc2626;
+    border-radius: 6px;
+    padding: 3px 10px;
+    font-size: 11px;
+    font-weight: 700;
+}
+QLabel[badge=&quot;neutral&quot;] {
+    background-color: #e2e8f0;
+    color: #64748b;
+    border-radius: 6px;
+    padding: 3px 10px;
+    font-size: 11px;
+    font-weight: 700;
+}
+QLabel[badge=&quot;violet&quot;] {
+    background-color: #ede9fe;
+    color: #6d28d9;
+    border-radius: 6px;
+    padding: 3px 10px;
+    font-size: 11px;
+    font-weight: 700;
+}
+QLabel[trend=&quot;up&quot;] {
+    background-color: #ecfdf5;
+    color: #059669;
+    border-radius: 4px;
+    padding: 2px 6px;
+    font-size: 11px;
+    font-weight: 700;
+}
+QLabel[trend=&quot;down&quot;] {
+    background-color: #fef2f2;
+    color: #dc2626;
+    border-radius: 4px;
+    padding: 2px 6px;
+    font-size: 11px;
+    font-weight: 700;
+}
+QLabel[trend=&quot;flat&quot;] {
+    background-color: #f1f5f9;
+    color: #64748b;
+    border-radius: 4px;
+    padding: 2px 6px;
+    font-size: 11px;
+    font-weight: 700;
+}
+QLabel[state=&quot;up&quot;] {
+    color: #10b981;
+    font-weight: bold;
+}
+QLabel[state=&quot;down&quot;] {
+    color: #ef4444;
+    font-weight: bold;
+}
+QLabel[state=&quot;flat&quot;] {
+    color: #64748b;
+    font-weight: bold;
+}
+QLabel[state=&quot;warning&quot;] {
+    color: #eab308;
+    font-weight: bold;
+}
+QLabel[state=&quot;safe&quot;] {
+    color: #10b981;
+}
+
+QScrollArea {
+    background-color: transparent;
+    border: none;
+}
+QScrollArea &gt; QWidget &gt; QWidget {
+    background-color: transparent;
+}
+QAbstractScrollArea::viewport {
+    background-color: transparent;
+}
+QScrollBar:vertical {
+    background-color: transparent;
+    width: 10px;
+    margin: 0px;
+    border: none;
+}
+QScrollBar::handle:vertical {
+    background-color: #cbd5e1;
+    min-height: 35px;
+    border-radius: 5px;
+}
+QScrollBar::handle:vertical:hover {
+    background-color: #94a3b8;
+}
+QScrollBar::handle:vertical:pressed {
+    background-color: #64748b;
+}
+QScrollBar::add-line:vertical,
+QScrollBar::sub-line:vertical {
+    height: 0px;
+    width: 0px;
+    background: transparent;
+    border: none;
+}
+QScrollBar::up-arrow:vertical,
+QScrollBar::down-arrow:vertical {
+    width: 0px;
+    height: 0px;
+    background: transparent;
+    border: none;
+}
+QScrollBar::add-page:vertical,
+QScrollBar::sub-page:vertical {
+    background: transparent;
+}
+QScrollBar:horizontal {
+    background-color: transparent;
+    height: 10px;
+    margin: 0px;
+    border: none;
+}
+QScrollBar::handle:horizontal {
+    background-color: #cbd5e1;
+    min-width: 35px;
+    border-radius: 5px;
+}
+QScrollBar::handle:horizontal:hover {
+    background-color: #94a3b8;
+}
+QScrollBar::handle:horizontal:pressed {
+    background-color: #64748b;
+}
+QScrollBar::add-line:horizontal,
+QScrollBar::sub-line:horizontal {
+    width: 0px;
+    height: 0px;
+    background: transparent;
+    border: none;
+}
+QScrollBar::left-arrow:horizontal,
+QScrollBar::right-arrow:horizontal {
+    width: 0px;
+    height: 0px;
+    background: transparent;
+    border: none;
+}
+QScrollBar::add-page:horizontal,
+QScrollBar::sub-page:horizontal {
+    background: transparent;
+}
+
+QMenu {
+    background-color: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 6px;
+}
+QMenu::item {
+    background-color: transparent;
+    color: #334155;
+    border-radius: 6px;
+    padding: 7px 18px;
+    font-size: 13px;
+}
+QMenu::item:selected {
+    background-color: #eff6ff;
+    color: #1d4ed8;
+}
+QMenu::separator {
+    height: 1px;
+    background-color: #e2e8f0;
+    margin: 6px 4px;
+}
+
+QFrame#frameHeader,
+QFrame#frameToolbar,
+QFrame#framePagination {
+    background-color: transparent;
+    border: none;
+}
+
+QFrame#frameTable {
+    background-color: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 14px;
+}
+
+QLabel#lblTitle {
+    color: #0f172a;
+    padding: 0px;
+    margin: 0px;
+}
+
+QLabel#lblSubtitle {
+    color: #6b7280;
+    font-size: 12px;
+    font-weight: normal;
+    margin-top: 4px;
+}
+
+QPushButton#btnAdd {
+    background-color: #1d4ed8;
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    padding: 0px 20px;
+    min-height: 38px;
+    font-size: 13px;
+    font-weight: 700;
+}
+QPushButton#btnAdd:hover {
+    background-color: #1e3a8a;
+}
+QPushButton#btnAdd:pressed {
+    background-color: #1e40af;
+}
+QPushButton#btnAdd:disabled {
+    background-color: #cbd5e1;
+    color: #f8fafc;
+}
+
+QPushButton#btnDelete {
+    background-color: #ffffff;
+    color: #dc2626;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 0px 16px;
+    min-height: 38px;
+    font-size: 12px;
+    font-weight: bold;
+}
+QPushButton#btnDelete:hover {
+    background-color: #fef2f2;
+    border: 1px solid #dc2626;
+}
+QPushButton#btnDelete:disabled {
+    background-color: #f8fafc;
+    color: #cbd5e1;
+    border: 1px solid #e2e8f0;
+}
+
+QLabel#lblPage {
+    color: #64748b;
+    font-size: 12px;
+}
+
+QPushButton#btnPrev,
+QPushButton#btnNext {
+    background-color: #ffffff;
+    color: #334155;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    min-width: 34px;
+    max-width: 34px;
+    min-height: 32px;
+    max-height: 32px;
+    padding: 0px;
+    font-size: 14px;
+    font-weight: bold;
+}
+QPushButton#btnPrev:hover,
+QPushButton#btnNext:hover {
+    background-color: #eff6ff;
+    border: 1px solid #1d4ed8;
+    color: #1d4ed8;
+}
+QPushButton#btnPrev:disabled,
+QPushButton#btnNext:disabled {
+    background-color: #f8fafc;
+    border: 1px solid #e2e8f0;
+    color: #cbd5e1;
+}
+
+QPushButton#PageNumberButton {
+    background-color: #ffffff;
+    color: #334155;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    min-width: 32px;
+    max-width: 32px;
+    min-height: 32px;
+    max-height: 32px;
+    padding: 0px;
+    font-size: 12px;
+    font-weight: bold;
+}
+QPushButton#PageNumberButton:hover {
+    background-color: #eff6ff;
+    border: 1px solid #1d4ed8;
+    color: #1d4ed8;
+}
+QPushButton#PageNumberButton:checked {
+    background-color: #1d4ed8;
+    border: 1px solid #1d4ed8;
+    color: #ffffff;
+}
+QPushButton#PageNumberButton:disabled {
+    background-color: transparent;
+    border: none;
+    color: #94a3b8;
+}
+
+QLabel#lblTitle {
+    color: #0f172a;
+    font-size: 24px;
+    font-weight: 700;
+    padding: 0px;
+    margin: 0px;
+}
+QLabel#lblSubtitle,
+QLabel#lblSub {
+    color: #6b7280;
+    font-size: 12px;
+    font-weight: normal;
+    margin-top: 4px;
+}
+QLabel#lblPaginationInfo {
+    color: #64748b;
+    font-size: 12px;
+}
+QPushButton#btnPrevPage,
+QPushButton#btnNextPage {
+    background-color: #ffffff;
+    color: #334155;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    min-width: 34px;
+    max-width: 34px;
+    min-height: 32px;
+    max-height: 32px;
+    padding: 0px;
+    font-size: 14px;
+    font-weight: bold;
+}
+QPushButton#btnPrevPage:hover,
+QPushButton#btnNextPage:hover {
+    background-color: #eff6ff;
+    border: 1px solid #1d4ed8;
+    color: #1d4ed8;
+}
+QPushButton#btnPrevPage:disabled,
+QPushButton#btnNextPage:disabled {
+    background-color: #f8fafc;
+    border: 1px solid #e2e8f0;
+    color: #cbd5e1;
+}
+
+QLabel#lblRevenueCaption,
+QLabel#lblOrdersCaption,
+QLabel#lblAovCaption,
+QLabel#lblReturnCaption {
+    color: #64748b;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+QLabel#lblRevenueVal,
+QLabel#lblOrdersVal,
+QLabel#lblAovVal,
+QLabel#lblReturnVal {
+    color: #0f172a;
+    font-size: 27px;
+    font-weight: 700;
+}
+
+QLabel#badgeRevenue,
+QLabel#badgeOrders,
+QLabel#badgeAov,
+QLabel#badgeReturn {
+    background-color: #eff6ff;
+    border-radius: 8px;
+}
+
+QLabel#lblTimeChartTitle,
+QLabel#lblCategoryTitle,
+QLabel#lblTopProductsTitle {
+    color: #0f172a;
+    font-size: 15px;
+    font-weight: 700;
+}
+
+QLabel#lblRevenueTrend,
+QLabel#lblOrdersTrend,
+QLabel#lblAovTrend,
+QLabel#lblReturnTrend {
+    background-color: transparent;
+    color: #64748b;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 2px 0px;
+}
+
+QLabel#lblRevenueTrend[trend=&quot;up&quot;],
+QLabel#lblOrdersTrend[trend=&quot;up&quot;],
+QLabel#lblAovTrend[trend=&quot;up&quot;],
+QLabel#lblReturnTrend[trend=&quot;up&quot;] {
+    background-color: #ecfdf5;
+    color: #059669;
+    border-radius: 4px;
+    padding: 2px 6px;
+}
+
+QLabel#lblRevenueTrend[trend=&quot;down&quot;],
+QLabel#lblOrdersTrend[trend=&quot;down&quot;],
+QLabel#lblAovTrend[trend=&quot;down&quot;],
+QLabel#lblReturnTrend[trend=&quot;down&quot;] {
+    background-color: #fef2f2;
+    color: #dc2626;
+    border-radius: 4px;
+    padding: 2px 6px;
+}
+
+QLabel#lblRevenueTrend[trend=&quot;flat&quot;],
+QLabel#lblOrdersTrend[trend=&quot;flat&quot;],
+QLabel#lblAovTrend[trend=&quot;flat&quot;],
+QLabel#lblReturnTrend[trend=&quot;flat&quot;] {
+    background-color: #f1f5f9;
+    color: #64748b;
+    border-radius: 4px;
+    padding: 2px 6px;
+}
+
+QFrame#cardRevenue,
+QFrame#cardOrders,
+QFrame#cardAov,
+QFrame#cardReturn,
+QFrame#cardTimeChart,
+QFrame#cardCategory,
+QFrame#cardTopProducts {
+    background-color: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 14px;
+}
+QFrame#framePeriodToggle {
+    background-color: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+}
+QPushButton#btnPeriodToday,
+QPushButton#btnPeriodWeek,
+QPushButton#btnPeriodMonth {
+    background-color: transparent;
+    color: #64748b;
+    border: none;
+    border-radius: 8px;
+    padding: 0px 16px;
+    min-height: 30px;
+    max-height: 30px;
+    font-size: 12px;
+    font-weight: bold;
+}
+QPushButton#btnPeriodToday:hover,
+QPushButton#btnPeriodWeek:hover,
+QPushButton#btnPeriodMonth:hover {
+    background-color: #eff6ff;
+    color: #1d4ed8;
+}
+QPushButton#btnPeriodToday:checked,
+QPushButton#btnPeriodWeek:checked,
+QPushButton#btnPeriodMonth:checked {
+    background-color: #1d4ed8;
+    border: 1px solid #1d4ed8;
+    color: #ffffff;
+}
+QWidget#containerTimeChart {
+    background-color: transparent;
+}
+QProgressBar {
+    background-color: #e2e8f0;
+    border: none;
+    border-radius: 3px;
+    max-height: 7px;
+    text-align: center;
+}
+QProgressBar::chunk {
+    background-color: #1d4ed8;
+    border-radius: 3px;
+}
+QPushButton#btnDetailLink {
+    background-color: transparent;
+    color: #1d4ed8;
+    border: none;
+    border-radius: 6px;
+    padding: 0px 8px;
+    min-height: 26px;
+    max-height: 26px;
+    font-size: 12px;
+    font-weight: 700;
+}
+QPushButton#btnDetailLink:hover {
+    background-color: #eff6ff;
+    color: #1e3a8a;
+}
+QPushButton#btnDetailLink:pressed {
+    background-color: #dbeafe;
+}
+</string>
+  </property>
+  <layout class="QVBoxLayout" name="rootLayout">
+   <property name="spacing">
+    <number>16</number>
+   </property>
+   <property name="leftMargin">
+    <number>12</number>
+   </property>
+   <property name="topMargin">
+    <number>10</number>
+   </property>
+   <property name="rightMargin">
+    <number>12</number>
+   </property>
+   <property name="bottomMargin">
+    <number>12</number>
+   </property>
+   <item>
+    <layout class="QHBoxLayout" name="headerLayout">
+     <item>
+      <layout class="QVBoxLayout" name="titleLayout">
+       <property name="spacing">
+        <number>3</number>
+       </property>
+       <item>
+        <widget class="QLabel" name="lblTitle">
+         <property name="text">
+          <string>Phân tích Bán hàng</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="lblSubtitle">
+         <property name="text">
+          <string>Tổng quan hiệu suất kinh doanh và xu hướng.</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <spacer name="horizontalSpacer">
+       <property name="orientation">
+        <enum>Qt::Orientation::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <widget class="QFrame" name="framePeriodToggle">
+       <property name="frameShape">
+        <enum>QFrame::Shape::NoFrame</enum>
+       </property>
+       <layout class="QHBoxLayout" name="toggleLayout">
+        <property name="spacing">
+         <number>4</number>
+        </property>
+        <property name="leftMargin">
+         <number>4</number>
+        </property>
+        <property name="topMargin">
+         <number>4</number>
+        </property>
+        <property name="rightMargin">
+         <number>4</number>
+        </property>
+        <property name="bottomMargin">
+         <number>4</number>
+        </property>
+        <item>
+         <widget class="QPushButton" name="btnPeriodToday">
+          <property name="cursor">
+           <cursorShape>PointingHandCursor</cursorShape>
+          </property>
+          <property name="text">
+           <string>Hôm nay</string>
+          </property>
+          <property name="checkable">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="btnPeriodWeek">
+          <property name="cursor">
+           <cursorShape>PointingHandCursor</cursorShape>
+          </property>
+          <property name="text">
+           <string>Tuần này</string>
+          </property>
+          <property name="checkable">
+           <bool>true</bool>
+          </property>
+          <property name="checked">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="btnPeriodMonth">
+          <property name="cursor">
+           <cursorShape>PointingHandCursor</cursorShape>
+          </property>
+          <property name="text">
+           <string>Tháng này</string>
+          </property>
+          <property name="checkable">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="cardsLayout">
+     <property name="spacing">
+      <number>16</number>
+     </property>
+     <item>
+      <widget class="QFrame" name="cardRevenue">
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>120</height>
+        </size>
+       </property>
+       <property name="frameShape">
+        <enum>QFrame::Shape::NoFrame</enum>
+       </property>
+       <layout class="QVBoxLayout" name="cardRevenueLayout">
+        <property name="spacing">
+         <number>6</number>
+        </property>
+        <property name="leftMargin">
+         <number>16</number>
+        </property>
+        <property name="topMargin">
+         <number>14</number>
+        </property>
+        <property name="rightMargin">
+         <number>16</number>
+        </property>
+        <property name="bottomMargin">
+         <number>14</number>
+        </property>
+        <item>
+         <layout class="QHBoxLayout" name="cardRevenueTopRow">
+          <item>
+           <widget class="QLabel" name="lblRevenueCaption">
+            <property name="text">
+             <string>Doanh thu</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <spacer name="cardRevenueSpacer">
+            <property name="orientation">
+             <enum>Qt::Orientation::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>40</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item>
+           <widget class="QLabel" name="badgeRevenue">
+            <property name="minimumSize">
+             <size>
+              <width>32</width>
+              <height>32</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>32</width>
+              <height>32</height>
+             </size>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignmentFlag::AlignCenter</set>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <widget class="QLabel" name="lblRevenueVal">
+          <property name="text">
+           <string>0</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <layout class="QHBoxLayout" name="cardRevenueTrendRow">
+          <item>
+           <widget class="QLabel" name="lblRevenueTrend">
+            <property name="text">
+             <string/>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <spacer name="cardRevenueTrendSpacer">
+            <property name="orientation">
+             <enum>Qt::Orientation::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>40</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+         </layout>
+        </item>
+       </layout>
+      </widget>
+     </item>
+     <item>
+      <widget class="QFrame" name="cardOrders">
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>120</height>
+        </size>
+       </property>
+       <property name="frameShape">
+        <enum>QFrame::Shape::NoFrame</enum>
+       </property>
+       <layout class="QVBoxLayout" name="cardOrdersLayout">
+        <property name="spacing">
+         <number>6</number>
+        </property>
+        <property name="leftMargin">
+         <number>16</number>
+        </property>
+        <property name="topMargin">
+         <number>14</number>
+        </property>
+        <property name="rightMargin">
+         <number>16</number>
+        </property>
+        <property name="bottomMargin">
+         <number>14</number>
+        </property>
+        <item>
+         <layout class="QHBoxLayout" name="cardOrdersTopRow">
+          <item>
+           <widget class="QLabel" name="lblOrdersCaption">
+            <property name="text">
+             <string>Số đơn hàng</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <spacer name="cardOrdersSpacer">
+            <property name="orientation">
+             <enum>Qt::Orientation::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>40</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item>
+           <widget class="QLabel" name="badgeOrders">
+            <property name="minimumSize">
+             <size>
+              <width>32</width>
+              <height>32</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>32</width>
+              <height>32</height>
+             </size>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignmentFlag::AlignCenter</set>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <widget class="QLabel" name="lblOrdersVal">
+          <property name="text">
+           <string>0</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <layout class="QHBoxLayout" name="cardOrdersTrendRow">
+          <item>
+           <widget class="QLabel" name="lblOrdersTrend">
+            <property name="text">
+             <string/>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <spacer name="cardOrdersTrendSpacer">
+            <property name="orientation">
+             <enum>Qt::Orientation::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>40</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+         </layout>
+        </item>
+       </layout>
+      </widget>
+     </item>
+     <item>
+      <widget class="QFrame" name="cardAov">
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>120</height>
+        </size>
+       </property>
+       <property name="frameShape">
+        <enum>QFrame::Shape::NoFrame</enum>
+       </property>
+       <layout class="QVBoxLayout" name="cardAovLayout">
+        <property name="spacing">
+         <number>6</number>
+        </property>
+        <property name="leftMargin">
+         <number>16</number>
+        </property>
+        <property name="topMargin">
+         <number>14</number>
+        </property>
+        <property name="rightMargin">
+         <number>16</number>
+        </property>
+        <property name="bottomMargin">
+         <number>14</number>
+        </property>
+        <item>
+         <layout class="QHBoxLayout" name="cardAovTopRow">
+          <item>
+           <widget class="QLabel" name="lblAovCaption">
+            <property name="text">
+             <string>Giá trị đơn TB</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <spacer name="cardAovSpacer">
+            <property name="orientation">
+             <enum>Qt::Orientation::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>40</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item>
+           <widget class="QLabel" name="badgeAov">
+            <property name="minimumSize">
+             <size>
+              <width>32</width>
+              <height>32</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>32</width>
+              <height>32</height>
+             </size>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignmentFlag::AlignCenter</set>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <widget class="QLabel" name="lblAovVal">
+          <property name="text">
+           <string>0</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <layout class="QHBoxLayout" name="cardAovTrendRow">
+          <item>
+           <widget class="QLabel" name="lblAovTrend">
+            <property name="text">
+             <string/>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <spacer name="cardAovTrendSpacer">
+            <property name="orientation">
+             <enum>Qt::Orientation::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>40</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+         </layout>
+        </item>
+       </layout>
+      </widget>
+     </item>
+     <item>
+      <widget class="QFrame" name="cardReturn">
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>120</height>
+        </size>
+       </property>
+       <property name="frameShape">
+        <enum>QFrame::Shape::NoFrame</enum>
+       </property>
+       <layout class="QVBoxLayout" name="cardReturnLayout">
+        <property name="spacing">
+         <number>6</number>
+        </property>
+        <property name="leftMargin">
+         <number>16</number>
+        </property>
+        <property name="topMargin">
+         <number>14</number>
+        </property>
+        <property name="rightMargin">
+         <number>16</number>
+        </property>
+        <property name="bottomMargin">
+         <number>14</number>
+        </property>
+        <item>
+         <layout class="QHBoxLayout" name="cardReturnTopRow">
+          <item>
+           <widget class="QLabel" name="lblReturnCaption">
+            <property name="text">
+             <string>Khách quay lại</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <spacer name="cardReturnSpacer">
+            <property name="orientation">
+             <enum>Qt::Orientation::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>40</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item>
+           <widget class="QLabel" name="badgeReturn">
+            <property name="minimumSize">
+             <size>
+              <width>32</width>
+              <height>32</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>32</width>
+              <height>32</height>
+             </size>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignmentFlag::AlignCenter</set>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <widget class="QLabel" name="lblReturnVal">
+          <property name="text">
+           <string>0</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <layout class="QHBoxLayout" name="cardReturnTrendRow">
+          <item>
+           <widget class="QLabel" name="lblReturnTrend">
+            <property name="text">
+             <string/>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <spacer name="cardReturnTrendSpacer">
+            <property name="orientation">
+             <enum>Qt::Orientation::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>40</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+         </layout>
+        </item>
+       </layout>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="middleLayout">
+     <property name="spacing">
+      <number>16</number>
+     </property>
+     <item>
+      <widget class="QFrame" name="cardTimeChart">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+         <horstretch>2</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>280</height>
+        </size>
+       </property>
+       <property name="frameShape">
+        <enum>QFrame::Shape::NoFrame</enum>
+       </property>
+       <layout class="QVBoxLayout" name="timeChartLayout">
+        <property name="spacing">
+         <number>8</number>
+        </property>
+        <property name="leftMargin">
+         <number>18</number>
+        </property>
+        <property name="topMargin">
+         <number>16</number>
+        </property>
+        <property name="rightMargin">
+         <number>18</number>
+        </property>
+        <property name="bottomMargin">
+         <number>16</number>
+        </property>
+        <item>
+         <widget class="QLabel" name="lblTimeChartTitle">
+          <property name="text">
+           <string>Doanh thu theo thời gian</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QWidget" name="containerTimeChart" native="true">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+            <horstretch>0</horstretch>
+            <verstretch>1</verstretch>
+           </sizepolicy>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+     </item>
+     <item>
+      <widget class="QFrame" name="cardCategory">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+         <horstretch>1</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>280</width>
+         <height>280</height>
+        </size>
+       </property>
+       <property name="frameShape">
+        <enum>QFrame::Shape::NoFrame</enum>
+       </property>
+       <layout class="QVBoxLayout" name="categoryCardLayout">
+        <property name="spacing">
+         <number>8</number>
+        </property>
+        <property name="leftMargin">
+         <number>18</number>
+        </property>
+        <property name="topMargin">
+         <number>16</number>
+        </property>
+        <property name="rightMargin">
+         <number>18</number>
+        </property>
+        <property name="bottomMargin">
+         <number>16</number>
+        </property>
+        <item>
+         <widget class="QLabel" name="lblCategoryTitle">
+          <property name="text">
+           <string>Phân bổ theo danh mục</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <layout class="QVBoxLayout" name="containerCategoryList">
+          <property name="spacing">
+           <number>10</number>
+          </property>
+         </layout>
+        </item>
+        <item>
+         <spacer name="categorySpacer">
+          <property name="orientation">
+           <enum>Qt::Orientation::Vertical</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>0</width>
+            <height>0</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+       </layout>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <widget class="QFrame" name="cardTopProducts">
+     <property name="frameShape">
+      <enum>QFrame::Shape::NoFrame</enum>
+     </property>
+     <layout class="QVBoxLayout" name="topProductsLayout">
+      <property name="spacing">
+       <number>8</number>
+      </property>
+      <property name="leftMargin">
+       <number>18</number>
+      </property>
+      <property name="topMargin">
+       <number>16</number>
+      </property>
+      <property name="rightMargin">
+       <number>18</number>
+      </property>
+      <property name="bottomMargin">
+       <number>16</number>
+      </property>
+      <item>
+       <layout class="QHBoxLayout" name="topProductsHeaderRow">
+        <item>
+         <widget class="QLabel" name="lblTopProductsTitle">
+          <property name="text">
+           <string>Top sản phẩm bán chạy</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <spacer name="topProductsSpacer">
+          <property name="orientation">
+           <enum>Qt::Orientation::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item>
+         <widget class="QPushButton" name="btnDetailLink">
+          <property name="cursor">
+           <cursorShape>PointingHandCursor</cursorShape>
+          </property>
+          <property name="text">
+           <string>Làm mới dữ liệu</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <widget class="QTableWidget" name="tblTopProducts">
+        <property name="focusPolicy">
+         <enum>Qt::FocusPolicy::NoFocus</enum>
+        </property>
+        <property name="frameShape">
+         <enum>QFrame::Shape::NoFrame</enum>
+        </property>
+        <property name="editTriggers">
+         <set>QAbstractItemView::EditTrigger::NoEditTriggers</set>
+        </property>
+        <property name="alternatingRowColors">
+         <bool>false</bool>
+        </property>
+        <property name="selectionMode">
+         <enum>QAbstractItemView::SelectionMode::NoSelection</enum>
+        </property>
+        <property name="showGrid">
+         <bool>false</bool>
+        </property>
+        <attribute name="horizontalHeaderMinimumSectionSize">
+         <number>90</number>
+        </attribute>
+        <attribute name="horizontalHeaderDefaultSectionSize">
+         <number>130</number>
+        </attribute>
+        <attribute name="horizontalHeaderHighlightSections">
+         <bool>false</bool>
+        </attribute>
+        <attribute name="horizontalHeaderStretchLastSection">
+         <bool>true</bool>
+        </attribute>
+        <attribute name="verticalHeaderVisible">
+         <bool>false</bool>
+        </attribute>
+        <attribute name="verticalHeaderMinimumSectionSize">
+         <number>42</number>
+        </attribute>
+        <attribute name="verticalHeaderDefaultSectionSize">
+         <number>42</number>
+        </attribute>
+        <column>
+         <property name="text">
+          <string>SẢN PHẨM</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string>SỐ LƯỢNG</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string>DOANH THU</string>
+         </property>
+        </column>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

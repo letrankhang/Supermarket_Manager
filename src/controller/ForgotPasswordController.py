@@ -4,7 +4,7 @@ from PySide6.QtWidgets import QMainWindow, QMessageBox
 
 from src.controller.PasswordResetWorker import SendCodeWorker
 from src.gui.forgot_password_ui import Ui_MainWindow
-from src.utils.FormIcon import show_logo, add_left_icon
+from src.utils.FormIcon import add_left_icon, show_logo
 
 MESSAGE_SENT = (
     "Nếu email này có trong hệ thống, mã xác thực đã được gửi tới hộp thư của bạn. \n"
@@ -20,14 +20,17 @@ class ForgotPasswordController(QMainWindow, Ui_MainWindow):
         self._setup_ui()
         self._setup_events()
 
+
     def _setup_ui(self):
         show_logo(self.lblLogo)
         add_left_icon(self.lineEdit_email, "mail.png")
+
 
     def _setup_events(self):
         self.pushButton_accept.clicked.connect(self.handle_send_code)
         self.lineEdit_email.returnPressed.connect(self.handle_send_code)
         self.lblBackLogin.clicked.connect(self._go_back_to_login)
+
 
     def _go_back_to_login(self) -> None:
         from src.controller.LoginController import LoginController
@@ -35,6 +38,7 @@ class ForgotPasswordController(QMainWindow, Ui_MainWindow):
         self.login_window = LoginController()
         self.login_window.show()
         self.close()
+
 
     def handle_send_code(self):
         email = self.lineEdit_email.text().strip()
@@ -52,9 +56,9 @@ class ForgotPasswordController(QMainWindow, Ui_MainWindow):
         self._worker.thanh_cong.connect(lambda: self._on_sent(email))
         self._worker.that_bai.connect(self._on_error)
         
-        # Chỉ reset nút bấm nếu gặp LỖI (chưa chuyển cửa sổ)
         self._worker.that_bai.connect(self._reset_button)
         self._worker.start()
+
 
     def _on_sent(self, email: str):
         QMessageBox.information(self, "Đã gửi mã", MESSAGE_SENT)
@@ -65,8 +69,10 @@ class ForgotPasswordController(QMainWindow, Ui_MainWindow):
         self.code_window.show()
         self.close()
 
+
     def _on_error(self, message: str):
         QMessageBox.critical(self, "Không gửi được mã", message)
+
 
     def _reset_button(self):
         self.pushButton_accept.setEnabled(True)

@@ -3,6 +3,7 @@ from datetime import datetime
 from typing import List
 from src.entities.sales_invoice import SalesInvoice
 
+
 class DashboardRepository(ABC):
     @abstractmethod
     def get_revenue_by_range(self, start_date: datetime, end_date: datetime) -> float:

@@ -14,7 +14,6 @@ class Database:
     @classmethod
     def _create_mysql_database_if_not_exists(cls, host, port, user, password, db_name):
         import mysql.connector
-        #import mysql.connector
         try:
             connection = mysql.connector.connect(
                 host=host,
@@ -29,6 +28,7 @@ class Database:
         except mysql.connector.Error as e:
             print(f"[Database Error] Could not verify/create MySQL database '{db_name}': {e}")
             raise e
+
 
     @classmethod
     def _create_mssql_database_if_not_exists(cls, server, port, user, password, db_name):
@@ -55,6 +55,7 @@ class Database:
         except pymssql.Error as e:
             print(f"[Database Error] Could not verify/create SQL Server database '{db_name}': {e}")
             raise e
+
 
     @classmethod
     def initialize(cls):
@@ -100,7 +101,6 @@ class Database:
         else:
             raise ValueError(f"Unsupported DB_TYPE: {cls._db_type}. Use 'mysql' or 'mssql'.")
 
-        # scoped_session để mỗi luồng giữ session riêng, an toàn khi chạy trong QThread
         session_factory = sessionmaker(bind=cls._engine)
         cls._sessionmaker = scoped_session(session_factory)
 
@@ -113,7 +113,6 @@ class Database:
             Base.metadata.create_all(cls._engine)
             print("[Database] Code-First tables generated/verified successfully.")
 
-            # Migration nhẹ: Tự thêm các cột mới nếu bảng cũ chưa có
             from sqlalchemy import inspect, text
             inspector = inspect(cls._engine)
             
@@ -135,7 +134,7 @@ class Database:
                         conn.commit()
                     print("[Database] 'email' column added successfully.")
 
-            # Seed data: Khởi tạo Role và tài khoản Admin mặc định
+            # Khởi tạo Role và tài khoản Admin mặc định
             with cls.get_session_ctx() as session:
                 default_roles = ["Admin", "Cashier", "Warehouse"]
                 existing_roles = {r.role_name: r for r in session.query(Role).all()}
@@ -170,7 +169,6 @@ class Database:
                         print(
                             "[Database Seed] Default Admin user created successfully (username: 'admin', password: 'Admin@123').")
                     else:
-                        # Cập nhật thông tin bổ sung an toàn, KHÔNG reset/đè mật khẩu cũ của user
                         if not admin_user.email:
                             admin_user.email = "admin@supermarket.com"
                             print("[Database Seed] Assigned default email to existing admin user.")
@@ -178,7 +176,6 @@ class Database:
                             admin_user.is_active = True
                             print("[Database Seed] Ensured existing admin user is active.")
 
-                # Seed data: Khởi tạo các hạng thành viên mặc định (CustomerTier)
                 default_tiers = [
                     {"tier_name": "Bronze", "min_spent": 0.0, "discount_percent": 0},
                     {"tier_name": "Silver", "min_spent": 1000000.0, "discount_percent": 5},
@@ -203,7 +200,6 @@ class Database:
 
     @classmethod
     def get_engine(cls):
-        """Trả về engine SQLAlchemy."""
         if cls._engine is None:
             cls.initialize()
         return cls._engine
@@ -211,7 +207,6 @@ class Database:
     @classmethod
     @contextmanager
     def get_session_ctx(cls):
-        """Cấp một Session SQLAlchemy, tự commit khi xong và rollback khi lỗi."""
         if cls._sessionmaker is None:
             cls.initialize()
 

@@ -14,127 +14,352 @@
    <string>Chọn khách hàng</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">/* ===== Toàn bộ màu sắc của dialog này nằm ở đây =====
-   Sửa trực tiếp trong Qt Designer: chọn Dialog rồi mở styleSheet.
-   Bảng màu lấy đúng theo màn hình POS (pos.ui). */
-
-QDialog {
-	background-color: #f8fafc;
+   <string notr="true">QDialog#Dialog {
+    background-color: #f1f5f9;
+    color: #0f172a;
+    font-family: &quot;Segoe UI&quot;, Arial, sans-serif;
+}
+QWidget {
+    font-family: &quot;Segoe UI&quot;, Arial, sans-serif;
+}
+QLabel {
+    background-color: transparent;
+    border: none;
+    color: #0f172a;
 }
 
-QLabel#lblTitle {
-	font-size: 15px;
-	font-weight: bold;
-	color: #0f172a;
+QLineEdit,
+QComboBox,
+QDateEdit,
+QSpinBox,
+QDoubleSpinBox {
+    background-color: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 0px 12px;
+    min-height: 38px;
+    font-size: 13px;
+    color: #0f172a;
+    selection-background-color: #1d4ed8;
+    selection-color: #ffffff;
 }
-
-QLineEdit#txtSearchCustomer {
-	background-color: #ffffff;
-	border: 1px solid #cbd5e1;
-	border-radius: 6px;
-	padding: 8px 10px;
-	font-size: 13px;
-	color: #0f172a;
+QTextEdit {
+    background-color: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 8px 10px;
+    font-size: 13px;
+    color: #0f172a;
+    selection-background-color: #1d4ed8;
+    selection-color: #ffffff;
 }
-QLineEdit#txtSearchCustomer:focus {
-	border: 1px solid #3b82f6;
+QLineEdit:hover,
+QComboBox:hover,
+QDateEdit:hover,
+QSpinBox:hover,
+QDoubleSpinBox:hover,
+QTextEdit:hover {
+    border: 1px solid #cbd5e1;
 }
-
-QTableWidget#tblCustomers {
-	background-color: #ffffff;
-	border: 1px solid #e2e8f0;
-	border-radius: 6px;
-	gridline-color: #f1f5f9;
-	color: #0f172a;
+QLineEdit:focus,
+QComboBox:focus,
+QDateEdit:focus,
+QSpinBox:focus,
+QDoubleSpinBox:focus,
+QTextEdit:focus {
+    border: 1px solid #1d4ed8;
 }
-QTableWidget#tblCustomers::item {
-	padding: 6px;
+QLineEdit:disabled,
+QComboBox:disabled,
+QDateEdit:disabled,
+QSpinBox:disabled,
+QDoubleSpinBox:disabled {
+    background-color: #f8fafc;
+    color: #94a3b8;
 }
-QTableWidget#tblCustomers::item:selected {
-	background-color: #dbeafe;
-	color: #0f172a;
+QComboBox::drop-down {
+    subcontrol-origin: padding;
+    subcontrol-position: center right;
+    border: none;
+    background-color: transparent;
+    width: 26px;
 }
-QTableWidget#tblCustomers QHeaderView::section {
-	background-color: #f1f5f9;
-	padding: 8px;
-	font-weight: bold;
-	border: none;
-	color: #475569;
+QComboBox::down-arrow {
+    image: url(assets/images/chevron-down.png);
+    width: 10px;
+    height: 10px;
 }
-
-QLabel#lblStatus {
-	font-size: 12px;
-	color: #64748b;
+QComboBox::down-arrow:on {
+    image: url(assets/images/chevron-up.png);
+}
+QComboBox QAbstractItemView {
+    background-color: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 4px;
+    outline: none;
+    selection-background-color: #eff6ff;
+    selection-color: #1d4ed8;
+}
+QSpinBox::up-button,
+QSpinBox::down-button,
+QDoubleSpinBox::up-button,
+QDoubleSpinBox::down-button,
+QDateEdit::up-button,
+QDateEdit::down-button {
+    subcontrol-origin: border;
+    width: 20px;
+    border: none;
+    background-color: transparent;
+}
+QSpinBox::up-button,
+QDoubleSpinBox::up-button,
+QDateEdit::up-button {
+    subcontrol-position: top right;
+}
+QSpinBox::down-button,
+QDoubleSpinBox::down-button,
+QDateEdit::down-button {
+    subcontrol-position: bottom right;
+}
+QSpinBox::up-button:hover,
+QSpinBox::down-button:hover,
+QDoubleSpinBox::up-button:hover,
+QDoubleSpinBox::down-button:hover,
+QDateEdit::up-button:hover,
+QDateEdit::down-button:hover {
+    background-color: #f1f5f9;
+}
+QSpinBox::up-arrow,
+QDoubleSpinBox::up-arrow,
+QDateEdit::up-arrow {
+    image: url(assets/images/chevron-up.png);
+    width: 9px;
+    height: 9px;
+}
+QSpinBox::down-arrow,
+QDoubleSpinBox::down-arrow,
+QDateEdit::down-arrow {
+    image: url(assets/images/chevron-down.png);
+    width: 9px;
+    height: 9px;
+}
+QCheckBox {
+    background-color: transparent;
+    color: #334155;
+    font-size: 13px;
+    font-weight: bold;
+    spacing: 8px;
+}
+QCheckBox::indicator {
+    width: 16px;
+    height: 16px;
+    border: 1px solid #cbd5e1;
+    border-radius: 4px;
+    background-color: #ffffff;
+}
+QCheckBox::indicator:hover {
+    border: 1px solid #1d4ed8;
+}
+QCheckBox::indicator:checked {
+    background-color: #1d4ed8;
+    border: 1px solid #1d4ed8;
 }
 
 QPushButton {
-	border-radius: 6px;
-	padding: 8px 16px;
-	font-size: 13px;
-	font-weight: bold;
+    background-color: #ffffff;
+    color: #64748b;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 0px 16px;
+    min-height: 38px;
+    font-size: 12px;
+    font-weight: bold;
 }
-
-QPushButton#btnSelect {
-	background-color: #2563eb;
-	color: #ffffff;
-	border: none;
+QPushButton:hover {
+    background-color: #eff6ff;
+    color: #1d4ed8;
+    border: 1px solid #1d4ed8;
 }
-QPushButton#btnSelect:hover {
-	background-color: #1d4ed8;
+QPushButton:pressed {
+    background-color: #dbeafe;
 }
-QPushButton#btnSelect:disabled {
-	background-color: #cbd5e1;
-	color: #f8fafc;
-}
-
-QPushButton#btnClearCustomer {
-	background-color: #ffffff;
-	color: #b45309;
-	border: 1px solid #fcd34d;
-}
-QPushButton#btnClearCustomer:hover {
-	background-color: #fef3c7;
-}
-
-QPushButton#btnCancel {
-	background-color: #ffffff;
-	color: #475569;
-	border: 1px solid #cbd5e1;
-}
-QPushButton#btnCancel:hover {
-	background-color: #e2e8f0;
-}
-
-/* =========================================================
-   Thanh cuộn - giữ giống hệt pos.ui cho đồng bộ toàn app
-   Tay kéo bo tròn #cbd5e1, hover #94a3b8, rộng 10px, bỏ mũi tên.
-   Nếu đổi ở đây thì nhớ sửa cả pos.ui cho khớp.
-   ========================================================= */
-
-
-/* ===== Vertical scrollbar ===== */
-
-QScrollBar:vertical {
+QPushButton:disabled {
     background-color: #f8fafc;
+    color: #cbd5e1;
+    border: 1px solid #e2e8f0;
+}
+QPushButton#RowActionButton {
+    background-color: transparent;
+    border: none;
+    border-radius: 6px;
+    padding: 0px;
+    min-width: 28px;
+    max-width: 28px;
+    min-height: 28px;
+    max-height: 28px;
+}
+QPushButton#RowActionButton:hover {
+    background-color: #eff6ff;
+}
+QPushButton#RowActionButton:pressed {
+    background-color: #dbeafe;
+}
+
+QTableWidget {
+    background-color: transparent;
+    border: none;
+    gridline-color: #f1f5f9;
+    font-size: 13px;
+    color: #334155;
+    outline: none;
+}
+QTableWidget::item {
+    padding: 8px;
+    border-bottom: 1px solid #f1f5f9;
+}
+QTableWidget::item:selected {
+    background-color: #eff6ff;
+    color: #1d4ed8;
+}
+QHeaderView {
+    background-color: #f8fafc;
+    border: none;
+    border-bottom: 1px solid #e2e8f0;
+}
+QHeaderView::section {
+    background-color: #f8fafc;
+    color: #64748b;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 10px 8px;
+    border: none;
+    border-bottom: 1px solid #e2e8f0;
+}
+QTableCornerButton::section {
+    background-color: #f8fafc;
+    border: none;
+}
+
+QLabel[badge=&quot;info&quot;] {
+    background-color: #dbeafe;
+    color: #1d4ed8;
+    border-radius: 6px;
+    padding: 3px 10px;
+    font-size: 11px;
+    font-weight: 700;
+}
+QLabel[badge=&quot;success&quot;] {
+    background-color: #d1fae5;
+    color: #059669;
+    border-radius: 6px;
+    padding: 3px 10px;
+    font-size: 11px;
+    font-weight: 700;
+}
+QLabel[badge=&quot;warning&quot;] {
+    background-color: #ffedd5;
+    color: #ea580c;
+    border-radius: 6px;
+    padding: 3px 10px;
+    font-size: 11px;
+    font-weight: 700;
+}
+QLabel[badge=&quot;danger&quot;] {
+    background-color: #fee2e2;
+    color: #dc2626;
+    border-radius: 6px;
+    padding: 3px 10px;
+    font-size: 11px;
+    font-weight: 700;
+}
+QLabel[badge=&quot;neutral&quot;] {
+    background-color: #e2e8f0;
+    color: #64748b;
+    border-radius: 6px;
+    padding: 3px 10px;
+    font-size: 11px;
+    font-weight: 700;
+}
+QLabel[badge=&quot;violet&quot;] {
+    background-color: #ede9fe;
+    color: #6d28d9;
+    border-radius: 6px;
+    padding: 3px 10px;
+    font-size: 11px;
+    font-weight: 700;
+}
+QLabel[trend=&quot;up&quot;] {
+    background-color: #ecfdf5;
+    color: #059669;
+    border-radius: 4px;
+    padding: 2px 6px;
+    font-size: 11px;
+    font-weight: 700;
+}
+QLabel[trend=&quot;down&quot;] {
+    background-color: #fef2f2;
+    color: #dc2626;
+    border-radius: 4px;
+    padding: 2px 6px;
+    font-size: 11px;
+    font-weight: 700;
+}
+QLabel[trend=&quot;flat&quot;] {
+    background-color: #f1f5f9;
+    color: #64748b;
+    border-radius: 4px;
+    padding: 2px 6px;
+    font-size: 11px;
+    font-weight: 700;
+}
+QLabel[state=&quot;up&quot;] {
+    color: #10b981;
+    font-weight: bold;
+}
+QLabel[state=&quot;down&quot;] {
+    color: #ef4444;
+    font-weight: bold;
+}
+QLabel[state=&quot;flat&quot;] {
+    color: #64748b;
+    font-weight: bold;
+}
+QLabel[state=&quot;warning&quot;] {
+    color: #eab308;
+    font-weight: bold;
+}
+QLabel[state=&quot;safe&quot;] {
+    color: #10b981;
+}
+
+QScrollArea {
+    background-color: transparent;
+    border: none;
+}
+QScrollArea &gt; QWidget &gt; QWidget {
+    background-color: transparent;
+}
+QAbstractScrollArea::viewport {
+    background-color: transparent;
+}
+QScrollBar:vertical {
+    background-color: transparent;
     width: 10px;
     margin: 0px;
     border: none;
 }
-
 QScrollBar::handle:vertical {
     background-color: #cbd5e1;
     min-height: 35px;
     border-radius: 5px;
 }
-
 QScrollBar::handle:vertical:hover {
     background-color: #94a3b8;
 }
-
 QScrollBar::handle:vertical:pressed {
     background-color: #64748b;
 }
-
 QScrollBar::add-line:vertical,
 QScrollBar::sub-line:vertical {
     height: 0px;
@@ -142,7 +367,6 @@ QScrollBar::sub-line:vertical {
     background: transparent;
     border: none;
 }
-
 QScrollBar::up-arrow:vertical,
 QScrollBar::down-arrow:vertical {
     width: 0px;
@@ -150,36 +374,27 @@ QScrollBar::down-arrow:vertical {
     background: transparent;
     border: none;
 }
-
 QScrollBar::add-page:vertical,
 QScrollBar::sub-page:vertical {
     background: transparent;
 }
-
-
-/* ===== Horizontal scrollbar ===== */
-
 QScrollBar:horizontal {
-    background-color: #f8fafc;
+    background-color: transparent;
     height: 10px;
     margin: 0px;
     border: none;
 }
-
 QScrollBar::handle:horizontal {
     background-color: #cbd5e1;
     min-width: 35px;
     border-radius: 5px;
 }
-
 QScrollBar::handle:horizontal:hover {
     background-color: #94a3b8;
 }
-
 QScrollBar::handle:horizontal:pressed {
     background-color: #64748b;
 }
-
 QScrollBar::add-line:horizontal,
 QScrollBar::sub-line:horizontal {
     width: 0px;
@@ -187,7 +402,6 @@ QScrollBar::sub-line:horizontal {
     background: transparent;
     border: none;
 }
-
 QScrollBar::left-arrow:horizontal,
 QScrollBar::right-arrow:horizontal {
     width: 0px;
@@ -195,11 +409,91 @@ QScrollBar::right-arrow:horizontal {
     background: transparent;
     border: none;
 }
-
 QScrollBar::add-page:horizontal,
 QScrollBar::sub-page:horizontal {
     background: transparent;
-}</string>
+}
+
+QMenu {
+    background-color: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 6px;
+}
+QMenu::item {
+    background-color: transparent;
+    color: #334155;
+    border-radius: 6px;
+    padding: 7px 18px;
+    font-size: 13px;
+}
+QMenu::item:selected {
+    background-color: #eff6ff;
+    color: #1d4ed8;
+}
+QMenu::separator {
+    height: 1px;
+    background-color: #e2e8f0;
+    margin: 6px 4px;
+}
+
+QLabel#lblTitle {
+    color: #0f172a;
+    font-weight: bold;
+}
+
+QLabel#lblStatus {
+    color: #64748b;
+    font-size: 12px;
+}
+
+QTableWidget#tblCustomers {
+    background-color: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+}
+
+QPushButton#btnSelect {
+    background-color: #1d4ed8;
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    padding: 0px 20px;
+    min-height: 38px;
+    font-size: 13px;
+    font-weight: 700;
+}
+QPushButton#btnSelect:hover {
+    background-color: #1e3a8a;
+}
+QPushButton#btnSelect:pressed {
+    background-color: #1e40af;
+}
+QPushButton#btnSelect:disabled {
+    background-color: #cbd5e1;
+    color: #f8fafc;
+}
+
+QPushButton#btnClearCustomer {
+    background-color: #ffffff;
+    color: #dc2626;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 0px 16px;
+    min-height: 38px;
+    font-size: 12px;
+    font-weight: bold;
+}
+QPushButton#btnClearCustomer:hover {
+    background-color: #fef2f2;
+    border: 1px solid #dc2626;
+}
+QPushButton#btnClearCustomer:disabled {
+    background-color: #f8fafc;
+    color: #cbd5e1;
+    border: 1px solid #e2e8f0;
+}
+</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <property name="spacing">
@@ -209,16 +503,23 @@ QScrollBar::sub-page:horizontal {
     <number>18</number>
    </property>
    <property name="topMargin">
-    <number>18</number>
+    <number>16</number>
    </property>
    <property name="rightMargin">
     <number>18</number>
    </property>
    <property name="bottomMargin">
-    <number>18</number>
+    <number>16</number>
    </property>
    <item>
     <widget class="QLabel" name="lblTitle">
+     <property name="font">
+      <font>
+       <family>Segoe UI</family>
+       <pointsize>15</pointsize>
+       <bold>true</bold>
+      </font>
+     </property>
      <property name="text">
       <string>Chọn khách hàng cho hóa đơn</string>
      </property>
@@ -229,11 +530,11 @@ QScrollBar::sub-page:horizontal {
      <property name="minimumSize">
       <size>
        <width>0</width>
-       <height>38</height>
+       <height>40</height>
       </size>
      </property>
      <property name="placeholderText">
-      <string>Tìm theo tên hoặc số điện thoại...</string>
+      <string>Tìm theo tên hoặc số điện thoại</string>
      </property>
      <property name="clearButtonEnabled">
       <bool>true</bool>
@@ -242,25 +543,6 @@ QScrollBar::sub-page:horizontal {
    </item>
    <item>
     <widget class="QTableWidget" name="tblCustomers">
-     <property name="styleSheet">
-      <string notr="true">QTableWidget::item {
-    padding: 8px 12px;
-    border-bottom: 1px solid #f1f5f9;
-    color: #1e293b;
-    outline: none; 
-}
-
-QTableWidget::item:hover {
-    background-color: #f8fafc;
-    color: #0f172a;
-}
-
-QTableWidget::item:selected {
-    background-color: #eff6ff;
-    color: #1d4ed8;         
-    font-weight: 600;
-}</string>
-     </property>
      <property name="alternatingRowColors">
       <bool>false</bool>
      </property>
@@ -286,38 +568,11 @@ QTableWidget::item:selected {
        <property name="minimumSize">
         <size>
          <width>0</width>
-         <height>38</height>
+         <height>40</height>
         </size>
        </property>
        <property name="toolTip">
         <string>Gỡ khách khỏi hóa đơn, quay lại Khách lẻ</string>
-       </property>
-       <property name="styleSheet">
-        <string notr="true">QPushButton {
-    background-color: #f1f5f9;
-    color: #475569;
-    border: 1px solid #cbd5e1;
-    border-radius: 6px;
-    padding: 6px 12px;
-    font-weight: 500;
-}
-
-QPushButton:hover {
-    background-color: #e2e8f0;
-    color: #1e293b;
-    border-color: #94a3b8;
-}
-
-QPushButton:pressed {
-    background-color: #cbd5e1;
-    color: #0f172a;
-}
-
-QPushButton:disabled {
-    background-color: #f8fafc;
-    color: #cbd5e1;
-    border-color: #e2e8f0;
-}</string>
        </property>
        <property name="text">
         <string>Bỏ chọn (Khách lẻ)</string>
@@ -342,7 +597,7 @@ QPushButton:disabled {
        <property name="minimumSize">
         <size>
          <width>90</width>
-         <height>38</height>
+         <height>40</height>
         </size>
        </property>
        <property name="text">

@@ -27,6 +27,7 @@ class POSServiceImpl(POSService):
         self._cart: Dict[int, CartItemDTO] = {}
         self._discount_rate: Decimal = POSSettings.DEFAULT_DISCOUNT_RATE
 
+
     def get_categories(self) -> List[CategoryDTO]:
         all_category = CategoryDTO(category_id=None, category_name=POSSettings.ALL_CATEGORY_LABEL)
         try:
@@ -38,6 +39,7 @@ class POSServiceImpl(POSService):
         except Exception as e:
             logger.error("Không lấy được danh sách danh mục: %s", e)
             return [all_category]
+
 
     def get_products(self, category_id: Optional[int] = None,
                      keyword: Optional[str] = None) -> List[ProductDTO]:
@@ -58,6 +60,7 @@ class POSServiceImpl(POSService):
             )
             return []
 
+
     def add_product_to_cart(self, product_id: int, quantity: int = 1) -> CartDTO:
         product = self._load_product_dto(product_id)
         if product is None:
@@ -74,6 +77,7 @@ class POSServiceImpl(POSService):
         )
         return self.get_cart()
 
+
     def _load_product_dto(self, product_id: int) -> Optional[ProductDTO]:
         try:
             with Database.get_session_ctx() as session:
@@ -85,6 +89,7 @@ class POSServiceImpl(POSService):
         except Exception as e:
             logger.error("Lỗi khi đọc sản phẩm id=%s: %s", product_id, e)
             raise POSError("Không đọc được thông tin sản phẩm. Vui lòng thử lại.")
+
 
     def add_product_by_barcode(self, barcode: str) -> CartDTO:
         try:
@@ -100,6 +105,7 @@ class POSServiceImpl(POSService):
             raise ProductNotFoundError(f"Không tìm thấy sản phẩm có mã '{barcode}'.")
 
         return self.add_product_to_cart(product_id)
+
 
     def change_item_quantity(self, product_id: int, delta: int) -> CartDTO:
         item = self._cart.get(product_id)
@@ -124,11 +130,13 @@ class POSServiceImpl(POSService):
         item.quantity = new_quantity
         return self.get_cart()
 
+    
     def remove_item_from_cart(self, product_id: int) -> CartDTO:
         removed_item = self._cart.pop(product_id, None)
         if removed_item is not None:
             logger.info("Đã xóa sản phẩm id=%s khỏi giỏ hàng.", product_id)
         return self.get_cart()
+
 
     def clear_cart(self) -> CartDTO:
         self._cart.clear()
@@ -136,9 +144,11 @@ class POSServiceImpl(POSService):
         logger.info("Đã làm mới giỏ hàng.")
         return self.get_cart()
 
+
     def get_cart(self) -> CartDTO:
         items = list(self._cart.values())
         return CartDTO(items=items, summary=self._calculate_summary(items))
+
 
     def apply_discount_rate(self, discount_rate: Decimal) -> CartDTO:
         if discount_rate < 0 or discount_rate > POSSettings.MAX_DISCOUNT_RATE:
@@ -148,6 +158,7 @@ class POSServiceImpl(POSService):
         self._discount_rate = discount_rate
         logger.info("Áp dụng mức giảm giá %s cho hóa đơn đang lập.", discount_rate)
         return self.get_cart()
+
 
     def checkout(self, request: CheckoutRequestDTO) -> CheckoutResultDTO:
         items = list(self._cart.values())
@@ -195,9 +206,11 @@ class POSServiceImpl(POSService):
             logger.error("Lỗi khi lưu hóa đơn bán hàng: %s", e)
             raise POSError("Không lưu được hóa đơn. Giao dịch đã được hoàn tác, vui lòng thử lại.")
 
+
     def _get_quantity_in_cart(self, product_id: int) -> int:
         item = self._cart.get(product_id)
         return item.quantity if item is not None else 0
+
 
     def _validate_stock(self, product: ProductDTO, requested_quantity: int) -> None:
         if product.is_out_of_stock:
@@ -207,6 +220,7 @@ class POSServiceImpl(POSService):
             raise OutOfStockError(
                 f"Sản phẩm '{product.product_name}' chỉ còn {product.current_stock} trong kho."
             )
+
 
     def _upsert_cart_item(self, product: ProductDTO, quantity: int) -> None:
         existing_item = self._cart.get(product.product_id)
@@ -218,6 +232,7 @@ class POSServiceImpl(POSService):
         existing_item.quantity = quantity
 
         existing_item.stock_available = product.current_stock
+
 
     def _validate_stock_before_checkout(self, repository: POSRepositoryImpl,
                                         items: List[CartItemDTO]) -> None:
@@ -242,6 +257,7 @@ class POSServiceImpl(POSService):
         for item in items:
             repository.decrease_stock(item.product_id, item.quantity)
 
+
     def _build_invoice_entity(self, request: CheckoutRequestDTO,
                               summary: CartSummaryDTO) -> SalesInvoice:
         return SalesInvoice(
@@ -253,6 +269,7 @@ class POSServiceImpl(POSService):
             final_total=summary.grand_total,
             payment_method=POSConverter.to_payment_method_value(request.payment_method_label)
         )
+
 
     def _calculate_summary(self, items: List[CartItemDTO]) -> CartSummaryDTO:
         sub_total = sum((item.line_total for item in items), Decimal("0"))
@@ -276,11 +293,12 @@ class POSServiceImpl(POSService):
             grand_total=grand_total
         )
 
+
     def _round_money(self, amount: Decimal) -> Decimal:
         return amount.quantize(VND_ROUNDING_UNIT, rounding=ROUND_HALF_UP)
 
+
     def get_invoice_detail(self, invoice_id: int) -> Optional[InvoiceDetailDTO]:
-        """Gom dữ liệu một hóa đơn đã lưu để phục vụ việc in ra PDF."""
         try:
             with Database.get_session_ctx() as session:
                 repository = POSRepositoryImpl(session)

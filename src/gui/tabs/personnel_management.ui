@@ -14,31 +14,663 @@
    <string>Quản lý Nhân sự</string>
   </property>
   <property name="styleSheet">
-   <string>background-color: #f8fafc;</string>
+   <string notr="true">QWidget#PersonnelManagement {
+    background-color: #f1f5f9;
+    color: #0f172a;
+    font-family: &quot;Segoe UI&quot;, Arial, sans-serif;
+}
+QWidget {
+    font-family: &quot;Segoe UI&quot;, Arial, sans-serif;
+}
+QLabel {
+    background-color: transparent;
+    border: none;
+    color: #0f172a;
+}
+
+QLineEdit,
+QComboBox,
+QDateEdit,
+QSpinBox,
+QDoubleSpinBox {
+    background-color: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 0px 12px;
+    min-height: 38px;
+    font-size: 13px;
+    color: #0f172a;
+    selection-background-color: #1d4ed8;
+    selection-color: #ffffff;
+}
+QTextEdit {
+    background-color: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 8px 10px;
+    font-size: 13px;
+    color: #0f172a;
+    selection-background-color: #1d4ed8;
+    selection-color: #ffffff;
+}
+QLineEdit:hover,
+QComboBox:hover,
+QDateEdit:hover,
+QSpinBox:hover,
+QDoubleSpinBox:hover,
+QTextEdit:hover {
+    border: 1px solid #cbd5e1;
+}
+QLineEdit:focus,
+QComboBox:focus,
+QDateEdit:focus,
+QSpinBox:focus,
+QDoubleSpinBox:focus,
+QTextEdit:focus {
+    border: 1px solid #1d4ed8;
+}
+QLineEdit:disabled,
+QComboBox:disabled,
+QDateEdit:disabled,
+QSpinBox:disabled,
+QDoubleSpinBox:disabled {
+    background-color: #f8fafc;
+    color: #94a3b8;
+}
+QComboBox::drop-down {
+    subcontrol-origin: padding;
+    subcontrol-position: center right;
+    border: none;
+    background-color: transparent;
+    width: 26px;
+}
+QComboBox::down-arrow {
+    image: url(assets/images/chevron-down.png);
+    width: 10px;
+    height: 10px;
+}
+QComboBox::down-arrow:on {
+    image: url(assets/images/chevron-up.png);
+}
+QComboBox QAbstractItemView {
+    background-color: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 4px;
+    outline: none;
+    selection-background-color: #f1f5f9;
+    selection-color: #0f172a;
+}
+QComboBox QAbstractItemView::item {
+    color: #0f172a;
+    min-height: 30px;
+    padding: 4px 10px;
+    border-radius: 6px;
+}
+QComboBox QAbstractItemView::item:hover {
+    background-color: #f1f5f9;
+    color: #0f172a;
+}
+QComboBox QAbstractItemView::item:selected {
+    background-color: #e2e8f0;
+    color: #0f172a;
+}
+QSpinBox::up-button,
+QSpinBox::down-button,
+QDoubleSpinBox::up-button,
+QDoubleSpinBox::down-button,
+QDateEdit::up-button,
+QDateEdit::down-button {
+    subcontrol-origin: border;
+    width: 20px;
+    border: none;
+    background-color: transparent;
+}
+QSpinBox::up-button,
+QDoubleSpinBox::up-button,
+QDateEdit::up-button {
+    subcontrol-position: top right;
+}
+QSpinBox::down-button,
+QDoubleSpinBox::down-button,
+QDateEdit::down-button {
+    subcontrol-position: bottom right;
+}
+QSpinBox::up-button:hover,
+QSpinBox::down-button:hover,
+QDoubleSpinBox::up-button:hover,
+QDoubleSpinBox::down-button:hover,
+QDateEdit::up-button:hover,
+QDateEdit::down-button:hover {
+    background-color: #f1f5f9;
+}
+QSpinBox::up-arrow,
+QDoubleSpinBox::up-arrow,
+QDateEdit::up-arrow {
+    image: url(assets/images/chevron-up.png);
+    width: 9px;
+    height: 9px;
+}
+QSpinBox::down-arrow,
+QDoubleSpinBox::down-arrow,
+QDateEdit::down-arrow {
+    image: url(assets/images/chevron-down.png);
+    width: 9px;
+    height: 9px;
+}
+QCheckBox {
+    background-color: transparent;
+    color: #334155;
+    font-size: 13px;
+    font-weight: bold;
+    spacing: 8px;
+}
+QCheckBox::indicator {
+    width: 16px;
+    height: 16px;
+    border: 1px solid #cbd5e1;
+    border-radius: 4px;
+    background-color: #ffffff;
+}
+QCheckBox::indicator:hover {
+    border: 1px solid #1d4ed8;
+}
+QCheckBox::indicator:checked {
+    background-color: #1d4ed8;
+    border: 1px solid #1d4ed8;
+}
+
+QPushButton {
+    background-color: #ffffff;
+    color: #64748b;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 0px 16px;
+    min-height: 38px;
+    font-size: 12px;
+    font-weight: bold;
+}
+QPushButton:hover {
+    background-color: #eff6ff;
+    color: #1d4ed8;
+    border: 1px solid #1d4ed8;
+}
+QPushButton:pressed {
+    background-color: #dbeafe;
+}
+QPushButton:disabled {
+    background-color: #f8fafc;
+    color: #cbd5e1;
+    border: 1px solid #e2e8f0;
+}
+QPushButton#RowActionButton {
+    background-color: transparent;
+    border: none;
+    border-radius: 6px;
+    padding: 0px;
+    min-width: 28px;
+    max-width: 28px;
+    min-height: 28px;
+    max-height: 28px;
+    color: #64748b;
+}
+QPushButton#RowActionButton:hover {
+    background-color: #f1f5f9;
+    color: #0f172a;
+}
+QPushButton#RowActionButton:pressed {
+    background-color: #e2e8f0;
+}
+
+QPushButton#btnEditRow:hover {
+    background-color: #eff6ff;
+    color: #1d4ed8;
+}
+
+QPushButton#btnDeleteRow:hover {
+    background-color: #fef2f2;
+    color: #dc2626;
+}
+
+QTableWidget {
+    background-color: transparent;
+    border: none;
+    gridline-color: #f1f5f9;
+    font-size: 13px;
+    color: #334155;
+    outline: none;
+}
+QTableWidget::item {
+    padding: 8px;
+    border-bottom: 1px solid #f1f5f9;
+}
+QTableWidget::item:selected {
+    background-color: #eff6ff;
+    color: #1d4ed8;
+}
+QHeaderView {
+    background-color: #f8fafc;
+    border: none;
+    border-bottom: 1px solid #e2e8f0;
+}
+QHeaderView::section {
+    background-color: #f8fafc;
+    color: #64748b;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 10px 8px;
+    border: none;
+    border-bottom: 1px solid #e2e8f0;
+}
+QTableCornerButton::section {
+    background-color: #f8fafc;
+    border: none;
+}
+
+QLabel[badge=&quot;info&quot;] {
+    background-color: #dbeafe;
+    color: #1d4ed8;
+    border-radius: 6px;
+    padding: 3px 10px;
+    font-size: 11px;
+    font-weight: 700;
+}
+QLabel[badge=&quot;success&quot;] {
+    background-color: #d1fae5;
+    color: #059669;
+    border-radius: 6px;
+    padding: 3px 10px;
+    font-size: 11px;
+    font-weight: 700;
+}
+QLabel[badge=&quot;warning&quot;] {
+    background-color: #ffedd5;
+    color: #ea580c;
+    border-radius: 6px;
+    padding: 3px 10px;
+    font-size: 11px;
+    font-weight: 700;
+}
+QLabel[badge=&quot;danger&quot;] {
+    background-color: #fee2e2;
+    color: #dc2626;
+    border-radius: 6px;
+    padding: 3px 10px;
+    font-size: 11px;
+    font-weight: 700;
+}
+QLabel[badge=&quot;neutral&quot;] {
+    background-color: #e2e8f0;
+    color: #64748b;
+    border-radius: 6px;
+    padding: 3px 10px;
+    font-size: 11px;
+    font-weight: 700;
+}
+QLabel[badge=&quot;violet&quot;] {
+    background-color: #ede9fe;
+    color: #6d28d9;
+    border-radius: 6px;
+    padding: 3px 10px;
+    font-size: 11px;
+    font-weight: 700;
+}
+QLabel[trend=&quot;up&quot;] {
+    background-color: #ecfdf5;
+    color: #059669;
+    border-radius: 4px;
+    padding: 2px 6px;
+    font-size: 11px;
+    font-weight: 700;
+}
+QLabel[trend=&quot;down&quot;] {
+    background-color: #fef2f2;
+    color: #dc2626;
+    border-radius: 4px;
+    padding: 2px 6px;
+    font-size: 11px;
+    font-weight: 700;
+}
+QLabel[trend=&quot;flat&quot;] {
+    background-color: #f1f5f9;
+    color: #64748b;
+    border-radius: 4px;
+    padding: 2px 6px;
+    font-size: 11px;
+    font-weight: 700;
+}
+QLabel[state=&quot;up&quot;] {
+    color: #10b981;
+    font-weight: bold;
+}
+QLabel[state=&quot;down&quot;] {
+    color: #ef4444;
+    font-weight: bold;
+}
+QLabel[state=&quot;flat&quot;] {
+    color: #64748b;
+    font-weight: bold;
+}
+QLabel[state=&quot;warning&quot;] {
+    color: #eab308;
+    font-weight: bold;
+}
+QLabel[state=&quot;safe&quot;] {
+    color: #10b981;
+}
+
+QScrollArea {
+    background-color: transparent;
+    border: none;
+}
+QScrollArea &gt; QWidget &gt; QWidget {
+    background-color: transparent;
+}
+QAbstractScrollArea::viewport {
+    background-color: transparent;
+}
+QScrollBar:vertical {
+    background-color: transparent;
+    width: 10px;
+    margin: 0px;
+    border: none;
+}
+QScrollBar::handle:vertical {
+    background-color: #cbd5e1;
+    min-height: 35px;
+    border-radius: 5px;
+}
+QScrollBar::handle:vertical:hover {
+    background-color: #94a3b8;
+}
+QScrollBar::handle:vertical:pressed {
+    background-color: #64748b;
+}
+QScrollBar::add-line:vertical,
+QScrollBar::sub-line:vertical {
+    height: 0px;
+    width: 0px;
+    background: transparent;
+    border: none;
+}
+QScrollBar::up-arrow:vertical,
+QScrollBar::down-arrow:vertical {
+    width: 0px;
+    height: 0px;
+    background: transparent;
+    border: none;
+}
+QScrollBar::add-page:vertical,
+QScrollBar::sub-page:vertical {
+    background: transparent;
+}
+QScrollBar:horizontal {
+    background-color: transparent;
+    height: 10px;
+    margin: 0px;
+    border: none;
+}
+QScrollBar::handle:horizontal {
+    background-color: #cbd5e1;
+    min-width: 35px;
+    border-radius: 5px;
+}
+QScrollBar::handle:horizontal:hover {
+    background-color: #94a3b8;
+}
+QScrollBar::handle:horizontal:pressed {
+    background-color: #64748b;
+}
+QScrollBar::add-line:horizontal,
+QScrollBar::sub-line:horizontal {
+    width: 0px;
+    height: 0px;
+    background: transparent;
+    border: none;
+}
+QScrollBar::left-arrow:horizontal,
+QScrollBar::right-arrow:horizontal {
+    width: 0px;
+    height: 0px;
+    background: transparent;
+    border: none;
+}
+QScrollBar::add-page:horizontal,
+QScrollBar::sub-page:horizontal {
+    background: transparent;
+}
+
+QMenu {
+    background-color: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 6px;
+}
+QMenu::item {
+    background-color: transparent;
+    color: #334155;
+    border-radius: 6px;
+    padding: 7px 18px;
+    font-size: 13px;
+}
+QMenu::item:selected {
+    background-color: #eff6ff;
+    color: #1d4ed8;
+}
+QMenu::separator {
+    height: 1px;
+    background-color: #e2e8f0;
+    margin: 6px 4px;
+}
+
+QFrame#frameHeader,
+QFrame#frameToolbar,
+QFrame#framePagination {
+    background-color: transparent;
+    border: none;
+}
+
+QFrame#frameTable {
+    background-color: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 14px;
+}
+
+QLabel#lblTitle {
+    color: #0f172a;
+    font-size: 24px;
+    font-weight: 700;
+    padding: 0px;
+    margin: 0px;
+}
+
+QLabel#lblSubtitle,
+QLabel#lblSub {
+    color: #6b7280;
+    font-size: 12px;
+    font-weight: normal;
+    margin-top: 4px;
+}
+
+QPushButton#btnAdd {
+    background-color: #1d4ed8;
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    padding: 0px 20px;
+    min-height: 38px;
+    font-size: 13px;
+    font-weight: 700;
+}
+QPushButton#btnAdd:hover {
+    background-color: #1e3a8a;
+}
+QPushButton#btnAdd:pressed {
+    background-color: #1e40af;
+}
+QPushButton#btnAdd:disabled {
+    background-color: #cbd5e1;
+    color: #f8fafc;
+}
+
+QPushButton#btnDelete {
+    background-color: #ffffff;
+    color: #dc2626;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 0px 16px;
+    min-height: 38px;
+    font-size: 12px;
+    font-weight: bold;
+}
+QPushButton#btnDelete:hover {
+    background-color: #fef2f2;
+    border: 1px solid #dc2626;
+}
+QPushButton#btnDelete:disabled {
+    background-color: #f8fafc;
+    color: #cbd5e1;
+    border: 1px solid #e2e8f0;
+}
+
+QLabel#lblPaginationInfo,
+QLabel#lblPage {
+    color: #64748b;
+    font-size: 12px;
+}
+
+QPushButton#btnPrev,
+QPushButton#btnNext,
+QPushButton#btnPrevPage,
+QPushButton#btnNextPage {
+    background-color: #ffffff;
+    color: #334155;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    min-width: 34px;
+    max-width: 34px;
+    min-height: 32px;
+    max-height: 32px;
+    padding: 0px;
+    font-size: 14px;
+    font-weight: bold;
+}
+QPushButton#btnPrev:hover,
+QPushButton#btnNext:hover,
+QPushButton#btnPrevPage:hover,
+QPushButton#btnNextPage:hover {
+    background-color: #eff6ff;
+    border: 1px solid #1d4ed8;
+    color: #1d4ed8;
+}
+QPushButton#btnPrev:disabled,
+QPushButton#btnNext:disabled,
+QPushButton#btnPrevPage:disabled,
+QPushButton#btnNextPage:disabled {
+    background-color: #f8fafc;
+    border: 1px solid #e2e8f0;
+    color: #cbd5e1;
+}
+
+QPushButton#PageNumberButton {
+    background-color: #ffffff;
+    color: #334155;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    min-width: 32px;
+    max-width: 32px;
+    min-height: 32px;
+    max-height: 32px;
+    padding: 0px;
+    font-size: 12px;
+    font-weight: bold;
+}
+QPushButton#PageNumberButton:hover {
+    background-color: #eff6ff;
+    border: 1px solid #1d4ed8;
+    color: #1d4ed8;
+}
+QPushButton#PageNumberButton:checked {
+    background-color: #1d4ed8;
+    border: 1px solid #1d4ed8;
+    color: #ffffff;
+}
+QPushButton#PageNumberButton:disabled {
+    background-color: transparent;
+    border: none;
+    color: #94a3b8;
+}
+
+QLabel#lblTotalTitle,
+QLabel#lblActiveTitle,
+QLabel#lblRolesTitle {
+    color: #64748b;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+QLabel#lblTotal,
+QLabel#lblActive,
+QLabel#lblAdminCount,
+QLabel#lblManagerCount,
+QLabel#lblCashierCount {
+    color: #0f172a;
+    font-size: 27px;
+    font-weight: 700;
+}
+
+QLabel#lblAdminText,
+QLabel#lblManagerText,
+QLabel#lblCashierText {
+    color: #6b7280;
+    font-size: 11px;
+    font-weight: normal;
+}
+
+QFrame#cardTotal,
+QFrame#cardActive,
+QFrame#cardRoles {
+    background-color: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 14px;
+}
+QFrame#line1,
+QFrame#line2 {
+    background-color: #e2e8f0;
+    border: none;
+    max-width: 1px;
+}
+QLineEdit#txtSearch {
+    min-width: 260px;
+}
+QComboBox#cboRole,
+QComboBox#cboStatus {
+    min-width: 170px;
+}</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <property name="spacing">
-    <number>20</number>
+    <number>16</number>
    </property>
    <property name="leftMargin">
-    <number>30</number>
+    <number>12</number>
    </property>
    <property name="topMargin">
-    <number>30</number>
+    <number>10</number>
    </property>
    <property name="rightMargin">
-    <number>30</number>
+    <number>12</number>
    </property>
    <property name="bottomMargin">
-    <number>30</number>
+    <number>12</number>
    </property>
    <item>
     <layout class="QVBoxLayout" name="titleLayout">
+     <property name="spacing">
+      <number>3</number>
+     </property>
      <item>
       <widget class="QLabel" name="lblTitle">
-       <property name="styleSheet">
-        <string>font-size: 24px; font-weight: bold; color: #0f172a;</string>
-       </property>
        <property name="text">
         <string>Quản lý nhân sự</string>
        </property>
@@ -46,9 +678,6 @@
      </item>
      <item>
       <widget class="QLabel" name="lblSub">
-       <property name="styleSheet">
-        <string>color: #64748b; font-size: 14px;</string>
-       </property>
        <property name="text">
         <string>Quản lý thông tin nhân viên và phân quyền truy cập hệ thống.</string>
        </property>
@@ -59,115 +688,201 @@
    <item>
     <layout class="QHBoxLayout" name="statsLayout">
      <property name="spacing">
-      <number>15</number>
+      <number>16</number>
      </property>
      <item>
       <widget class="QFrame" name="cardTotal">
-       <property name="styleSheet">
-        <string>background-color: white; border: 1px solid #e2e8f0; border-radius: 8px;</string>
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>120</height>
+        </size>
        </property>
        <property name="frameShape">
-        <enum>QFrame::StyledPanel</enum>
-       </property>
-       <property name="frameShadow">
-        <enum>QFrame::Raised</enum>
+        <enum>QFrame::Shape::NoFrame</enum>
        </property>
        <layout class="QVBoxLayout" name="layoutTotal">
+        <property name="spacing">
+         <number>6</number>
+        </property>
+        <property name="leftMargin">
+         <number>16</number>
+        </property>
+        <property name="topMargin">
+         <number>14</number>
+        </property>
+        <property name="rightMargin">
+         <number>16</number>
+        </property>
+        <property name="bottomMargin">
+         <number>14</number>
+        </property>
         <item>
          <widget class="QLabel" name="lblTotalTitle">
-          <property name="styleSheet">
-           <string>color: #64748b; font-weight: bold; border: none;</string>
-          </property>
           <property name="text">
-           <string>TỔNG SỐ NHÂN VIÊN</string>
+           <string>Tổng số nhân viên</string>
           </property>
          </widget>
         </item>
         <item>
          <widget class="QLabel" name="lblTotal">
-          <property name="styleSheet">
-           <string>font-size: 28px; font-weight: bold; color: #0f172a; border: none;</string>
-          </property>
           <property name="text">
            <string>0</string>
           </property>
          </widget>
+        </item>
+        <item>
+         <spacer name="spacerTotal">
+          <property name="orientation">
+           <enum>Qt::Orientation::Vertical</enum>
+          </property>
+          <property name="sizeType">
+           <enum>QSizePolicy::Policy::Expanding</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>0</width>
+            <height>0</height>
+           </size>
+          </property>
+         </spacer>
         </item>
        </layout>
       </widget>
      </item>
      <item>
       <widget class="QFrame" name="cardActive">
-       <property name="styleSheet">
-        <string>background-color: white; border: 1px solid #e2e8f0; border-radius: 8px;</string>
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>120</height>
+        </size>
        </property>
        <property name="frameShape">
-        <enum>QFrame::StyledPanel</enum>
-       </property>
-       <property name="frameShadow">
-        <enum>QFrame::Raised</enum>
+        <enum>QFrame::Shape::NoFrame</enum>
        </property>
        <layout class="QVBoxLayout" name="layoutActive">
+        <property name="spacing">
+         <number>6</number>
+        </property>
+        <property name="leftMargin">
+         <number>16</number>
+        </property>
+        <property name="topMargin">
+         <number>14</number>
+        </property>
+        <property name="rightMargin">
+         <number>16</number>
+        </property>
+        <property name="bottomMargin">
+         <number>14</number>
+        </property>
         <item>
          <widget class="QLabel" name="lblActiveTitle">
-          <property name="styleSheet">
-           <string>color: #64748b; font-weight: bold; border: none;</string>
-          </property>
           <property name="text">
-           <string>ĐANG HOẠT ĐỘNG</string>
+           <string>Đang hoạt động</string>
           </property>
          </widget>
         </item>
         <item>
          <widget class="QLabel" name="lblActive">
-          <property name="styleSheet">
-           <string>font-size: 28px; font-weight: bold; color: #0f172a; border: none;</string>
-          </property>
           <property name="text">
            <string>0</string>
           </property>
          </widget>
+        </item>
+        <item>
+         <spacer name="spacerActive">
+          <property name="orientation">
+           <enum>Qt::Orientation::Vertical</enum>
+          </property>
+          <property name="sizeType">
+           <enum>QSizePolicy::Policy::Expanding</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>0</width>
+            <height>0</height>
+           </size>
+          </property>
+         </spacer>
         </item>
        </layout>
       </widget>
      </item>
      <item>
       <widget class="QFrame" name="cardRoles">
-       <property name="styleSheet">
-        <string>background-color: white; border: 1px solid #e2e8f0; border-radius: 8px;</string>
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>120</height>
+        </size>
+       </property>
+       <property name="frameShape">
+        <enum>QFrame::Shape::NoFrame</enum>
        </property>
        <layout class="QVBoxLayout" name="layoutRoles">
+        <property name="spacing">
+         <number>6</number>
+        </property>
+        <property name="leftMargin">
+         <number>16</number>
+        </property>
+        <property name="topMargin">
+         <number>14</number>
+        </property>
+        <property name="rightMargin">
+         <number>16</number>
+        </property>
+        <property name="bottomMargin">
+         <number>14</number>
+        </property>
         <item>
          <widget class="QLabel" name="lblRolesTitle">
-          <property name="styleSheet">
-           <string>color: #64748b; font-weight: bold; border: none;</string>
-          </property>
           <property name="text">
-           <string>PHÂN BỔ VAI TRÒ</string>
+           <string>Phân bổ vai trò</string>
           </property>
          </widget>
         </item>
         <item>
          <layout class="QHBoxLayout" name="layoutRolesData">
+          <property name="spacing">
+           <number>12</number>
+          </property>
           <item>
            <layout class="QVBoxLayout" name="layoutAdmin">
+            <property name="spacing">
+             <number>0</number>
+            </property>
             <item>
-             <widget class="QLabel" name="lblAdminText">
-              <property name="styleSheet">
-               <string>color: #475569; font-size: 13px; border: none;</string>
-              </property>
+             <widget class="QLabel" name="lblAdminCount">
               <property name="text">
-               <string>Quản trị viên</string>
+               <string>0</string>
               </property>
              </widget>
             </item>
             <item>
-             <widget class="QLabel" name="lblAdminCount">
-              <property name="styleSheet">
-               <string>font-size: 20px; font-weight: bold; color: #0f172a; border: none;</string>
-              </property>
+             <widget class="QLabel" name="lblAdminText">
               <property name="text">
-               <string>0</string>
+               <string>Quản trị viên</string>
               </property>
              </widget>
             </item>
@@ -175,33 +890,27 @@
           </item>
           <item>
            <widget class="QFrame" name="line1">
-            <property name="styleSheet">
-             <string>border: none; border-left: 1px solid #e2e8f0;</string>
-            </property>
             <property name="frameShape">
-             <enum>QFrame::VLine</enum>
+             <enum>QFrame::Shape::VLine</enum>
             </property>
            </widget>
           </item>
           <item>
            <layout class="QVBoxLayout" name="layoutManager">
+            <property name="spacing">
+             <number>0</number>
+            </property>
             <item>
-             <widget class="QLabel" name="lblManagerText">
-              <property name="styleSheet">
-               <string>color: #475569; font-size: 13px; border: none;</string>
-              </property>
+             <widget class="QLabel" name="lblManagerCount">
               <property name="text">
-               <string>Bán hàng</string>
+               <string>0</string>
               </property>
              </widget>
             </item>
             <item>
-             <widget class="QLabel" name="lblManagerCount">
-              <property name="styleSheet">
-               <string>font-size: 20px; font-weight: bold; color: #0f172a; border: none;</string>
-              </property>
+             <widget class="QLabel" name="lblManagerText">
               <property name="text">
-               <string>0</string>
+               <string>Bán hàng</string>
               </property>
              </widget>
             </item>
@@ -209,39 +918,49 @@
           </item>
           <item>
            <widget class="QFrame" name="line2">
-            <property name="styleSheet">
-             <string>border: none; border-left: 1px solid #e2e8f0;</string>
-            </property>
             <property name="frameShape">
-             <enum>QFrame::VLine</enum>
+             <enum>QFrame::Shape::VLine</enum>
             </property>
            </widget>
           </item>
           <item>
            <layout class="QVBoxLayout" name="layoutCashier">
+            <property name="spacing">
+             <number>0</number>
+            </property>
             <item>
-             <widget class="QLabel" name="lblCashierText">
-              <property name="styleSheet">
-               <string>color: #475569; font-size: 13px; border: none;</string>
-              </property>
+             <widget class="QLabel" name="lblCashierCount">
               <property name="text">
-               <string>Kho</string>
+               <string>0</string>
               </property>
              </widget>
             </item>
             <item>
-             <widget class="QLabel" name="lblCashierCount">
-              <property name="styleSheet">
-               <string>font-size: 20px; font-weight: bold; color: #0f172a; border: none;</string>
-              </property>
+             <widget class="QLabel" name="lblCashierText">
               <property name="text">
-               <string>0</string>
+               <string>Kho</string>
               </property>
              </widget>
             </item>
            </layout>
           </item>
          </layout>
+        </item>
+        <item>
+         <spacer name="spacerRoles">
+          <property name="orientation">
+           <enum>Qt::Orientation::Vertical</enum>
+          </property>
+          <property name="sizeType">
+           <enum>QSizePolicy::Policy::Expanding</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>0</width>
+            <height>0</height>
+           </size>
+          </property>
+         </spacer>
         </item>
        </layout>
       </widget>
@@ -251,33 +970,17 @@
    <item>
     <layout class="QHBoxLayout" name="toolbarLayout">
      <property name="spacing">
-      <number>15</number>
+      <number>8</number>
      </property>
      <item>
       <widget class="QLineEdit" name="txtSearch">
-       <property name="styleSheet">
-        <string>QLineEdit { background-color: white; border: 1px solid #cbd5e1; border-radius: 6px; padding: 10px; font-size: 14px;}
-QLineEdit:focus { border: 1px solid #3b82f6; }</string>
-       </property>
        <property name="placeholderText">
-        <string>Tìm kiếm theo tên hoặc username...</string>
+        <string>Tìm kiếm theo họ tên hoặc tên đăng nhập</string>
        </property>
       </widget>
      </item>
      <item>
       <widget class="QComboBox" name="cboRole">
-       <property name="styleSheet">
-        <string notr="true">QComboBox { background-color: white; border: 1px solid #cbd5e1; border-radius: 6px; padding: 8px; font-size: 14px; }
-/* Định dạng cho danh sách xổ xuống của ComboBox */
-QComboBox QAbstractItemView {
-    background-color: white; 
-    color: #1e293b; /* Màu chữ bình thường */
-    selection-background-color: #3b82f6; /* Màu nền xanh khi rê chuột/chọn */
-    selection-color: white; /* Màu chữ trắng khi rê chuột/chọn */
-    border: 1px solid #cbd5e1;
-    outline: none; /* Bỏ viền chấm gạch xấu xí khi click */
-}</string>
-       </property>
        <item>
         <property name="text">
          <string>Tất cả chức vụ</string>
@@ -302,18 +1005,6 @@ QComboBox QAbstractItemView {
      </item>
      <item>
       <widget class="QComboBox" name="cboStatus">
-       <property name="styleSheet">
-        <string notr="true">QComboBox { background-color: white; border: 1px solid #cbd5e1; border-radius: 6px; padding: 8px; font-size: 14px; }
-/* Định dạng cho danh sách xổ xuống của ComboBox */
-QComboBox QAbstractItemView {
-    background-color: white; 
-    color: #1e293b; /* Màu chữ bình thường */
-    selection-background-color: #3b82f6; /* Màu nền xanh khi rê chuột/chọn */
-    selection-color: white; /* Màu chữ trắng khi rê chuột/chọn */
-    border: 1px solid #cbd5e1;
-    outline: none; /* Bỏ viền chấm gạch xấu xí khi click */
-}</string>
-       </property>
        <item>
         <property name="text">
          <string>Tất cả trạng thái</string>
@@ -336,10 +1027,6 @@ QComboBox QAbstractItemView {
        <property name="cursor">
         <cursorShape>PointingHandCursor</cursorShape>
        </property>
-       <property name="styleSheet">
-        <string>QPushButton { background-color: #2563eb; color: white; border-radius: 6px; padding: 10px 20px; font-weight: bold; font-size: 14px; }
-QPushButton:hover { background-color: #1d4ed8; }</string>
-       </property>
        <property name="text">
         <string>+ Thêm nhân sự</string>
        </property>
@@ -348,54 +1035,103 @@ QPushButton:hover { background-color: #1d4ed8; }</string>
     </layout>
    </item>
    <item>
-    <widget class="QTableWidget" name="tblEmployees">
-     <property name="focusPolicy">
-      <enum>Qt::NoFocus</enum>
+    <widget class="QFrame" name="frameTable">
+     <property name="frameShape">
+      <enum>QFrame::Shape::NoFrame</enum>
      </property>
-     <property name="styleSheet">
-      <string>QTableWidget { background-color: white; border: 1px solid #e2e8f0; border-radius: 8px; color: #1e293b;}
-QHeaderView::section { background-color: #f1f5f9; padding: 12px; font-weight: bold; color: #475569; border: none; border-bottom: 1px solid #e2e8f0;}
-QTableWidget::item { padding: 8px; border-bottom: 1px solid #f1f5f9; }</string>
-     </property>
-     <property name="editTriggers">
-      <set>QAbstractItemView::NoEditTriggers</set>
-     </property>
-     <property name="selectionBehavior">
-      <enum>QAbstractItemView::SelectRows</enum>
-     </property>
-     <property name="showGrid">
-      <bool>false</bool>
-     </property>
-     <column>
-      <property name="text">
-       <string>USER ID</string>
+     <layout class="QVBoxLayout" name="tableFrameLayout">
+      <property name="spacing">
+       <number>0</number>
       </property>
-     </column>
-     <column>
-      <property name="text">
-       <string>HỌ TÊN</string>
+      <property name="leftMargin">
+       <number>12</number>
       </property>
-     </column>
-     <column>
-      <property name="text">
-       <string>TÊN ĐĂNG NHẬP</string>
+      <property name="topMargin">
+       <number>12</number>
       </property>
-     </column>
-     <column>
-      <property name="text">
-       <string>VAI TRÒ</string>
+      <property name="rightMargin">
+       <number>12</number>
       </property>
-     </column>
-     <column>
-      <property name="text">
-       <string>TRẠNG THÁI</string>
+      <property name="bottomMargin">
+       <number>12</number>
       </property>
-     </column>
-     <column>
-      <property name="text">
-       <string>ACTIONS</string>
-      </property>
-     </column>
+      <item>
+       <widget class="QTableWidget" name="tblEmployees">
+        <property name="focusPolicy">
+         <enum>Qt::FocusPolicy::NoFocus</enum>
+        </property>
+        <property name="frameShape">
+         <enum>QFrame::Shape::NoFrame</enum>
+        </property>
+        <property name="editTriggers">
+         <set>QAbstractItemView::EditTrigger::NoEditTriggers</set>
+        </property>
+        <property name="alternatingRowColors">
+         <bool>false</bool>
+        </property>
+        <property name="selectionMode">
+         <enum>QAbstractItemView::SelectionMode::SingleSelection</enum>
+        </property>
+        <property name="selectionBehavior">
+         <enum>QAbstractItemView::SelectionBehavior::SelectRows</enum>
+        </property>
+        <property name="showGrid">
+         <bool>false</bool>
+        </property>
+        <attribute name="horizontalHeaderMinimumSectionSize">
+         <number>90</number>
+        </attribute>
+        <attribute name="horizontalHeaderDefaultSectionSize">
+         <number>130</number>
+        </attribute>
+        <attribute name="horizontalHeaderHighlightSections">
+         <bool>false</bool>
+        </attribute>
+        <attribute name="horizontalHeaderStretchLastSection">
+         <bool>true</bool>
+        </attribute>
+        <attribute name="verticalHeaderVisible">
+         <bool>false</bool>
+        </attribute>
+        <attribute name="verticalHeaderMinimumSectionSize">
+         <number>44</number>
+        </attribute>
+        <attribute name="verticalHeaderDefaultSectionSize">
+         <number>44</number>
+        </attribute>
+        <column>
+         <property name="text">
+          <string>USER ID</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string>HỌ TÊN</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string>TÊN ĐĂNG NHẬP</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string>VAI TRÒ</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string>TRẠNG THÁI</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string>THAO TÁC</string>
+         </property>
+        </column>
+       </widget>
+      </item>
+     </layout>
     </widget>
    </item>
   </layout>

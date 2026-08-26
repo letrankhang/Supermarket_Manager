@@ -10,7 +10,8 @@ from PySide6.QtWidgets import (QWidget, QVBoxLayout, QHBoxLayout, QLabel, QTable
 from PySide6.QtCore import QEvent, QObject, QThread, Signal, Qt, QRectF
 from PySide6.QtGui import QPainter, QColor, QFont, QPen, QLinearGradient, QPixmap
 
-import qtawesome as qta
+from src.utils.FormIcon import apply_icon, icon
+from src.utils.Theme import set_state
 
 from src.gui.tabs.dashboard_ui import Ui_Form
 from src.dtos.DashboardDTO import DashboardDTO, RecentTransactionDTO
@@ -22,35 +23,26 @@ CARD_ICON_SIZE = QtCore.QSize(16, 16)
 QUICK_ACTION_ICON_SIZE = QtCore.QSize(24, 24)
 REFRESH_ICON_SIZE = QtCore.QSize(14, 14)
 
-# Huy hiệu icon trên 4 thẻ thống kê: ô vuông bo góc, icon nằm chính giữa.
-# Màu nền và bo góc của huy hiệu nằm trong QSS của dashboard.ui.
 ICON_BADGE_SIZE = QtCore.QSize(32, 32)
 ICON_BADGE_TEXT_GAP = 10
 
-# Chiều cao dải tiêu đề của 2 khối hàng dưới (biểu đồ / giao dịch gần đây).
-# Phải khớp với minimumSize/maximumSize của frame_18 trong dashboard.ui.
 TITLE_BAR_HEIGHT = 32
 
-# Độ rộng cố định của 2 cột trong bảng giao dịch gần đây.
-# Tổng bề ngang bảng là cố định (bằng khổ card), nên cột "Thời gian" giãn
-# lấy phần dư: 2 số này càng lớn thì cột thời gian càng hẹp lại.
-DO_RONG_COT_MA_HOA_DON = 107
-DO_RONG_COT_TONG_TIEN = 96
+INVOICE_CODE_COLUMN_WIDTH = 107
+TOTAL_AMOUNT_COLUMN_WIDTH = 96
 
-# Chiều cao cố định của mỗi dòng trong bảng giao dịch gần đây.
-# Phải đặt cứng thay vì cho dòng giãn đầy bảng, nếu không dữ liệu nhiều
-# sẽ bị bóp dẹp lại thay vì tràn ra thành thanh cuộn.
-CHIEU_CAO_DONG_GIAO_DICH = 42
-
+TRANSACTION_ROW_HEIGHT = 42
 
 class DashboardWorker(QThread):
     data_fetched = Signal(DashboardDTO)
     error_occurred = Signal(str)
 
+
     def __init__(self, low_stock_threshold: int = 10, parent: Optional[QtCore.QObject] = None) -> None:
         super().__init__(parent)
         self.low_stock_threshold = low_stock_threshold
         self._service = DashboardServiceImpl()
+
 
     def run(self) -> None:
         try:
@@ -61,17 +53,17 @@ class DashboardWorker(QThread):
             logger.exception("Error occurred in DashboardWorker thread: %s", e)
             self.error_occurred.emit(str(e))
 
-
 class WeeklyRevenueWorker(QThread):
-    """Lấy doanh thu 4 tuần của một tháng ở luồng nền, tránh treo giao diện."""
     revenue_fetched = Signal(list)
     error_occurred = Signal(str)
+
 
     def __init__(self, year: int, month: int, parent: Optional[QtCore.QObject] = None) -> None:
         super().__init__(parent)
         self.year = year
         self.month = month
         self._service = DashboardServiceImpl()
+
 
     def run(self) -> None:
         try:
@@ -83,14 +75,15 @@ class WeeklyRevenueWorker(QThread):
 
 
 class DashboardChartWidget(QWidget):
-    """Vẽ biểu đồ cột doanh thu theo tuần bằng QPainter, không cần matplotlib hay QtCharts."""
     def __init__(self, parent: Optional[QWidget] = None) -> None:
         super().__init__(parent)
         self.weekly_revenue: List[float] = [0.0, 0.0, 0.0, 0.0]
 
+
     def set_data(self, weekly_revenue: List[float]) -> None:
         self.weekly_revenue = weekly_revenue
         self.update()
+
 
     def paintEvent(self, event: QtGui.QPaintEvent) -> None:
         painter = QPainter(self)
@@ -112,15 +105,13 @@ class DashboardChartWidget(QWidget):
 
         max_val = max(self.weekly_revenue) if self.weekly_revenue else 0.0
         if max_val <= 0.0:
-            max_val = 1000000.0  # Chưa có doanh thu vẫn phải có thang đo, tránh chia cho 0
+            max_val = 1000000.0  
 
-        # Làm tròn trần lên số đẹp để vạch chia trục Y không lẻ
         magnitude = 10 ** math.floor(math.log10(max_val)) if max_val > 0 else 1
         if magnitude == 0:
             magnitude = 1
         max_scale = math.ceil(max_val / magnitude) * magnitude
 
-        # Lưới ngang và nhãn trục Y
         painter.setPen(QPen(QColor("#e2e8f0"), 1))
         num_grid_lines = 4
         for i in range(num_grid_lines + 1):
@@ -144,7 +135,6 @@ class DashboardChartWidget(QWidget):
             )
             painter.setPen(QPen(QColor("#e2e8f0"), 1))
 
-        # Cột doanh thu từng tuần
         num_bars = len(self.weekly_revenue)
         if num_bars > 0:
             bar_gap = 40
@@ -186,33 +176,30 @@ class DashboardChartWidget(QWidget):
 
 
 class DashboardController(QWidget, Ui_Form):
-    """Điều khiển màn hình Dashboard: dựng giao diện, tải dữ liệu nền và vẽ đồ họa."""
-
-    # Phát khi bấm một ô thao tác nhanh, kèm mã hành động
     quick_action_requested = Signal(str)
+
 
     def __init__(self, parent: Optional[QWidget] = None) -> None:
         super().__init__(parent)
         self.setupUi(self)
-        
+
         self.chart_widget: Optional[DashboardChartWidget] = None
         self._revenue_worker: Optional[WeeklyRevenueWorker] = None
-        self._thang_dang_chon: int = datetime.now().month
+        self._selected_month: int = datetime.now().month
         self.table_widget: Optional[QTableWidget] = None
         self.worker: Optional[DashboardWorker] = None
 
         self.quick_action_keys: dict = {}
 
-        # Chỉ bật khi người dùng tự bấm nút, để lần tải lúc chuyển tab không hiện hộp thoại
-        self._bao_khi_tai_xong = False
+        self._notify_loaded = False
 
         self._setup_custom_ui()
         self._setup_card_icons()
         self._setup_quick_actions()
         self._setup_connections()
 
+
     def _setup_custom_ui(self) -> None:
-        """Dựng biểu đồ và bảng giao dịch gần đây vào các frame trống của dashboard.ui."""
         if not self.chart_container.layout():
             chart_layout = QVBoxLayout(self.chart_container)
             chart_layout.setContentsMargins(0, 0, 0, 0)
@@ -236,31 +223,23 @@ class DashboardController(QWidget, Ui_Form):
         self.table_widget.setColumnCount(4)
         self.table_widget.setHorizontalHeaderLabels(["Mã hóa đơn", "Thời gian", "Thanh toán", "Tổng tiền"])
         
-        # Bảng chỉ để xem: không sửa, không chọn, không nhận focus
         self.table_widget.verticalHeader().setVisible(False)
         self.table_widget.setEditTriggers(QAbstractItemView.EditTrigger.NoEditTriggers)
         
         self.table_widget.setSelectionMode(QAbstractItemView.SelectionMode.NoSelection)
         self.table_widget.setFocusPolicy(Qt.FocusPolicy.NoFocus)
 
-        # Chia độ rộng cột: 3 cột co vừa nội dung, riêng cột "Thời gian" giãn lấy
-        # phần dư của bảng. Không cho cột "Thanh toán" giãn vì nó chỉ cần đủ chỗ
-        # cho chữ dài nhất là "Chuyển khoản", giãn thêm thì trông thừa thãi.
         header = self.table_widget.horizontalHeader()
-        # "Mã hóa đơn" và "Tổng tiền" đặt cứng theo hằng số ở đầu file.
-        # "Thanh toán" co vừa nội dung (đủ chỗ cho chữ dài nhất "Chuyển khoản").
-        # "Thời gian" giãn để nuốt phần bề ngang còn lại của bảng.
+
         header.setSectionResizeMode(0, QHeaderView.ResizeMode.Fixed)
-        self.table_widget.setColumnWidth(0, DO_RONG_COT_MA_HOA_DON)
+        self.table_widget.setColumnWidth(0, INVOICE_CODE_COLUMN_WIDTH)
         header.setSectionResizeMode(1, QHeaderView.ResizeMode.Stretch)
         header.setSectionResizeMode(2, QHeaderView.ResizeMode.ResizeToContents)
         header.setSectionResizeMode(3, QHeaderView.ResizeMode.Fixed)
-        self.table_widget.setColumnWidth(3, DO_RONG_COT_TONG_TIEN)
+        self.table_widget.setColumnWidth(3, TOTAL_AMOUNT_COLUMN_WIDTH)
 
-        # Dòng cao cố định để bảng tràn ra thành thanh cuộn dọc khi nhiều giao dịch.
-        # Kiểu dáng thanh cuộn nằm trong QSS QScrollBar của dashboard.ui, dùng chung với pos.ui.
         self.table_widget.verticalHeader().setSectionResizeMode(QHeaderView.ResizeMode.Fixed)
-        self.table_widget.verticalHeader().setDefaultSectionSize(CHIEU_CAO_DONG_GIAO_DICH)
+        self.table_widget.verticalHeader().setDefaultSectionSize(TRANSACTION_ROW_HEIGHT)
         self.table_widget.setSizeAdjustPolicy(QAbstractScrollArea.SizeAdjustPolicy.AdjustIgnored)
         self.table_widget.setVerticalScrollMode(QAbstractItemView.ScrollMode.ScrollPerPixel)
         self.table_widget.setVerticalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAsNeeded)
@@ -268,32 +247,26 @@ class DashboardController(QWidget, Ui_Form):
 
         table_layout.addWidget(self.table_widget)
 
+
     def _setup_card_icons(self) -> None:
-        """Gắn icon Font Awesome trước tiêu đề của 4 thẻ thống kê."""
-        # Mỗi thẻ: (tên icon Font Awesome, màu icon, objectName của huy hiệu).
-        # Màu nền huy hiệu tra theo objectName trong QSS của dashboard.ui.
         icon_map = {
-            self.label_4: ("fa5s.chart-line", "#3b82f6", "badgeRevenue"),
-            self.label_6: ("fa5s.file-invoice", "#8b5cf6", "badgeInvoice"),
-            self.label_8: ("fa5s.exclamation-triangle", "#b45309", "badgeStock"),
-            self.label_10: ("fa5s.user-plus", "#10b981", "badgeCustomer"),
+            self.label_4: ("revenue", "#3b82f6", "badgeRevenue"),
+            self.label_6: ("invoice", "#8b5cf6", "badgeInvoice"),
+            self.label_8: ("stock", "#b45309", "badgeStock"),
+            self.label_10: ("add-customer", "#10b981", "badgeCustomer"),
         }
 
-        for title_label, (icon_name, icon_color, badge_name) in icon_map.items():
-            try:
-                pixmap = qta.icon(icon_name, color=icon_color).pixmap(CARD_ICON_SIZE)
-            except Exception as e:
-                logger.error("Could not load dashboard card icon '%s': %s", icon_name, e)
+        for title_label, (icon_name, tone, badge_name) in icon_map.items():
+            built = icon(icon_name, tone)
+            if built.isNull():
                 continue
-            self._put_icon_before_title(title_label, pixmap, badge_name)
+            self._put_icon_before_title(title_label, built.pixmap(CARD_ICON_SIZE), badge_name)
 
-    def _put_icon_before_title(self, title_label: QLabel, pixmap: QPixmap,
-                               badge_name: str) -> None:
-        """Bọc tiêu đề thẻ vào một hàng gồm huy hiệu icon và chữ."""
+
+    def _put_icon_before_title(self, title_label: QLabel, pixmap: QPixmap, badge_name: str) -> None:
         card = title_label.parentWidget()
         card_layout = card.layout()
 
-        # Nhớ vị trí cũ rồi gỡ nhãn ra, để chèn lại đúng chỗ đó dưới dạng một hàng
         position = card_layout.indexOf(title_label)
         card_layout.removeWidget(title_label)
 
@@ -308,12 +281,11 @@ class DashboardController(QWidget, Ui_Form):
 
         card_layout.insertLayout(position, title_row)
 
+
     def _create_icon_badge(self, parent: QWidget, pixmap: QPixmap, badge_name: str) -> QLabel:
-        """Tạo ô nền bo góc nằm sau icon của thẻ thống kê."""
         badge = QLabel(parent)
         badge.setPixmap(pixmap)
 
-        # Nền nhạt bo góc mềm lấy từ QSS trong dashboard.ui
         badge.setObjectName(badge_name)
 
         badge.setFixedSize(ICON_BADGE_SIZE)
@@ -321,13 +293,13 @@ class DashboardController(QWidget, Ui_Form):
 
         return badge
 
+
     def _setup_quick_actions(self) -> None:
-        """Đổ icon và nhãn vào 4 ô thao tác nhanh; bấm vào ô sẽ phát quick_action_requested."""
         tiles = [
-            (self.frame_7, "pos", "Bán hàng", "fa5s.shopping-cart"),
-            (self.frame_11, "products", "Sản phẩm", "fa5s.box"),
-            (self.frame_9, "importing", "Nhập hàng", "fa5s.download"),
-            (self.frame_8, "customers", "Khách hàng", "fa5s.users"),
+            (self.frame_7, "pos", "Bán hàng", "pos"),
+            (self.frame_11, "products", "Sản phẩm", "products"),
+            (self.frame_9, "importing", "Nhập hàng", "import"),
+            (self.frame_8, "customers", "Khách hàng", "customers"),
         ]
 
         for frame, action_key, caption, icon_name in tiles:
@@ -336,8 +308,8 @@ class DashboardController(QWidget, Ui_Form):
             frame.setCursor(Qt.CursorShape.PointingHandCursor)
             frame.installEventFilter(self)
 
+
     def _build_quick_action_tile(self, frame: QWidget, caption: str, icon_name: str) -> None:
-        """Vẽ nội dung cho một ô thao tác nhanh."""
         tile_layout = frame.layout() or QVBoxLayout(frame)
         tile_layout.setContentsMargins(8, 10, 8, 10)
 
@@ -345,14 +317,11 @@ class DashboardController(QWidget, Ui_Form):
 
         icon_label = QLabel(frame)
         icon_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        try:
-            icon_label.setPixmap(qta.icon(icon_name, color="#3b82f6").pixmap(QUICK_ACTION_ICON_SIZE))
-        except Exception as e:
-            logger.error("Could not load quick action icon '%s': %s", icon_name, e)
+        apply_icon(icon_label, icon_name, tone="primary", size=QUICK_ACTION_ICON_SIZE)
 
         caption_label = QLabel(caption, frame)
         caption_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        # Kiểu chữ lấy từ QSS #lblQuickActionCaption trong dashboard.ui
+
         caption_label.setObjectName("lblQuickActionCaption")
 
         tile_layout.addStretch()
@@ -360,46 +329,41 @@ class DashboardController(QWidget, Ui_Form):
         tile_layout.addWidget(caption_label)
         tile_layout.addStretch()
 
+
     def eventFilter(self, source: QObject, event: QEvent) -> bool:
-        """Biến cú click lên ô thao tác nhanh thành tín hiệu quick_action_requested."""
         if event.type() == QEvent.Type.MouseButtonRelease and source in self.quick_action_keys:
             self.quick_action_requested.emit(self.quick_action_keys[source])
 
         return super().eventFilter(source, event)
 
+
     def _setup_connections(self) -> None:
-        """Nối các tín hiệu tương tác của màn hình."""
         self._setup_refresh_button()
-        self.pushButton.clicked.connect(self._on_refresh_clicked)
+        self.btnRefresh.clicked.connect(self._on_refresh_clicked)
         self._setup_month_selector()
 
+
     def _setup_month_selector(self) -> None:
-        """Đưa ô chọn tháng về tháng hiện tại và nối sự kiện đổi tháng.
+        current_month = datetime.now().month
 
-        Trước đây ô này chỉ nằm trên giao diện chứ không nối gì, luôn hiện
-        "Tháng 1" trong khi biểu đồ vẽ theo tháng hiện tại.
-        """
-        thang_hien_tai = datetime.now().month
-
-        # Chặn tín hiệu lúc đặt giá trị đầu để không nạp dữ liệu thừa một lần
         self.comboBox.blockSignals(True)
-        self.comboBox.setCurrentIndex(thang_hien_tai - 1)
+        self.comboBox.setCurrentIndex(current_month - 1)
         self.comboBox.blockSignals(False)
 
-        self._thang_dang_chon = thang_hien_tai
+        self._selected_month = current_month
         self.comboBox.currentIndexChanged.connect(self._on_month_changed)
 
+
     def _on_month_changed(self, index: int) -> None:
-        """Đổi tháng thì vẽ lại biểu đồ doanh thu theo tháng đó."""
-        thang = index + 1
-        if thang < 1 or thang > 12:
+        month = index + 1
+        if month < 1 or month > 12:
             return
 
-        self._thang_dang_chon = thang
-        self._load_weekly_revenue(datetime.now().year, thang)
+        self._selected_month = month
+        self._load_weekly_revenue(datetime.now().year, month)
+
 
     def _load_weekly_revenue(self, year: int, month: int) -> None:
-        """Chạy luồng nền lấy doanh thu 4 tuần của tháng được chọn."""
         if self._revenue_worker is not None and self._revenue_worker.isRunning():
             return
 
@@ -411,42 +375,35 @@ class DashboardController(QWidget, Ui_Form):
         self._revenue_worker.finished.connect(lambda: self.comboBox.setEnabled(True))
         self._revenue_worker.start()
 
+
     def _on_weekly_revenue_fetched(self, weekly_revenue: list) -> None:
         if self.chart_widget:
             self.chart_widget.set_data(weekly_revenue)
+
 
     def _on_weekly_revenue_error(self, message: str) -> None:
         logger.error("Không tải được doanh thu theo tháng: %s", message)
         if self.chart_widget:
             self.chart_widget.set_data([0.0, 0.0, 0.0, 0.0])
 
-    def _setup_refresh_button(self) -> None:
-        """Gắn icon vòng xoay vào nút Tải lại dữ liệu."""
-        # Màu nền, bo góc và kích thước nút nằm trong QSS #pushButton của dashboard.ui
-        try:
-            icon = qta.icon("fa5s.sync-alt", color="#ffffff", color_disabled="#f8fafc")
-        except Exception as e:
-            logger.error("Could not load dashboard refresh icon: %s", e)
-            return
 
-        self.pushButton.setIcon(icon)
-        self.pushButton.setIconSize(REFRESH_ICON_SIZE)
+    def _setup_refresh_button(self) -> None:
+        apply_icon(self.btnRefresh, "refresh", tone="on-primary", size=REFRESH_ICON_SIZE)
+
 
     def _on_refresh_clicked(self) -> None:
-        """Bấm nút Tải lại dữ liệu: bật cờ để báo kết quả khi tải xong."""
-        # MainWindowController cũng gọi load_data khi chuyển tab, cờ này phân biệt hai đường vào
-        self._bao_khi_tai_xong = True
+        self._notify_loaded = True
         self.load_data()
 
+
     def load_data(self) -> None:
-        """Chạy luồng nền lấy dữ liệu dashboard."""
         if self.worker and self.worker.isRunning():
             logger.warning("Dashboard fetch already running, ignoring reload request.")
-            self._bao_khi_tai_xong = False
+            self._notify_loaded = False
             return
 
-        self.pushButton.setEnabled(False)
-        self.pushButton.setText("Đang tải...")
+        self.btnRefresh.setEnabled(False)
+        self.btnRefresh.setText("Đang tải...")
 
         self.worker = DashboardWorker(low_stock_threshold=10)
         self.worker.data_fetched.connect(self._on_data_fetched)
@@ -454,49 +411,39 @@ class DashboardController(QWidget, Ui_Form):
         self.worker.finished.connect(self._on_worker_finished)
         self.worker.start()
 
+
     def _on_data_fetched(self, data: DashboardDTO) -> None:
-        """Đổ dữ liệu lấy được lên các thẻ, biểu đồ và bảng giao dịch."""
         logger.info("Dashboard stats successfully received. Rendering UI elements...")
 
-
-        # 1. Doanh thu hôm nay
         revenue_str = f"{data.today_revenue:,.0f} đ"
         self.label_5.setText(revenue_str)
         self._format_growth_label(self.label_12, data.revenue_growth_rate)
 
-        # 2. Số hóa đơn hôm nay
         self.label_14.setText(f"{data.today_invoice_count:,}")
         self._format_growth_label(self.label_7, data.invoice_growth_rate)
 
-        # 3. Cảnh báo sắp hết hàng
         self.label_9.setText(f"{data.low_stock_count}")
         if data.low_stock_count > 0:
             self.label_13.setText("Cần nhập hàng ngay!")
-            self._apply_state(self.label_13, "canhBao")
+            set_state(self.label_13, "warning")
         else:
             self.label_13.setText("Kho hàng an toàn")
-            self._apply_state(self.label_13, "anToan")
+            set_state(self.label_13, "safe")
 
-        # 4. Khách hàng mới
         self.label_11.setText(f"{data.new_customer_count}")
         self._format_growth_label(self.label_15, data.customer_growth_rate)
 
-        # 5. Biểu đồ doanh thu theo tuần
-        # DashboardDTO luôn trả doanh thu của tháng hiện tại. Nếu người dùng
-        # đang xem tháng khác thì giữ nguyên lựa chọn đó, nạp lại đúng tháng ấy.
-        if self._thang_dang_chon == datetime.now().month:
+        if self._selected_month == datetime.now().month:
             if self.chart_widget:
                 self.chart_widget.set_data(data.weekly_revenue)
         else:
-            self._load_weekly_revenue(datetime.now().year, self._thang_dang_chon)
+            self._load_weekly_revenue(datetime.now().year, self._selected_month)
 
-        # 6. Bảng giao dịch gần đây
         if self.table_widget:
             self.table_widget.setRowCount(0)
             for idx, tx in enumerate(data.recent_transactions):
                 self.table_widget.insertRow(idx)
                 
-                # Mã hóa đơn căn giữa cho thẳng hàng với tiêu đề cột phía trên
                 code_item = QTableWidgetItem(tx.invoice_code)
                 code_item.setTextAlignment(Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignVCenter)
                 self.table_widget.setItem(idx, 0, code_item)
@@ -505,7 +452,6 @@ class DashboardController(QWidget, Ui_Form):
                 time_item.setTextAlignment(Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignVCenter)
                 self.table_widget.setItem(idx, 1, time_item)
                 
-                # Hình thức thanh toán: căn giữa như cột thời gian
                 payment_item = QTableWidgetItem(tx.payment_method)
                 payment_item.setTextAlignment(Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignVCenter)
                 self.table_widget.setItem(idx, 2, payment_item)
@@ -514,47 +460,37 @@ class DashboardController(QWidget, Ui_Form):
                 total_item.setTextAlignment(Qt.AlignmentFlag.AlignRight | Qt.AlignmentFlag.AlignVCenter)
                 self.table_widget.setItem(idx, 3, total_item)
 
-        # Đặt cuối cùng: hộp thoại chặn luồng giao diện, hiện sớm thì người dùng
-        # bấm OK xong mới thấy số liệu mới nhảy vào
-        if self._bao_khi_tai_xong:
-            self._bao_khi_tai_xong = False
+        if self._notify_loaded:
+            self._notify_loaded = False
             QtWidgets.QMessageBox.information(
                 self,
                 "Tải lại dữ liệu",
                 f"Đã cập nhật số liệu mới vào lúc {datetime.now():%H:%M:%S}.",
             )
 
+
     def _format_growth_label(self, label: QLabel, rate: float) -> None:
-        """Đặt ký hiệu tăng/giảm cho nhãn tỉ lệ; màu do QSS đọc thuộc tính trangThai."""
         if rate > 0:
             label.setText(f"▲ +{rate:,.1f}%")
-            self._apply_state(label, "tang")
+            set_state(label, "up")
         elif rate < 0:
             label.setText(f"▼ {rate:,.1f}%")
-            self._apply_state(label, "giam")
+            set_state(label, "down")
         else:
             label.setText(f"■ {rate:,.1f}%")
-            self._apply_state(label, "giu")
+            set_state(label, "flat")
 
-    @staticmethod
-    def _apply_state(label: QLabel, state: str) -> None:
-        """Gán thuộc tính trangThai rồi ép Qt vẽ lại nhãn theo QSS trong dashboard.ui."""
-        # Không unpolish/polish thì Qt giữ nguyên màu cũ khi trạng thái đổi
-        label.setProperty("trangThai", state)
-        label.style().unpolish(label)
-        label.style().polish(label)
 
     def _on_error(self, error_message: str) -> None:
-        """Báo lỗi cho người dùng khi tải dữ liệu thất bại."""
         logger.error("Failed to load dashboard data: %s", error_message)
-        self._bao_khi_tai_xong = False
+        self._notify_loaded = False
         QtWidgets.QMessageBox.warning(
             self,
             "Lỗi",
             f"Không thể tải dữ liệu Dashboard: {error_message}"
         )
 
+
     def _on_worker_finished(self) -> None:
-        """Bật lại nút Tải lại dữ liệu khi luồng nền kết thúc."""
-        self.pushButton.setEnabled(True)
-        self.pushButton.setText("Tải lại dữ liệu")
+        self.btnRefresh.setEnabled(True)
+        self.btnRefresh.setText("Tải lại dữ liệu")

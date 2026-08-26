@@ -1,29 +1,20 @@
-# File: src/controller/Importcontroller.py
-"""Man hinh + Controller Nhap hang (gop View+Controller giong DashboardController).
-Su dung truc tiep Ui_NhapHangTab tu import.ui va hop thoai CreateImportOrderDialogController.
-Quy tac SRP va SOLID: logic nghiep vu goi qua ImportService, khong tinh toan tai day."""
-from __future__ import annotations
-
 import logging
 from datetime import datetime, timedelta
 from typing import List, Optional
 
 from PySide6.QtCore import QObject, QThread, Signal as pyqtSignal, Qt
 from PySide6.QtWidgets import (
-    QAbstractItemView, QHBoxLayout, QHeaderView, QMessageBox,
+    QAbstractItemView, QFrame, QHBoxLayout, QHeaderView, QMessageBox,
     QTableWidget, QTableWidgetItem, QWidget,
 )
 
-import importlib
 from src.dtos.ImportDTO import ImportOrderDTO
+from src.gui.tabs.import_ui import Ui_ImportTab
 from src.services.impl.ImportServiceImpl import ImportServiceImpl
+from src.utils.Theme import badge_cell
 
-# Load module 'import' containing keyword to bypass Python SyntaxError
-_import_tab_module = importlib.import_module("src.gui.tabs.import")
-Ui_NhapHangTab = _import_tab_module.Ui_NhapHangTab
 
 logger = logging.getLogger(__name__)
-
 
 class _AsyncWorker(QObject):
     finished = pyqtSignal(object)
@@ -33,6 +24,7 @@ class _AsyncWorker(QObject):
         super().__init__()
         self._func, self._args, self._kwargs = func, args, kwargs
 
+
     def run(self) -> None:
         try:
             self.finished.emit(self._func(*self._args, **self._kwargs))
@@ -40,9 +32,7 @@ class _AsyncWorker(QObject):
             logger.exception("ImportController worker loi")
             self.failed.emit(str(exc))
 
-
-class ImportController(QWidget, Ui_NhapHangTab):
-
+class ImportController(QWidget, Ui_ImportTab):
     def __init__(self, parent=None) -> None:
         super().__init__(parent)
         self.setupUi(self)
@@ -56,22 +46,22 @@ class ImportController(QWidget, Ui_NhapHangTab):
 
         self._setup_events()
 
+
     def _setup_events(self) -> None:
-        self.btnTaoPhieu.clicked.connect(self._on_create_clicked)
-        self.cbTrangThai.currentIndexChanged.connect(self._on_filter_changed)
+        self.btnCreateOrder.clicked.connect(self._on_create_clicked)
+        self.cboStatus.currentIndexChanged.connect(self._on_filter_changed)
         self.btnPrev.clicked.connect(self._on_prev_page)
         self.btnNext.clicked.connect(self._on_next_page)
 
-        # Thiet lap layout cho table
-        header = self.tablePhieuNhap.horizontalHeader()
-        header.setSectionResizeMode(0, QHeaderView.ResizeMode.ResizeToContents)  # Mã
-        header.setSectionResizeMode(1, QHeaderView.ResizeMode.Stretch)  # NCC
-        header.setSectionResizeMode(2, QHeaderView.ResizeMode.ResizeToContents)  # Ngày
-        header.setSectionResizeMode(3, QHeaderView.ResizeMode.ResizeToContents)  # Tổng tiền
-        header.setSectionResizeMode(4, QHeaderView.ResizeMode.ResizeToContents)  # Trạng thái
-        header.setSectionResizeMode(5, QHeaderView.ResizeMode.Stretch)  # Người tạo
+        header = self.tblImportOrders.horizontalHeader()
+        header.setSectionResizeMode(0, QHeaderView.ResizeMode.ResizeToContents)  
+        header.setSectionResizeMode(1, QHeaderView.ResizeMode.Stretch)  
+        header.setSectionResizeMode(2, QHeaderView.ResizeMode.ResizeToContents)  
+        header.setSectionResizeMode(3, QHeaderView.ResizeMode.ResizeToContents)
+        header.setSectionResizeMode(4, QHeaderView.ResizeMode.Fixed)
+        self.tblImportOrders.setColumnWidth(4, 130)
+        header.setSectionResizeMode(5, QHeaderView.ResizeMode.Stretch)
 
-    # ---------------- Hanh dong ----------------
 
     def _on_create_clicked(self) -> None:
         from src.controller.CreateImportOrderDialogController import (CreateImportDialogController)
@@ -81,13 +71,16 @@ class ImportController(QWidget, Ui_NhapHangTab):
         if dialog.exec():
             self.load_data()
 
+
     def _on_filter_changed(self) -> None:
         self._apply_filter()
+
 
     def _on_prev_page(self) -> None:
         if self._current_page > 1:
             self._current_page -= 1
             self._render_current_page()
+
 
     def _on_next_page(self) -> None:
         total_items = len(self._filtered_orders)
@@ -96,36 +89,37 @@ class ImportController(QWidget, Ui_NhapHangTab):
             self._current_page += 1
             self._render_current_page()
 
-    # ---------------- Nap va Loc du lieu ----------------
 
     def load_data(self) -> None:
         self._run_async(self._service.get_all_import_orders, self._on_data_loaded)
+
 
     def _on_data_loaded(self, orders: List[ImportOrderDTO]) -> None:
         self._all_orders = orders
         self._update_statistics()
         self._apply_filter()
 
+
     def _update_statistics(self) -> None:
         now = datetime.now()
 
-        # 1. Tong chi thang nay
-        tong_chi = sum(
-            o.total_amount for o in self._all_orders
-            if o.import_date and o.import_date.month == now.month and o.import_date.year == now.year
-        )
-        self.lblTongChi.setText(f"đ {tong_chi:,.0f}")
 
-        # 2. Luot nhap gan day (7 ngay qua)
-        seven_days_ago = now - timedelta(days=7)
-        gan_day = sum(
-            1 for o in self._all_orders
-            if o.import_date and o.import_date >= seven_days_ago
+        total_spend = sum(
+            order.total_amount for order in self._all_orders
+            if order.import_date and order.import_date.month == now.month and order.import_date.year == now.year
         )
-        self.lblGanDay.setText(str(gan_day))
+        self.lblTotalSpend.setText(f"đ {total_spend:,.0f}")
+
+        seven_days_ago = now - timedelta(days=7)
+        recent = sum(
+            1 for order in self._all_orders
+            if order.import_date and order.import_date >= seven_days_ago
+        )
+        self.lblRecent.setText(str(recent))
+
 
     def _apply_filter(self) -> None:
-        filter_text = self.cbTrangThai.currentText()
+        filter_text = self.cboStatus.currentText()
         if filter_text == "Chờ xử lý":
             self._filtered_orders = []
         else:
@@ -133,6 +127,7 @@ class ImportController(QWidget, Ui_NhapHangTab):
 
         self._current_page = 1
         self._render_current_page()
+
 
     def _render_current_page(self) -> None:
         total_items = len(self._filtered_orders)
@@ -147,50 +142,40 @@ class ImportController(QWidget, Ui_NhapHangTab):
         end_idx = min(start_idx + self._page_size, total_items)
 
         page_items = self._filtered_orders[start_idx:end_idx]
-        self.tablePhieuNhap.setRowCount(len(page_items))
+        self.tblImportOrders.setRowCount(len(page_items))
 
-        for row, o in enumerate(page_items):
-            date_text = o.import_date.strftime("%d/%m/%Y %H:%M") if o.import_date else ""
-            creator = o.user_name or f"ID: {o.user_id}"
+        for row, order in enumerate(page_items):
+            date_text = order.import_date.strftime("%d/%m/%Y %H:%M") if order.import_date else ""
+            creator = order.user_name or f"ID: {order.user_id}"
 
-            # Cot: Ma nhap
-            item_id = QTableWidgetItem(str(o.import_id))
+            item_id = QTableWidgetItem(str(order.import_id))
             item_id.setTextAlignment(Qt.AlignmentFlag.AlignCenter)
 
-            # Cot: Nha cung cap
-            item_supplier = QTableWidgetItem(o.supplier_name or "")
+            item_supplier = QTableWidgetItem(order.supplier_name or "")
 
-            # Cot: Ngay nhap
             item_date = QTableWidgetItem(date_text)
             item_date.setTextAlignment(Qt.AlignmentFlag.AlignCenter)
 
-            # Cot: Tong tien
-            item_total = QTableWidgetItem(f"{o.total_amount:,.0f} đ")
+            item_total = QTableWidgetItem(f"{order.total_amount:,.0f} đ")
             item_total.setTextAlignment(Qt.AlignmentFlag.AlignRight | Qt.AlignmentFlag.AlignVCenter)
 
-            # Cot: Trang thai
-            item_status = QTableWidgetItem("Hoàn thành")
-            item_status.setTextAlignment(Qt.AlignmentFlag.AlignCenter)
-
-            # Cot: Nguoi tao
             item_creator = QTableWidgetItem(creator)
 
-            self.tablePhieuNhap.setItem(row, 0, item_id)
-            self.tablePhieuNhap.setItem(row, 1, item_supplier)
-            self.tablePhieuNhap.setItem(row, 2, item_date)
-            self.tablePhieuNhap.setItem(row, 3, item_total)
-            self.tablePhieuNhap.setItem(row, 4, item_status)
-            self.tablePhieuNhap.setItem(row, 5, item_creator)
+            self.tblImportOrders.setItem(row, 0, item_id)
+            self.tblImportOrders.setItem(row, 1, item_supplier)
+            self.tblImportOrders.setItem(row, 2, item_date)
+            self.tblImportOrders.setItem(row, 3, item_total)
+            self.tblImportOrders.setCellWidget(row, 4, badge_cell("Hoàn thành", "success"))
+            self.tblImportOrders.setItem(row, 5, item_creator)
 
         if total_items == 0:
-            self.lblPage.setText("Hiển thị 0-0 của 0 mục")
+            self.lblPage.setText("Hiển thị 0 của 0 phiếu nhập")
         else:
-            self.lblPage.setText(f"Hiển thị {start_idx + 1}-{end_idx} của {total_items} mục")
+            self.lblPage.setText(f"Hiển thị {start_idx + 1} đến {end_idx} của {total_items} phiếu nhập")
 
         self.btnPrev.setEnabled(self._current_page > 1)
         self.btnNext.setEnabled(self._current_page < total_pages)
 
-    # ---------------- Ha tang chung ----------------
 
     def _run_async(self, func, on_success, **kwargs) -> None:
         thread = QThread(self)
@@ -211,6 +196,7 @@ class ImportController(QWidget, Ui_NhapHangTab):
         worker.finished.connect(cleanup)
         worker.failed.connect(cleanup)
         thread.start()
+
 
     def show_error(self, message: str) -> None:
         QMessageBox.warning(self, "Lỗi", message)

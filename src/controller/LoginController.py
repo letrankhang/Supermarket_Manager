@@ -11,8 +11,8 @@ from src.services.impl.LoginServiceImpl import LoginServiceImpl
 from src.utils.FormIcon import add_left_icon, add_toggle_password_button, show_logo
 from src.utils.Session import Session
 
-logger = logging.getLogger(__name__)
 
+logger = logging.getLogger(__name__)
 
 class LoginController(QMainWindow, Ui_MainWindow):
     def __init__(self) -> None:
@@ -27,15 +27,19 @@ class LoginController(QMainWindow, Ui_MainWindow):
         self._setup_events()
         self._load_remembered_credentials()
 
+
     def _show_logo(self) -> None:
         show_logo(self.label_4)
+
 
     def _add_left_icons(self) -> None:
         add_left_icon(self.lineEdit_username, "person.png")
         add_left_icon(self.lineEdit_passwprd, "lock.png")
 
+
     def _add_toggle_password_button(self) -> None:
         add_toggle_password_button(self.lineEdit_passwprd)
+
 
     def _load_remembered_credentials(self) -> None:
         try:
@@ -57,6 +61,7 @@ class LoginController(QMainWindow, Ui_MainWindow):
         except Exception as e:
             logger.error("Error loading remembered credentials: %s", e)
 
+
     def _save_remembered_credentials(self, username: str, password: str) -> None:
         try:
             if self.checkBox.isChecked():
@@ -72,11 +77,13 @@ class LoginController(QMainWindow, Ui_MainWindow):
         except Exception as e:
             logger.error("Error saving remembered credentials: %s", e)
 
+
     def _setup_events(self) -> None:
         self.pushButton_login.clicked.connect(self.handle_login)
         self.pushButton_forgotpassword.clicked.connect(self.handle_forgot_password)
         self.lineEdit_username.returnPressed.connect(self.handle_login)
         self.lineEdit_passwprd.returnPressed.connect(self.handle_login)
+
 
     def handle_login(self) -> None:
         username: str = self.lineEdit_username.text().strip()
@@ -119,6 +126,7 @@ class LoginController(QMainWindow, Ui_MainWindow):
         except Exception as e:
             logger.error("Login error in controller: %s", e)
             QMessageBox.critical(self, "Lỗi hệ thống", f"Đã xảy ra lỗi hệ thống: {str(e)}")
+
 
     def handle_forgot_password(self) -> None:
         self.forgot_window = ForgotPasswordController()

@@ -13,7 +13,7 @@ class UserRepositoryImpl(UserRepository):
     def __init__(self, session: Session) -> None:
         self.session = session
 
-    # 1. HÀM CŨ: Dùng cho chức năng Đăng nhập
+
     def find_by_username(self, username: str) -> Optional[User]:
         try:
             return self.session.query(User).filter(User.username == username).first()
@@ -21,7 +21,7 @@ class UserRepositoryImpl(UserRepository):
             logger.error("Lỗi khi tìm user bằng username (%s): %s", username, e)
             raise e
 
-    # 2. HÀM CŨ: Dùng cho chức năng Đổi mật khẩu / Quên mật khẩu
+
     def update_password_hash(self, user_id: int, password_hash: str) -> bool:
         try:
             user = self.session.query(User).filter(User.user_id == user_id).first()
@@ -44,7 +44,7 @@ class UserRepositoryImpl(UserRepository):
             logger.error("Lỗi khi tìm user bằng email (%s): %s", email, e)
             raise e
 
-    # 3. HÀM MỚI: Dùng cho màn hình Quản lý Nhân sự của bạn
+
     def find_users_with_roles(self, keyword: Optional[str] = None) -> List[Tuple[User, Role]]:
         try:
             query = self.session.query(User, Role).outerjoin(Role, User.role_id == Role.role_id)

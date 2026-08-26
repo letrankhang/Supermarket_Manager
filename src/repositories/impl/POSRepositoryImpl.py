@@ -27,6 +27,7 @@ class POSRepositoryImpl(POSRepository):
             logger.error("Lỗi khi truy vấn danh sách danh mục: %s", e)
             raise e
 
+
     def find_products(self, category_id: Optional[int] = None, keyword: Optional[str] = None, limit: Optional[int] = None) -> List[Product]:
         try:
             query = self.session.query(Product)
@@ -45,10 +46,12 @@ class POSRepositoryImpl(POSRepository):
             )
             raise e
 
+
     def _apply_category_filter(self, query: Query, category_id: Optional[int]) -> Query:
         if category_id is None:
             return query
         return query.filter(Product.category_id == category_id)
+
 
     def _apply_keyword_filter(self, query: Query, keyword: Optional[str]) -> Query:
         cleaned_keyword = (keyword or "").strip()
@@ -64,6 +67,7 @@ class POSRepositoryImpl(POSRepository):
             )
         )
 
+
     def find_product_by_id(self, product_id: int) -> Optional[Product]:
         try:
             return self.session.query(Product)\
@@ -73,6 +77,7 @@ class POSRepositoryImpl(POSRepository):
             logger.error("Lỗi khi truy vấn sản phẩm id=%s: %s", product_id, e)
             raise e
 
+
     def find_product_by_barcode(self, barcode: str) -> Optional[Product]:
         try:
             return self.session.query(Product)\
@@ -81,6 +86,7 @@ class POSRepositoryImpl(POSRepository):
         except Exception as e:
             logger.error("Lỗi khi truy vấn sản phẩm theo mã vạch %s: %s", barcode, e)
             raise e
+
 
     def find_products_by_ids(self, product_ids: List[int]) -> List[Product]:
         if not product_ids:
@@ -93,6 +99,7 @@ class POSRepositoryImpl(POSRepository):
             logger.error("Lỗi khi truy vấn sản phẩm theo danh sách ID %s: %s", product_ids, e)
             raise e
 
+
     def insert_invoice(self, invoice: SalesInvoice) -> SalesInvoice:
         try:
             self.session.add(invoice)
@@ -101,6 +108,7 @@ class POSRepositoryImpl(POSRepository):
         except Exception as e:
             logger.error("Lỗi khi ghi hóa đơn bán hàng: %s", e)
             raise e
+
 
     def insert_invoice_details(self, details: List[SalesDetail]) -> None:
         if not details:
@@ -111,6 +119,7 @@ class POSRepositoryImpl(POSRepository):
         except Exception as e:
             logger.error("Lỗi khi ghi chi tiết hóa đơn: %s", e)
             raise e
+
 
     def decrease_stock(self, product_id: int, quantity: int) -> None:
         try:
@@ -124,38 +133,40 @@ class POSRepositoryImpl(POSRepository):
             logger.error("Lỗi khi trừ tồn kho sản phẩm id=%s: %s", product_id, e)
             raise e
 
+
     def find_invoice_by_id(self, invoice_id: int) -> Optional[SalesInvoice]:
         try:
-            return self.session.query(SalesInvoice)                .filter(SalesInvoice.invoice_id == invoice_id)                .one_or_none()
+            return self.session.query(SalesInvoice).filter(SalesInvoice.invoice_id == invoice_id).one_or_none()
         except Exception as e:
             logger.error("Lỗi khi truy vấn hóa đơn %s: %s", invoice_id, e)
             raise e
 
+
     def find_invoice_lines(self, invoice_id: int) -> List[Tuple[SalesDetail, Any]]:
-        """Lấy các dòng hàng của hóa đơn, join sang products để có tên và đơn vị tính."""
         try:
-            return self.session.query(SalesDetail, Product)                .join(Product, Product.product_id == SalesDetail.product_id)                .filter(SalesDetail.invoice_id == invoice_id)                .order_by(Product.product_name.asc())                .all()
+            return self.session.query(SalesDetail, Product).join(Product, Product.product_id == SalesDetail.product_id).filter(SalesDetail.invoice_id == invoice_id).order_by(Product.product_name.asc())                .all()
         except Exception as e:
             logger.error("Lỗi khi truy vấn chi tiết hóa đơn %s: %s", invoice_id, e)
             raise e
+
 
     def find_customer_name(self, customer_id: Optional[int]) -> Optional[str]:
         if customer_id is None:
             return None
         try:
-            return self.session.query(Customer.full_name)                .filter(Customer.customer_id == customer_id)                .scalar()
+            return self.session.query(Customer.full_name).filter(Customer.customer_id == customer_id).scalar()
         except Exception as e:
             logger.error("Lỗi khi truy vấn tên khách hàng %s: %s", customer_id, e)
             raise e
+
 
     def find_user_name(self, user_id: Optional[int]) -> Optional[str]:
         if user_id is None:
             return None
         try:
-            row = self.session.query(User.full_name, User.username)                .filter(User.user_id == user_id)                .one_or_none()
+            row = self.session.query(User.full_name, User.username).filter(User.user_id == user_id).one_or_none()
             if row is None:
                 return None
-            # Ưu tiên họ tên đầy đủ, không có thì lấy tên đăng nhập
             if row[0]:
                 return row[0]
             return row[1]

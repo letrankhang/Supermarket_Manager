@@ -36,12 +36,14 @@ class CashPaymentDialogController(QDialog, Ui_CashPaymentDialog):
         self._setup_signals()
         self._update_change()
 
+
     def _setup_input(self) -> None:
         expression = QRegularExpression(r"[0-9.]{0,20}")
         self.txtCashReceived.setValidator(
             QRegularExpressionValidator(expression, self)
         )
         self.txtCashReceived.setFocus()
+
 
     def _setup_signals(self) -> None:
         self.txtCashReceived.textEdited.connect(self._on_cash_text_edited)
@@ -60,25 +62,30 @@ class CashPaymentDialogController(QDialog, Ui_CashPaymentDialog):
         self.btnConfirm.clicked.connect(self._on_confirm)
         self.btnCancel.clicked.connect(self.reject)
 
+
     def _on_cash_text_edited(self, text: str) -> None:
         amount = self._parse_amount(text)
         self._set_amount_text(amount)
         self._update_change()
+
 
     def _on_quick_amount(self, amount: Decimal) -> None:
         current = self._parse_amount(self.txtCashReceived.text())
         self._set_amount_text(current + amount)
         self._update_change()
 
+
     def _on_exact_amount(self) -> None:
         self._set_amount_text(self.total_amount)
         self._update_change()
+
 
     def _set_amount_text(self, amount: Decimal) -> None:
         if amount <= 0:
             self.txtCashReceived.setText("")
             return
         self.txtCashReceived.setText(format_currency(amount, with_suffix=False))
+
 
     def _parse_amount(self, text: str) -> Decimal:
         digits = "".join(character for character in (text or "") if character.isdigit())
@@ -89,6 +96,7 @@ class CashPaymentDialogController(QDialog, Ui_CashPaymentDialog):
         except InvalidOperation:
             logger.warning("Số tiền khách đưa không hợp lệ: %s", text)
             return Decimal("0")
+
 
     def _update_change(self) -> None:
         received = self._parse_amount(self.txtCashReceived.text())
@@ -109,6 +117,7 @@ class CashPaymentDialogController(QDialog, Ui_CashPaymentDialog):
                 self.lblError.setText("")
             self.btnConfirm.setEnabled(False)
 
+
     def _on_confirm(self) -> None:
         received = self._parse_amount(self.txtCashReceived.text())
 
@@ -120,8 +129,10 @@ class CashPaymentDialogController(QDialog, Ui_CashPaymentDialog):
         self.cash_received = received
         self.accept()
 
+
     def get_cash_received(self) -> Decimal:
         return self.cash_received
+
 
     def get_change_amount(self) -> Decimal:
         change = self.cash_received - self.total_amount

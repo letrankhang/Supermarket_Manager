@@ -15,8 +15,8 @@ from src.entities.sales_invoice import SalesInvoice
 from src.repositories.impl.CustomerManagementRepositoryImpl import CustomerManagementRepositoryImpl
 from src.services.CustomerManagementService import CustomerManagementService
 
-logger = logging.getLogger(__name__)
 
+logger = logging.getLogger(__name__)
 
 class CustomerManagementServiceImpl(CustomerManagementService):
     def get_customers(
@@ -41,6 +41,7 @@ class CustomerManagementServiceImpl(CustomerManagementService):
         except Exception as e:
             logger.error("Lỗi trong CustomerManagementServiceImpl.get_customers: %s", e)
             raise e
+
 
     def add_customer(self, form: CustomerFormDTO) -> CustomerDetailDTO:
         try:
@@ -73,6 +74,7 @@ class CustomerManagementServiceImpl(CustomerManagementService):
             logger.error("Lỗi khi thêm mới khách hàng: %s", e)
             raise e
 
+
     def update_customer(self, customer_id: int, form: CustomerFormDTO) -> None:
         try:
             with Database.get_session_ctx() as session:
@@ -98,6 +100,7 @@ class CustomerManagementServiceImpl(CustomerManagementService):
         except Exception as e:
             logger.error("Lỗi khi cập nhật khách hàng ID=%s: %s", customer_id, e)
             raise e
+
 
     def delete_customer(self, customer_id: int) -> None:
         try:
@@ -126,6 +129,7 @@ class CustomerManagementServiceImpl(CustomerManagementService):
         except Exception as e:
             logger.error("Lỗi khi xóa khách hàng ID=%s: %s", customer_id, e)
             raise e
+
 
     def get_tiers(self) -> List[Tuple[int, str]]:
         try:

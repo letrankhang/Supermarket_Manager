@@ -1,8 +1,9 @@
 from PySide6 import QtWidgets, QtCore
-import qtawesome as qta
+from src.utils.FormIcon import add_awesome_left_icon, apply_icon
 from src.gui.tabs.personnel_management_ui import Ui_PersonnelManagement
 from src.services.impl.UserServiceImpl import UserServiceImpl
-from src.controller.UserDialog import UserDialog  # Import Dialog vừa tạo
+from src.controller.UserDialog import UserDialog
+from src.utils.Theme import badge_cell
 
 
 class PersonnelController:
@@ -10,44 +11,39 @@ class PersonnelController:
         self.view = QtWidgets.QWidget()
         self.ui = Ui_PersonnelManagement()
         self.ui.setupUi(self.view)
+        add_awesome_left_icon(self.ui.txtSearch, "search")
         self.service = UserServiceImpl()
 
-        # Kết nối sự kiện tìm kiếm và Combobox
         self.ui.txtSearch.textChanged.connect(self.load_data)
         self.ui.cboRole.currentIndexChanged.connect(self.load_data)
         self.ui.cboStatus.currentIndexChanged.connect(self.load_data)
 
-        # Kết nối nút Thêm nhân sự
         self.ui.btnAdd.clicked.connect(self._on_add_new_user)
 
         self.load_data()
 
+
     def get_view(self):
         return self.view
 
+
     def load_data(self):
-        # --- SỬA 1: Chuẩn bị keyword để tự lọc bằng Python ---
         keyword = self.ui.txtSearch.text().strip().lower()
         role_filter = self.ui.cboRole.currentText()
         status_filter = self.ui.cboStatus.currentText()
 
-        # --- SỬA 2: Truyền "" để bắt Database trả về TOÀN BỘ nhân sự (không lọc) ---
         users, total, active, roles = self.service.get_personnel_dashboard("")
 
-        # 1. ÉP KIỂU SỐ VÀ SẮP XẾP ID TĂNG DẦN (1, 2, 3...)
         users.sort(key=lambda x: int(x.user_id))
 
-        # --- SỬA 3: Dời phần cập nhật số liệu lên đây, ĐẾM TRÊN DANH SÁCH GỐC (users) ---
         self.ui.lblTotal.setText(str(len(users)))
         self.ui.lblActive.setText(str(sum(1 for u in users if u.status == "Active")))
         self.ui.lblAdminCount.setText(str(roles.get("Admin", 0)))
         self.ui.lblManagerCount.setText(str(roles.get("Cashier", 0)))
         self.ui.lblCashierCount.setText(str(roles.get("Warehouse", 0)))
 
-        # Xử lý Lọc (Filter) bằng code Python ĐỂ HIỂN THỊ LÊN BẢNG
         filtered_users = []
         for u in users:
-            # --- SỬA 4: Thêm logic tự lọc theo ô tìm kiếm ---
             if keyword and keyword not in u.username.lower() and keyword not in u.full_name.lower():
                 continue
 
@@ -59,11 +55,7 @@ class PersonnelController:
                 continue
 
             filtered_users.append(u)
-            # Căn chỉnh lại kích thước cột dọc để không bị mất số
-            self.ui.tblEmployees.verticalHeader().setDefaultSectionSize(40)  # Chiều cao dòng
-            self.ui.tblEmployees.verticalHeader().setMinimumWidth(40)  # Chiều rộng cột
 
-        # Đổ dữ liệu vào bảng (CHỈ ĐỔ DANH SÁCH ĐÃ LỌC: filtered_users)
         self.ui.tblEmployees.setRowCount(len(filtered_users))
         for row_idx, dto in enumerate(filtered_users):
             id_item = QtWidgets.QTableWidgetItem(str(dto.user_id))
@@ -77,56 +69,58 @@ class PersonnelController:
             role_item.setTextAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
             self.ui.tblEmployees.setItem(row_idx, 3, role_item)
 
-            status_item = QtWidgets.QTableWidgetItem("Hoạt động" if dto.status == "Active" else "Đã khóa")
-            status_item.setTextAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
-            status_item.setForeground(
-                QtCore.Qt.GlobalColor.darkGreen if dto.status == "Active" else QtCore.Qt.GlobalColor.darkRed)
-            self.ui.tblEmployees.setItem(row_idx, 4, status_item)
+            is_active = dto.status == "Active"
+            self.ui.tblEmployees.setCellWidget(
+                row_idx,
+                4,
+                badge_cell(
+                    "Hoạt động" if is_active else "Đã khóa",
+                    "success" if is_active else "danger",
+                ),
+            )
 
-            # CỘT ACTIONS: Sửa (Bút chì) và Xóa (Thùng rác)
             action_widget = QtWidgets.QWidget()
             action_layout = QtWidgets.QHBoxLayout(action_widget)
             action_layout.setContentsMargins(0, 0, 0, 0)
             action_layout.setSpacing(15)
             action_layout.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
 
-            # Nút Sửa
             btn_edit = QtWidgets.QPushButton()
-            btn_edit.setIcon(qta.icon('fa5s.pen', color='#475569'))
+            btn_edit.setObjectName("RowActionButton")
+            apply_icon(btn_edit, "edit", tone="muted")
             btn_edit.setCursor(QtCore.Qt.CursorShape.PointingHandCursor)
-            btn_edit.setStyleSheet("background: transparent; border: none;")
             btn_edit.setToolTip("Chỉnh sửa")
 
-            # Nút Xóa
             btn_delete = QtWidgets.QPushButton()
-            btn_delete.setIcon(qta.icon('fa5s.trash-alt', color='#ef4444'))
+            btn_delete.setObjectName("RowActionButton")
+            apply_icon(btn_delete, "delete", tone="muted")
             btn_delete.setCursor(QtCore.Qt.CursorShape.PointingHandCursor)
-            btn_delete.setStyleSheet("background: transparent; border: none;")
             btn_delete.setToolTip("Xóa nhân viên")
 
             action_layout.addWidget(btn_edit)
             action_layout.addWidget(btn_delete)
             self.ui.tblEmployees.setCellWidget(row_idx, 5, action_widget)
 
-            # Ép các cột giãn đều cho vừa khít màn hình
             header = self.ui.tblEmployees.horizontalHeader()
             header.setSectionResizeMode(0, QtWidgets.QHeaderView.ResizeMode.ResizeToContents)
             header.setSectionResizeMode(1, QtWidgets.QHeaderView.ResizeMode.Stretch)
             header.setSectionResizeMode(2, QtWidgets.QHeaderView.ResizeMode.Stretch)
             header.setSectionResizeMode(3, QtWidgets.QHeaderView.ResizeMode.ResizeToContents)
-            header.setSectionResizeMode(4, QtWidgets.QHeaderView.ResizeMode.ResizeToContents)
+            # Cot trang thai chua badge pill rong co dinh; de ResizeToContents thi
+            # cot hep hon pill -> pill tran ra ngoai va lech tam.
+            header.setSectionResizeMode(4, QtWidgets.QHeaderView.ResizeMode.Fixed)
+            self.ui.tblEmployees.setColumnWidth(4, 130)
             header.setSectionResizeMode(5, QtWidgets.QHeaderView.ResizeMode.ResizeToContents)
 
-            # BẮT SỰ KIỆN CLICK
             btn_edit.clicked.connect(lambda checked=False, user_dto=dto: self._on_edit_user(user_dto))
             btn_delete.clicked.connect(lambda checked=False, uid=dto.user_id: self._on_delete_user(uid))
+
 
     def _on_add_new_user(self):
         dialog = UserDialog(mode="add", parent=self.view)
         if dialog.exec():
             new_data = dialog.get_data()
 
-            # BẮT LỖI KHÔNG ĐƯỢC BỎ TRỐNG
             username = new_data.get("username", "").strip()
             full_name = new_data.get("full_name", "").strip()
             email = new_data.get("email", "").strip()
@@ -136,7 +130,6 @@ class PersonnelController:
                 QtWidgets.QMessageBox.warning(self.view, "Cảnh báo",
                                               "Vui lòng nhập đầy đủ thông tin, không được để trống ô nào!")
                 return
-            # 2. KIỂM TRA TRÙNG TÊN ĐĂNG NHẬP
             existing_users, _, _, _ = self.service.get_personnel_dashboard("")
             for u in existing_users:
                 if u.username.lower() == username.lower():
@@ -145,17 +138,16 @@ class PersonnelController:
                         "Trùng lặp dữ liệu",
                         f"Tên đăng nhập '{username}' đã có người sử dụng!\nVui lòng chọn tên đăng nhập khác."
                     )
-                    return  # Dừng lại ngay, không cho lưu xuống CSDL
+                    return
 
-            # GỌI SERVICE ĐỂ LƯU THẬT VÀO SQL SERVER
             success = self.service.add_user(new_data)
 
             if success:
                 QtWidgets.QMessageBox.information(self.view, "Thành công", "Đã lưu nhân viên mới vào cơ sở dữ liệu!")
                 self.load_data()
             else:
-                # Đổi câu thông báo lỗi ở đây vì đã rào lỗi trùng lặp ở trên rồi
                 QtWidgets.QMessageBox.critical(self.view, "Lỗi", "Lưu thất bại! Vui lòng thử lại sau.")
+
 
     def _on_edit_user(self, user_dto):
         user_email = getattr(user_dto, 'email', '')
@@ -182,7 +174,6 @@ class PersonnelController:
         if dialog.exec():
             updated_data = dialog.get_data()
 
-            # BẮT LỖI KHÔNG ĐƯỢC BỎ TRỐNG KHI SỬA
             full_name = updated_data.get("full_name", "").strip()
             email = updated_data.get("email", "").strip()
 
@@ -191,7 +182,6 @@ class PersonnelController:
                                               "Vui lòng không để trống thông tin Họ tên và Email!")
                 return
 
-            # GỌI SERVICE ĐỂ CẬP NHẬT XUỐNG SQL SERVER
             success = self.service.update_user(user_dto.username, updated_data)
 
             if success:
@@ -200,6 +190,7 @@ class PersonnelController:
             else:
                 QtWidgets.QMessageBox.critical(self.view, "Lỗi", "Không thể cập nhật. Vui lòng thử lại!")
 
+
     def _on_delete_user(self, user_id):
         reply = QtWidgets.QMessageBox.question(
             self.view, "Xác nhận xóa",
@@ -207,7 +198,6 @@ class PersonnelController:
             QtWidgets.QMessageBox.StandardButton.Yes | QtWidgets.QMessageBox.StandardButton.No
         )
         if reply == QtWidgets.QMessageBox.StandardButton.Yes:
-            # GỌI SERVICE XÓA KHỎI SQL SERVER
             success = self.service.delete_user(user_id)
 
             if success:

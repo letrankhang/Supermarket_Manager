@@ -8,7 +8,7 @@ from PySide6.QtWidgets import (
 )
 from PySide6.QtGui import QPixmap
 from PySide6.QtCore import QTimer, QDateTime, Qt, QSize, QEvent
-import qtawesome as qta
+from src.utils.FormIcon import icon
 
 from src.gui.main_window_ui import Ui_MainWindow
 from src.utils.Session import Session
@@ -24,6 +24,7 @@ from src.controller.Importcontroller import ImportController
 from src.controller.CustomerManagementController import CustomerManagementController
 from src.controller.AnalyticsController import AnalyticsController
 
+
 logger = logging.getLogger(__name__)
 
 class MainWindowController(QMainWindow, Ui_MainWindow):
@@ -35,6 +36,7 @@ class MainWindowController(QMainWindow, Ui_MainWindow):
         self._setup_event()
         self._load_user_data()
         self._apply_role_permissions()
+
 
     def _fix_logo(self) -> None:
         current_dir = os.path.dirname(os.path.abspath(__file__))
@@ -57,6 +59,7 @@ class MainWindowController(QMainWindow, Ui_MainWindow):
             """)
         else:
             logger.error("Avatar not found at path: %s", avatar_path)
+
 
     def _setup_ui(self) -> None:
         self.timer = QTimer(self)
@@ -137,38 +140,34 @@ class MainWindowController(QMainWindow, Ui_MainWindow):
 
         self._setup_sidebar_icons()
 
+
     def _setup_sidebar_icons(self) -> None:
-        """Gán icon qtawesome cho toàn bộ nút menu sidebar, đổi màu theo trạng thái."""
         icon_map = {
-            self.btn_dashboard: "fa5s.th-large",
-            self.btn_products: "fa5s.box",
-            self.btn_suppliers: "fa5s.truck",
-            self.btn_importing: "fa5s.download",
-            self.btn_customers: "fa5s.users",
-            self.btn_pos: "fa5s.shopping-cart",
-            self.btn_analytics: "fa5s.chart-bar",
-            self.btn_settings: "fa5s.cog",
-            self.btn_help: "fa5s.question-circle",
-            self.btn_logout: "fa5s.sign-out-alt",
+            self.btn_dashboard: "dashboard",
+            self.btn_products: "products",
+            self.btn_suppliers: "supplier",
+            self.btn_importing: "import",
+            self.btn_customers: "customers",
+            self.btn_pos: "pos",
+            self.btn_analytics: "analytics",
+            self.btn_settings: "settings",
+            self.btn_help: "help",
+            self.btn_logout: "logout",
         }
 
         icon_size = QSize(20, 20)
-        color_normal = "#cbd5e1"
-        color_active = "#ffffff"
-        color_disabled = "#475569"
 
         self._nav_icon_normal = {}
         self._nav_icon_active = {}
         self._nav_icon_disabled = {}
 
         for button, icon_name in icon_map.items():
-            try:
-                self._nav_icon_normal[button] = qta.icon(icon_name, color=color_normal)
-                self._nav_icon_active[button] = qta.icon(icon_name, color=color_active)
-                self._nav_icon_disabled[button] = qta.icon(icon_name, color=color_disabled)
-            except Exception as e:
-                logger.error("Không tải được icon '%s' cho nút menu: %s", icon_name, e)
+            normal = icon(icon_name, "sidebar")
+            if normal.isNull():
                 continue
+            self._nav_icon_normal[button] = normal
+            self._nav_icon_active[button] = icon(icon_name, "sidebar-active")
+            self._nav_icon_disabled[button] = icon(icon_name, "sidebar-disabled")
 
             button.setIconSize(icon_size)
 
@@ -181,8 +180,8 @@ class MainWindowController(QMainWindow, Ui_MainWindow):
             )
             self._update_nav_icon(button, hovered=False)
 
+
     def _update_nav_icon(self, button: QPushButton, hovered: bool) -> None:
-        """Chọn phiên bản icon (xám / trắng / mờ disabled) đúng trạng thái hiện tại của nút."""
         if button not in self._nav_icon_normal:
             return
 
@@ -193,6 +192,7 @@ class MainWindowController(QMainWindow, Ui_MainWindow):
         else:
             button.setIcon(self._nav_icon_normal[button])
 
+
     def eventFilter(self, obj: object, event: QEvent) -> bool:
         if obj in self._nav_icon_normal:
             if event.type() == QEvent.Type.Enter:
@@ -201,13 +201,16 @@ class MainWindowController(QMainWindow, Ui_MainWindow):
                 self._update_nav_icon(obj, hovered=False)
         return super().eventFilter(obj, event)
 
+
     def _set_active_nav_button(self, button: QPushButton) -> None:
         button.setChecked(True)
         self.active_nav_button = button
 
+
     def _update_datetime(self) -> None:
         current_time = QDateTime.currentDateTime().toString("dd/MM/yyyy HH:mm:ss")
         self.lblDateTime.setText(current_time)
+
 
     def _setup_event(self) -> None:
         self.btn_dashboard.clicked.connect(self._show_dashboard)
@@ -224,10 +227,11 @@ class MainWindowController(QMainWindow, Ui_MainWindow):
 
         self.dashboard_controller.quick_action_requested.connect(self._on_quick_action)
 
+
     def _revert_nav_button(self) -> None:
-        """Giữ trạng thái checked của nút menu cũ khi bấm vào tính năng chưa phát triển."""
         if self.active_nav_button is not None:
             self.active_nav_button.setChecked(True)
+
 
     def _on_quick_action(self, action_key: str) -> None:
         if action_key == "pos":
@@ -239,41 +243,45 @@ class MainWindowController(QMainWindow, Ui_MainWindow):
         elif action_key == "customers":
             self._show_customers()
 
+
     def _show_dashboard(self) -> None:
         self._set_active_nav_button(self.btn_dashboard)
         self.stacked_widget.setCurrentWidget(self.dashboard_controller)
         self.dashboard_controller.load_data()
+
 
     def _show_pos(self) -> None:
         self._set_active_nav_button(self.btn_pos)
         self.stacked_widget.setCurrentWidget(self.pos_controller)
         self.pos_controller.load_data()
 
+
     def _show_customers(self) -> None:
-        """Hiển thị màn hình Quản lý Khách hàng và nạp dữ liệu."""
         self._set_active_nav_button(self.btn_customers)
         self.stacked_widget.setCurrentWidget(self.customer_controller)
         self.customer_controller.load_data()
 
+
     def _show_analytics(self) -> None:
-        """Hiển thị màn hình Phân tích Bán hàng và nạp dữ liệu."""
         self._set_active_nav_button(self.btn_analytics)
         self.stacked_widget.setCurrentWidget(self.analytics_controller)
         self.analytics_controller.load_data()
 
-    # --- BỔ SUNG: Hàm chuyển sang màn hình Cài đặt hệ thống (Nhân sự) ---
+
     def _show_settings(self) -> None:
-        """Hiển thị màn hình Quản lý Nhân sự (System Settings)."""
         self._set_active_nav_button(self.btn_settings)
         self.stacked_widget.setCurrentWidget(self.personnel_controller.get_view())
+
 
     def _show_suppliers(self) -> None:
         self._set_active_nav_button(self.btn_suppliers)
         self.stacked_widget.setCurrentWidget(self.supplier_controller.get_view())
 
+
     def _show_help_center(self) -> None:
         self._set_active_nav_button(self.btn_help)
         self.stacked_widget.setCurrentWidget(self.help_center_controller)
+
 
     def _show_logout(self) -> None:
         reply = QMessageBox.question(
@@ -286,6 +294,7 @@ class MainWindowController(QMainWindow, Ui_MainWindow):
         if reply == QMessageBox.StandardButton.Yes:
             self._perform_logout()
 
+
     def _perform_logout(self) -> None:
         logger.info("Đang đăng xuất khỏi tài khoản %s", Session.get_username())
         Session.clear_session()
@@ -295,17 +304,18 @@ class MainWindowController(QMainWindow, Ui_MainWindow):
         self.logout.show()
         self.close()
 
+
     def _show_products(self) -> None:
-        """Hiển thị màn hình Quản lý Sản phẩm và nạp dữ liệu."""
         self._set_active_nav_button(self.btn_products)
         self.stacked_widget.setCurrentWidget(self.product_controller)
         self.product_controller.load_data()
 
+
     def _show_importing(self) -> None:
-        """Hiển thị màn hình Nhập hàng và nạp danh sách phiếu nhập."""
         self._set_active_nav_button(self.btn_importing)
         self.stacked_widget.setCurrentWidget(self.import_controller)
         self.import_controller.load_data()
+
         
     def _load_user_data(self) -> None:
         if not Session.is_active():
@@ -327,8 +337,8 @@ class MainWindowController(QMainWindow, Ui_MainWindow):
             fullname = Session.get_username() or "Người dùng"
         self.lblUserName.setText(fullname)
 
+
     def _apply_role_permissions(self) -> None:
-        """Phân quyền các nút trên Sidebar dựa theo Role trong Session."""
         raw_role = Session.get_role_name() or "Admin"
         role = raw_role.strip().lower()
         logger.info("Áp dụng phân quyền giao diện cho vai trò: %s", raw_role)
@@ -371,17 +381,6 @@ class MainWindowController(QMainWindow, Ui_MainWindow):
             allowed_buttons = {self.btn_pos, self.btn_help, self.btn_logout}
             default_show = self._show_pos
 
-        current_css = self.sidebar_frame.styleSheet() or ""
-        disabled_css = """
-#sidebar_frame QPushButton:disabled {
-    color: #475569;
-    background-color: transparent;
-    border-left: 4px solid transparent;
-}
-"""
-        if "#sidebar_frame QPushButton:disabled" not in current_css:
-            self.sidebar_frame.setStyleSheet(current_css + disabled_css)
-
         for btn in all_nav_buttons:
             if btn in allowed_buttons:
                 btn.setEnabled(True)
@@ -394,4 +393,4 @@ class MainWindowController(QMainWindow, Ui_MainWindow):
                 btn.setToolTip("Bạn không có quyền truy cập chức năng này.")
                 self._update_nav_icon(btn, hovered=False)
 
-        default_show()
+        default_show()

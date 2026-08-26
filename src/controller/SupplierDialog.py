@@ -11,37 +11,37 @@ class SupplierDialog(QtWidgets.QDialog):
         self.mode = mode
         self.supplier_data = supplier_data
 
-        # 1. THIẾT LẬP GIAO DIỆN DỰA THEO MODE (THÊM / SỬA)
         if self.mode == "edit":
-            self.ui.lblHeader.setText("CẬP NHẬT NHÀ CUNG CẤP")
-            self.ui.btnSave.setText("CẬP NHẬT")
-            self.setWindowTitle("Sửa Nhà cung cấp")
+            self.ui.lblHeaderTitle.setText("Cập nhật đối tác")
+            self.ui.lblHeaderSubtitle.setText(
+                "Chỉnh sửa thông tin liên hệ của nhà cung cấp. Mục có dấu (*) là bắt buộc."
+            )
+            self.ui.btnSave.setText("Cập nhật")
+            self.setWindowTitle("Sửa nhà cung cấp")
 
-            # Khóa ô Tên công ty không cho sửa (Tùy chọn: Nếu bạn muốn giống Username bên nhân sự)
-            # self.ui.txtCompanyName.setEnabled(False)
-            # self.ui.txtCompanyName.setStyleSheet("background-color: #f1f5f9; border: 1px solid #cbd5e1; border-radius: 6px; padding: 8px;")
-
-            # Đổ dữ liệu cũ vào Form
             self.load_data_to_form()
         else:
-            self.setWindowTitle("Thêm Nhà cung cấp")
+            self.setWindowTitle("Thêm nhà cung cấp")
 
-        # 2. BẮT SỰ KIỆN NÚT BẤM
         self.ui.btnCancel.clicked.connect(self.reject)
         self.ui.btnSave.clicked.connect(self.accept)
 
+        # Chieu cao bam theo noi dung, khong chua khoang trong thua
+        self.setFixedWidth(480)
+        self.adjustSize()
+        self.setFixedHeight(self.height())
+
+
     def load_data_to_form(self):
-        """Hàm này sẽ chạy khi bấm nút Sửa, lấy dữ liệu từ DB đổ lên giao diện"""
         if self.supplier_data:
-            # Sử dụng str( ... or '') để chống lỗi văng app nếu dữ liệu dưới SQL Server bị NULL
             self.ui.txtCompanyName.setText(str(self.supplier_data.get('company_name') or ''))
             self.ui.txtContactName.setText(str(self.supplier_data.get('contact_name') or ''))
             self.ui.txtPhone.setText(str(self.supplier_data.get('phone') or ''))
             self.ui.txtEmail.setText(str(self.supplier_data.get('email') or ''))
             self.ui.txtAddress.setText(str(self.supplier_data.get('address') or ''))
 
+
     def get_data(self):
-        """Hàm này chạy khi bấm nút Lưu/Cập nhật, gom chữ trên màn hình thành Dictionary"""
         return {
             "company_name": self.ui.txtCompanyName.text().strip(),
             "contact_name": self.ui.txtContactName.text().strip(),

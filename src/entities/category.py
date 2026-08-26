@@ -2,9 +2,6 @@ from sqlalchemy import Column, Integer, String, Text, DateTime, func
 from src.entities.base import Base
 
 class Category(Base):
-    """
-    Category entity model mapped to the 'categories' table.
-    """
     __tablename__ = 'categories'
 
     category_id = Column(Integer, primary_key=True, autoincrement=True)
