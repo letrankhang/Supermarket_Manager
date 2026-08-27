@@ -799,7 +799,7 @@ QPushButton#btnLoadMore:pressed {
        <item>
         <widget class="QLabel" name="lblSubtitle">
          <property name="text">
-          <string>Quản lý thông tin liên lạc, lịch sử mua hàng và cấp độ thành viên.</string>
+          <string>Quản lý thông tin liên lạc, lịch sử mua hàng và cấp độ thành viên</string>
          </property>
         </widget>
        </item>

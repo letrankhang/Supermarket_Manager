@@ -1033,7 +1033,7 @@ class Ui_PersonnelManagement(object):
     def retranslateUi(self, PersonnelManagement):
         PersonnelManagement.setWindowTitle(QCoreApplication.translate("PersonnelManagement", u"Qu\u1ea3n l\u00fd Nh\u00e2n s\u1ef1", None))
         self.lblTitle.setText(QCoreApplication.translate("PersonnelManagement", u"Qu\u1ea3n l\u00fd Nh\u00e2n s\u1ef1", None))
-        self.lblSub.setText(QCoreApplication.translate("PersonnelManagement", u"Qu\u1ea3n l\u00fd th\u00f4ng tin nh\u00e2n vi\u00ean v\u00e0 ph\u00e2n quy\u1ec1n truy c\u1eadp h\u1ec7 th\u1ed1ng.", None))
+        self.lblSub.setText(QCoreApplication.translate("PersonnelManagement", u"Qu\u1ea3n l\u00fd th\u00f4ng tin nh\u00e2n vi\u00ean v\u00e0 ph\u00e2n quy\u1ec1n truy c\u1eadp h\u1ec7 th\u1ed1ng", None))
         self.lblTotalTitle.setText(QCoreApplication.translate("PersonnelManagement", u"T\u1ed5ng s\u1ed1 nh\u00e2n vi\u00ean", None))
         self.badgeTotal.setText("")
         self.badgeTotal.setProperty(u"iconName", QCoreApplication.translate("PersonnelManagement", u"customers", None))

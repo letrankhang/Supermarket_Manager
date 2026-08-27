@@ -804,7 +804,7 @@ class Ui_ProductsTab(object):
     def retranslateUi(self, ProductsTab):
         ProductsTab.setWindowTitle(QCoreApplication.translate("ProductsTab", u"Qu\u1ea3n l\u00fd S\u1ea3n ph\u1ea9m", None))
         self.lblTitle.setText(QCoreApplication.translate("ProductsTab", u"Qu\u1ea3n l\u00fd S\u1ea3n ph\u1ea9m", None))
-        self.lblSubtitle.setText(QCoreApplication.translate("ProductsTab", u"Danh s\u00e1ch chi ti\u1ebft v\u00e0 ki\u1ec3m so\u00e1t t\u1ed3n kho to\u00e0n h\u1ec7 th\u1ed1ng.", None))
+        self.lblSubtitle.setText(QCoreApplication.translate("ProductsTab", u"Danh s\u00e1ch chi ti\u1ebft v\u00e0 ki\u1ec3m so\u00e1t t\u1ed3n kho to\u00e0n h\u1ec7 th\u1ed1ng", None))
         self.edtSearch.setPlaceholderText(QCoreApplication.translate("ProductsTab", u"T\u00ecm ki\u1ebfm s\u1ea3n ph\u1ea9m", None))
         self.cboCategory.setItemText(0, QCoreApplication.translate("ProductsTab", u"T\u1ea5t c\u1ea3 danh m\u1ee5c", None))
 

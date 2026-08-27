@@ -1130,7 +1130,7 @@ class Ui_CustomerManagement(object):
 
     def retranslateUi(self, CustomerManagement):
         self.lblTitle.setText(QCoreApplication.translate("CustomerManagement", u"Qu\u1ea3n l\u00fd Kh\u00e1ch h\u00e0ng", None))
-        self.lblSubtitle.setText(QCoreApplication.translate("CustomerManagement", u"Qu\u1ea3n l\u00fd th\u00f4ng tin li\u00ean l\u1ea1c, l\u1ecbch s\u1eed mua h\u00e0ng v\u00e0 c\u1ea5p \u0111\u1ed9 th\u00e0nh vi\u00ean.", None))
+        self.lblSubtitle.setText(QCoreApplication.translate("CustomerManagement", u"Qu\u1ea3n l\u00fd th\u00f4ng tin li\u00ean l\u1ea1c, l\u1ecbch s\u1eed mua h\u00e0ng v\u00e0 c\u1ea5p \u0111\u1ed9 th\u00e0nh vi\u00ean", None))
         self.btnPurchaseHistory.setText(QCoreApplication.translate("CustomerManagement", u"  Xem l\u1ecbch s\u1eed mua h\u00e0ng", None))
         self.btnAddCustomer.setText(QCoreApplication.translate("CustomerManagement", u"+ Th\u00eam kh\u00e1ch m\u1edbi", None))
         self.lblTotalCaption.setText(QCoreApplication.translate("CustomerManagement", u"T\u1ed5ng kh\u00e1ch h\u00e0ng", None))

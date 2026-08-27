@@ -701,7 +701,7 @@ QPushButton#btnCreateOrder:disabled {
        <item>
         <widget class="QLabel" name="lblSubtitle">
          <property name="text">
-          <string>Theo dõi và quản lý các phiếu nhập kho từ nhà cung cấp.</string>
+          <string>Theo dõi và quản lý các phiếu nhập kho từ nhà cung cấp</string>
          </property>
         </widget>
        </item>

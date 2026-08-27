@@ -626,7 +626,7 @@ QPushButton#PageNumberButton:disabled {
       <item>
        <widget class="QLabel" name="lblSubtitle">
         <property name="text">
-         <string>Danh sách chi tiết và kiểm soát tồn kho toàn hệ thống.</string>
+         <string>Danh sách chi tiết và kiểm soát tồn kho toàn hệ thống</string>
         </property>
        </widget>
       </item>

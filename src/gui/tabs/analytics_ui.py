@@ -1276,7 +1276,7 @@ class Ui_Analytics(object):
 
     def retranslateUi(self, Analytics):
         self.lblTitle.setText(QCoreApplication.translate("Analytics", u"Ph\u00e2n t\u00edch B\u00e1n h\u00e0ng", None))
-        self.lblSubtitle.setText(QCoreApplication.translate("Analytics", u"T\u1ed5ng quan hi\u1ec7u su\u1ea5t kinh doanh v\u00e0 xu h\u01b0\u1edbng.", None))
+        self.lblSubtitle.setText(QCoreApplication.translate("Analytics", u"T\u1ed5ng quan hi\u1ec7u su\u1ea5t kinh doanh v\u00e0 xu h\u01b0\u1edbng", None))
         self.btnPeriodToday.setText(QCoreApplication.translate("Analytics", u"H\u00f4m nay", None))
         self.btnPeriodWeek.setText(QCoreApplication.translate("Analytics", u"Tu\u1ea7n n\u00e0y", None))
         self.btnPeriodMonth.setText(QCoreApplication.translate("Analytics", u"Th\u00e1ng n\u00e0y", None))

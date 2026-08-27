@@ -746,7 +746,7 @@ class Ui_SupplierManagement(object):
 
     def retranslateUi(self, SupplierManagement):
         self.lblTitle.setText(QCoreApplication.translate("SupplierManagement", u"Qu\u1ea3n l\u00fd Nh\u00e0 cung c\u1ea5p", None))
-        self.lblSub.setText(QCoreApplication.translate("SupplierManagement", u"Qu\u1ea3n l\u00fd v\u00e0 \u0111\u00e1nh gi\u00e1 c\u00e1c \u0111\u1ed1i t\u00e1c cung \u1ee9ng c\u1ee7a h\u1ec7 th\u1ed1ng.", None))
+        self.lblSub.setText(QCoreApplication.translate("SupplierManagement", u"Qu\u1ea3n l\u00fd v\u00e0 \u0111\u00e1nh gi\u00e1 c\u00e1c \u0111\u1ed1i t\u00e1c cung \u1ee9ng c\u1ee7a h\u1ec7 th\u1ed1ng", None))
         self.txtSearch.setPlaceholderText(QCoreApplication.translate("SupplierManagement", u"T\u00ecm ki\u1ebfm theo t\u00ean NCC ho\u1eb7c s\u1ed1 \u0111i\u1ec7n tho\u1ea1i", None))
         self.cboFilter.setItemText(0, QCoreApplication.translate("SupplierManagement", u"T\u1ea5t c\u1ea3 ti\u00eau ch\u00ed", None))
         self.cboFilter.setItemText(1, QCoreApplication.translate("SupplierManagement", u"T\u00ean c\u00f4ng ty", None))

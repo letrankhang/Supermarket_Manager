@@ -932,7 +932,7 @@ class Ui_ImportTab(object):
 
     def retranslateUi(self, ImportTab):
         self.lblTitle.setText(QCoreApplication.translate("ImportTab", u"Qu\u1ea3n l\u00fd Nh\u1eadp h\u00e0ng", None))
-        self.lblSubtitle.setText(QCoreApplication.translate("ImportTab", u"Theo d\u00f5i v\u00e0 qu\u1ea3n l\u00fd c\u00e1c phi\u1ebfu nh\u1eadp kho t\u1eeb nh\u00e0 cung c\u1ea5p.", None))
+        self.lblSubtitle.setText(QCoreApplication.translate("ImportTab", u"Theo d\u00f5i v\u00e0 qu\u1ea3n l\u00fd c\u00e1c phi\u1ebfu nh\u1eadp kho t\u1eeb nh\u00e0 cung c\u1ea5p", None))
         self.btnCreateOrder.setText(QCoreApplication.translate("ImportTab", u"+  T\u1ea1o Phi\u1ebfu Nh\u1eadp", None))
         self.lblTotalSpendTitle.setText(QCoreApplication.translate("ImportTab", u"T\u1ed5ng chi th\u00e1ng n\u00e0y", None))
         self.badgeTotalSpend.setText("")

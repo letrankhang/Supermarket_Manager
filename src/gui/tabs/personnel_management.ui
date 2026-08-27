@@ -696,7 +696,7 @@ QComboBox#cboStatus {
      <item>
       <widget class="QLabel" name="lblSub">
        <property name="text">
-        <string>Quản lý thông tin nhân viên và phân quyền truy cập hệ thống.</string>
+        <string>Quản lý thông tin nhân viên và phân quyền truy cập hệ thống</string>
        </property>
       </widget>
      </item>

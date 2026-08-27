@@ -835,7 +835,7 @@ QPushButton#btnDetailLink:pressed {
        <item>
         <widget class="QLabel" name="lblSubtitle">
          <property name="text">
-          <string>Tổng quan hiệu suất kinh doanh và xu hướng.</string>
+          <string>Tổng quan hiệu suất kinh doanh và xu hướng</string>
          </property>
         </widget>
        </item>
