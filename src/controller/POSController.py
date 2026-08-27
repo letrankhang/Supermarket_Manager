@@ -449,7 +449,6 @@ class POSController(QWidget, Ui_Form):
             tax_text=format_currency(summary.tax_amount),
             grand_total_text=format_currency(summary.grand_total)
         )
-
         self.btnCheckout.setEnabled(not cart.is_empty)
 
 
@@ -557,7 +556,7 @@ class POSController(QWidget, Ui_Form):
         percent = CustomerServiceImpl().get_tier_discount_percent(customer_id)
 
         discount_rate = Decimal(str(percent)) / Decimal("100")
-        logger.info("POS: ap muc giam %d%% theo hang thanh vien.", percent)
+        logger.info("POS: áp mức giảm %d%% theo hạng thành viên.", percent)
         self._run_cart_action(lambda: self.pos_service.apply_discount_rate(discount_rate))
 
 

@@ -1786,6 +1786,8 @@ class Ui_Form(object):
 
         self.descShortcut2 = QLabel(self.shortcutsCard)
         self.descShortcut2.setObjectName(u"descShortcut2")
+        self.descShortcut2.setMinimumSize(QSize(200, 0))
+        self.descShortcut2.setMaximumSize(QSize(200, 16777215))
         self.descShortcut2.setWordWrap(True)
 
         self.shortcutRow2Layout.addWidget(self.descShortcut2)
@@ -1809,6 +1811,8 @@ class Ui_Form(object):
 
         self.descShortcut3 = QLabel(self.shortcutsCard)
         self.descShortcut3.setObjectName(u"descShortcut3")
+        self.descShortcut3.setMinimumSize(QSize(200, 0))
+        self.descShortcut3.setMaximumSize(QSize(200, 16777215))
         self.descShortcut3.setWordWrap(True)
 
         self.shortcutRow3Layout.addWidget(self.descShortcut3)
@@ -1832,6 +1836,8 @@ class Ui_Form(object):
 
         self.descShortcut4 = QLabel(self.shortcutsCard)
         self.descShortcut4.setObjectName(u"descShortcut4")
+        self.descShortcut4.setMinimumSize(QSize(200, 0))
+        self.descShortcut4.setMaximumSize(QSize(200, 16777215))
         self.descShortcut4.setWordWrap(True)
 
         self.shortcutRow4Layout.addWidget(self.descShortcut4)

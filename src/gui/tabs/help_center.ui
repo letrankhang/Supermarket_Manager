@@ -3716,6 +3716,18 @@ QPushButton[class=&quot;socialButton&quot;]:pressed {
                    </item>
                    <item>
                     <widget class="QLabel" name="descShortcut2">
+                     <property name="minimumSize">
+                      <size>
+                       <width>200</width>
+                       <height>0</height>
+                      </size>
+                     </property>
+                     <property name="maximumSize">
+                      <size>
+                       <width>200</width>
+                       <height>16777215</height>
+                      </size>
+                     </property>
                      <property name="text">
                       <string>Nhảy tới ô tìm sản phẩm</string>
                      </property>
@@ -3774,6 +3786,18 @@ QPushButton[class=&quot;socialButton&quot;]:pressed {
                    </item>
                    <item>
                     <widget class="QLabel" name="descShortcut3">
+                     <property name="minimumSize">
+                      <size>
+                       <width>200</width>
+                       <height>0</height>
+                      </size>
+                     </property>
+                     <property name="maximumSize">
+                      <size>
+                       <width>200</width>
+                       <height>16777215</height>
+                      </size>
+                     </property>
                      <property name="text">
                       <string>Sửa chiết khấu của đơn</string>
                      </property>
@@ -3832,6 +3856,18 @@ QPushButton[class=&quot;socialButton&quot;]:pressed {
                    </item>
                    <item>
                     <widget class="QLabel" name="descShortcut4">
+                     <property name="minimumSize">
+                      <size>
+                       <width>200</width>
+                       <height>0</height>
+                      </size>
+                     </property>
+                     <property name="maximumSize">
+                      <size>
+                       <width>200</width>
+                       <height>16777215</height>
+                      </size>
+                     </property>
                      <property name="text">
                       <string>Thanh toán đơn hàng</string>
                      </property>
