@@ -201,7 +201,6 @@ class CreateImportDialogController(QDialog, Ui_CreateImportOrderDialog):
             )
             return
 
-        # Không cho thêm trùng
         for row in range(self.tblImportDetails.rowCount()):
             item = self.tblImportDetails.item(row, 0)
 

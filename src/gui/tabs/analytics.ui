@@ -823,7 +823,7 @@ QPushButton#btnDetailLink:pressed {
      <item>
       <layout class="QVBoxLayout" name="titleLayout">
        <property name="spacing">
-        <number>3</number>
+        <number>0</number>
        </property>
        <item>
         <widget class="QLabel" name="lblTitle">
@@ -1568,8 +1568,8 @@ QPushButton#btnDetailLink:pressed {
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>280</width>
-             <height>200</height>
+             <width>375</width>
+             <height>216</height>
             </rect>
            </property>
            <layout class="QVBoxLayout" name="containerCategoryList">

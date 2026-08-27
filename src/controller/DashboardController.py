@@ -14,7 +14,7 @@ from src.utils.FormIcon import apply_icon, icon
 from src.utils.Theme import set_state
 
 from src.gui.tabs.dashboard_ui import Ui_Form
-from src.dtos.DashboardDTO import DashboardDTO, RecentTransactionDTO
+from src.dtos.DashboardDTO import DashboardDTO
 from src.services.impl.DashboardServiceImpl import DashboardServiceImpl
 
 logger = logging.getLogger(__name__)

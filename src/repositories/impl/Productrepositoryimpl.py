@@ -60,35 +60,6 @@ class ProductRepositoryImpl(ProductRepository):
             raise
 
 
-    def list_all(self, session: Session) -> List[ProductWithCategoryName]:
-        try:
-            rows = (
-                session.query(Product, Category.category_name)
-                .outerjoin(Category, Product.category_id == Category.category_id)
-                .order_by(Product.product_name.asc())
-                .all()
-            )
-            return [tuple(row) for row in rows]
-        except Exception:
-            logger.exception("Loi khi lay danh sach san pham")
-            raise
-
-
-    def list_low_stock(self, session: Session, threshold: int) -> List[ProductWithCategoryName]:
-        try:
-            rows = (
-                session.query(Product, Category.category_name)
-                .outerjoin(Category, Product.category_id == Category.category_id)
-                .filter(Product.current_stock <= threshold)
-                .order_by(Product.current_stock.asc())
-                .all()
-            )
-            return [tuple(row) for row in rows]
-        except Exception:
-            logger.exception("Loi khi lay danh sach san pham sap het hang")
-            raise
-
-
     def create(self, session: Session, product: Product) -> Product:
         try:
             session.add(product)

@@ -3,7 +3,6 @@ import logging
 from decimal import Decimal, InvalidOperation
 from typing import Optional
 
-from PySide6.QtCore import Qt
 from PySide6.QtGui import QRegularExpressionValidator
 from PySide6.QtCore import QRegularExpression
 from PySide6.QtWidgets import QDialog, QWidget

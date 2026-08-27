@@ -932,13 +932,7 @@ QPushButton#PageNumberButton:disabled {
          <cursorShape>PointingHandCursor</cursorShape>
         </property>
         <property name="text">
-         <string>Thêm sản phẩm</string>
-        </property>
-        <property name="iconName" stdset="0">
-         <string>add</string>
-        </property>
-        <property name="iconColor" stdset="0">
-         <string>on-primary</string>
+         <string>+ Thêm sản phẩm</string>
         </property>
        </widget>
       </item>

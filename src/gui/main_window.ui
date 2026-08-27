@@ -147,6 +147,9 @@ QFrame#sidebar_frame QPushButton:disabled {
           <enum>QFrame::Shadow::Raised</enum>
          </property>
          <layout class="QHBoxLayout" name="horizontalLayout_5">
+          <property name="bottomMargin">
+           <number>2</number>
+          </property>
           <item>
            <widget class="QLabel" name="label_4">
             <property name="minimumSize">
@@ -341,7 +344,7 @@ font-weight: 600;</string>
        <item>
         <widget class="QPushButton" name="btn_settings">
          <property name="text">
-          <string>Sytem Settings</string>
+          <string>Personnel</string>
          </property>
         </widget>
        </item>

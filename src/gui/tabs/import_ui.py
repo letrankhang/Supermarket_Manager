@@ -703,7 +703,7 @@ class Ui_ImportTab(object):
         self.horizontalLayout_header = QHBoxLayout()
         self.horizontalLayout_header.setObjectName(u"horizontalLayout_header")
         self.verticalLayout_title = QVBoxLayout()
-        self.verticalLayout_title.setSpacing(3)
+        self.verticalLayout_title.setSpacing(0)
         self.verticalLayout_title.setObjectName(u"verticalLayout_title")
         self.lblTitle = QLabel(ImportTab)
         self.lblTitle.setObjectName(u"lblTitle")

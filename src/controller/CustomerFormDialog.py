@@ -70,7 +70,6 @@ class CustomerFormDialog(QDialog, Ui_CustomerFormDialog):
             self.chkNoDob.setChecked(True)
             self.dateDob.setEnabled(False)
 
-        # Chieu cao bam theo noi dung, khong chua khoang trong thua truoc 2 nut
         self.setFixedWidth(460)
         self.adjustSize()
         self.setFixedHeight(self.height())

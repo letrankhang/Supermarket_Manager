@@ -99,8 +99,6 @@ TONES = {
     "sidebar-disabled": "#475569",
 }
 
-AWESOME_COLOR = TONES["primary"]
-
 HOVER_OFF = "none"
 
 HOVER_TONES = {

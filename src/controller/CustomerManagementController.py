@@ -1,18 +1,16 @@
 import logging
 from typing import List, Optional, Tuple
 
-from PySide6 import QtWidgets, QtCore, QtGui
+from PySide6 import QtCore, QtGui
 from PySide6.QtWidgets import (
-    QWidget, QFrame, QHBoxLayout, QLabel, QPushButton, QTableWidgetItem,
-    QHeaderView, QAbstractItemView, QMessageBox, QMenu, QSizePolicy,
-    QSpacerItem,
+    QWidget, QTableWidgetItem, QHeaderView, QMessageBox, QMenu,
 )
 from PySide6.QtCore import Qt, QSize, QThread, Signal, QTimer, QPoint, QModelIndex
 from PySide6.QtGui import QFont, QAction, QColor
 
 from src.gui.tabs.customer_management_ui import Ui_CustomerManagement
 from src.dtos.CustomerManagementDTO import (
-    CustomerManagementDTO, CustomerDetailDTO, CustomerFormDTO,
+    CustomerManagementDTO, CustomerDetailDTO,
 )
 from src.services.impl.CustomerManagementServiceImpl import CustomerManagementServiceImpl
 from src.controller.CustomerFormDialog import CustomerFormDialog
@@ -238,7 +236,6 @@ class CustomerManagementController(QWidget, Ui_CustomerManagement):
         self._worker = CustomerManagementWorker(keyword, None)
         self._worker.data_fetched.connect(self._on_data_fetched)
         self._worker.error_occurred.connect(self._on_error)
-        self._worker.finished.connect(self._on_worker_finished)
         self._worker.start()
 
 
@@ -536,7 +533,3 @@ class CustomerManagementController(QWidget, Ui_CustomerManagement):
 
     def _on_error(self, msg: str) -> None:
         logger.error("Customer load error: %s", msg)
-
-
-    def _on_worker_finished(self) -> None:
-        pass

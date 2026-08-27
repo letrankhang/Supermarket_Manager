@@ -583,7 +583,7 @@ QPushButton#btnSave:disabled {
      <item row="0" column="1">
       <widget class="QLineEdit" name="txtUsername">
        <property name="placeholderText">
-        <string>Nhập tên đăng nhập...</string>
+        <string>Nhập tên đăng nhập</string>
        </property>
       </widget>
      </item>
@@ -597,7 +597,7 @@ QPushButton#btnSave:disabled {
      <item row="1" column="1">
       <widget class="QLineEdit" name="txtFullName">
        <property name="placeholderText">
-        <string>Nhập họ và tên...</string>
+        <string>Nhập họ và tên</string>
        </property>
       </widget>
      </item>
@@ -611,7 +611,7 @@ QPushButton#btnSave:disabled {
      <item row="2" column="1">
       <widget class="QLineEdit" name="txtEmail">
        <property name="placeholderText">
-        <string>Nhập email...</string>
+        <string>Nhập địa chỉ email</string>
        </property>
       </widget>
      </item>
@@ -628,7 +628,7 @@ QPushButton#btnSave:disabled {
         <enum>QLineEdit::Password</enum>
        </property>
        <property name="placeholderText">
-        <string>Nhập mật khẩu...</string>
+        <string>Nhập mật khẩu</string>
        </property>
       </widget>
      </item>

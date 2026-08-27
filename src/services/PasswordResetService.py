@@ -6,6 +6,9 @@ class PasswordResetError(Exception):
 class InvalidEmailError(PasswordResetError):
     pass
 
+class EmailNotFoundError(PasswordResetError):
+    pass
+
 class EmailSendError(PasswordResetError):
     pass
 

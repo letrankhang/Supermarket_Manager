@@ -25,17 +25,6 @@ class CategoryService:
                 "Không thể tải danh sách danh mục. Vui lòng thử lại sau."
             )
 
-    def get_category_by_id(self, category_id: int) -> Optional[CategoryDTO]:
-        try:
-            with Database.get_session_ctx() as session:
-                entity = self._repo.get_by_id(session, category_id)
-                return CategoryConverter.to_dto(entity) if entity else None
-        except Exception:
-            logger.exception("Lỗi khi lấy danh mục có mã ID=%s", category_id)
-            raise RuntimeError(
-                "Không thể tải thông tin danh mục. Vui lòng thử lại sau."
-            )
-
     def create_category(self, dto: CreateCategoryDTO) -> CategoryDTO:
         self._validate_input(dto.category_name)
 

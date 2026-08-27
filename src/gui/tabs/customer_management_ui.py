@@ -804,7 +804,7 @@ class Ui_CustomerManagement(object):
         self.headerLayout = QHBoxLayout()
         self.headerLayout.setObjectName(u"headerLayout")
         self.titleLayout = QVBoxLayout()
-        self.titleLayout.setSpacing(3)
+        self.titleLayout.setSpacing(0)
         self.titleLayout.setObjectName(u"titleLayout")
         self.lblTitle = QLabel(CustomerManagement)
         self.lblTitle.setObjectName(u"lblTitle")

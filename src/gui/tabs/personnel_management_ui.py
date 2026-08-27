@@ -695,7 +695,7 @@ class Ui_PersonnelManagement(object):
         self.verticalLayout.setObjectName(u"verticalLayout")
         self.verticalLayout.setContentsMargins(12, 10, 12, 12)
         self.titleLayout = QVBoxLayout()
-        self.titleLayout.setSpacing(3)
+        self.titleLayout.setSpacing(0)
         self.titleLayout.setObjectName(u"titleLayout")
         self.lblTitle = QLabel(PersonnelManagement)
         self.lblTitle.setObjectName(u"lblTitle")

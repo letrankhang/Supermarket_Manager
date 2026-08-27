@@ -7,8 +7,8 @@ from src.gui.forgot_password_ui import Ui_MainWindow
 from src.utils.FormIcon import add_left_icon, show_logo
 
 MESSAGE_SENT = (
-    "Nếu email này có trong hệ thống, mã xác thực đã được gửi tới hộp thư của bạn. \n"
-    "Lưu ý: hãy kiểm tra cả mục Spam."
+    "Mã xác thực đã được gửi tới {email}.\n"
+    "Mã có hiệu lực trong 5 phút. Lưu ý: hãy kiểm tra cả mục Spam."
 )
 
 class ForgotPasswordController(QMainWindow, Ui_MainWindow):
@@ -61,7 +61,7 @@ class ForgotPasswordController(QMainWindow, Ui_MainWindow):
 
 
     def _on_sent(self, email: str):
-        QMessageBox.information(self, "Đã gửi mã", MESSAGE_SENT)
+        QMessageBox.information(self, "Đã gửi mã", MESSAGE_SENT.format(email=email))
 
         from src.controller.VerificationCodeController import VerificationCodeController
 

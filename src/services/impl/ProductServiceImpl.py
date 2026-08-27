@@ -1,7 +1,6 @@
 import logging
 from typing import List, Optional
 
-from config.settings import POSSettings
 from config.database import Database
 from src.converter.ProductConverter import ProductConverter
 from src.dtos.ProductDTO import CreateProductDTO, ProductDTO, UpdateProductDTO
@@ -28,40 +27,6 @@ class ProductServiceImpl(ProductService):
         except Exception:
             logger.exception("Loi khi tim kiem san pham")
             raise RuntimeError("Khong the tim kiem san pham. Vui long thu lai.")
-
-
-    def get_all_products(self) -> List[ProductDTO]:
-        try:
-            with Database.get_session_ctx() as session:
-                rows = self._repo.list_all(session)
-                return [ProductConverter.to_dto(e, category_name) for e, category_name in rows]
-        except Exception:
-            logger.exception("Loi khi lay danh sach san pham")
-            raise RuntimeError("Khong the tai danh sach san pham. Vui long thu lai.")
-
-
-    def get_product_by_id(self, product_id: int) -> Optional[ProductDTO]:
-        try:
-            with Database.get_session_ctx() as session:
-                row = self._repo.get_by_id(session, product_id)
-                if row is None:
-                    return None
-                entity, category_name = row
-                return ProductConverter.to_dto(entity, category_name)
-        except Exception:
-            logger.exception("Loi khi lay san pham id=%s", product_id)
-            raise RuntimeError("Khong the tai thong tin san pham. Vui long thu lai.")
-
-
-    def get_low_stock_products(self) -> List[ProductDTO]:
-        try:
-            threshold: int = POSSettings.LOW_STOCK_THRESHOLD
-            with Database.get_session_ctx() as session:
-                rows = self._repo.list_low_stock(session, threshold)
-                return [ProductConverter.to_dto(e, category_name) for e, category_name in rows]
-        except Exception:
-            logger.exception("Loi khi lay danh sach san pham sap het hang")
-            raise RuntimeError("Khong the tai danh sach san pham sap het hang.")
 
 
     def create_product(self, dto: CreateProductDTO) -> ProductDTO:

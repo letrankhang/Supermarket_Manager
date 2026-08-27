@@ -24,7 +24,6 @@ PAYMENT_METHOD_LABEL_MAP: Dict[str, str] = {
     "E-Wallet": "Thẻ",
 }
 
-CASH_PAYMENT_VALUE: str = "Cash"
 CASH_PAYMENT_LABEL: str = "Tiền mặt"
 
 class POSConverter:

@@ -7,7 +7,7 @@ from PySide6.QtCore import QUrl
 from PySide6.QtGui import (QDesktopServices, QKeySequence, QPixmap,
                            QResizeEvent, QShortcut)
 from PySide6.QtWidgets import (
-    QButtonGroup, QFrame, QHBoxLayout, QInputDialog, QLabel, QLayout,
+    QButtonGroup, QFrame, QHBoxLayout, QLabel, QLayout,
     QFileDialog, QMessageBox, QPushButton, QSizePolicy, QVBoxLayout, QWidget
 )
 

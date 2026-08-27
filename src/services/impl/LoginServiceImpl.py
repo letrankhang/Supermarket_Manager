@@ -1,4 +1,3 @@
-import hashlib
 import logging
 from typing import Optional
 from sqlalchemy.orm import make_transient

@@ -12,18 +12,6 @@ class ProductService(ABC):
         pass
 
     @abstractmethod
-    def get_all_products(self) -> List[ProductDTO]:
-        pass
-
-    @abstractmethod
-    def get_product_by_id(self, product_id: int) -> Optional[ProductDTO]:
-        pass
-
-    @abstractmethod
-    def get_low_stock_products(self) -> List[ProductDTO]:
-        pass
-
-    @abstractmethod
     def create_product(self, dto: CreateProductDTO) -> ProductDTO:
         pass
 

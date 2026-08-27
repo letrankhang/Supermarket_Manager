@@ -6,8 +6,7 @@ from typing import Optional
 from PySide6.QtCore import QSize, QUrl, Qt
 from PySide6.QtGui import QDesktopServices
 from PySide6.QtWidgets import (
-    QAbstractButton, QLabel,
-    QToolButton, QWidget,
+    QAbstractButton, QToolButton, QWidget,
 )
 
 from src.gui.tabs.help_center_ui import Ui_Form
@@ -23,9 +22,6 @@ CARD_ICON_SIZE = QSize(15, 15)
 AVATAR_ICON_SIZE = QSize(18, 18)
 SOCIAL_ICON_SIZE = QSize(15, 15)
 ACCORDION_ICON_SIZE = QSize(11, 11)
-
-PRIMARY_COLOR = "#1d4ed8"
-MUTED_COLOR = "#94a3b8"
 
 ROLE_DISPLAY_NAMES = {
     "admin": "Quản trị viên",

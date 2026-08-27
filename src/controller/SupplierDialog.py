@@ -26,7 +26,6 @@ class SupplierDialog(QtWidgets.QDialog):
         self.ui.btnCancel.clicked.connect(self.reject)
         self.ui.btnSave.clicked.connect(self.accept)
 
-        # Chieu cao bam theo noi dung, khong chua khoang trong thua
         self.setFixedWidth(480)
         self.adjustSize()
         self.setFixedHeight(self.height())

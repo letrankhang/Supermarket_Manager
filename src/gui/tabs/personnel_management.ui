@@ -684,7 +684,7 @@ QComboBox#cboStatus {
    <item>
     <layout class="QVBoxLayout" name="titleLayout">
      <property name="spacing">
-      <number>3</number>
+      <number>0</number>
      </property>
      <item>
       <widget class="QLabel" name="lblTitle">
@@ -1286,73 +1286,73 @@ QComboBox#cboStatus {
       <property name="bottomMargin">
        <number>12</number>
       </property>
-     <item>
-      <layout class="QHBoxLayout" name="toolbarLayout">
-       <property name="spacing">
-        <number>8</number>
-       </property>
-       <item>
-        <widget class="QLineEdit" name="txtSearch">
-         <property name="placeholderText">
-          <string>Tìm kiếm theo họ tên hoặc tên đăng nhập</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QComboBox" name="cboRole">
-         <item>
-          <property name="text">
-           <string>Tất cả chức vụ</string>
+      <item>
+       <layout class="QHBoxLayout" name="toolbarLayout">
+        <property name="spacing">
+         <number>8</number>
+        </property>
+        <item>
+         <widget class="QLineEdit" name="txtSearch">
+          <property name="placeholderText">
+           <string>Tìm kiếm theo họ tên hoặc tên đăng nhập</string>
           </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>Admin</string>
+         </widget>
+        </item>
+        <item>
+         <widget class="QComboBox" name="cboRole">
+          <item>
+           <property name="text">
+            <string>Tất cả chức vụ</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Admin</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Cashier</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Warehouse</string>
+           </property>
+          </item>
+         </widget>
+        </item>
+        <item>
+         <widget class="QComboBox" name="cboStatus">
+          <item>
+           <property name="text">
+            <string>Tất cả trạng thái</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Hoạt động</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Khóa</string>
+           </property>
+          </item>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="btnAdd">
+          <property name="cursor">
+           <cursorShape>PointingHandCursor</cursorShape>
           </property>
-         </item>
-         <item>
           <property name="text">
-           <string>Cashier</string>
+           <string>+ Thêm nhân sự</string>
           </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>Warehouse</string>
-          </property>
-         </item>
-        </widget>
-       </item>
-       <item>
-        <widget class="QComboBox" name="cboStatus">
-         <item>
-          <property name="text">
-           <string>Tất cả trạng thái</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>Hoạt động</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>Khóa</string>
-          </property>
-         </item>
-        </widget>
-       </item>
-       <item>
-        <widget class="QPushButton" name="btnAdd">
-         <property name="cursor">
-          <cursorShape>PointingHandCursor</cursorShape>
-         </property>
-         <property name="text">
-          <string>+ Thêm nhân sự</string>
-         </property>
-        </widget>
-       </item>
-      </layout>
-     </item>
+         </widget>
+        </item>
+       </layout>
+      </item>
       <item>
        <widget class="QTableWidget" name="tblEmployees">
         <property name="focusPolicy">

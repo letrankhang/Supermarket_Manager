@@ -83,29 +83,23 @@ class MainWindowController(QMainWindow, Ui_MainWindow):
         self.pos_controller = POSController()
         self.stacked_widget.addWidget(self.pos_controller)
 
-        #  Nhân sự
         self.personnel_controller = PersonnelController()
         self.stacked_widget.addWidget(self.personnel_controller.get_view())
 
-        # nhà cung cấp
         self.supplier_controller = SupplierController()
         self.stacked_widget.addWidget(self.supplier_controller.get_view())
         self.help_center_controller = HelpCenterController()
         self.stacked_widget.addWidget(self.help_center_controller)
 
-        # quản lý sp
         self.product_controller = ProductController(self)
         self.stacked_widget.addWidget(self.product_controller)
 
-        # nhâp sp
         self.import_controller = ImportController(self)
         self.stacked_widget.addWidget(self.import_controller)
 
-        # Quản lý khách hàng
         self.customer_controller = CustomerManagementController()
         self.stacked_widget.addWidget(self.customer_controller)
 
-        # Phân tích bán hàng
         self.analytics_controller = AnalyticsController()
         self.stacked_widget.addWidget(self.analytics_controller)
 
@@ -226,11 +220,6 @@ class MainWindowController(QMainWindow, Ui_MainWindow):
         self.btn_suppliers.clicked.connect(self._show_suppliers)
 
         self.dashboard_controller.quick_action_requested.connect(self._on_quick_action)
-
-
-    def _revert_nav_button(self) -> None:
-        if self.active_nav_button is not None:
-            self.active_nav_button.setChecked(True)
 
 
     def _on_quick_action(self, action_key: str) -> None:

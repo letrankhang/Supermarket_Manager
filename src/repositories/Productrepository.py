@@ -22,14 +22,6 @@ class ProductRepository(ABC):
         pass
 
     @abstractmethod
-    def list_all(self, session: Session) -> List[ProductWithCategoryName]:
-        pass
-
-    @abstractmethod
-    def list_low_stock(self, session: Session, threshold: int) -> List[ProductWithCategoryName]:
-        pass
-
-    @abstractmethod
     def create(self, session: Session, product: Product) -> Product:
         pass
 

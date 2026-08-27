@@ -37,24 +37,6 @@ class ImportRepositoryImpl(ImportRepository):
             raise
 
 
-    def list_by_supplier(self, session: Session, supplier_id: int) -> List[ImportOrder]:
-        try:
-            return (
-                session.query(ImportOrder)
-                .options(
-                    joinedload(ImportOrder.supplier),
-                    joinedload(ImportOrder.user),
-                    selectinload(ImportOrder.details),
-                )
-                .filter(ImportOrder.supplier_id == supplier_id)
-                .order_by(ImportOrder.import_date.desc())
-                .all()
-            )
-        except Exception:
-            logger.exception("Loi khi lay phieu nhap theo supplier_id=%s", supplier_id)
-            raise
-
-
     def list_all(self, session: Session) -> List[ImportOrder]:
         try:
             return (

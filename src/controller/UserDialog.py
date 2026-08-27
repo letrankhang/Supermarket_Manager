@@ -13,8 +13,8 @@ DIALOG_WIDTH = 440
 
 ROLE_NAMES = ["Admin", "Cashier", "Warehouse"]
 
-ADD_PASSWORD_HINT = "Nhập mật khẩu..."
-EDIT_PASSWORD_HINT = "Để trống nếu không đổi mật khẩu..."
+ADD_PASSWORD_HINT = "Nhập mật khẩu"
+EDIT_PASSWORD_HINT = "Để trống nếu không đổi mật khẩu"
 
 ACTIVE_LABEL = "Hoạt động"
 LOCKED_LABEL = "Đã khóa"
@@ -62,13 +62,11 @@ class UserDialog(QDialog, Ui_UserDialog):
 
         self.txtUsername.setEnabled(not is_edit)
 
-        # An ca hang (nhan + o tich) o che do them moi, tranh de lai nhan trong
         self.formLayout.setRowVisible(self.chkStatus, is_edit)
         if is_edit:
             self.chkStatus.setChecked(True)
             self._refresh_status_label()
 
-        # Chieu cao bam theo noi dung -> khong con khoang trong thua truoc 2 nut
         self.setFixedWidth(DIALOG_WIDTH)
         self.adjustSize()
         self.setFixedHeight(self.height())
@@ -81,7 +79,6 @@ class UserDialog(QDialog, Ui_UserDialog):
 
 
     def _refresh_status_label(self) -> None:
-        # Mau chu do QSS lo (QCheckBox#chkStatus:checked / :!checked) dam nhiem
         self.chkStatus.setText(
             ACTIVE_LABEL if self.chkStatus.isChecked() else LOCKED_LABEL
         )

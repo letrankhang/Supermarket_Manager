@@ -1,4 +1,4 @@
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from datetime import datetime
 from typing import Optional
 
@@ -17,10 +17,6 @@ class ProductDTO:
     image: Optional[str] = None
     created_at: Optional[datetime] = None
     updated_at: Optional[datetime] = None
-
-    @property
-    def is_low_stock(self) -> bool:
-        return self.current_stock <= 0
 
 
 @dataclass(frozen=True)

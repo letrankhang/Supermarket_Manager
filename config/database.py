@@ -156,22 +156,25 @@ class Database:
                     admin_user = session.query(User).filter_by(username="admin").first()
 
                     if not admin_user:
-                        # Tạo mới tài khoản admin mặc định nếu lần đầu khởi chạy
+                        # Tạo mới tài khoản admin mặc định nếu lần đầu khởi chạy.
                         new_admin = User(
                             username="admin",
                             password_hash=hash_password("Admin@123"),
                             full_name="Administrator",
                             role_id=admin_role.role_id,
-                            email="admin@supermarket.com",
                             is_active=True
                         )
                         session.add(new_admin)
                         print(
                             "[Database Seed] Default Admin user created successfully (username: 'admin', password: 'Admin@123').")
+                        print(
+                            "[Database Seed] Admin chưa có email. Hãy vào tab Nhân sự để cập nhật email thật, "
+                            "nếu không sẽ không dùng được chức năng quên mật khẩu.")
                     else:
                         if not admin_user.email:
-                            admin_user.email = "admin@supermarket.com"
-                            print("[Database Seed] Assigned default email to existing admin user.")
+                            print(
+                                "[Database Seed] Admin chưa có email trong CSDL. Hãy vào tab Nhân sự để cập nhật email thật, "
+                                "nếu không sẽ không dùng được chức năng quên mật khẩu.")
                         if not admin_user.is_active:
                             admin_user.is_active = True
                             print("[Database Seed] Ensured existing admin user is active.")
@@ -196,12 +199,6 @@ class Database:
             print(f"[Database Error] Failed to generate database tables or seed data: {e}")
             raise e
 
-
-    @classmethod
-    def get_engine(cls):
-        if cls._engine is None:
-            cls.initialize()
-        return cls._engine
 
     @classmethod
     @contextmanager

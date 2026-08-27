@@ -72,37 +72,6 @@ class AnalyticsServiceImpl(AnalyticsService):
         )
 
 
-    def get_analytics_data(self, year: int, month: int) -> AnalyticsDTO:
-        try:
-            _, last_day = calendar.monthrange(year, month)
-            curr_start = datetime(year, month, 1, 0, 0, 0)
-            curr_end = datetime(year, month, last_day, 23, 59, 59)
-
-            if month == 1:
-                prev_year = year - 1
-                prev_month = 12
-            else:
-                prev_year = year
-                prev_month = month - 1
-
-            _, prev_last_day = calendar.monthrange(prev_year, prev_month)
-            prev_start = datetime(prev_year, prev_month, 1, 0, 0, 0)
-            prev_end = datetime(prev_year, prev_month, prev_last_day, 23, 59, 59)
-
-            label = f"Tháng {month}/{year}"
-
-            return self._fetch_and_calculate_analytics(
-                curr_start=curr_start,
-                curr_end=curr_end,
-                prev_start=prev_start,
-                prev_end=prev_end,
-                period_label=label,
-            )
-        except Exception as e:
-            logger.error("Lỗi khi lấy dữ liệu analytics theo tháng %s/%s: %s", month, year, e)
-            raise e
-
-
     def _fetch_and_calculate_analytics(
         self,
         curr_start: datetime,

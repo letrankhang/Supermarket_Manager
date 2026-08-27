@@ -16,9 +16,5 @@ class ImportRepository(ABC):
         pass
 
     @abstractmethod
-    def list_by_supplier(self, session: Session, supplier_id: int) -> List[ImportOrder]:
-        pass
-
-    @abstractmethod
     def list_all(self, session: Session) -> List[ImportOrder]:
         pass

@@ -1,5 +1,3 @@
-from __future__ import annotations
-
 import logging
 from typing import List, Optional
 
@@ -128,36 +126,6 @@ class ImportServiceImpl(ImportService):
             ) from exc
 
 
-    def get_import_order(
-        self,
-        import_id: int
-    ) -> Optional[ImportOrderDTO]:
-
-        try:
-            with Database.get_session_ctx() as session:
-
-                entity = self._import_repo.get_by_id(
-                    session,
-                    import_id
-                )
-
-                return (
-                    ImportConverter.order_to_dto(entity)
-                    if entity
-                    else None
-                )
-
-        except Exception as exc:
-            logger.exception(
-                "Lỗi khi lấy phiếu nhập id=%s",
-                import_id
-            )
-
-            raise RuntimeError(
-                "Không thể tải phiếu nhập hàng."
-            ) from exc
-
-
     def get_all_import_orders(
         self
     ) -> List[ImportOrderDTO]:
@@ -181,37 +149,6 @@ class ImportServiceImpl(ImportService):
 
             raise RuntimeError(
                 "Không thể tải danh sách phiếu nhập hàng."
-            ) from exc
-
-
-    def get_import_orders_by_supplier(
-        self,
-        supplier_id: int
-    ) -> List[ImportOrderDTO]:
-
-        try:
-            with Database.get_session_ctx() as session:
-
-                entities = (
-                    self._import_repo.list_by_supplier(
-                        session,
-                        supplier_id
-                    )
-                )
-
-                return [
-                    ImportConverter.order_to_dto(entity)
-                    for entity in entities
-                ]
-
-        except Exception as exc:
-            logger.exception(
-                "Lỗi khi lấy phiếu nhập theo supplier_id=%s",
-                supplier_id
-            )
-
-            raise RuntimeError(
-                "Không thể tải danh sách phiếu nhập."
             ) from exc
 
 

@@ -2,11 +2,10 @@ import logging
 import math
 from typing import List, Optional
 
-from PySide6 import QtCore, QtGui, QtWidgets
+from PySide6 import QtCore, QtGui
 from PySide6.QtWidgets import (
     QWidget, QVBoxLayout, QHBoxLayout, QLabel, QProgressBar,
-    QTableWidgetItem, QHeaderView, QAbstractItemView, QButtonGroup,
-    QPushButton,
+    QTableWidgetItem, QHeaderView, QButtonGroup,
 )
 from PySide6.QtCore import Qt, QSize, QThread, Signal, QRectF
 from PySide6.QtGui import QPainter, QColor, QFont, QPen, QBrush, QLinearGradient

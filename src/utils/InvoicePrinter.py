@@ -1,19 +1,21 @@
+import io
 import logging
 import os
 
 from decimal import Decimal
-from typing import List, Optional, Tuple
-from reportlab.lib.styles import ParagraphStyle
+from typing import TYPE_CHECKING, List, Optional, Tuple
+from xml.sax.saxutils import escape
 
 try:
     from reportlab.lib import colors
     from reportlab.lib.pagesizes import A4
     from reportlab.lib.styles import ParagraphStyle
     from reportlab.lib.units import mm
+    from PIL import Image as PILImage
     from reportlab.pdfbase import pdfmetrics
     from reportlab.pdfbase.ttfonts import TTFont
     from reportlab.platypus import (
-        Paragraph, SimpleDocTemplate, Spacer, Table, TableStyle
+        Image, Paragraph, SimpleDocTemplate, Spacer, Table, TableStyle
     )
     REPORTLAB_AVAILABLE = True
 except ImportError:
@@ -23,8 +25,13 @@ except ImportError:
     ParagraphStyle = None
     mm = 2.834645669291339
     pdfmetrics = None
+    PILImage = None
     TTFont = None
-    Paragraph = SimpleDocTemplate = Spacer = Table = TableStyle = None
+    Image = Paragraph = SimpleDocTemplate = Spacer = Table = TableStyle = None
+
+if TYPE_CHECKING:
+    from reportlab.lib.styles import ParagraphStyle as ParagraphStyleType
+    from reportlab.platypus import Image as ImageType, Table as TableType
 
 from src.dtos.POSDTO import InvoiceDetailDTO
 from src.utils.Formatter import format_currency
@@ -45,7 +52,6 @@ INFO_COL_RATIOS = [0.15, 0.35, 0.15, 0.35]
 
 PRODUCT_COL_RATIOS = [0.07, 0.41, 0.09, 0.08, 0.175, 0.175]
 
-COL_UNIT = 2
 COL_AMOUNT = 5
 
 SUMMARY_VALUE_RATIO = PRODUCT_COL_RATIOS[COL_AMOUNT]
@@ -62,6 +68,13 @@ FONT_BOLD = "InvoiceFont-Bold"
 
 PROJECT_FONT_DIR = os.path.join("assets", "fonts")
 
+PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
+
+LOGO_PATH = os.path.join(PROJECT_ROOT, "assets", "images", "logo3.png")
+LOGO_HEIGHT = 16 * mm
+
+LOGO_RENDER_DPI = 300
+
 FONT_CANDIDATES: List[Tuple[str, str]] = [
     (os.path.join(PROJECT_FONT_DIR, "DejaVuSans.ttf"),
      os.path.join(PROJECT_FONT_DIR, "DejaVuSans-Bold.ttf")),
@@ -73,7 +86,6 @@ FONT_CANDIDATES: List[Tuple[str, str]] = [
     ("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf",
      "/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf"),
 ]
-
 _fonts_registered = False
 
 class InvoicePrintError(Exception):
@@ -116,7 +128,7 @@ def _column_widths(ratios: list) -> list:
 
 
 def _style(name: str, size: int, bold: bool = False, align: int = 0,
-           color: str = COLOR_TEXT, space_after: int = 0) -> ParagraphStyle:
+           color: str = COLOR_TEXT, space_after: int = 0) -> "ParagraphStyleType":
     if bold:
         font_name = FONT_BOLD
     else:
@@ -133,8 +145,44 @@ def _style(name: str, size: int, bold: bool = False, align: int = 0,
     )
 
 
+def _build_logo() -> Optional["ImageType"]:
+    if not os.path.exists(LOGO_PATH):
+        logger.warning("Không tìm thấy logo để in lên hóa đơn: %s", LOGO_PATH)
+        return None
+
+    try:
+        source = PILImage.open(LOGO_PATH)
+        source.load()
+        image_width, image_height = source.size
+
+        target_height = int(LOGO_HEIGHT / 72 * LOGO_RENDER_DPI)
+        if image_height > target_height:
+            target_width = max(1, round(image_width * target_height / image_height))
+            source = source.resize((target_width, target_height), PILImage.LANCZOS)
+
+        buffer = io.BytesIO()
+        source.save(buffer, format="PNG")
+        buffer.seek(0)
+
+        logo = Image(
+            buffer,
+            width=LOGO_HEIGHT * image_width / image_height,
+            height=LOGO_HEIGHT,
+        )
+        logo.hAlign = "CENTER"
+        return logo
+    except Exception as e:
+        logger.warning("Không nạp được logo '%s': %s", LOGO_PATH, e)
+        return None
+
+
 def _build_header(invoice: InvoiceDetailDTO) -> list:
     elements = []
+
+    logo = _build_logo()
+    if logo is not None:
+        elements.append(logo)
+        elements.append(Spacer(1, 2 * mm))
 
     elements.append(Paragraph(STORE_NAME, _style("store", 15, bold=True, align=1)))
     elements.append(Paragraph(STORE_ADDRESS, _style("addr", 9, align=1, color=COLOR_TEXT_MUTED)))
@@ -168,7 +216,7 @@ def _build_header(invoice: InvoiceDetailDTO) -> list:
     return elements
 
 
-def _build_product_table(invoice: InvoiceDetailDTO) -> Table:
+def _build_product_table(invoice: InvoiceDetailDTO) -> "TableType":
     header = ["STT", "Tên sản phẩm", "ĐVT", "SL", "Đơn giá", "Thành tiền"]
     rows = [header]
 
@@ -176,7 +224,7 @@ def _build_product_table(invoice: InvoiceDetailDTO) -> Table:
     for line in invoice.lines:
         rows.append([
             str(order_number),
-            Paragraph(line.product_name, _style("cell", 9)),
+            Paragraph(escape(line.product_name or ""), _style("cell", 9)),
             line.unit,
             str(line.quantity),
             format_currency(line.unit_price, with_suffix=False),
@@ -207,7 +255,7 @@ def _build_product_table(invoice: InvoiceDetailDTO) -> Table:
     return table
 
 
-def _build_summary(invoice: InvoiceDetailDTO, cash_received: Optional[Decimal], change_amount: Optional[Decimal]) -> Table:
+def _build_summary(invoice: InvoiceDetailDTO, cash_received: Optional[Decimal], change_amount: Optional[Decimal]) -> "TableType":
     def make_row(label: str, value: str) -> list:
         return [label, value]
 

@@ -9,6 +9,7 @@ from config.database import Database
 from src.repositories.impl.UserRepositoryImpl import UserRepositoryImpl
 from src.services.PasswordResetService import (
     CodeExpiredError,
+    EmailNotFoundError,
     EmailSendError,
     InvalidCodeError,
     InvalidEmailError,
@@ -62,14 +63,15 @@ class PasswordResetServiceImpl(PasswordResetService):
                 raise ResendTooSoonError(
                     f"Vui lòng đợi {int(remaining.total_seconds()) + 1} giây nữa rồi hãy gửi lại mã."
                 )
-        self._last_sent_at[email] = datetime.now()
-
         with Database.get_session_ctx() as db_session:
             user = UserRepositoryImpl(db_session).find_by_email(email)
 
         if not user:
             logger.warning("Yêu cầu quên mật khẩu cho email không có trong hệ thống: %s", email)
-            return
+            raise EmailNotFoundError(
+                "Email này chưa được đăng ký cho tài khoản nào. "
+                "Vui lòng kiểm tra lại hoặc liên hệ quản trị viên."
+            )
 
         code = f"{secrets.randbelow(10 ** CODE_DIGITS):0{CODE_DIGITS}d}"
 
@@ -80,6 +82,7 @@ class PasswordResetServiceImpl(PasswordResetService):
                 "Vui lòng kiểm tra kết nối mạng hoặc liên hệ quản trị viên."
             )
 
+        self._last_sent_at[email] = datetime.now()
         self._sessions[email] = _ResetSession(code=code, expires_at=datetime.now() + CODE_LIFETIME)
         logger.info("Đã gửi mã xác thực đặt lại mật khẩu tới %s", email)
 

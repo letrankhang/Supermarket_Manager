@@ -35,11 +35,6 @@ class CustomerServiceImpl(CustomerService):
 
     @staticmethod
     def _resolve_tier_id(session, total_spent) -> Optional[int]:
-        """Lay hang cao nhat ma khach da dat nguong min_spent trong bang customer_tier.
-
-        Truoc day tier_id bi hard-code 1..4 nen phu thuoc vao thu tu ban ghi trong DB;
-        chi can them/bot hang la gan sai hang.
-        """
         tier = (
             session.query(CustomerTier)
             .filter(CustomerTier.min_spent <= total_spent)
@@ -50,7 +45,6 @@ class CustomerServiceImpl(CustomerService):
 
 
     def get_tier_discount_percent(self, customer_id: Optional[int]) -> int:
-        """% giam gia uu dai theo hang thanh vien. Khach le / khong co hang thi 0%."""
         if not customer_id:
             return 0
         try:

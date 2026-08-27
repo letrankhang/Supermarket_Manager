@@ -1,4 +1,4 @@
-from typing import List, Optional, Tuple, Dict
+from typing import List, Optional, Tuple
 from src.entities.customer import Customer
 from src.entities.customer_tier import CustomerTier
 from src.dtos.CustomerManagementDTO import CustomerDetailDTO, CustomerManagementDTO

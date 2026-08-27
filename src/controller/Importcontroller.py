@@ -1,11 +1,10 @@
 import logging
 from datetime import datetime, timedelta
-from typing import List, Optional
+from typing import List
 
 from PySide6.QtCore import QObject, QThread, Signal as pyqtSignal, Qt
 from PySide6.QtWidgets import (
-    QAbstractItemView, QFrame, QHBoxLayout, QHeaderView, QMessageBox,
-    QTableWidget, QTableWidgetItem, QWidget,
+    QHeaderView, QMessageBox, QTableWidgetItem, QWidget,
 )
 
 from src.dtos.ImportDTO import ImportOrderDTO

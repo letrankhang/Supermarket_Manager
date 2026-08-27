@@ -1,5 +1,3 @@
-from typing import Optional
-
 from src.dtos.ImportDTO import ImportDetailDTO, ImportOrderDTO
 from src.entities.import_order import ImportOrder
 from src.entities.import_detail import ImportDetail
