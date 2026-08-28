@@ -622,9 +622,10 @@ QFrame#CartRow {
     border-bottom: 1px solid #f1f5f9;
 }
 QLabel#lblCardThumbnail {
-    background-color: #f8fafc;
+    background-color: #ffffff;
     border: 1px solid #e2e8f0;
     border-radius: 8px;
+	padding: 3px;
     color: #64748b;
 }
 QLabel#lblCardName,

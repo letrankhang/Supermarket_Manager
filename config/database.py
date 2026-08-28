@@ -134,8 +134,7 @@ class Database:
                         conn.commit()
                     print("[Database] 'email' column added successfully.")
 
-            # Khởi tạo Role và tài khoản Admin mặc định
-            with cls.get_session_ctx() as session:
+            with cls.get_session_ctx() as session:               # Khởi tạo Role và tài khoản Admin mặc định
                 default_roles = ["Admin", "Cashier", "Warehouse"]
                 existing_roles = {r.role_name: r for r in session.query(Role).all()}
 
@@ -156,7 +155,7 @@ class Database:
                     admin_user = session.query(User).filter_by(username="admin").first()
 
                     if not admin_user:
-                        # Tạo mới tài khoản admin mặc định nếu lần đầu khởi chạy.
+                        # tạo mới tài khoản admin mặc định nếu lần đầu khởi chạy.
                         new_admin = User(
                             username="admin",
                             password_hash=hash_password("Admin@123"),
