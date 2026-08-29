@@ -6,5 +6,5 @@ venv/
 .vscode/
 .idea/
 tempCodeRunnerFile.py
-.gitignore
-
+.env
+*.log
