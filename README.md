@@ -51,9 +51,7 @@ Supermarket_Manager/
 │   ├── repositories/          # Tầng truy vấn trực tiếp với Cơ sở dữ liệu
 │   ├── services/              # Tầng xử lý logic nghiệp vụ (Business Logic)
 │   └── utils/                 # Tiện ích: EmailHelper, PasswordHasher, Theme, InvoicePrinter...
-├── .env                       # File cấu hình biến môi trường cục bộ (không chia sẻ lên git)
 ├── .env.example               # File cấu hình mẫu
-├── .gitignore                 # Bỏ qua các file rác và thông tin nhạy cảm
 ├── requirements.txt           # Danh sách các thư viện phụ thuộc
 ├── README.md                  # Tài liệu mô tả và hướng dẫn dự án
 └── main.py                    # Điểm khởi chạy chính của ứng dụng
@@ -176,7 +174,6 @@ python main.py
 
 Hệ thống hỗ trợ các nhóm vai trò với quyền hạn tách biệt:
 - **Quản trị viên (Admin)**: Toàn quyền truy cập Dashboard, quản lý nhân viên, cấu hình, sản phẩm, nhà cung cấp, khách hàng và xem báo cáo tài chính.
-- **Quản lý (Manager)**: Quản lý hàng hóa, nhập hàng, quản lý khách hàng, theo dõi báo cáo doanh thu.
 - **Thu ngân (Cashier)**: Sử dụng phân hệ POS bán hàng, tìm kiếm khách hàng, áp dụng chiết khấu trong hạn mức, in hóa đơn.
 - **Nhân viên kho (Inventory Staff)**: Quản lý sản phẩm, lập phiếu nhập hàng, theo dõi mức tồn kho và cảnh báo hết hàng.
 
